@@ -41,6 +41,11 @@
 				width: 20px;
 				height: 20px;
 			}
+			.orgname{
+				padding-top: 2px;
+				color: gray;
+				font-size: 13px;
+			}
 
 			.footer-wapper a:active,
 			.footer-wapper a:hover,
@@ -61,7 +66,11 @@
 		<div class="content">
 			<ul class="mui-table-view">
 				<li v-for="(person,index) in people" class="cell-person mui-table-view-cell" @click="deleteItemClicked($event,index)">
-					<div>{{person.nickname}}</div>
+					<div>
+					<div class="nickname">{{person.nickname}}</div>
+					<!-- <div class="orgname">{{person.eduname}}  {{person.orgname}}</div> -->
+					<div class="orgname">{{person.orgname}}</div>
+					</div>
 					<img id="cell-delete-icon" src="../../common/app/images/apply_ic_delete.png">
 				</li>
 			</ul>

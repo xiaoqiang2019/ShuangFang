@@ -426,23 +426,23 @@
 
 						<div class="swiper-slide">
 							<p>3、我经常头疼、肚子疼或身体不舒服</p>
-							<ul class="ans3_1"> </ul>
+							<ul class="ans3"> </ul>
 						</div>
 						<div class="swiper-slide">
 							<p>4、我常与他人分享东西（食物、玩具、笔等）</p>
-							<ul class="ans3"> </ul>
+							<ul class="ans3_1"> </ul>
 						</div>
 						<div class="swiper-slide">
 							<p>5、我觉得非常愤怒及常发脾气</p>
-							<ul class="ans3_1"> </ul>
-						</div>
-						<div class="swiper-slide">
-							<p>6、我经常独处，我通常独自玩耍</p>
 							<ul class="ans3"> </ul>
 						</div>
 						<div class="swiper-slide">
-							<p>7、我通常依照吩咐办事</p>
+							<p>6、我经常独处，我通常独自玩耍</p>
 							<ul class="ans3_1"> </ul>
+						</div>
+						<div class="swiper-slide">
+							<p>7、我通常依照吩咐办事</p>
+							<ul class="ans3"> </ul>
 						</div>
 						<div class="swiper-slide">
 							<p>8、我经常担心、心事重重</p>
@@ -466,15 +466,15 @@
 						</div>
 						<div class="swiper-slide">
 							<p>13、我经常不快乐、心情沉重或流泪</p>
-							<ul class="ans3_1"> </ul>
-						</div>
-						<div class="swiper-slide">
-							<p>14、一般来说，其他与我年龄相近的人都喜欢我</p>
 							<ul class="ans3"> </ul>
 						</div>
 						<div class="swiper-slide">
-							<p>15、我容易分心，觉得难以集中精力</p>
+							<p>14、一般来说，其他与我年龄相近的人都喜欢我</p>
 							<ul class="ans3_1"> </ul>
+						</div>
+						<div class="swiper-slide">
+							<p>15、我容易分心，觉得难以集中精力</p>
+							<ul class="ans3"> </ul>
 						</div>
 						<div class="swiper-slide">
 							<p>16、我在新的环境中会感到紧张，很容易失去自信</p>
@@ -490,11 +490,11 @@
 						</div>
 						<div class="swiper-slide">
 							<p>19、其他小孩或青少年常作弄或欺负我</p>
-							<ul class="ans3_1"> </ul>
+							<ul class="ans3"> </ul>
 						</div>
 						<div class="swiper-slide">
 							<p>20、我常自愿帮助别人（父母、老师、同学）</p>
-							<ul class="ans3"> </ul>
+							<ul class="ans3_1"> </ul>
 						</div>
 						<div class="swiper-slide">
 							<p>21、我做事前会先想清楚</p>
@@ -516,7 +516,6 @@
 							<p>25、我总能把手头的事情办妥，我的注意力良好</p>
 							<ul class="ans3_1"> </ul>
 						</div>
-
 						<div class="swiper-slide">
 							<h3>请根据近期的经验与事实，或者想象的事实回答以下问题</h3>
 							<p>1、心情不好时，我能想一些令人开心的事情</p>
@@ -620,7 +619,7 @@
 					<h3 class="tit02">社会关系</h3>
 					<p>透过对孩子社会关系的评价，可以推断出孩子社交能力的强弱。社交能力的强弱直接反映孩子的家庭关系好坏，师生关系的融洽度，同学关系的亲密度等</p>
 
-					<h3 class="tit02"> 焦虑和抑郁测评</h3>
+					<h3 class="tit02"> 焦虑和抑郁测评</h3>
 					<p>焦虑与抑郁压力源测评，是为了了解孩子目前对挫折的看法和对压力的应对策略是否符合他自己的人格特质。</p>
 
 					<h3 class="tit02">情绪影响力</h3>
@@ -914,6 +913,8 @@
 			var secret = getSecretKey();
 			var timestamp = moment().valueOf();
 			if(isEmpty(from_bid)){
+				$(".empty-content").show();
+				$(".main-content").hide();
 				commonShowRequestErrorEmpty(".empty-content", "缺少参数", true, false);
 			}else{
 				getResult();
@@ -951,7 +952,7 @@
 								showEmpty("数据加载时出了些问题");
 							}
 						} else {
-							showEmpty(updateNullString(object["err_msg"], "数据加载时出了些问题"));
+							showEmpty(updateNullString(object["msg"], "数据加载时出了些问题"));
 						}
 					},
 					function(error) {
@@ -994,6 +995,8 @@
 						var usertype = localStorage.getItem("usertype");
 						var grade = localStorage.getItem("grade");
 						if (usertype != "70") {
+							$(".empty-content").show();
+							$(".main-content").hide();
 							commonShowRequestErrorEmpty(".empty-content", "当前用户不是学生", true, false);
 							return;
 						}
@@ -1159,6 +1162,11 @@
 					var nation = $("#nation").val();
 					if (isEmpty(nation)) {
 						mui.toast("请输入民族");
+						return false;
+					}
+					 var reg = /^[\u4E00-\u9FA5]+$/;
+					if(!reg.test(nation)){
+						mui.toast("民族只能输入汉字");
 						return false;
 					}
 					var age = getInputInt($("#age").val());
@@ -1764,7 +1772,7 @@
 								clearInterval(timer);
 							}
 						} else {
-							mui.toast(updateNullString(object["err_msg"], "提交失败"));
+							mui.toast(updateNullString(object["msg"], "提交失败"));
 							
 						}
 					},

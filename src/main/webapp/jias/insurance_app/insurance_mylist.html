@@ -334,7 +334,7 @@
 							list.xa_showRequestErrorEmpty("暂无相关数据",false);
 						}
 					} else {
-						list.xa_showRequestErrorEmpty(updateNullString(object["err_msg"], "暂无相关数据"), false);
+						list.xa_showRequestErrorEmpty(updateNullString(object["msg"], "暂无相关数据"), false);
 					}
 					if (pulltofresh) {
 						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
@@ -368,7 +368,7 @@
 						list.xa_showRequestErrorEmpty("暂无相关数据",false)
 					}
 					} else {
-						mui.toast(updateNullString(object["err_msg"], "暂无相关数据"),false);
+						mui.toast(updateNullString(object["msg"], "暂无相关数据"),false);
 					}
 				},
 				function(error) {

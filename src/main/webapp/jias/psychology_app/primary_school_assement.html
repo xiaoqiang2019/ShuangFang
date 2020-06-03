@@ -593,6 +593,8 @@
 			var timestamp = moment().valueOf();
 			$(".boxmain").hide();
 			if(isEmpty(from_bid)){
+				$(".empty-content").show();
+				$(".main-content").hide();
 				commonShowRequestErrorEmpty(".empty-content", "缺少参数", true, false);
 			}else{
 				getResult();
@@ -630,7 +632,7 @@
 								showEmpty("数据加载时出了些问题");
 							}
 						} else {
-							showEmpty(updateNullString(object["err_msg"], "数据加载时出了些问题"));
+							showEmpty(updateNullString(object["msg"], "数据加载时出了些问题"));
 						}
 					},
 					function(error) {
@@ -674,6 +676,8 @@
 						var usertype = localStorage.getItem("usertype");
 						var grade = localStorage.getItem("grade");
 						if (usertype != "70") {
+							$(".empty-content").show();
+							$(".main-content").hide();
 							commonShowRequestErrorEmpty(".empty-content", "当前用户不是学生", true, false);
 							return;
 						}
@@ -1458,7 +1462,7 @@
 								clearInterval(timer);
 							}
 						} else {
-							mui.toast(updateNullString(object["err_msg"], "提交失败"));
+							mui.toast(updateNullString(object["msg"], "提交失败"));
 						}
 					},
 					function(error) {

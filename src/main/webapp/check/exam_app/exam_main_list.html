@@ -144,7 +144,7 @@
 				<div class="arrow_left"></div>
 			</a>
 		</header>
-		<div id="app">
+		<div v-cloak id="app">
 			<div class="top-container">
 				<div>
 					<a href="#cell-list" class="active" @tap="tagClicked($event)">我的</a>
@@ -152,10 +152,10 @@
 				</div>
 				<div class="top-filter-btn mui-icon mui-icon-arrowdown mui-right" @tap="timeClicked($event)" :key="selectTimeIntStr">{{selectTime}}</div>
 			</div>
-			<div class="cell-list mui-scroll-wrapper">
-				<div class="mui-scroll">
+			<div v-if="show" class="cell-list mui-scroll-wrapper">
+				<div class="mui-scroll" >
 					<ul>
-						<li v-for="(item,index) in itemList" :key="item.manageid">
+						<li v-for="(item,index) in itemList" :key="item.manageid" @tap="taskListClicked(item)">
 							<div class="cell-top-content">
 								<div class="cell-name app-black-color">{{item.managename}}</div>
 								<div class="cell-top-right">
@@ -187,6 +187,9 @@
 					</ul>
 				</div>
 			</div>
+			<!-- 空视图 -->
+			<empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="true" v-bind:isneterror="isneterror" v-on:retryclick="retryMsg"></empty>
+			
 			<!-- picker - 所有时间 -->
 			<div id="picker-filter-time" class="mui-popover mui-popover-action mui-popover-bottom">
 				<ul id="picker-first-item" class="mui-table-view">
@@ -214,7 +217,7 @@
 			</div>
 		</div>
 		<div class="fxbtn">
-			<a href="#">添加</a>
+			<a href="#">新建检查</a>
 		</div>
 	</body>
 	<!-- 页面加载完毕后统一的页面配置 -->
@@ -223,8 +226,13 @@
 	<script src="../../common/extend/moment/moment.js"></script>
 	<script src="../../common/extend/moment/zh-cn.js"></script>
 	<script src="../../common/extend/vue/vue.min.js"></script>
-	<script src="../../common/app/script/empty.js"></script>
+	<script src="../../common/app/script/empty_vue.js"></script>
 	<script>
+		
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		
 		window.onload = function() {
 			mui('.mui-scroll-wrapper').scroll({
 				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006  
@@ -245,10 +253,10 @@
 			} else {
 				$('.cell-list').css('height', realHeight + 'px').css('height', '-=0px');
 			}
-			var statusWidth = $('.cell-status').outerWidth(),
-				moreWidth = $('.cell-more').outerWidth(),
-				maxNameWidth = statusWidth + moreWidth;
-			$('.cell-name').css('max-width', '100%').css('max-width', '-=' + maxNameWidth + 'px')
+			// var statusWidth = $('.cell-status').outerWidth(),
+			// 	moreWidth = $('.cell-more').outerWidth(),
+			// 	maxNameWidth = statusWidth + moreWidth;
+			// $('.cell-name').css('max-width', '100%').css('max-width', '-=' + maxNameWidth + 'px')
 		};
 		(function($) {
 			//阻尼系数  
@@ -284,6 +292,9 @@
 		var vm = new Vue({
 			el: "#app",
 			data: {
+				show: true,
+				isneterror: false,
+				errorMsg: "",
 				timeList: [],
 				selectTime: "全部时间",
 				selectTimeIntStr: "", //上传给服务端使用的，全部时间传空，rg：2018，2020
@@ -295,6 +306,17 @@
 				this.createFilterTimePicker();
 			},
 			methods: {
+				//重试
+				xa_showRequestErrorEmpty: function(msg, isneterror) {
+					this.show = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+					vm.$forceUpdate();
+				},
+				retryMsg: function() {
+					requestDataFromServer(true);
+				},
+				
 				// 我的和全部按钮点击切换
 				tagClicked: function(e) {
 					$(e.currentTarget).addClass("active").siblings().removeClass("active");
@@ -313,6 +335,22 @@
 						this.editLimit = true;
 					}
 					mui("#picker-more-operation").popover('show');
+				},
+				/* 进入检查学校列表页 */
+				taskListClicked:function(item){
+					var activeTagText = $(".top-container a.active").text()
+					var type = (activeTagText == "我的") ? "1" : "0";
+					var itemJson = JSON.stringify(item); //对象转字符串
+					CodeSTD.form({
+						url: "exam_task_list.html",
+						params: {
+							"usercode": usercode,
+							"token": token,
+							"manageid": item.manageid,
+							"itemjson":itemJson,
+							"type":type
+						},
+					});
 				},
 				//是否可以编辑检查
 				isCanEditExam: function(json) {
@@ -364,14 +402,17 @@
 					dLog('点击了' + a.innerHTML)
 
 					if (parent.id == 'picker-filter-time') {
-						if (a.innerHTML != '取消') {
-							pulldownRefresh()
-						}
+						//先赋值后请求
 						this.selectTime = a.innerHTML;
-						if (this.selectTime == '全部时间') {
+						if (this.selectTime == '全部时间'||this.selectTime == '取消') {
 							this.selectTimeIntStr = ""
 						} else {
-							this.selectTimeIntStr = this.selectTime.split(0, this.selectTime.length - 1)
+							// this.selectTimeIntStr = this.selectTime.split(0, this.selectTime.length - 1);
+							this.selectTimeIntStr = a.innerHTML;
+						}
+						
+						if (a.innerHTML != '取消') {
+							pulldownRefresh()
 						}
 					} else if (parent.id == 'picker-more-operation') {}
 
@@ -410,7 +451,7 @@
 				} else {
 					mui('.cell-list').pullRefresh().endPullupToRefresh(false);
 				}
-				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				vm.xa_showRequestErrorEmpty("网络似乎有点问题", true);
 				return;
 			}
 			if (pulltofresh) {
@@ -422,18 +463,16 @@
 			}
 
 
-			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
-			var url_token = updateNullString(getURLParameter('token'), localToken);
-			var token = updateNullString($.cookie('token'), url_token);
-			var activeTagText = $(".top-container a.active").text()
-
+			var activeTagText = $(".top-container a.active").text();
+			var searchyear =  vm.selectTimeIntStr;
+			dLog('年份'+ searchyear);
 			var paramDic = {
 				"usercode": usercode,
 				"token": token,
 				"type": (activeTagText == "我的") ? "1" : "0",
 				"pageIndex": vm.page,
 				"pageSize": "10",
-				"searchType": vm.selectTimeIntStr
+				"searchyear": searchyear
 			};
 			dLog(paramDic)
 			var urlString = system.check + "getSpecialExaminationList.action";
@@ -447,28 +486,29 @@
 					if (result) {
 						//pull to refrsh
 						if (vm.page == 1) {
+							vm.itemList = dataList;
 							if (dataList.length > 0) {
-								vm.itemList = dataList
-								dLog(vm.itemList)
+								vm.show = true; 
 							} else {
-								showRequestErrorEmpty("暂无相关数据", true, true);
+								vm.xa_showRequestErrorEmpty("暂无相关数据", false);
 							}
 						}
 						//load more
 						else {
+							vm.itemList = vm.itemList.concat(object["list"])
 							if (dataList.length > 0) {
-								vm.itemList = vm.itemList.concat(object["list"])
+								vm.show = true; 
 							} else {
 								needPageAddWhenLoadmore = false; //请求下来的数据列表为0，用户在loadmore的时候page还是原来的哪个page，而不是page++
 								if (vm.itemList.length == 0) {
-									showRequestErrorEmpty("暂无相关数据", true, true);
+									vm.xa_showRequestErrorEmpty("暂无相关数据", false);
 								} else {
 									mui.toast("暂无更多数据")
 								}
 							}
 						}
 					} else {
-						showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), true, false);
+						vm.xa_showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), false);
 					}
 					if (pulltofresh) {
 						mui('.cell-list').pullRefresh().endPulldownToRefresh(false);
@@ -483,26 +523,8 @@
 					} else {
 						mui('.cell-list').pullRefresh().endPullupToRefresh(false);
 					}
-					showRequestErrorEmpty("数据加载时出了问题", true, true);
+					vm.xa_showRequestErrorEmpty("数据加载时出了问题", false);
 				})
-		}
-		//请求返回数据为空或失败显示的空页面
-		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
-			var imgpath = "../../common/app/images/nopage/img_noList.png";
-			if (isNetwork == false) {
-				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
-			}
-			//空页面[接口请求失败]
-			$.Empty.showEmptyView({
-				"imgPath": imgpath,
-				"errorMsg": errorMsg,
-				"isShowMsg": true,
-				"isShowRetry": isShowRetry,
-				"appendDom": ".cell-list"
-			}, function() {
-				//重新刷新数据
-				pullRefreshOrLoadMore(true)
-			});
 		}
 	</script>
 

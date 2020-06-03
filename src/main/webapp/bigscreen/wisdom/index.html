@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,38 +10,111 @@
 	<script src="../../common/extend/bootstrap/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="../../common/extend/bootstrap/css/bootstrap.min.css">
 	<script src="js/showtime.js"></script>
+	<script src="../../common/extend/swiper/js/swiper.min.js"></script>
+	<link rel="stylesheet" href="../../common/extend/swiper/css/swiper.min.css">
 	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="../../common/extend/vue/vue.min.js"></script>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../common/extend/element-ui/lib/theme-chalk/index.css">
+	<!-- 引入组件库 -->
+	<script type="text/javascript" src="../../common/extend/element-ui/lib/index.js"></script>
 </head>
 
 <body>
 	<header>
 		<a href="#" class="logo"><img src="images/logo.png"></a>
 		<h1>校园安全智慧屏</h1>
+		<div class="time" id="showTime">2020.05.09.16:45:28</div>
+	</header>
+	<div class="navbox" id="navboxApp">
+		<div class="topbar box">
+			<p><img src="images/bud.png">郑州铁路职业技术学院-机电工程学院</p>
+			<p><img src="images/user.png"> 责任人：魏保立、戴明宏</p>
+			<p><img src="images/notice.png"><a href="#">关于“五一”期间加强疫情防控和落实中央八项规定精神的通知</a><span>16:24</span></p>
+		</div>
+		<div class="nav01">
+
+			<div class="swiper-container swiper-box1">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide content"><iframe src="fourcolorimg.html"></iframe></div>
+					<div class="swiper-slide content"><iframe src="risk_level.html"></iframe></div>
+					<div class="swiper-slide content"><iframe src="danger_gover.html"></iframe></div>
+					<div class="swiper-slide content"><iframe src="knowledge.html"></iframe></div>
+					<div class="swiper-slide content"><iframe src="website.html"></iframe></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="foot" id="footApp">
 		<ul>
-			<li><a href="#" data-toggle="modal" data-target="#myModal"><i></i><span>双防大数据</span></a></li>
-			<li><a href="fourcolorimg.html"><i></i><span>风险四色图</span></a></li>
-			<li><a href="risk_level.html"><i></i><span>风险分级管控</span></a></li>
-			<li><a href="danger_gover.html"><i></i><span>隐患排查治理</span></a></li>
-			<li><a href="knowledge.html"><i></i><span>双防知识库</span></a></li>
-			<li><a href="website.html"><i></i><span>微官网</span></a></li>
-			<li><a href="exit.html"><i></i><span>系统桌面</span></a></li>
+			<li @click="initActiveName()"><a href="javascript:;" data-toggle="modal" data-target="#myModal"><i></i><span>双防大数据</span></a></li>
+			<li @click="initActiveName()"><a href="javascript:;"><i></i><span>风险四色图</span></a></li>
+			<li @click="initActiveName()"><a href="javascript:;"><i></i><span>风险分级管控</span></a></li>
+			<li @click="initActiveName()"><a href="javascript:;"><i></i><span>隐患排查治理</span></a></li>
+			<li @click="initActiveName()"><a href="javascript:;"><i></i><span>双防知识库</span></a></li>
+			<li @click="initActiveName()"><a href="javascript:;"><i></i><span>微官网</span></a></li>
 		</ul>
-	  </div>
-	  
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog fordatamodal" role="document">
-	 <div class="back"  data-dismiss="modal" aria-label="Close"><span>返回</span></div>
-    <iframe src="data/index.html" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
-  </div>
-</div> 
-<script>
-$('#myModal').on('show.bs.modal', function (e) {
-	$("#iframe1").attr("src","")
-})
-$('#myModal').on('shown.bs.modal', function (e) {
-	$("#iframe1").attr("src","../bigscreen/double_bigscreen/index.html")
-})
-</script>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog fordatamodal" role="document">
+			<div class="back" data-dismiss="modal" aria-label="Close"><span>返回</span></div>
+			<iframe src="data/index.html" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
+		</div>
+	</div>
+	<script>
+		new Vue({
+			el: "#footApp",
+			methods:{
+				initActiveName(){
+					
+				}
+			}
+		})
+	</script>
+	<script>
+		$('#myModal').on('show.bs.modal', function (e) {
+			$("#iframe1").attr("src", "")
+		})
+		$('#myModal').on('shown.bs.modal', function (e) {
+			$("#iframe1").attr("src", "../double_bigscreen/index.html")
+		})
+		$(".selectdy ul li").click(function () {
+			$(".selectdy ul li").removeClass("active")
+			$(this).addClass("active")
+		})
+		var mySwiper = new Swiper('.swiper-box1', {
+			effect: 'fade',
+			observer: true,//修改swiper自己或子元素时，自动初始化swiper
+			observeParents: true,//修改swiper的父元素时，自动初始化swiper
+			loop: true,
+			autoplay: {
+				delay: 5000,
+				disableOnInteraction: false,
+			},
+			on: {
+				slideChangeTransitionStart: function () {
+					var i = this.realIndex
+					//var i=this.activeIndex  非LOOP模式
+					$('.foot li').eq(i + 1).addClass("active").siblings().removeClass("active")
+				},
+			},
+		});
+		// 鼠标放在盒子上时停止轮播事件，移出则继续
+		$(".swiper-container").mouseenter(function(){
+			mySwiper.autoplay.stop();
+		}).mouseleave(function(){
+			mySwiper.autoplay.start();
+		})
+		//var arrLink=["fourcolorimg.html","risk_level.html","danger_gover.html","knowledge.html","website.html"]
+		$('.foot li').click(function () {
+			var i = $(this).index()
+			if (i > 0) {
+				$(this).addClass("active").siblings().removeClass("active")
+				mySwiper.slideTo(i, 1000, false);//切换到第一个slide，速度为1秒
+			}
+		})
+	</script>
 </body>
+
 </html>

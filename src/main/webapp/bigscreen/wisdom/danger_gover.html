@@ -13,646 +13,613 @@
 	<link rel="stylesheet" href="css/style.css">
 	<script type="text/javascript" src="../../common/extend/vue/vue.min.js"></script>
 	<!-- 引入样式 -->
-	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="../../common/extend/element-ui/lib/theme-chalk/index.css">
 	<!-- 引入组件库 -->
-	<script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
+	<script type="text/javascript" src="../../common/extend/element-ui/lib/index.js"></script>
 </head>
 
-<body>
-	<header>
-		<a href="#" class="logo"><img src="images/logo.png"></a>
-		<h1>校园安全智慧屏</h1>
-		<div class="time" id="showTime">2020.009.16:45:28</div>
-	</header>
-	<div class="navbox" id="navboxApp" v-cloak>
-		<div class="topbar box">
-			<p><img src="images/bud.png">郑州铁路职业技术学院-机电工程学院</p>
-			<p><img src="images/user.png">责任人：魏保立、戴明宏</p>
-			<p><img src="images/notice.png"><a href="#">关于“五一”期间加强疫情防控和落实中央八项规定精神的通知</a><span>16:24</span></p>
-		</div>
+<body style="padding: 0;">
+	<div class="h100 box"  id="navboxApp">
+		<div class="boxtit">隐患排查治理</div>
+		<ul class="tabs" style="padding-top: 0" role="tablist">
+			<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+					data-toggle="tab">总览</a></li>
+			<li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+					data-toggle="tab">任务排查统计</a></li>
+			<li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
+					data-toggle="tab">人员排查统计</a></li>
+			<!----	<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">隐患治理统计</a></li>-->
+		</ul>
 
 
-		<div class="nav01 box">
-			<div class="boxtit">隐患排查治理</div>
-
-			<ul class="tabs" style="padding-top: 0" role="tablist">
-				<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
-						data-toggle="tab">总览</a></li>
-				<li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
-						data-toggle="tab">任务排查统计</a></li>
-				<li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
-						data-toggle="tab">人员排查统计</a></li>
-				<!----	<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">隐患治理统计</a></li>-->
-			</ul>
-
-
-			<div class="boxnav tab-content" style="height: calc(100% - 130px)">
-				<div role="tabpanel" class="tab-pane active" id="home">
-					<div style="padding: 0 20px 20px 0px;">
-						<form class="form-inline">
-							<div class="form-group">
-								<label for="exampleInputName2">风险单元类型：</label>
-								<div class="selbox">
-									<input type="text" class="form-control" placeholder="请选择" readonly>
-									<ul style="z-index: 2;">
-										<li class="active"><a href="#">全部</a></li>
-										<li><a href="#">体系文件</a></li>
-										<li><a href="#">空间场所</a></li>
-									</ul>
-								</div>
+		<div class="boxnav tab-content" style="height: calc(100% - 130px)">
+			<div role="tabpanel" class="tab-pane active" id="home">
+				<div style="padding: 0 20px 20px 0px;">
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="exampleInputName2">风险单元类型：</label>
+							<div class="selbox">
+								<input type="text" class="form-control" placeholder="请选择" readonly>
+								<ul style="z-index: 2;">
+									<li class="active"><a href="#">全部</a></li>
+									<li><a href="#">体系文件</a></li>
+									<li><a href="#">空间场所</a></li>
+								</ul>
 							</div>
-							<div class="form-group">
-								<label for="exampleInputEmail2">风险单元：</label>
-								<div class="selbox">
-									<input type="text" class="form-control" placeholder="请选择" readonly>
-									<ul style="z-index: 2;">
-										<li class="active"><a href="#">全部</a></li>
-										<li><a href="#">管理制度</a></li>
-										<li><a href="#">匠心楼1层</a></li>
-										<li><a href="#">匠心楼2层</a></li>
-										<li><a href="#">匠心楼5层</a></li>
-										<li><a href="#">毓秀楼1层</a></li>
-										<li><a href="#">毓秀楼2层</a></li>
-									</ul>
-								</div>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail2">风险单元：</label>
+							<div class="selbox">
+								<input type="text" class="form-control" placeholder="请选择" readonly>
+								<ul style="z-index: 2;">
+									<li class="active"><a href="#">全部</a></li>
+									<li><a href="#">管理制度</a></li>
+									<li><a href="#">匠心楼1层</a></li>
+									<li><a href="#">匠心楼2层</a></li>
+									<li><a href="#">匠心楼5层</a></li>
+									<li><a href="#">毓秀楼1层</a></li>
+									<li><a href="#">毓秀楼2层</a></li>
+								</ul>
 							</div>
-							<div class="form-group">
-								<label for="exampleInputEmail2">日期：</label>
-								<div class="selbox">
-									<input type="text" class="form-control" placeholder="请选择" readonly>
-									<ul style="z-index: 2;">
-										<li class="active"><a href="#">全部</a></li>
-										<li><a href="#">2020年1月</a></li>
-										<li><a href="#">2020年2月</a></li>
-										<li><a href="#">2020年3月</a></li>
-										<li><a href="#">2020年4月</a></li>
-										<li><a href="#">2020年5月</a></li>
-									</ul>
-								</div>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail2">日期：</label>
+							<div class="selbox">
+								<input type="text" class="form-control" placeholder="请选择" readonly>
+								<ul style="z-index: 2;">
+									<li class="active"><a href="#">全部</a></li>
+									<li><a href="#">2020年1月</a></li>
+									<li><a href="#">2020年2月</a></li>
+									<li><a href="#">2020年3月</a></li>
+									<li><a href="#">2020年4月</a></li>
+									<li><a href="#">2020年5月</a></li>
+								</ul>
 							</div>
-							<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
-						</form>
-					</div>
-					<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
-						<el-table-column type="index" width="65" label="序号" align="center"></el-table-column>
-						<el-table-column prop="checkName" label="风险单元类型" align="center" width="149"></el-table-column>
-						<el-table-column prop="checkName" label="风险单元" align="center" width="120"></el-table-column>
-						<el-table-column prop="hiddenDenger" label="管控人" width="176" align="center"></el-table-column>
-						<el-table-column prop="type" label="风险点" align="center" width="86"></el-table-column>
-						<el-table-column prop="type" label="负责人" align="center" width="212"></el-table-column>
-						<el-table-column prop="type" label="巡查点" align="center" width="86"></el-table-column>
-						<el-table-column prop="type" label="巡查情况" align="center" wdith="108"></el-table-column>
-						<el-table-column prop="type" label="隐患发现" align="center" width="157">
-							<template slot-scope="scope">
+						</div>
+						<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
+					</form>
+				</div>
+				<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+					<el-table-column type="index" width="65" label="序号" align="center"></el-table-column>
+					<el-table-column prop="checkName" label="风险单元类型" align="center" width="149"></el-table-column>
+					<el-table-column prop="checkName" label="风险单元" align="center" width="120"></el-table-column>
+					<el-table-column prop="hiddenDenger" label="管控人" width="176" align="center"></el-table-column>
+					<el-table-column prop="type" label="风险点" align="center" width="86"></el-table-column>
+					<el-table-column prop="type" label="负责人" align="center" width="212"></el-table-column>
+					<el-table-column prop="type" label="巡查点" align="center" width="86"></el-table-column>
+					<el-table-column prop="type" label="巡查情况" align="center" wdith="108"></el-table-column>
+					<el-table-column prop="type" label="隐患发现" align="center" width="157">
+						<template slot-scope="scope">
+							<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+							<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+							<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+						</template>
+					</el-table-column>
+					<el-table-column prop="type" label="隐患处理" align="center" width="157">
+						<template slot-scope="scope">
+							<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+							<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+							<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+						</template>
+					</el-table-column>
+				</el-table> -->
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>风险单元类型</th>
+							<th>风险单元</th>
+							<th>管控人</th>
+							<th>风险点</th>
+							<th>负责人</th>
+							<th>巡检点</th>
+							<th>巡查情况</th>
+							<th>隐患发现</th>
+							<th>隐患处理</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>体系文件</td>
+							<td>管理制度</td>
+							<td>戴院长 一级网格</td>
+							<td>24</td>
+							<td>魏保立</td>
+							<td></td>
+							<td>100%</td>
+							<td>
+
 								<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
 								<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
 								<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
-							</template>
-						</el-table-column>
-						<el-table-column prop="type" label="隐患处理" align="center" width="157">
-							<template slot-scope="scope">
+
+							</td>
+							<td>
 								<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
 								<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
 								<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
-							</template>
-						</el-table-column>
-					</el-table> -->
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>序号</th>
-								<th>风险单元类型</th>
-								<th>风险单元</th>
-								<th>管控人</th>
-								<th>风险点</th>
-								<th>负责人</th>
-								<th>巡检点</th>
-								<th>巡查情况</th>
-								<th>隐患发现</th>
-								<th>隐患处理</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>体系文件</td>
-								<td>管理制度</td>
-								<td>戴院长 一级网格</td>
-								<td>24</td>
-								<td>魏保立</td>
-								<td></td>
-								<td>100%</td>
-								<td>
+							</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>空间场所</td>
+							<td>匠心楼1层</td>
+							<td>吕主任 三级网格</td>
+							<td>23</td>
+							<td>魏保立</td>
+							<td>4</td>
+							<td>100%</td>
 
-									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
-
-								</td>
-								<td>
-									<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
-								</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>空间场所</td>
-								<td>匠心楼1层</td>
-								<td>吕主任 三级网格</td>
-								<td>23</td>
-								<td>魏保立</td>
-								<td>4</td>
-								<td>100%</td>
-
-								<td data-toggle="modal" data-target="#myModal4" data-index="0" class="yhfx">
-									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">3</span></p>
-									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">待确认：</i><span class="label label-primary">3</span></p>
-								</td>
-								<td data-toggle="modal" data-target="#myModal4" data-index="1" class="yhfx">
-									<p><i class="label_txt">待治理：</i><span class="label label-warning">1</span></p>
-									<p><i class="label_txt">已治理：</i><span class="label label-danger">1</span></p>
-									<p><i class="label_txt">超期：</i><span class="label label-primary">1</span></p>
-								</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>空间场所</td>
-								<td>匠心楼2层</td>
-								<td>吕主任 三级网格</td>
-								<td>5</td>
-								<td>戴明宏，魏保立</td>
-								<td>2</td>
-								<td>100%</td>
-								<td>
-									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
-								</td>
-								<td>
-									<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
-								</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>空间场所</td>
-								<td>匠心楼5层</td>
-								<td>吕主任 三级网格</td>
-								<td>76</td>
-								<td>楚钊，柳科技，吕蒙</td>
-								<td>38</td>
-								<td>100%</td>
-								<td>
-									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">待确认：</i><span class="label label-primary">6</span></p>
-								</td>
-								<td>
-									<p><i class="label_txt">待治理：</i><span class="label label-warning">6</span></p>
-									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
-								</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>空间场所</td>
-								<td>毓秀楼1层</td>
-								<td>吕主任 三级网格</td>
-								<td>5</td>
-								<td>魏保立</td>
-								<td>2</td>
-								<td>100%</td>
-								<td>
-									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
-								</td>
-								<td>
-									<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
-								</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>空间场所</td>
-								<td>毓秀楼2层</td>
-								<td>吕主任 三级网格</td>
-								<td>2</td>
-								<td>魏保立</td>
-								<td>2</td>
-								<td>100%</td>
-								<td>
-									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
-								</td>
-								<td>
-									<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
-									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
-									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="profile">
-					<div style="padding: 0 20px 20px 0px;">
-						<form class="form-inline">
-							<div class="form-group">
-								<label for="exampleInputEmail2">巡检类型：</label>
-								<div class="selbox">
-									<input type="text" class="form-control" placeholder="请选择" readonly>
-									<ul style="z-index:2">
-										<li class="active"><a href="#">全部</a></li>
-										<li><a href="#">已达标</a></li>
-										<li><a href="#">未达标</a></li>
-										<li><a href="#">问题</a></li>
-									</ul>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="exampleInputName2">巡检周期：</label>
-								<div class="selbox">
-									<input type="text" class="form-control" placeholder="请选择" readonly>
-									<ul style="z-index:2">
-										<li class="active"><a href="#">全部</a></li>
-										<li><a href="#">日检</a></li>
-										<li><a href="#">周检</a></li>
-										<li><a href="#">月检</a></li>
-									</ul>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<label for="exampleInputEmail2">日期：</label>
-								<div class="selbox">
-									<input type="text" class="form-control" placeholder="请选择" readonly>
-									<ul style="z-index:2">
-										<li class="active"><a href="#">全部</a></li>
-										<li><a href="#">2020年1月</a></li>
-										<li><a href="#">2020年2月</a></li>
-										<li><a href="#">2020年3月</a></li>
-										<li><a href="#">2020年4月</a></li>
-										<li><a href="#">2020年5月</a></li>
-									</ul>
-								</div>
-							</div>
-
-
-							<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
-						</form>
-					</div>
-					<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
-						<el-table-column type="index" width="93" label="序号" align="center"></el-table-column>
-						<el-table-column prop="checkName" label="检查点" align="center" width="287"></el-table-column>
-						<el-table-column prop="checkName" label="风险级别" align="center" width="152"></el-table-column>
-						<el-table-column prop="hiddenDenger" label="当前状况" width="152" align="center"></el-table-column>
-						<el-table-column prop="type" label="负责人" align="center" width="122"></el-table-column>
-						<el-table-column prop="type" label="检查人" align="center" width="122"></el-table-column>
-						<el-table-column prop="type" label="状态" align="center" width="128">
-							<template slot-scope="scope">
-								<span class="label label-danger" data-toggle="modal" data-target="#myModal2" data-index="0">未达标</span>
-							</template>
-						</el-table-column>
-						<el-table-column prop="type" label="任务数" align="center" wdith="108"></el-table-column>
-						<el-table-column prop="type" label="未完成数" align="center" width="157"></el-table-column>
-					</el-table> -->
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>序号</th>
-								<th>检查点</th>
-								<th>风险级别</th>
-								<th>当前状况</th>
-								<th>负责人</th>
-								<th>检查人</th>
-								<th>状态</th>
-								<th>任务数</th>
-								<th>未完成数</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>捣固车驾驶及 作..</td>
-								<td>IV级</td>
-								<td>正常</td>
-								<td>戴明宏</td>
-								<td>刘博</td>
-								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
-										data-index="0">未达标</span></td>
-								<td>5</td>
-								<td>5</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>机电工程学院1-..</td>
-								<td>IV级</td>
-								<td>正常</td>
-								<td>魏保立</td>
-								<td>刘华洲</td>
-								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
-										data-index="1">未达标</span></td>
-								<td>4</td>
-								<td>4</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>工程机械底盘实训..</td>
-								<td>IV级</td>
-								<td>正常</td>
-								<td>晋兵营</td>
-								<td>索小娟</td>
-								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
-										data-index="2">未达标</span></td>
-								<td>5</td>
-								<td>5</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>机电工程学院6-..</td>
-								<td></td>
-								<td>正常</td>
-								<td>楚钊</td>
-								<td>楚钊</td>
-								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
-										data-index="3">未达标</span></td>
-								<td>48</td>
-								<td>48</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>B523机电创新..</td>
-								<td></td>
-								<td>正常</td>
-								<td>吕蒙</td>
-								<td>吕蒙</td>
-								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
-										data-index="4">未达标</span></td>
-								<td>13</td>
-								<td>13</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>捣固车驾驶及 作..</td>
-								<td>IV级</td>
-								<td>正常</td>
-								<td>戴明宏</td>
-								<td>刘博</td>
-								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
-										data-index="5">未达标</span></td>
-								<td>6</td>
-								<td>6</td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>机电工程学院6-..</td>
-								<td>IV级</td>
-								<td>正常</td>
-								<td>柳科技</td>
-								<td>张学成</td>
-								<td><span class="label label-danger">未达标</span></td>
-								<td>12</td>
-								<td>12</td>
-							</tr>
-							<tr>
-								<td>8</td>
-								<td>机床电气实训室</td>
-								<td>IV级</td>
-								<td>正常</td>
-								<td>戴明宏</td>
-								<td>李春亚</td>
-								<td><span class="label label-danger">未达标</span></td>
-								<td>12</td>
-								<td>12</td>
-							</tr>
-							<tr>
-								<td>9</td>
-								<td>西门子PLC实训..</td>
-								<td>IV级</td>
-								<td>正常</td>
-								<td>戴明宏</td>
-								<td>杨辰飞</td>
-								<td><span class="label label-danger">未达标</span></td>
-								<td>12</td>
-								<td>12</td>
-							</tr>
-							<tr>
-								<td>10</td>
-								<td>书记办公室</td>
-								<td></td>
-								<td>正常</td>
-								<td>魏保立</td>
-								<td>魏保立</td>
-								<td><span class="label label-danger">未达标</span></td>
-								<td>13</td>
-								<td>13</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="messages">
-					<div style="padding: 0 20px 20px 0px;">
-						<form class="form-inline">
-							<div class="form-group">
-								<label for="exampleInputName2">姓名：</label>
-								<input type="text" class="form-control" placeholder="请输入">
-							</div>
-
-							<div class="form-group">
-								<label for="exampleInputName2">巡检周期：</label>
-								<div class="selbox">
-									<input type="text" class="form-control" placeholder="请选择" readonly>
-									<ul style="z-index: 2;">
-										<li class="active"><a href="#">全部</a></li>
-										<li><a href="#">日检</a></li>
-										<li><a href="#">周检</a></li>
-										<li><a href="#">月检</a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="exampleInputEmail2">日期：</label>
-								<div class="selbox">
-									<input type="text" class="form-control" placeholder="请选择" readonly>
-									<ul style="z-index: 2;">
-										<li class="active"><a href="#">全部</a></li>
-										<li><a href="#">2020年1月</a></li>
-										<li><a href="#">2020年2月</a></li>
-										<li><a href="#">2020年3月</a></li>
-										<li><a href="#">2020年4月</a></li>
-										<li><a href="#">2020年5月</a></li>
-									</ul>
-								</div>
-							</div>
-							<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
-						</form>
-					</div>
-					<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
-						<el-table-column type="index" width="114" label="序号" align="center"></el-table-column>
-						<el-table-column prop="checkName" label="账号" align="center" width="264"></el-table-column>
-						<el-table-column prop="checkName" label="名称" align="center" width="150"></el-table-column>
-						<el-table-column prop="hiddenDenger" label="电话" width="264" align="center"></el-table-column>
-						<el-table-column prop="type" label="任务总数" align="center" width="186">
-							<template slot-scope="scope">
-								<a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="0">41</a>
-							</template>
-						</el-table-column>
-						<el-table-column prop="type" label="未完成数" align="center" width="186">
-							<template slot-scope="scope">
-								<a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="0">41</a>
-							</template>
-						</el-table-column>
-						<el-table-column prop="hiddenDenger" label="完成率" align="center"></el-table-column>
-					</el-table> -->
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>序号</th>
-								<th>账号</th>
-								<th>名称</th>
-								<th>电话</th>
-								<th>任务总数</th>
-								<th>未完成数</th>
-								<th>完成率</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>47600339369</td>
-								<td>张帆</td>
-								<td>13643869968</td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="0">41</a></td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="0">41</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>47600339221</td>
-								<td>吕蒙</td>
-								<td>18530970010</td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="1">56</a></td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="1">56</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>47600347640</td>
-								<td>邵华</td>
-								<td>13623859836</td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="2">47</a></td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="2">47</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>47600339358</td>
-								<td>刘艳宾</td>
-								<td>17637100638</td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="3">182</a></td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="3">182</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>47600339381</td>
-								<td>刘博</td>
-								<td>15690856090</td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="4">65</a></td>
-								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
-										data-index="4">65</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>6</td>
-								<td>47600339379</td>
-								<td>索小娟</td>
-								<td>15093125193</td>
-								<td><a href="#">75</a></td>
-								<td><a href="#">75</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>7</td>
-								<td>47600339351</td>
-								<td>王文超</td>
-								<td>17637100601</td>
-								<td><a href="#">41</a></td>
-								<td><a href="#">41</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>8</td>
-								<td>47600339360</td>
-								<td>王丽平</td>
-								<td>13838109287</td>
-								<td><a href="#">51</a></td>
-								<td><a href="#">51</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>9</td>
-								<td>47600339362</td>
-								<td>杨辰飞</td>
-								<td>15037199278</td>
-								<td><a href="#">49</a></td>
-								<td><a href="#">49</a></td>
-								<td>0%</td>
-							</tr>
-							<tr>
-								<td>10</td>
-								<td>47600339359</td>
-								<td>齐晓华</td>
-								<td>17637100619</td>
-								<td><a href="#">61</a></td>
-								<td><a href="#">61</a></td>
-								<td>0%</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="settings">...</div>
-
+							<td data-toggle="modal" data-target="#myModal4" data-index="0" class="yhfx">
+								<p><i class="label_txt">一般隐患：</i><span class="label label-warning">3</span></p>
+								<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">待确认：</i><span class="label label-primary">3</span></p>
+							</td>
+							<td data-toggle="modal" data-target="#myModal4" data-index="1" class="yhfx">
+								<p><i class="label_txt">待治理：</i><span class="label label-warning">1</span></p>
+								<p><i class="label_txt">已治理：</i><span class="label label-danger">1</span></p>
+								<p><i class="label_txt">超期：</i><span class="label label-primary">1</span></p>
+							</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>空间场所</td>
+							<td>匠心楼2层</td>
+							<td>吕主任 三级网格</td>
+							<td>5</td>
+							<td>戴明宏，魏保立</td>
+							<td>2</td>
+							<td>100%</td>
+							<td>
+								<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+							</td>
+							<td>
+								<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+							</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>空间场所</td>
+							<td>匠心楼5层</td>
+							<td>吕主任 三级网格</td>
+							<td>76</td>
+							<td>楚钊，柳科技，吕蒙</td>
+							<td>38</td>
+							<td>100%</td>
+							<td>
+								<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">待确认：</i><span class="label label-primary">6</span></p>
+							</td>
+							<td>
+								<p><i class="label_txt">待治理：</i><span class="label label-warning">6</span></p>
+								<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+							</td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>空间场所</td>
+							<td>毓秀楼1层</td>
+							<td>吕主任 三级网格</td>
+							<td>5</td>
+							<td>魏保立</td>
+							<td>2</td>
+							<td>100%</td>
+							<td>
+								<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+							</td>
+							<td>
+								<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+							</td>
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>空间场所</td>
+							<td>毓秀楼2层</td>
+							<td>吕主任 三级网格</td>
+							<td>2</td>
+							<td>魏保立</td>
+							<td>2</td>
+							<td>100%</td>
+							<td>
+								<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+							</td>
+							<td>
+								<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-		</div>
-		<div class="foot">
-			<ul>
-				<li><a href="#" data-toggle="modal" data-target="#myModal"><i
-							class="label_txt"></i><span>双防大数据</span></a></li>
-				<li><a href="fourcolorimg.html"><i class="label_txt"></i><span>风险四色图</span></a></li>
-				<li><a href="risk_level.html"><i class="label_txt"></i><span>风险分级管控</span></a></li>
-				<li class="active"><a href="danger_gover.html"><i class="label_txt"></i><span>隐患排查治理</span></a></li>
-				<li><a href="knowledge.html"><i class="label_txt"></i><span>双防知识库</span></a></li>
-				<li><a href="website.html"><i class="label_txt"></i><span>微官网</span></a></li>
-				<li><a href="exit.html"><i class="label_txt"></i><span>系统桌面</span></a></li>
-			</ul>
-		</div>
+			<div role="tabpanel" class="tab-pane" id="profile">
+				<div style="padding: 0 20px 20px 0px;">
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="exampleInputEmail2">巡检类型：</label>
+							<div class="selbox">
+								<input type="text" class="form-control" placeholder="请选择" readonly>
+								<ul style="z-index:2">
+									<li class="active"><a href="#">全部</a></li>
+									<li><a href="#">已达标</a></li>
+									<li><a href="#">未达标</a></li>
+									<li><a href="#">问题</a></li>
+								</ul>
+							</div>
+						</div>
 
-		<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog fordatamodal" role="document">
-				<div class="back" data-dismiss="modal" aria-label="Close"><span>返回</span></div>
-				<iframe src="data/index.html" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
+						<div class="form-group">
+							<label for="exampleInputName2">巡检周期：</label>
+							<div class="selbox">
+								<input type="text" class="form-control" placeholder="请选择" readonly>
+								<ul style="z-index:2">
+									<li class="active"><a href="#">全部</a></li>
+									<li><a href="#">日检</a></li>
+									<li><a href="#">周检</a></li>
+									<li><a href="#">月检</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="exampleInputEmail2">日期：</label>
+							<div class="selbox">
+								<input type="text" class="form-control" placeholder="请选择" readonly>
+								<ul style="z-index:2">
+									<li class="active"><a href="#">全部</a></li>
+									<li><a href="#">2020年1月</a></li>
+									<li><a href="#">2020年2月</a></li>
+									<li><a href="#">2020年3月</a></li>
+									<li><a href="#">2020年4月</a></li>
+									<li><a href="#">2020年5月</a></li>
+								</ul>
+							</div>
+						</div>
+
+
+						<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
+					</form>
+				</div>
+				<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+					<el-table-column type="index" width="93" label="序号" align="center"></el-table-column>
+					<el-table-column prop="checkName" label="检查点" align="center" width="287"></el-table-column>
+					<el-table-column prop="checkName" label="风险级别" align="center" width="152"></el-table-column>
+					<el-table-column prop="hiddenDenger" label="当前状况" width="152" align="center"></el-table-column>
+					<el-table-column prop="type" label="负责人" align="center" width="122"></el-table-column>
+					<el-table-column prop="type" label="检查人" align="center" width="122"></el-table-column>
+					<el-table-column prop="type" label="状态" align="center" width="128">
+						<template slot-scope="scope">
+							<span class="label label-danger" data-toggle="modal" data-target="#myModal2" data-index="0">未达标</span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="type" label="任务数" align="center" wdith="108"></el-table-column>
+					<el-table-column prop="type" label="未完成数" align="center" width="157"></el-table-column>
+				</el-table> -->
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>检查点</th>
+							<th>风险级别</th>
+							<th>当前状况</th>
+							<th>负责人</th>
+							<th>检查人</th>
+							<th>状态</th>
+							<th>任务数</th>
+							<th>未完成数</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>捣固车驾驶及 作..</td>
+							<td>IV级</td>
+							<td>正常</td>
+							<td>戴明宏</td>
+							<td>刘博</td>
+							<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+									data-index="0">未达标</span></td>
+							<td>5</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>机电工程学院1-..</td>
+							<td>IV级</td>
+							<td>正常</td>
+							<td>魏保立</td>
+							<td>刘华洲</td>
+							<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+									data-index="1">未达标</span></td>
+							<td>4</td>
+							<td>4</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>工程机械底盘实训..</td>
+							<td>IV级</td>
+							<td>正常</td>
+							<td>晋兵营</td>
+							<td>索小娟</td>
+							<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+									data-index="2">未达标</span></td>
+							<td>5</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>机电工程学院6-..</td>
+							<td></td>
+							<td>正常</td>
+							<td>楚钊</td>
+							<td>楚钊</td>
+							<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+									data-index="3">未达标</span></td>
+							<td>48</td>
+							<td>48</td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>B523机电创新..</td>
+							<td></td>
+							<td>正常</td>
+							<td>吕蒙</td>
+							<td>吕蒙</td>
+							<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+									data-index="4">未达标</span></td>
+							<td>13</td>
+							<td>13</td>
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>捣固车驾驶及 作..</td>
+							<td>IV级</td>
+							<td>正常</td>
+							<td>戴明宏</td>
+							<td>刘博</td>
+							<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+									data-index="5">未达标</span></td>
+							<td>6</td>
+							<td>6</td>
+						</tr>
+						<tr>
+							<td>7</td>
+							<td>机电工程学院6-..</td>
+							<td>IV级</td>
+							<td>正常</td>
+							<td>柳科技</td>
+							<td>张学成</td>
+							<td><span class="label label-danger">未达标</span></td>
+							<td>12</td>
+							<td>12</td>
+						</tr>
+						<tr>
+							<td>8</td>
+							<td>机床电气实训室</td>
+							<td>IV级</td>
+							<td>正常</td>
+							<td>戴明宏</td>
+							<td>李春亚</td>
+							<td><span class="label label-danger">未达标</span></td>
+							<td>12</td>
+							<td>12</td>
+						</tr>
+						<tr>
+							<td>9</td>
+							<td>西门子PLC实训..</td>
+							<td>IV级</td>
+							<td>正常</td>
+							<td>戴明宏</td>
+							<td>杨辰飞</td>
+							<td><span class="label label-danger">未达标</span></td>
+							<td>12</td>
+							<td>12</td>
+						</tr>
+						<tr>
+							<td>10</td>
+							<td>书记办公室</td>
+							<td></td>
+							<td>正常</td>
+							<td>魏保立</td>
+							<td>魏保立</td>
+							<td><span class="label label-danger">未达标</span></td>
+							<td>13</td>
+							<td>13</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-		</div>
+			<div role="tabpanel" class="tab-pane" id="messages">
+				<div style="padding: 0 20px 20px 0px;">
+					<form class="form-inline">
+						<div class="form-group">
+							<label for="exampleInputName2">姓名：</label>
+							<input type="text" class="form-control" placeholder="请输入">
+						</div>
 
+						<div class="form-group">
+							<label for="exampleInputName2">巡检周期：</label>
+							<div class="selbox">
+								<input type="text" class="form-control" placeholder="请选择" readonly>
+								<ul style="z-index: 2;">
+									<li class="active"><a href="#">全部</a></li>
+									<li><a href="#">日检</a></li>
+									<li><a href="#">周检</a></li>
+									<li><a href="#">月检</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputEmail2">日期：</label>
+							<div class="selbox">
+								<input type="text" class="form-control" placeholder="请选择" readonly>
+								<ul style="z-index: 2;">
+									<li class="active"><a href="#">全部</a></li>
+									<li><a href="#">2020年1月</a></li>
+									<li><a href="#">2020年2月</a></li>
+									<li><a href="#">2020年3月</a></li>
+									<li><a href="#">2020年4月</a></li>
+									<li><a href="#">2020年5月</a></li>
+								</ul>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
+					</form>
+				</div>
+				<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+					<el-table-column type="index" width="114" label="序号" align="center"></el-table-column>
+					<el-table-column prop="checkName" label="账号" align="center" width="264"></el-table-column>
+					<el-table-column prop="checkName" label="名称" align="center" width="150"></el-table-column>
+					<el-table-column prop="hiddenDenger" label="电话" width="264" align="center"></el-table-column>
+					<el-table-column prop="type" label="任务总数" align="center" width="186">
+						<template slot-scope="scope">
+							<a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="0">41</a>
+						</template>
+					</el-table-column>
+					<el-table-column prop="type" label="未完成数" align="center" width="186">
+						<template slot-scope="scope">
+							<a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="0">41</a>
+						</template>
+					</el-table-column>
+					<el-table-column prop="hiddenDenger" label="完成率" align="center"></el-table-column>
+				</el-table> -->
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>序号</th>
+							<th>账号</th>
+							<th>名称</th>
+							<th>电话</th>
+							<th>任务总数</th>
+							<th>未完成数</th>
+							<th>完成率</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>47600339369</td>
+							<td>张帆</td>
+							<td>13643869968</td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="0">41</a></td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="0">41</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>47600339221</td>
+							<td>吕蒙</td>
+							<td>18530970010</td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="1">56</a></td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="1">56</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>47600347640</td>
+							<td>邵华</td>
+							<td>13623859836</td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="2">47</a></td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="2">47</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>47600339358</td>
+							<td>刘艳宾</td>
+							<td>17637100638</td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="3">182</a></td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="3">182</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>47600339381</td>
+							<td>刘博</td>
+							<td>15690856090</td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="4">65</a></td>
+							<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+									data-index="4">65</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>47600339379</td>
+							<td>索小娟</td>
+							<td>15093125193</td>
+							<td><a href="#">75</a></td>
+							<td><a href="#">75</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>7</td>
+							<td>47600339351</td>
+							<td>王文超</td>
+							<td>17637100601</td>
+							<td><a href="#">41</a></td>
+							<td><a href="#">41</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>8</td>
+							<td>47600339360</td>
+							<td>王丽平</td>
+							<td>13838109287</td>
+							<td><a href="#">51</a></td>
+							<td><a href="#">51</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>9</td>
+							<td>47600339362</td>
+							<td>杨辰飞</td>
+							<td>15037199278</td>
+							<td><a href="#">49</a></td>
+							<td><a href="#">49</a></td>
+							<td>0%</td>
+						</tr>
+						<tr>
+							<td>10</td>
+							<td>47600339359</td>
+							<td>齐晓华</td>
+							<td>17637100619</td>
+							<td><a href="#">61</a></td>
+							<td><a href="#">61</a></td>
+							<td>0%</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="settings">...</div>
+
+		</div>
+	</div>
+
+	<div id="modalApp">
 		<!-- Modal -->
 		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document" style="width: 1100px;">
@@ -2011,7 +1978,6 @@
 										</tr>
 									</tbody>
 								</table>
-
 							</div>
 
 						</div>
@@ -2026,6 +1992,25 @@
 	<script>
 		new Vue({
 			el: "#navboxApp",
+			data: {
+				list: [
+					{
+						proName: "机械实训课",
+						checkName: "机电实训课",
+						hiddenDenger: "实验完成后设备配件未及时归位",
+						type: "其他伤害"
+					}
+				],
+			},
+			mounted() {
+				
+			},
+			methods: {
+
+			}
+		})
+		new Vue({
+			el: "#modalApp",
 			data: {
 				list: [
 					{

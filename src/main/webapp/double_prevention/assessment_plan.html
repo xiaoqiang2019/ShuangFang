@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>应用首页</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="../common/extend/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="../common/extend/font-awesome/css/font-awesome.min.css">
+<!--平台原有样式-->
+<link rel="stylesheet" href="css/_all-skins.min.css">
+<link rel="stylesheet" href="css/AdminLTE.min.css">
+<link rel="stylesheet" href="css/julong.css">
+
+<!--页面核心样式-->
+<link rel="stylesheet" href="css/doubel.css">
+</head>
+<body style="background-color: #f0f2f5;">
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="setp">
+        <ul>
+          <li><a href="preparation.html">预备篇</a> </li>
+          <li  class="setp_end"><a href="system_group.html">建立双重体系制度</a> </li>
+          <li class="setp_ing"><a href="assessment_knowledge.html">培训考核 <div class="step_bar"><span data-num="15"></span><i></i></div></a> 
+            <div class="smstep">
+              <ul>
+                <li class="setp_end"><a href="assessment_knowledge.html">双重知识库</a></li>
+                <li class="setp_ing"><a href="assessment_plan.html">培训计划</a></li>
+              </ul>
+            </div></li>
+          <li class=""><a href="control_divide.html">风险分级管理控</a></li>
+          <li class=""><a href="notice.html">风险公告</a></li>
+          <li class=""><a href="government.html">隐患排查治理</a></li>
+          <li class=""><a href="summary.html">过程资料汇总</a> </li>
+          <li class=""><a href="estimate.html">建设评估</a></li>
+          <li><a href="improvement_communicate.html">持续改进</a></li>
+          </ul>
+      </div>
+      <div class="thmenubg"></div>
+      <div class="steptit"> <span class="finish">第2步：培训考核（培训计划） </span> <a href="#" class="btn btn-primary pull-right">我已完成该流程</a> </div>
+      <ul class="row">
+        <div class="col-xs-6">
+          <div class="box box-widget">
+            <div class="box-header with-border">
+              <h3 class="box-title">双重预防第一阶段培训</h3>
+             </div>
+            <div class="box-body ">
+				<div class="plan_info">
+							<p><span>培训时间：</span>2020-05-01 至2020-10-01</p>
+							<p><span>计划人员：</span>全校1500人</p>
+							<p><span>培训内容：</span>双重预防体系创建、风险 点的区域划分、风险点的风险辨识、评价及风险管控</p>
+							<p><span>培训考核：</span>《双重 预防第一阶段培训考核》 (平均分98分)</p>
+							</div>
+            <ul class="row">
+				<li class="col-xs-6">		
+							
+					<div id="echart1" style="height: 200px"></div>
+					<h5 class="text-center"><strong>全员培训完成率</strong></h5>
+					</li>
+				<li class="col-xs-6">
+					<div id="echart2" style="height: 200px"></div>
+					<h5 class="text-center"><strong>全员考核完成率</strong></h5>
+					</li>
+			
+				</ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="box box-widget">
+            <div class="box-header with-border">
+              <h3 class="box-title">双重预防第二阶段培训</h3>
+             </div>
+            <div class="box-body">
+				<div class="plan_info">
+              <p><span>培训时间：</span>2020-05-01 至2020-10-01</p>
+              <p><span>计划人员：</span>全校1500人</p>
+              <p><span>培训内容：</span>双重预防体系创建、风险 点的区域划分、风险点的风险辨识、评价及风险管控</p>
+              <p><span>培训考核：</span>《双重 预防第一阶段培训考核》 (平均分98分)</p>
+							</div>
+				
+              <ul class="row">
+				<li class="col-xs-6"><div id="echart3" style="height: 200px"></div><h5 class="text-center"><strong>全员培训完成率</strong></h5></li>
+				<li class="col-xs-6"><div id="echart4" style="height: 200px"></div><h5 class="text-center"><strong>全员考核完成率</strong></h5></li>
+			
+				</ul>
+            </div>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</section>
+<script src="../common/extend/jquery/jquery-1.10.2.min.js"></script> 
+<script src="../common/extend/bootstrap/js/bootstrap.min.js"></script> 
+<script src="../common/extend/echarts/echarts.min.js"></script> 
+
+<script>
+	 option1 = {
+         /*** legend: {
+           //orient: 'vertical',
+            itemWidth: 10,
+            itemHeight: 10,
+            textStyle:{
+                color:'rgba(0,0,0,.8)',
+				fontSize:14,
+            },
+             left:'center',
+			  bottom:10,
+            //data:['已完成','未完成']
+        },**/
+        color: ['#44d67f','#dcdcdc'],
+        tooltip : {
+            trigger: 'item',
+            formatter: "{b} : {c} ({d}%)"
+        },
+       
+        calculable : true,
+        series : [
+            {
+              
+                type:'pie',
+                radius : [40, 60],
+                center: ["50%", "50%"],
+                //roseType : 'area',
+                data:[ 
+                 ],
+                 label: {
+                 normal: {
+                     formatter: function(param) {
+                         return param.name +':\n' + param.value +'\n';
+                     },
+                     textStyle:{
+                         color:'rgba(0,0,0,.8)',
+						 fontSize:14,
+                     }
+    
+                 }
+             },
+             labelLine: {
+                 normal: {
+                      length:5,
+                      length2:15,
+                     lineStyle: { 
+                         width: 1,
+                         color:'rgba(0,0,0,.2)'}
+                 }
+             },
+    
+             itemStyle: {
+                 normal: {
+                     shadowBlur: 30,
+                    shadowColor: 'rgba(0, 0, 0, 0.1)'
+                 }
+    
+             },
+            }
+        ]
+    };
+	
+	
+	var domMain1 = document.getElementById('echart1');
+	var myChart1 = echarts.init(domMain1, 'default');       
+	option1.series[0].data=[{value:900, name:'已完成'},{value:200, name:'未完成'},];
+	myChart1.setOption(option1, true);
+	
+	
+	var domMain2 = document.getElementById('echart2');
+	var myChart2 = echarts.init(domMain2, 'default');       
+	option1.series[0].data=[{value:500, name:'已完成'},{value:400, name:'未完成'},];
+	myChart2.setOption(option1, true);
+	
+	var domMain3 = document.getElementById('echart3');
+	var myChart3 = echarts.init(domMain3, 'default');       
+	option1.series[0].data=[{value:50, name:'已完成'},{value:100, name:'未完成'},];
+	myChart3.setOption(option1, true);
+	
+	var domMain4 = document.getElementById('echart4');
+	var myChart4 = echarts.init(domMain4, 'default');       
+	option1.series[0].data=[{value:50, name:'已完成'},{value:20, name:'未完成'},];
+	myChart4.setOption(option1, true);
+
+	</script>
+	
+	
+<script>
+      $(".step_bar").each(function(){
+        var num=$(this).children( "span").attr("data-num")
+        $(this).children( "span").width(num+"%")
+        $(this).children( "i").text(num+"%")
+        $(this).children( "i").css({left:num+'%'})
+      })
+    </script>
+		
+</body>
+</html>

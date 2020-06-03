@@ -18,12 +18,12 @@
 	<div class="time" id="showTime">2020.05.09.16:45:28</div>
 </header>
 	  <div class="navbox">
-		<div class="box pull-left h100" style="width:74%">
+		<div class="box h100">
 			<div class="boxtit">选择风险单元 </div>
-		  <div class="boxnav selectdy">
+		
+			<div class="boxnav selectdy" style="width: 72%;">
+			  <h2>毓秀楼</h2>
 			<ul>
-				
-
 				<li>
 				<div class="imgnav">
 					<div class="imgbox"><img src="images/01.png"></div>
@@ -36,8 +36,34 @@
 					<p><span>毓秀楼2层</span></p>
 					</div>
 				</li>
-				
-				<li  class="active">
+				<li   class="active">
+					<div class="imgnav">
+						<div class="imgbox"><img src="images/01.png"></div>
+						<p><span>毓秀楼1层</span></p>
+						</div>
+					</li>
+					<li >
+					<div class="imgnav">
+						<div class="imgbox"><img src="images/02.png"></div>
+						<p><span>毓秀楼2层</span></p>
+						</div>
+					</li>
+					<li>
+						<div class="imgnav">
+							<div class="imgbox"><img src="images/01.png"></div>
+							<p><span>毓秀楼1层</span></p>
+							</div>
+						</li>
+						<li>
+						<div class="imgnav">
+							<div class="imgbox"><img src="images/02.png"></div>
+							<p><span>毓秀楼2层</span></p>
+							</div>
+						</li>
+			  </ul>
+			  <h2>匠心楼</h2>
+			  <ul>
+				<li >
 				<div class="imgnav">
 					<div class="imgbox"><img src="images/03.png"></div>
 					<p><span>匠心楼1层</span></p>
@@ -56,59 +82,52 @@
 					</div>
 				</li>
 			  </ul>
+
 			</div>
+
 		  </div>
-		<div class="box pull-right h100" style="width: 25%">
+
+		<div class="box set  h100">
 		  <div class="boxtit">基本配置 </div>
-			
-			<div class="set">
+			<div class="">
 			<ul>
 				<li>自动切换栏目 <input type="checkbox" class="switch" checked></li>	
 				<li>自动切换栏目间隔（秒）<input type="text" value="5"></li>
 				<li>显示学校双重大数据 <input type="checkbox" class="switch"></li>
 			</ul>
 				
-				<div style="text-align: center; padding-top:350px;"><a href="#" class="btn btn-primary btn-lg">立即生效</a></div>
+				<a href="index.html" class="btn btn-primary btn-lg setbtn">立即生效</a>
 			</div>
 			
 		  </div>
+
 	  </div>
 	  
 	  <div class="foot">
 		<ul>
-			<li><a href="#" data-toggle="modal" data-target="#myModal"><i></i><span>双防大数据</span></a></li>
-			<li><a href="fourcolorimg.html"><i></i><span>风险四色图</span></a></li>
-			<li><a href="risk_level.html"><i></i><span>风险分级管控</span></a></li>
-			<li><a href="danger_gover.html"><i></i><span>隐患排查治理</span></a></li>
-			<li><a href="knowledge.html"><i></i><span>双防知识库</span></a></li>
-			<li><a href="website.html"><i></i><span>微官网</span></a></li>
-			<li><a href="exit.html"><i></i><span>系统桌面</span></a></li>
-
+			<li><a href="#"><i></i><span>双防大数据</span></a></li>
+			<li><a href="#"><i></i><span>风险四色图</span></a></li>
+			<li><a href="#"><i></i><span>风险分级管控</span></a></li>
+			<li><a href="#"><i></i><span>隐患排查治理</span></a></li>
+			<li><a href="#"><i></i><span>双防知识库</span></a></li>
+			<li><a href="#"><i></i><span>微官网</span></a></li>
 		</ul>
 	  </div>
 	   
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog fordatamodal" role="document">
-	 <div class="back"  data-dismiss="modal" aria-label="Close"><span>返回</span></div>
-    <iframe src="data/index.html" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
-  </div>
-</div>
-
-	  
+	  <div class="setting">
+		<a href="seting.html"><img src="images/set.png"></a>
+		<a href="#"><img src="images/home.png"></a> 
+	</div>
 <script>
+	$(".foot a").click(function(){
+		alert("请设置风险单元")
+	})
 	  $(".selectdy ul li").click(function(){
-		  $(this).addClass("active").siblings().removeClass("active")
+		$(".selectdy ul li").removeClass("active")
+		  $(this).addClass("active")
 	  })
 	  </script>
-<script>
-	$('#myModal').on('show.bs.modal', function (e) {
-	$("#iframe1").attr("src","")
-	})
-	  $('#myModal').on('shown.bs.modal', function (e) {
-	$("#iframe1").attr("src","../double_bigscreen/index.html")
-	})
-	</script>
 
+	  
   </body>
 </html>

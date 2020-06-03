@@ -1,4 +1,3 @@
-
 [v-cloak] {display: none;} 
 .table tr th{vertical-align:middle;white-space:nowrap;font-size:18px;padding:15px 10px!important; text-align: center; border-top: 0!important;}
 .table tr td{vertical-align:middle!important;font-size:18px;padding:15px 10px!important; text-align: center}
@@ -16,7 +15,28 @@
 .text-red{color:#ff6501!important}
 .text-warning{color:#f3cb13!important}
 .text-primary{color:#0ea1ff!important}
-
+.knowledgeUl{
+	overflow-y: scroll;
+	height: 510px;
+	width: 100%;
+}
+.knowledgeUl li{
+	padding-right: 10px;
+}
+.infoBox{
+	height: 80vh;
+	width: 100%;
+	margin: 0 auto;
+	text-align: center;
+}
+.infoImg{
+	width: 50%;	
+}
+.infoIcon{
+	width: 20px;
+	height: 24px;
+	margin-right: 6px;
+}
 ::-webkit-scrollbar{width:7px;height:5px;position:absolute;background:#eee;border-radius: 10px}
 ::-webkit-scrollbar-thumb {background-color:#ddd;border-radius: 10px}
 ::-webkit-scrollbar-track {background:#FFF; border-radius: 10px;}
@@ -76,8 +96,8 @@ header h1{position:absolute;width:100%;left:0;top:0;line-height:100px;font-size:
 header .logo{display:flex;height:100%;align-items:center}
 header .time{ color: #fff; font-size: 24px; font-family: Arial; font-weight: lighter; }
 body{padding:0px 30px 0 30px}
-.navbox{height:calc(100% - 180px)}
-.box{border-radius:5px;background:#fff; opacity: .9; animation:myfirst .5s forwards;box-shadow:5px 5px 10px rgba(0,0,0,.2)}
+.navbox{height:calc(100% - 180px); position: relative;}
+.box{background:#fff; opacity: .9; animation:myfirst .5s forwards;box-shadow:5px 5px 10px rgba(0,0,0,.2)}
 .ewm{background:url(../images/ewmbg.png) no-repeat center center;display:flex;justify-content:center;align-items:center;height:calc(100% - 180px);}
 .ewmimg img{margin:180px auto 130px auto;display:block;padding:15px;background:#fff;width:220px;height:220px}
 .ewmimg p{background:rgba(24,54,116,.3);box-shadow:inset 3px 3px 3px rgba(0,0,0,.3);border-radius:30px;font-size:18px;font-weight:bolder;color:#fff;padding:10px 30px}
@@ -86,8 +106,8 @@ body{padding:0px 30px 0 30px}
 .boxtit{ position: relative; font-size: 24px;line-height: 60px; padding: 0 20px; color: #111;}
 .boxtit:before{position: absolute; width:8px; height: 24px; content: ""; background: #1180e8; left: 0;top: 50%; margin-top: -12px;}
 .boxnav{ height: calc(100% - 100px); padding:0 20px; overflow-y: scroll}
-
-.selectdy ul{ margin-left: -10px; margin-right: -10px;}
+.selectdy h2{padding-bottom: 10px; font-size: 20px;}
+.selectdy ul{ margin-left: -10px; margin-right: -10px; overflow: hidden;}
 .selectdy li{ float: left; width: 20%; padding:0 10px; margin-bottom: 20px;}
 .imgnav{  position: relative;border: 1px solid rgba(0,0,0,.1); cursor: pointer; border-radius: 5px; overflow: hidden;}
 .imgnav p{ position:relative; text-align: center; width: 100%; padding-bottom: 5px;}
@@ -135,7 +155,7 @@ body{padding:0px 30px 0 30px}
 
 
 
-.fourcolorimg{ height: calc(100% - 40px); position: relative}
+.fourcolorimg{ height: calc(100% - 38px); position: relative}
 .fourcolorimg .imgbox{ width: 100%; height: 90%; display: flex; justify-content: center; align-items: center; overflow: hidden;}
 .fourcolorimg .imgbox img{ max-width: 100%; max-height: 90%;}
 
@@ -197,7 +217,7 @@ body{padding:0px 30px 0 30px}
 
 .modal { height:100%}
 .fordatamodal{ width: 100%; margin: 0;height:100%}
-.back{ position: absolute; cursor: pointer;bottom: 40px;left: 50%;  margin-left: -30px; background:#1180e8; text-align: center; line-height: 60px;  color: #fff; border-radius: 50px; z-index: 1000;width: 60px; height: 60px;}
+.back{ position: absolute; cursor: pointer;bottom: 40px;left: calc(50% + 130px); background:#1180e8; text-align: center; line-height: 60px;  color: #fff; border-radius: 50px; z-index: 1000;width: 60px; height: 60px;}
 .back:before,.back:after{ width: 100%; height: 100%; background:rgba(0,131,255,.3); position: absolute;content: ""; border-radius: 50px;; left: 0; top: 0; opacity: 0.5;width: 100px; height: 100px; left: -20px; top: -20px; border: 1px solid rgba(255,255,255,.2)}
 .back span{position: relative; z-index: 10;}
 .back1{bottom: 100px;}
@@ -227,9 +247,10 @@ input{ outline: none!important;}
 0%{transform:scale(.95);opacity:0}
 100%{transform:scale(1);opacity:1}
 }
-.set{padding: 0 20px;}
+.set{padding: 0 20px; position: absolute; top: 0; right: 0; width: 25%;}
+ .setbtn{ position: absolute; bottom:30px; left: 0; width: 200px; padding: 0; line-height: 48px;; border-radius: 50px; left: 50%; margin-left: -100px;; -webkit-border-radius: 50px; -moz-border-radius: 50px; -ms-border-radius: 50px; -o-border-radius: 50px; }
 .set ul{border-top: 1px solid #eee;}
-.set li{ display: flex; font-size: 20px; justify-content: space-between; align-items: center;border-bottom: 1px solid #eee; padding: 15px 0}
+.set li{ display: flex; font-size: 20px; justify-content: space-between; align-items: center;border-bottom: 1px solid #eee; padding: 25px 0 25px 20px}
 .set li input[type=text]{ width: 72px; height: 38px; border: 1px solid #ddd; text-align: center;border-radius: 50px;}
 
 .dangerlist h2{ display: flex; align-items: center; font-size: 24px; padding:10px;}
@@ -375,3 +396,18 @@ input{ outline: none!important;}
 .tablebox>div td{ text-align:left; }
 
 .modal-title{ color:#1180e8}
+.swiper-box1 {
+	width: 100%;
+	height: 100%;
+  }
+
+  .swiper-box1 .swiper-slide { height: 100%; width: 100%;
+
+  }
+  .swiper-box1 iframe{ border: none; width: 100%; height: 100%;}
+
+
+  .setting{ position: absolute; right: 30px; bottom: 15px;;}
+  .setting a img{ width: 32px;;}
+  .setting a{ display: inline-block; background: rgba(100,191,255,.5); border-radius:5px; padding: 6px; ; -webkit-border-radius:5px ; -moz-border-radius:5px ; -ms-border-radius:5px ; -o-border-radius:5px ; margin-left: 10px;; }
+  .setting a:active{ background: rgba(16,52,90,.5);  }

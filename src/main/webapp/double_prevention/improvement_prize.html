@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>应用首页</title>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="../common/extend/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="../common/extend/font-awesome/css/font-awesome.min.css">
+<!--平台原有样式-->
+<link rel="stylesheet" href="css/_all-skins.min.css">
+<link rel="stylesheet" href="css/AdminLTE.min.css">
+<link rel="stylesheet" href="css/julong.css">
+<!--页面核心样式-->
+<link rel="stylesheet" href="css/doubel.css">
+</head>
+<body style="background-color: #f0f2f5;">
+<section class="content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="setp">
+        <ul>
+          <li><a href="preparation.html">预备篇</a> </li>
+          <li  class="setp_end"><a href="system_group.html">建立双重体系制度</a> </li>
+          <li class="setp_end"><a href="assessment_knowledge.html">培训考核 </a></li>
+          <li class="setp_end"><a href="control_divide.html">风险分级管理控</a></li>
+          <li class="setp_end"><a href="notice.html">风险公告</a></li>
+          <li class="setp_end"><a href="government.html">隐患排查治理</a></li>
+          <li class="setp_end"><a href="summary.html">过程资料汇总</a> </li>
+          <li class="setp_end"><a href="estimate.html">建设评估</a></li>
+          <li  class="setp_ing"><a href="improvement_communicate.html">持续改进 <div class="step_bar"><span data-num="12"></span><i></i></div></a>   
+            <div class="smstep" style="left: inherit; right: 37px;">
+            <ul>
+              <li class="setp_end"><a href="improvement_communicate.html">评估、更新与沟通</a></li>
+              <li class="setp_ing"><a href="improvement_prize.html">考核奖惩</a></li>
+            </ul>
+          </div></li>
+          </ul>
+      </div>
+      <div class="thmenubg"></div>
+      <div class="steptit"> <span class="finish">第8步：持续改进（考核奖励） </span> <a href="#" class="btn btn-primary pull-right">我已完成该步骤</a> </div>
+      <div class="box box-widget">
+        <div class="box-header with-border">
+          <h3 class="box-title">安全考核及奖惩记录</h3>
+         </div>
+        <div class="box-body ">
+          <div id="btn-con" style="margin-bottom: 20px;">
+            <div class="btn-toolbar btnBg border-t-b" id="gnBtn">
+              <a href="#" class="btn btn-custom"><i class="fa fa-plus text-primary"></i> 添加</a>
+              <a href="#" class="btn btn-custom"><i class="fa fa-edit text-primary"></i> 修改</a>
+              <a href="#" class="btn btn-custom"><i class="fa fa-trash text-red"></i> 删除</a>
+
+
+              <a href="#"  class="btn btn-custom pull-right "><i class="fa fa-file-text text-primary"></i>  <span class="text-primary">双重预防体系考核奖惩制度</span> </a>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="cTable" border="0" cellpadding="0" cellspacing="4">
+              <tbody><tr class="tTitle">
+                <td width="50"><input type="checkbox" class="checkbox"></td>
+                <td>时间</td>
+                <td>姓名</td>
+                <td>奖惩类型</td>
+                <td>奖惩原因</td>
+                <td>奖惩方式</td>
+                <td>备注</td>
+                <td>填报人</td>
+                <td>填报时间 </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="checkbox"></td>
+                <td>2019-03-05</td>
+                <td>张三</td>
+                <td>奖励</td>
+                <td>风险按时完成巡检</td>
+                <td>奖励100元</td>
+                <td></td>
+                <td>韩建</td>
+                <td>2019-03-05 17:30:07</td>
+              </tr>
+
+              <tr>
+                <td><input type="checkbox" class="checkbox"></td>
+                <td>2019-03-05</td>
+                <td>张三</td>
+                <td>奖励</td>
+                <td>风险按时完成巡检</td>
+                <td>奖励100元</td>
+                <td></td>
+                <td>韩建</td>
+                <td>2019-03-05 17:30:07</td>
+              </tr>
+
+              <tr>
+                <td><input type="checkbox" class="checkbox"></td>
+                <td>2019-03-05</td>
+                <td>张三</td>
+                <td>奖励</td>
+                <td>风险按时完成巡检</td>
+                <td>奖励100元</td>
+                <td></td>
+                <td>韩建</td>
+                <td>2019-03-05 17:30:07</td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="checkbox"></td>
+                <td>2019-03-05</td>
+                <td>张三</td>
+                <td>奖励</td>
+                <td>风险按时完成巡检</td>
+                <td>奖励100元</td>
+                <td></td>
+                <td>韩建</td>
+                <td>2019-03-05 17:30:07</td>
+              </tr>
+              
+            </tbody></table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+<script src="../common/extend/jquery/jquery-1.10.2.min.js"></script> 
+<script src="../common/extend/bootstrap/js/bootstrap.min.js"></script> 
+<script>
+      $(".step_bar").each(function(){
+        var num=$(this).children( "span").attr("data-num")
+        $(this).children( "span").width(num+"%")
+        $(this).children( "i").text(num+"%")
+        $(this).children( "i").css({left:num+'%'})
+      })
+    </script>
+		
+</body>
+</html>

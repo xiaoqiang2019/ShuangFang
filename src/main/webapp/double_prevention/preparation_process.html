@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>应用首页</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <link rel="stylesheet" href="../common/extend/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../common/extend/font-awesome/css/font-awesome.min.css">
+  <script src="./js/isFinish.js"></script>
+  <!--平台原有样式-->
+  <link rel="stylesheet" href="css/_all-skins.min.css">
+  <link rel="stylesheet" href="css/AdminLTE.min.css">
+  <link rel="stylesheet" href="css/julong.css">
+  <script type="text/javascript" src="../common/extend/mui/js/mui.js"></script>
+  <script type="text/javascript" src="../common/extend/mui/css/mui.css"></script>
+  <script src="../common/extend/julong/base_common.js"></script>
+  <script src="../common/extend/julong/julong.js"></script>
+  <script src="../common/system/system.js"></script>
+  <script type="text/javascript" src="../common/extend/vue/vue.min.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="../common/extend/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script type="text/javascript" src="../common/extend/element-ui/lib/index.js"></script>
+
+  <!--页面核心样式-->
+  <link rel="stylesheet" href="css/doubel.css">
+</head>
+
+<body style="background-color: #f0f2f5;">
+  <section class="content" id="app" v-cloak>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="setp">
+          <ul>
+            <li><a href="preparation.html">预备篇</a>
+              <div class="smstep" style="overflow: hidden; padding-right: 30px; padding-left:20px;">
+                <ul>
+                  <li class=""><a href="preparation.html">基础知识篇</a></li>
+                  <li class="setp_ing"><a href="preparation_process.html">预备流程篇</a></li>
+                </ul>
+              </div>
+            </li>
+            <li><a href="system_group.html">建立双重体系制度</a> </li>
+            <li><a href="assessment_knowledge.html">培训考核 </a></li>
+            <li><a href="control_divide.html">风险分级管控</a></li>
+            <li class=""><a href="notice.html">风险公告</a></li>
+            <li class=""><a href="government.html">隐患排查治理</a></li>
+            <li class=""><a href="summary.html">过程资料汇总</a> </li>
+            <li class=""><a href="estimate.html">建设评估</a></li>
+            <li><a href="improvement_communicate.html">持续改进</a></li>
+          </ul>
+        </div>
+        <div class="thmenubg"></div>
+        <div class="steptit">
+          <!-- {{finish.indexOf('预备篇二')!=-1?'finish':''}} -->
+          <span :class="finish.indexOf('预备篇二')!=-1?'finish':''">预备篇（预备  流程）</span>
+          <a href="#" class="btn btn-primary pull-right" @click="isFinish('预备篇二')">我已完成该步骤</a>
+        </div>
+        <ul class="clearfix" style="background: #fafafa">
+          <li class="col-xs-2" style="padding: 0px; ">
+            <div class="">
+              <div class="box-body">
+                <div class="leftmenu">
+                  <div class="box-header with-border" style="padding-left: 0px;">
+                    <h3 class="box-title">流程列表 </h3>
+                  </div>
+                  <ul style="overflow: inherit; height: auto;">
+                    <li :class="`${activeName==da.name?'active':''}`" @click="isActive(da.name,'',da)"
+                      v-for="(da,i) in jsonData" :key="i">
+                      <a><span class="leftmenuTitle" :title="da.videoTitle">{{da.name}}</span><i>{{da.c4}}</i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="col-xs-10" style="padding: 0px; ">
+            <div class="box box-widget" style="margin-bottom: 0;">
+              <div class="box-body">
+                <div class="video_courses">
+                  <div class="videobox">
+                    <video controls poster="" :src="videoUrl" id="videoPlay"
+                      muted></video>
+                  </div>
+                  <div class="videolist">
+                    <ul>
+                      <li v-for="(cd,i) in columnDataInfo" :key="i" v-show="columnDataInfo.length">
+                        <a :class="`${playName==cd.rmsCode?'active':''}`" @click="isPlay(cd.rmsCode,i)">
+                          <div class="playnum">
+                            <ol><i class="fa  fa-eye"></i> 播放量：{{cd.visCount}}</ol>
+                            <span class="label label-success">已观看</span>
+                          </div>
+                          <div class="videolistimg"><img :src="cd.bgPic"></div>
+                          <p>{{cd.rmsTitle}}</p>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <script src="../common/extend/jquery/jquery-1.10.2.min.js"></script>
+  <script src="../common/extend/bootstrap/js/bootstrap.min.js"></script>
+
+  <script>
+    $(".step_bar").each(function () {
+      var num = $(this).children("span").attr("data-num")
+      $(this).children("span").width(num + "%")
+      $(this).children("i").text(num + "%")
+      $(this).children("i").css({ left: num + '%' })
+    })
+  </script>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        finish: "", finish: "",
+        playName: "",
+        activeName: "",
+        videoUrl: "",
+        jsonData: [],
+        columnData: [],
+        columnDataInfo: [],
+        selColumnData: [],
+        columnDataInfoIndex: 0
+      },
+      mounted: function () {
+        var that = this;
+        // 获取video标签
+        var videoPlay = document.getElementById("videoPlay")
+        this.getColumuList();
+        this.finish = sessionStorage.getItem("finish") ? sessionStorage.getItem("finish") : '';
+        // 视频能够播放时的方法
+        videoPlay.oncanplay=function(){
+          videoPlay.play();
+          that.playName=that.columnDataInfo[that.columnDataInfoIndex].rmsCode;
+        }
+        videoPlay.onplay = function() {
+          that.playName=that.columnDataInfo[that.columnDataInfoIndex].rmsCode;
+        };
+        videoPlay.onpause = function() {
+          that.playName="";
+        };
+        // 视频播放完时调用的方法
+        videoPlay.onended = function () {
+          that.playName = "";
+        }
+        this.finish=JSON.parse(sessionStorage.getItem("finish"));
+      },
+      methods: {
+        isActive(name, url, data) {
+          this.activeName = name;
+          sessionStorage.setItem("activeName", this.activeName);
+          this.getColumnInfo(data,true);
+        },
+        // 获取栏目列表
+        getColumuList() {
+          var that=this;
+          var urlString = system.RMS + `/ks/getPublicTree.do?listvo.ksPid=prevention002&listvo.bookCode=prevention&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809"
+          }
+          jQuery_Request_Post(urlString, paramDic, 'json', false, function(res) {
+            that.jsonData=res;
+            that.activeName = that.jsonData[0].name;
+            that.getColumnInfo(that.jsonData[0]);
+          })
+        },
+        // 获取栏目详情
+        getColumnInfo(data, ind) {
+          var urlString = system.RMS + `/resource/publicResInfo.do?jsonData={"bookCode":"prevention"}&timestamp='+timestamp+'&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809",
+            rmsKsId: data.id
+          }
+          var that = this;
+          jQuery_Request_Get(urlString, paramDic, 'json', false, function (res) {
+            this.playName = res.ResInfo[0].rmsKsId;
+            that.activeName = data.name;
+            that.columnData = res.ResInfo;
+            that.columnDataInfo=[];
+            res.ResInfo.forEach((re,i)=>{
+              that.showInfo(re)
+            })
+            // that.showInfo(that.columnData[0]);
+          })
+        },
+        showInfo(data) {
+          var urlString = system.RMS + `/resplay/rmsCdnPlayPath.do?data={"rcode":"${data.rmsCode}","type":"1"}&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809",
+            rmsKsId: data.rmsKsId
+          }
+          var that = this;
+          jQuery_Request_Get(urlString, paramDic, 'json', false, function (res) {
+            res.ResPath.forEach((re,i)=>{
+              that.columnDataInfo.push(re);
+              re.visCount=data.downNumber;
+              re.bgPic=data.imagePic;
+              data.videoTitle=re.rmsTitle;
+            })
+            that.videoUrl=that.columnDataInfo[0].rmsPath;
+          })
+        },
+        // 判断本步骤是否完成
+        isFinish(name){
+          finishStep(name);
+          this.finish=sessionStorage.getItem("finish");
+          location.href="assessment_knowledge.html"
+        },
+        // 判断是否正在播放
+        isPlay(name,index) {
+          this.columnDataInfoIndex=index;
+          this.videoUrl=this.columnDataInfo[index].rmsPath;
+          if ((!this.playName) || (name != this.playName)) {
+            this.playName = name;
+            document.getElementById("videoPlay").play()
+          } else {
+            this.playName = "";
+            document.getElementById("videoPlay").pause()
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

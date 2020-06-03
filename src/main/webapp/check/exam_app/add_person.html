@@ -143,9 +143,10 @@
 			</div>
 			<div class="section-group-title">
 				<div>本单位</div>
-				<div class="select-all-btn app-blue-color" v-if="selected == true" @tap="selectClicked($event)">全不选</div>
-				<div v-show="single" class="select-all-btn app-blue-color" v-else-if="selected == false" @tap="selectClicked($event)">全选</div>
-
+				<div v-show ="single==false">
+					<div class="select-all-btn app-blue-color" v-if="selected == true" @tap="selectClicked($event)">全不选</div>
+					<div class="select-all-btn app-blue-color" v-else-if="selected == false" @tap="selectClicked($event)">全选</div>
+				</div>
 			</div>
 
 			<div class="mui-scroll-wrapper">
@@ -175,7 +176,7 @@
 			</div>
 
 			<div class="footer-wapper footbtn flex_center">
-				<a href="javascript:;" class="flex_center app-blue-color" @tap="selectPersonClicked()">{{"查看已选"+(selelctPersonCount)}}</a>
+				<a href="javascript:;" class="flex_center app-blue-color" @tap="selectPersonClicked()">查看已选({{selelctPersonCount}})</a>
 				<a href="javascript:;" class="flex_center app-blue-color" @tap="doneClicked()">完成</a>
 			</div>
 		</div>
@@ -187,6 +188,25 @@
 	<script src="../../common/extend/moment/zh-cn.js"></script>
 	<script src="../../common/app/script/empty.js"></script>
 	<script>
+		/* 系统请求地址 */
+		var checkUrl = system.check;
+		var usercenterUrl = system.usercenter;
+		/* 页面来源字段 */
+		var frompage = updateNullString(getURLParameter('frompage'), "");
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+		var secret = "";
+		if(frompage=="insurance_add"){
+			secret = getSecretKey();
+		}
+		/* 专项检查确认信息页需要字段 frompage等于exam_confirm_info */
+		var checkschoolid = updateNullString(getURLParameter('checkschoolid'), "");
+		var chargeusercode = updateNullString(getURLParameter('chargeusercode'), "");
+		var checkschoolgroupid = updateNullString(getURLParameter('checkschoolgroupid'), "");
+
+		
 		$(function() {
 			var Y = $('.section-group-title').offset().top,
 				height = $('.section-group-title').height();
@@ -260,13 +280,12 @@
 			},
 			mounted: function mounted() {
 				this.timestamp = moment().valueOf().toString();
-				var isSingleStr = updateNullString(getURLParameter('isSingle'), "true"),
+				var isSingleStr = getURLParameter('isSingle'),
 					isSingle = isSingleStr == 'true' ? true : false;
 				this.single = isSingle
 				var people = localStorage.getItem("selfDepSelectPeople"),
 					that = this;
 				if(isSingle){
-					var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
 					localStorage.removeItem(usercode + "insuredPerson") //清除缓存的学生选中人员
 					localStorage.removeItem("selfDepSelectPeople") //清除缓存的老师选中人员
 				}
@@ -281,8 +300,6 @@
 				 */
 				serachClicked: function() {
 					var that = this,
-						usercode = updateNullString(getURLParameter('usercode'), localUserCode),
-						token = updateNullString(getURLParameter('token'), localToken),
 						realSelectPeople = JSON.stringify(that.selectPeopleList),
 						realAllPeople = JSON.stringify(that.groupList);;
 					localStorage.setItem("selfDepSelectPeople", realSelectPeople)
@@ -299,9 +316,11 @@
 				 */
 				selectClicked: function(e) {
 					var that = this;
-					if (this.single) {
-						alert("只允许一个人投保")
-						return
+					if(frompage=="insurance_add"){
+						if (this.single) {
+							alert("只允许一个人投保")
+							return
+						}
 					}
 					that.selected = !that.selected;
 					//全选
@@ -333,9 +352,11 @@
 				 */
 				groupSelectClicked: function(e, index) {
 					e.stopPropagation()
-					if (this.single) {
-						alert("只允许一个人投保")
-						return
+					if(frompage=="insurance_add"){
+						if (this.single) {
+							alert("只允许一个人投保")
+							return
+						}
 					}
 					var that = this,
 						groupJson = that.groupList[index],
@@ -404,10 +425,7 @@
 				/** 点击查看已选人员
 				 */
 				selectPersonClicked: function() {
-					var that = this,
-						usercode = updateNullString(getURLParameter('usercode'), localUserCode),
-						token = updateNullString(getURLParameter('token'), localToken);
-
+					var that = this;
 					if (that.selelctPersonCount == 0) {
 						mui.alert('当前未选择人员！')
 					} else {
@@ -430,8 +448,13 @@
 						item['timestamp'] = this.timestamp.toString();
 					}
 					realSelectPeople = JSON.stringify(this.selectPeopleList);
-					localStorage.setItem("selfDepSelectPeople", realSelectPeople)
-					history.go(-1)
+					localStorage.setItem("selfDepSelectPeople", realSelectPeople);
+					if(frompage == "exam_confirm_info"){
+						updateCheckUserCodeRequest();
+					}
+					else{
+						history.go(-1);
+					}
 				},
 				/**判断是全选还是全不选
 				 */
@@ -539,14 +562,10 @@
 				showRequestErrorEmpty("网络似乎有点问题", false, true);
 				return;
 			}
-			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
-			var url_token = updateNullString(getURLParameter('token'), localToken);
-			var token = updateNullString($.cookie('token'), url_token);
-			var localOrgId = updateNullString(localStorage.getItem("orgid"), "");
-			var secret = getSecretKey()
+			
 			var paramDic;
 			if (localOrgId.length == 0) {
-				getUserInfoRequest(system.usercenter, usercode, token, function() {
+				getUserInfoRequest(usercenterUrl, usercode, token, function() {
 					localOrgId = updateNullString(localStorage.getItem("orgid"), "");
 					var paramDic = {
 						"usercode": usercode,
@@ -556,8 +575,9 @@
 						"secret": secret,
 						"timestamp": vm.timestamp
 					};
+					realRequestFromServer(paramDic)
 				})
-				realRequestFromServer(paramDic)
+				
 			} else {
 				var paramDic = {
 					"usercode": usercode,
@@ -572,8 +592,8 @@
 		}
 
 		function realRequestFromServer(paramDic) {
-			var urlString = system.usercenter + "getDepartmentOfOrg.action";
-			jQuery_Request_Post(urlString, paramDic, 'json', false, function(responseData) {
+			var urlString = usercenterUrl + "getDepartmentOfOrg.action";
+			jQuery_Request_Post(urlString, paramDic, 'json', true, function(responseData) {
 					mui.hideLoading();
 					var result = responseData["ret"],
 						dataList = responseData["data"];
@@ -613,5 +633,47 @@
 				pulldownRefresh()
 			});
 		}
+		
+		//根据数组得出检查人员
+		function getCheckUserName(checkuserlist) {
+			var realshownamestring = ''
+			if (checkuserlist.length > 0) {
+				checkuserlist.map(function(a) {
+					realshownamestring += a.username + " ";
+				})
+			}
+			vm.checkshowpersonname = realshownamestring;
+		}
+		
+		/* 专项检查确认信息页检查人员发生变化 提交接口 */
+		function updateCheckUserCodeRequest(){
+			var checkschoolusercode = '';
+			if (vm.selectPeopleList.length > 0) {
+				vm.selectPeopleList.map(function(a) {
+					checkschoolusercode += a.jid + ",";
+				})
+			}
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"checkschool.usercode": checkschoolusercode,
+				"checkschool.id": checkschoolid,
+				"checkschool.groupid": checkschoolgroupid
+			};
+			var urlString = usercenterUrl + "editCheckSchoolCheckUser.action";
+			jQuery_Request_Post(urlString, paramDic, 'json', true, function(responseData) {
+					var result = responseData["ret"];
+					if (result) {
+						dLog("更新检查人员成功");
+						history.go(-1);
+					} else {
+						alert("更新检查人员失败");
+					}
+				},
+				function(error) {
+					alert("请求更新检查人员失败");
+				})
+		}
+		
 	</script>
 </html>

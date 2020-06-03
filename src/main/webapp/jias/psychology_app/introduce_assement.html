@@ -143,7 +143,9 @@
 			$(".primary").hide();
 			$(".middle").hide();
 			if(isEmpty(from_bid)){
-				commonShowRequestErrorEmpty(".content", "缺少参数", true, false);
+				$(".empty-content").show();
+				$(".content").hide();
+				commonShowRequestErrorEmpty(".empty-content", "缺少参数", true, false);
 			}else{
 				setSecretKey();
 				getUserInfo();
@@ -156,7 +158,9 @@
 					var usertype = localStorage.getItem("usertype");
 					var grade = localStorage.getItem("grade");
 					if (usertype != "70") {
-						commonShowRequestErrorEmpty(".content", "当前用户不是学生", true, false);
+						$(".empty-content").show();
+						$(".content").hide();
+						commonShowRequestErrorEmpty(".empty-content", "当前用户不是学生", true, false);
 						return;
 					}
 					if (grade == "1" || grade == "2" || grade == "3" || grade == "4" || grade == "5" || grade == "6") {
@@ -239,7 +243,7 @@
 						} else {
 							$(".empty-content").show();
 							$(".content").hide();
-							commonShowRequestErrorEmpty(".empty-content", updateNullString(object["err_msg"], "数据加载出了些问题"), true, true, function() {
+							commonShowRequestErrorEmpty(".empty-content", updateNullString(object["msg"], "数据加载出了些问题"), true, true, function() {
 								isAnswered();
 							});
 						}

@@ -319,6 +319,7 @@
 			//清空图形验证码 重新获取短信验证码
 			getVerificationImgRequest();
 			$("#pic-ver").val("");
+			$("#phone-ver").val("");
 
 			//停止定时器，更新界面
 			clearInterval(verificationTimer);
@@ -361,6 +362,14 @@
 		//提交按钮点击事件
 		function submit() {
 			if (if_vcode == 1) {
+				
+				//验证图形验证码 短信验证码不为空
+				var icode = updateNullString($("#pic-ver").val(), "");
+				if (icode.length == 0) {
+					alert("请先输入图形验证码");
+					return;
+				}
+				
 				//验证图形验证码 短信验证码不为空
 				var vcode = updateNullString($("#phone-ver").val(), "");
 				if (vcode.length == 0) {
@@ -394,6 +403,8 @@
 			if (base64Data.indexOf("http") >= 0) {
 				dLog("本身就是网络图片不需要上传");
 				dtd.resolve();
+				//网络图片直接发送真正的请求;
+				uploadRealDataRequest(dataurl);
 			} else {
 				$.uploadHelper.uploadBase64Img({
 					"base64Data": base64Data,
@@ -428,6 +439,7 @@
 				"receipt_pic": updateNullString(imageurl, ""),
 				"phone": updateNullString(phone, ""),
 				"suggestion": suggestion,
+				"vcode_uuid":uuid,
 				"vcode": vcode
 			};
 			var url = system.usercenter + "/jias/v1/noticeparents/receipt/save";
@@ -438,17 +450,18 @@
 				if (ret) {
 					mui.toast("提交成功");
 					//后退至列表页 刷新列表页
-					history.go(-2);
+					history.go(-1);
+					window.location.href=document.referrer;
 				} else {
 					var msg = updateNullString(responseData["msg"], "提交失败");
 					mui.toast(msg);
-					reSetTimer();
+					// reSetTimer();
 				}
 			}, function(error) {
 				mui.hideLoading();
 				var msg = updateNullString(error, "请求失败!")
 				mui.toast(msg);
-				reSetTimer();
+				// reSetTimer();
 			})
 		}
 

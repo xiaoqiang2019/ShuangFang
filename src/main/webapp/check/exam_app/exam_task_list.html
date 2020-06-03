@@ -194,9 +194,9 @@
 			</a>
 		</header>
 		<div id="app" v-cloak>
-			<div class="top-des">以下是你可以看到的检查对象 <span class="app-blue-color" @click="tipDesClicked">有疑问?<span></div>
+			<div class="top-des">以下是你可以看到的检查对象 <span class="app-blue-color" @click="tipDesClicked()">有疑问?<span></div>
 
-			<div id="pullrefresh" class="mui-scroll-wrapper">
+			<div v-if="show" id="pullrefresh" class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 					<div class="sub-org app-black-color" v-if="eduList.length > 0" @click="subOrgClicked()">
 						下属单位<div class="mui-icon mui-icon-arrowright mui-right" style="line-height: 50px;"></div>
@@ -218,7 +218,8 @@
 					</ul>
 				</div>
 			</div>
-		</div>
+			<!-- 空视图 -->
+			<empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="true" v-bind:isneterror="isneterror" v-on:retryclick="retryMsg"></empty>
 
 		</div>
 
@@ -228,13 +229,33 @@
 	<!-- 日期插件 -->
 	<script src="../../common/extend/moment/moment.js"></script>
 	<script src="../../common/extend/moment/zh-cn.js"></script>
-	<script src="../../common/app/script/empty.js"></script>
+	<script src="../../common/app/script/empty_vue.js"></script>
 	<script>
+		/* 系统请求地址 */
+		var checkUrl = system.check;
+		var usercenterUrl = system.usercenter;
+
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		//1--我的；0--全部
+		var type = updateNullString(getURLParameter('type'), "0");
+		var manageId = updateNullString(getURLParameter('manageid'), "");
+		var itemjson = updateNullString(getURLParameter('itemjson'), "");
+		var managerItem = JSON.parse(itemjson);
+		//0--不分组；1--分组
+		var groupType = "1";
+		if (managerItem.groupnum == 0) {
+			groupType = "0";
+		}
+		//设置页面标题
+		document.title = managerItem.managename;
+
 		//由于分组时也要使用，使用了组件
 		Vue.component('task-item', {
 			props: ['item'],
-			template: `<li class="mui-table-view">
-							<a>
+			template: `<li class="mui-table-view" >
+							<a @tap="taskItemClicked(item)">
 								<div class="item-top">
 									<span class="item-school-name" v-text="getShowSchoolName(item.schoolname,item.schoolcode)"></span>
 									<div v-if="(item.finish == 1 || item.finish==4)" class="item-status app-green-color">{{item.score}}</div>
@@ -242,22 +263,22 @@
 									<div v-else class="item-status app-orange-color">检查中</div>
 								</div>
 								<div v-if="!isNull(item.schooleduname)" class="item-left">
-									<img class="item-img-left" src="../../common/app/images/apply_ic_delete.png" />
+									<img class="item-img-left" src="images/exam_ic_boe.png" />
 									<span class="app-dark-gray-color item-text">{{item.schooleduname}}</span>
 								</div>
 								<div class="item-left">
-									<img class="item-img-left" src="../../common/app/images/apply_ic_delete.png" />
+									<img class="item-img-left" src="images/exam_ic_people.png" />
 									<span class="app-dark-gray-color item-text" v-text="getShowCheckName(item.checkperson,item.checkpersoncode)"></span>
 								</div>
 								<div style="margin-top: 6px;">
 									<div class="item-top">
 										<div style="margin-bottom: 14px;">
-											<img v-if="item.finish == 0" class="item-img-time" src="../../common/app/images/apply_ic_delete.png" />
-											<img v-else class="item-img-time" src="../../common/app/images/main_book.png" />
+											<img v-if="item.finish == 0" class="item-img-time" src="images/exam_ic_time_plan.png" />
+											<img v-else class="item-img-time" src="images/exam_ic_time_plan.png" />
 											<span class="app-dark-gray-color item-time-text" v-text="getShowTime(item.checktime)"></span>
 										</div>
 										<div>
-											<img v-show="item.finish==4" class="item-img-verify" src="../../common/app/images/detaile_img_usable.png" />
+											<img v-show="item.finish==4" class="item-img-verify" src="images/exam_audit_passed.png" />
 											<div style="margin-bottom: 14px;" class="item-more mui-icon mui-icon-more" @tap="itemMoreClicked(item)"></div>
 										</div>
 									</div>
@@ -306,63 +327,57 @@
 				 * 点击更多
 				 */
 				itemMoreClicked: function(item) {
-					console.log(item)
-				}
+					console.log(item);
+				},
+				/**
+				 * 确认检查信息
+				 */
+				taskItemClicked: function(item) {
+					deleteSelectPeople(); //删除可能编辑过的用户信息
+					var finish = item.finish;
+					if (item.finish == 4) {
+						//已审核，进结果页
+						alert("进入检查结果页");
+					} else {
+						var itemJson = JSON.stringify(item); //对象转字符串
+						//进入确认信息页
+						CodeSTD.form({
+							url: "exam_confirm_info.html",
+							params: {
+								"usercode": usercode,
+								"token": token,
+								"manageid": manageId,
+								"managename": managerItem.managename,
+								"groupnum": managerItem.groupnum,
+								"checkschoolid": item.checkschoolid,
+								"itemjson": itemJson
+							},
+						});
+					}
+				},
 			}
 		});
 		var vm = new Vue({
 			el: '#app',
 			data: {
+				show: true,
+				isneterror: false,
+				errorMsg: "",
 				groupType: "1",
-				list: [{
-					"checkschoolid": "8a9eb567653d974001653ddce6cc05be",
-					"managename": "检查标题",
-					"schoolcode": "6666666666",
-					"schoolname": "深圳市巨龙科教网络有限公司",
-					"finish": 0,
-					"checkperson": "史明修(总负责人),范玉静,岳玉林,吴宛茹",
-					"checkpersoncode": "1990537,fanyujing,1069037,wwr",
-					"checktime": 1576831761000,
-					"score": 34.0,
-					"totalscore": 9999.9,
-					"passscore": 0.0,
-					"checktype": 20,
-					"checkpersonschoolname": "深圳市巨龙科教网络有限公司,深圳市巨龙科教网络有限公司,深圳市巨龙科教网络有限公司,深圳市巨龙科教网络有限公司",
-					"checkpersoneduname": "学安教育局,学安教育局,学安教育局,学安教育局",
-					"chargeusername": "史明修",
-					"schooleduname": "学安教育局",
-					"auditauthority": "0",
-				}],
-				groupList: [{
-					"groupid": "8a9eb7066579e7d401657a64f4ed09d0",
-					"groupname": "分组2",
-					"groupschooltotalnum": 10,
-					"groupschoolchecknum": 6,
-					"groupchargeusercode": "2102067",
-					"groupchargeusername": "普-技测4",
-					"groupschoollist": [{
-						"checkschoolid": "8a9eb7066579e7d401657a64f50a09db",
-						"managename": "827大检查测试1",
-						"schoolcode": "4411441236",
-						"schoolname": "经三路一小",
-						"finish": 1,
-						"checkperson": "岳玉林",
-						"checkpersoncode": "1069037",
-						"checktime": 1535381130000,
-						"score": 195.8275,
-						"totalscore": 9999.9,
-						"passscore": 0.0,
-						"checktype": 10,
-						"checkpersonschoolname": "深圳市巨龙科教网络有限公司",
-						"checkpersoneduname": "学安教育局",
-						"chargeusername": "普-技测4",
-						"schooleduname": "学安教育局",
-						"auditauthority": "0"
-					}]
-				}],
+				list: [],
+				groupList: [],
 				eduList: []
 			},
 			methods: {
+				//重试
+				xa_showRequestErrorEmpty: function(msg, isneterror) {
+					this.show = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+				},
+				retryMsg: function() {
+					requestDataFromServer();
+				},
 				/**
 				 * 点击有疑问
 				 */
@@ -437,76 +452,45 @@
 				mui.hideLoading();
 				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
 				mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
-				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				vm.xa_showRequestErrorEmpty("网络似乎有点问题", true);
 				return;
 			}
-
-			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
-			var url_token = updateNullString(getURLParameter('token'), localToken);
-			var token = updateNullString($.cookie('token'), url_token);
-			//1--我的；0--全部
-			var type = updateNullString(getURLParameter('type'), "0");
-			var manageId = updateNullString(getURLParameter('manageid'), "");
-			//0--不分组；1--分组
-			var groupType = updateNullString(getURLParameter('grouptype'), "1");
 			vm.groupType = groupType;
-			//测试使用
-			// if(manageId.length == 0){
-			// 	if(groupType == "0"){
-			// 		manageId = "4028818e6fb1ea9d016fb2aef8340001";
-			// 	}else{
-			// 		manageId = "4028818e6f8d2df1016f8d5d6ab2054b";
-			// 	}
-			// }
 			if (manageId.length == 0) {
 				mui.hideLoading();
 				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
 				mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
 				return;
 			}
-			// var paramDic = {
-			// 	"usercode": usercode,
-			// 	"token": token,
-			// 	"type": type,
-			// 	"manageid": manageId
-			// };
-			//测试使用
+
 			var paramDic = {
-				"usercode": "1400002412",
-				"token": "julongabcd",
-				"type": "1",
+				"usercode": usercode,
+				"token": token,
+				"type": type,
 				"manageid": manageId
 			};
-			dLog(paramDic)
-			// var url = getCurrentSubSystemBaseUrl();
-			//测试使用
-			var url = "https://14.ss360.org/safecheck/"
-			var urlString = url + "getSpecialExaminationItem.action";
+			var urlString = checkUrl + "getSpecialExaminationItem.action";
 			if (groupType == "1") {
-				urlString = url + "getSpecialExaminationGroupItem.action";
+				urlString = checkUrl + "getSpecialExaminationGroupItem.action";
 			}
-			jQuery_Request_Post(urlString, paramDic, 'json', true, function(object) {
+			jQuery_Request_Post(urlString, paramDic, 'json', true, function(responseData) {
 					mui.hideLoading();
-					var result = object["ret"];
-					var dataList = object["list"];
+					var result = responseData["ret"];
+					var dataList = responseData["list"];
 					/*loadmore的需要判断分页的数据是否有值，有值了数据源加上去
 						没有值 判断原数据源是否有值，没有值，空页面显示；
 					 有值了，页面依然显示原数据源，然后toast提示用户，暂无更多数据【表明用户下拉加载的无数据】；*/
 					if (result) {
 						//pull to refrsh
 						if (dataList.length > 0) {
-							if (groupType == "1") {
-								vm.groupList = object["list"]
-							} else {
-								vm.list = object["list"]
-							}
-							vm.eduList = object["edulist"]
-							dLog(vm.list)
+							updateViewData(responseData["list"]);
+							vm.eduList = responseData["edulist"]
+							vm.show = true;
 						} else {
-							showRequestErrorEmpty("暂无相关数据", true, true);
+							vm.xa_showRequestErrorEmpty("暂无相关数据", false);
 						}
 					} else {
-						showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), true, false);
+						vm.xa_showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), false);
 					}
 					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
 					mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
@@ -515,26 +499,31 @@
 					mui.hideLoading();
 					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
 					mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
-					showRequestErrorEmpty("数据加载时出了问题", true, true);
+					vm.xa_showRequestErrorEmpty("数据加载时出了问题", false);
 				})
 		}
-		//请求返回数据为空或失败显示的空页面
-		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
-			var imgpath = "../../common/app/images/nopage/img_noList.png";
-			if (isNetwork == false) {
-				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+		/* 需要将上级数据 赋值给item数组 */
+		function updateViewData(list) {
+			if (list.length > 0) {
+				list.map(function(item) {
+					item.chargeusercode = managerItem.chargeusercode;
+				})
 			}
-			//空页面[接口请求失败]
-			$.Empty.showEmptyView({
-				"imgPath": imgpath,
-				"errorMsg": errorMsg,
-				"isShowMsg": true,
-				"isShowRetry": isShowRetry,
-				"appendDom": "#pullrefresh"
-			}, function() {
-				//重新刷新数据
-				requestDataFromServer()
-			});
+			if (groupType == "1") {
+				vm.groupList = list;
+			} else {
+				vm.list = list;
+			}
+
+		}
+
+		/* 清除本地存储数据 */
+		function deleteSelectPeople() {
+			var people = localStorage.getItem("selfDepSelectPeople");
+			var localPeopleList = JSON.parse(people);
+			if (localPeopleList != null && localPeopleList.length > 0) {
+				localStorage.removeItem("selfDepSelectPeople") //清除缓存的老师选中人员
+			}
 		}
 	</script>
 

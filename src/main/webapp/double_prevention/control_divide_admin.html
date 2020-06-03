@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>应用首页</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" href="../common/extend/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../common/extend/font-awesome/css/font-awesome.min.css">
+	  <!--平台原有样式-->
+    <link rel="stylesheet" href="css/_all-skins.min.css">
+    <link rel="stylesheet" href="css/AdminLTE.min.css">
+    <link rel="stylesheet" href="css/julong.css">
+
+	<!--页面核心样式-->
+    <link rel="stylesheet" href="css/doubel.css">
+  </head>
+  <body style="background-color: #f0f2f5;">
+	  
+	  <section class="content">
+          <div class="row">
+            <div class="col-md-12">
+
+              <div class="setp">
+                <ul>
+                <li><a href="preparation.html">预备篇</a> </li>
+                <li  class="setp_end"><a href="system_group.html">建立双重体系制度</a> </li>
+                <li class="setp_end"><a href="assessment_knowledge.html">培训考核 </a></li>
+                <li class="setp_end"><a href="control_divide.html">风险分级管理控 <div class="step_bar"><span data-num="15"></span><i></i></div></a>
+                  <div class="smstep">
+                    <ul>
+                        <li class="setp_ing"><a href="#">风险单元划分、风险评估与管控</a></li>
+                        <li class=""><a href="#">APP 现场风险辨识</a></li>
+                    </ul>
+                </div>
+              </li>
+                <li class="setp_ing"><a href="notice.html">风险公告</a></li>
+                <li class=""><a href="government.html">隐患排查治理</a></li>
+                <li class=""><a href="summary.html">过程资料汇总</a> </li>
+                <li class=""><a href="estimate.html">建设评估</a></li>
+                <li><a href="improvement_communicate.html">持续改进</a></li>
+                </ul>
+            
+
+
+              </div>
+              <div class="thmenubg"></div>
+				
+				<div class="steptit">
+					<span class="finish">第3步：建立双重体系制度（风险单元划分、风险评估与管控）</span>
+					<a href="#" class="btn btn-primary pull-right">我已完成该步骤</a>
+				</div>
+				
+        <div class="box box-widget">
+          <div class="box-header with-border">
+            <h3 class="box-title">管理活动单元</h3>
+           </div>
+          <div class="box-body ">
+            <div class="table-responsive table-hover">
+              <table class="cTable" border="0" cellpadding="0" cellspacing="4">
+                <tbody><tr class="tTitle">
+                  <td>风险类型</td>
+                  <td>风险点名称</td>
+                  <td>可能发生的事故类型和后果</td>
+                  <td>风险等级</td>
+                  <td>管控主体</td>
+                  <td>状态</td>
+                </tr>
+                <tr>
+                  <td>组织管理</td>
+                  <td>安全工作领导</td>
+                  <td>安全管理混乱，易发生各类事故</td>
+                  <td><span class="label label-dangerst">重大风险</span></td>
+                  <td>王校长<br>领导小组组长</td>
+                  <td><span class="label label-success">完成</span></td>
+                </tr>
+
+                <tr>
+                  <td>组织管理</td>
+                  <td>安全工作领导</td>
+                  <td>安全管理混乱，易发生各类事故</td>
+                  <td><span class="label label-danger">较大风险</span></td>
+                  <td>王校长<br>领导小组组长</td>
+                  <td><span class="label label-success">完成</span></td>
+                </tr>
+
+                <tr>
+                  <td>组织管理</td>
+                  <td>安全工作领导</td>
+                  <td>安全管理混乱，易发生各类事故</td>
+                  <td><span class="label label-warning">一般风险</span></td>
+                  <td>王校长<br>领导小组组长</td>
+                  <td><span class="label label-success">完成</span></td>
+                </tr>
+
+                <tr>
+                  <td>组织管理</td>
+                  <td>安全工作领导</td>
+                  <td>安全管理混乱，易发生各类事故</td>
+                  <td><span class="label label-primary">低风险</span></td>
+                  <td>王校长<br>领导小组组长</td>
+                  <td><span class="label label-danger">未完成</span></td>
+                </tr>
+                
+              </tbody></table>
+            </div>
+          </div>
+  
+        </div>
+              
+
+				
+      
+            </div>
+           
+          </div>
+        
+        </section>
+
+  <script src="../common/extend/jquery/jquery-1.10.2.min.js"></script>
+ <script src="../common/extend/bootstrap/js/bootstrap.min.js"></script>
+
+    <script>
+      $(".step_bar").each(function(){
+        var num=$(this).children( "span").attr("data-num")
+        $(this).children( "span").width(num+"%")
+        $(this).children( "i").text(num+"%")
+        $(this).children( "i").css({left:num+'%'})
+      })
+    </script>
+  </body>
+</html>

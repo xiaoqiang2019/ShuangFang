@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>应用首页</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <link rel="stylesheet" href="../common/extend/bootstrap/css/bootstrap.min.css">
+  <script src="./js/isFinish.js"></script>
+  <!--平台原有样式-->
+  <link rel="stylesheet" href="../common/extend/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/_all-skins.min.css">
+  <link rel="stylesheet" href="css/AdminLTE.min.css">
+  <link rel="stylesheet" href="css/julong.css">
+  <script type="text/javascript" src="../common/extend/mui/js/mui.js"></script>
+  <script type="text/javascript" src="../common/extend/mui/css/mui.css"></script>
+  <script src="../common/extend/julong/base_common.js"></script>
+  <script src="../common/extend/julong/julong.js"></script>
+  <script src="../common/system/system.js"></script>
+  <script type="text/javascript" src="../common/extend/vue/vue.min.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="../common/extend/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script type="text/javascript" src="../common/extend/element-ui/lib/index.js"></script>
+
+  <!--页面核心样式-->
+  <link rel="stylesheet" href="css/doubel.css">
+</head>
+
+<body style="background-color: #f0f2f5;">
+  <section class="content" id="app" v-cloak>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="setp">
+          <ul>
+            <li><a href="preparation.html">预备篇</a>
+              <div class="smstep" style="overflow: hidden; padding-right: 30px; padding-left:20px;">
+                <ul>
+                  <li class="setp_ing"><a href="preparation.html">基础知识篇</a></li>
+                  <li class=""><a href="preparation_process.html">预备流程篇</a></li>
+                </ul>
+              </div>
+            </li>
+            <li><a href="system_group.html">建立双重体系制度</a> </li>
+            <li><a href="assessment_knowledge.html">培训考核 </a></li>
+            <li><a href="control_divide.html">风险分级管控</a></li>
+            <li class=""><a href="notice.html">风险公告</a></li>
+            <li class=""><a href="government.html">隐患排查治理</a></li>
+            <li class=""><a href="summary.html">过程资料汇总</a> </li>
+            <li class=""><a href="estimate.html">建设评估</a></li>
+            <li><a href="improvement_communicate.html">持续改进</a></li>
+          </ul>
+        </div>
+        <div class="thmenubg"></div>
+        <div class="steptit">
+          <span :class="finish.indexOf('预备篇')!=-1?'finish':''">预备篇（基础知识）</span>
+          <a class="btn btn-primary pull-right" @click="isFinish('预备篇')" href="#">我已完成该流程</a>
+        </div>
+        <div class="box box-widget">
+          <div class="box-header with-border">
+            <h3 class="box-title">课程列表</h3>
+          </div>
+          <div class="box-body ">
+            <div class="video_courses">
+              <div class="videobox">
+                <video controls poster="" :src="videoUrl" id="videoPlay"
+                  muted></video>
+              </div>
+              <div class="videolist">
+                <ul>
+                  <li v-for="(cd,i) in columnDataInfo" :key="i" v-show="columnDataInfo.length">
+                    <a :class="`${activeName==cd.rmsCode?'active':''}`" @click="isPlay(cd.rmsCode,i)">
+                      <div class="playnum">
+                        <ol><i class="fa  fa-eye"></i> 播放量：{{cd.visCount}}</ol>
+                        <span class="label label-success">已观看</span>
+                      </div>
+                      <div class="videolistimg"><img :src="cd.bgPic"></div>
+                      <p>{{cd.rmsTitle}}</p>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="../common/extend/jquery/jquery-1.10.2.min.js"></script>
+  <script src="../common/extend/bootstrap/js/bootstrap.min.js"></script>
+
+  <script>
+    $(".step_bar").each(function () {
+      var num = $(this).children("span").attr("data-num")
+      $(this).children("span").width(num + "%")
+      $(this).children("i").text(num + "%")
+      $(this).children("i").css({ left: num + '%' })
+    })
+  </script>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        finish: [],
+        activeName: "",
+        jsonData: [],
+        columnData: [],
+        videoUrl: "",
+        columnDataInfo: [],
+        columnDataInfoIndex: 0
+      },
+      mounted: function () {
+        var that = this;
+        // 获取video标签
+        var videoPlay = document.getElementById("videoPlay")
+        this.getColumuList();
+        videoPlay.oncanplay=function(){
+          videoPlay.play();
+          that.activeName=that.columnDataInfo[that.columnDataInfoIndex].rmsCode;
+        }
+        that.finish=JSON.parse(sessionStorage.getItem("finish"))?JSON.parse(sessionStorage.getItem("finish")):[];
+        // 视频播放完时调用的方法
+        videoPlay.onended = function () {
+          that.activeName = "";
+        }
+        videoPlay.onplay = function() {
+          that.activeName=that.columnDataInfo[that.columnDataInfoIndex].rmsCode;
+        };
+        videoPlay.onpause = function() {
+          that.activeName="";
+        };
+      },
+      methods: {
+        // 获取栏目列表
+        getColumuList() {
+          var that=this;
+          var urlString = system.RMS + `/ks/getPublicTree.do?listvo.ksPid=prevention&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809"
+          }
+          jQuery_Request_Post(urlString, paramDic, 'json', false, function(res) {
+            that.jsonData = [];
+            that.columnData = [];
+            res.forEach((jsData, i) => {
+              if (jsData.name == '基础知识') {
+                that.jsonData.push(jsData);
+              }
+            });
+            that.jsonData.forEach((da, i) => {
+              that.getColumnInfo(da);
+            })
+          })
+        },
+        // 获取栏目详情
+        getColumnInfo(data) {
+          console.log(data);
+          var urlString = system.RMS + `/resource/publicResInfo.do?jsonData={"bookCode":"prevention"}&timestamp='+timestamp+'&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809",
+            rmsKsId: data.id
+          }
+          var that = this;
+          jQuery_Request_Get(urlString, paramDic, 'json', false, function (res) {
+            that.activeName = res.ResInfo[0].rmsKsId;
+            res.ResInfo.forEach((re, i) => {
+              if (re.rmsKsId == "prevention001") {
+                that.columnData.push(re);
+              }
+            });
+            that.showInfo(res.ResInfo[0])
+          })
+        },
+        showInfo(data) {
+          var urlString = system.RMS + `/resplay/rmsCdnPlayPath.do?data={"rcode":"${data.rmsCode}","type":"1"}&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809",
+            rmsKsId: data.rmsKsId
+          }
+          var that = this;
+          jQuery_Request_Get(urlString, paramDic, 'json', false, function (res) {
+            that.columnDataInfo = res.ResPath;
+            res.ResPath.forEach((re,i)=>{
+              re.visCount=data.downNumber;
+              re.bgPic=data.imagePic;
+            })
+            that.videoUrl=res.ResPath[0].rmsPath;
+          })
+        },
+        isPlay(name,index) {
+          this.columnDataInfoIndex=index;
+          this.videoUrl=this.columnDataInfo[this.columnDataInfoIndex].rmsPath;
+          if ((!this.activeName) || (name != this.activeName)) {
+            this.activeName = name;
+            document.getElementById("videoPlay").play();
+          } else {
+            this.activeName = "";
+            document.getElementById("videoPlay").pause();
+          }
+        },
+        isFinish(name){
+          finishStep(name);
+          this.finish=sessionStorage.getItem("finish");
+          location.href="preparation_process.html"
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -45,7 +45,10 @@
 			}
 
 			.check-user {
+				white-space: normal;
 				max-width: calc(100% - 66px - 50px);
+				word-wrap : break-word;
+				/* 设置英文自动换行 不写不换行 */ 
 			}
 
 			.edit-user-btn,
@@ -68,7 +71,6 @@
 			.exam-check-blue {
 				background-color: rgb(59, 162, 255);
 				color: white !important;
-				;
 			}
 
 			.exam-verify {
@@ -92,71 +94,82 @@
 				<div class="arrow_left"></div>
 			</a>
 		</header>
-		<div class="content">
-			<div id="app">
-				<ul>
-					<li class="cell-content">
-						<div class="cell-left app-light-gray-color">检查项目</div>
-						<div class="cell-right app-dark-gray-color">{{managename}}</div>
-					</li>
-					<li class="cell-content">
-						<div class="cell-left app-light-gray-color">检查对象</div>
-						<div class="cell-right app-dark-gray-color">{{checkschoolname}}</div>
-					</li>
-					<li class="cell-content">
-						<div class="cell-left app-light-gray-color">{{chargeshowusertitle}}</div>
-						<div class="cell-right app-dark-gray-color">{{chageshowusername}}</div>
-					</li>
-					<li class="cell-content">
-						<div class="cell-left app-light-gray-color">检查人员</div>
-						<div class="cell-right app-dark-gray-color check-user">{{checkshowpersonname}}</div>
-						<button class="edit-user-btn app-blue-color" v-show="isCanEditCheckUser" @click="editCheckUserAction($event)">编辑</button>
-					</li>
-					<li class="cell-content">
-						<div class="cell-left app-light-gray-color">任务分配</div>
-						<div class="cell-right app-dark-gray-color">{{assignstatus == 0?"未分配":((assignstatus==1)?"部分分配":"已分配")}}</div>
-						<button class="assign-task-btn app-blue-color" v-show="isAssignTaskManager" @click="assignTaskAction($event)">分配</button>
-					</li>
-					<li class="cell-content">
-						<div class="cell-left app-light-gray-color">当前状态</div>
-						<div class="cell-right app-red-color" v-if="finish==0">待检查</div>
-						<div class="cell-right app-green-color" v-else-if="finish==1">{{"检查完成待审核 " + getscore+ "分"}} </div>
-						<div class="cell-right app-orange-color" v-else-if="finish==2">检查中</div>
-						<div class="cell-right app-dark-gray-color" v-else-if="finish==3">待提交</div>
-						<div class="cell-right app-green-color" v-else-if="finish==4">{{"检查完成 " + getscore+ "分"}}
-						</div>
-						<img class="audited-img" src="../../common/app/images/exam_audit_passed.png" v-show="finish==4" />
-					</li>
-				</ul>
+		<div v-cloak class="content">
+			<div v-if="show">
+				<div id="app">
+					<ul>
+						<li class="cell-content">
+							<div class="cell-left app-light-gray-color">检查项目</div>
+							<div class="cell-right app-dark-gray-color">{{managename}}</div>
+						</li>
+						<li class="cell-content">
+							<div class="cell-left app-light-gray-color">检查对象</div>
+							<div class="cell-right app-dark-gray-color">{{checkschoolname}}</div>
+						</li>
+						<li class="cell-content">
+							<div class="cell-left app-light-gray-color">{{chargeshowusertitle}}</div>
+							<div class="cell-right app-dark-gray-color">{{chageshowusername}}</div>
+						</li>
+						<li class="cell-content">
+							<div class="cell-left app-light-gray-color">检查人员</div>
+							<div class="cell-right app-dark-gray-color check-user">{{checkshowpersonname}}</div>
+							<button class="edit-user-btn app-blue-color" v-show="isCanEditCheckUser" @click="editCheckUserAction($event)">编辑</button>
+						</li>
+						<li class="cell-content">
+							<div class="cell-left app-light-gray-color">任务分配</div>
+							<div class="cell-right app-dark-gray-color">{{assignstatus == 0?"未分配":((assignstatus==1)?"部分分配":"已分配")}}</div>
+							<button class="assign-task-btn app-blue-color" v-show="isAssignTaskManager" @click="assignTaskAction($event)">分配</button>
+						</li>
+						<li class="cell-content">
+							<div class="cell-left app-light-gray-color">当前状态</div>
+							<div class="cell-right app-red-color" v-if="finish==0">待检查</div>
+							<div class="cell-right app-green-color" v-else-if="finish==1">{{"检查完成待审核 " + getscore+ "分"}} </div>
+							<div class="cell-right app-orange-color" v-else-if="finish==2">检查中</div>
+							<div class="cell-right app-dark-gray-color" v-else-if="finish==3">待提交</div>
+							<div class="cell-right app-green-color" v-else-if="finish==4">{{"检查完成 " + getscore+ "分"}}
+							</div>
+							<img class="audited-img" src="images/exam_audit_passed.png" v-show="finish==4" />
+						</li>
+					</ul>
+				</div>
+				<div class="footbtn flex_center" v-show="finish!=4">
+					<a href="javascript:;" class="flex_center exam-score" v-show="finish==1||finish==4">查看分数</a>
+					<a href="javascript:;" class="flex_center exam-check" v-show="isCheckUser||isCanEditCheckUser" v-if="isShowAuditauthority==true">{{finish == 0?"开始检查":"继续检查"}}</a>
+					<a href="javascript:;" class="flex_center exam-check-blue" v-show="isCheckUser||isCanEditCheckUser" v-else="isShowAuditauthority==false">{{finish == 0?"开始检查":"继续检查"}}</a>
+					<a href="javascript:;" class="flex_center exam-verify " v-show="isShowAuditauthority">审核</a>
+				</div>
 			</div>
-
-			<div class="footbtn flex_center" v-show="finish!=4">
-				<a href="javascript:;" class="flex_center exam-score" v-show="finish==1||finish==4">查看分数</a>
-				<a href="javascript:;" class="flex_center exam-check" v-show="isCheckUser||isCanEditCheckUser" v-if="isShowAuditauthority==true">{{finish == 0?"开始检查":"继续检查"}}</a>
-				<a href="javascript:;" class="flex_center exam-check-blue" v-show="isCheckUser||isCanEditCheckUser" v-else="isShowAuditauthority==false">{{finish == 0?"开始检查":"继续检查"}}</a>
-				<a href="javascript:;" class="flex_center exam-verify " v-show="isShowAuditauthority">审核</a>
-			</div>
+			<!-- 空视图 -->
+			<empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="true" v-bind:isneterror="isneterror" v-on:retryclick="retryMsg"></empty>
 		</div>
 
 	</body>
 	<!-- 页面加载完毕后统一的页面配置 -->
 	<script src="../../common/extend/vue/vue.min.js"></script>
 	<script src="../../common/app/script/navConfig.js"></script>
-	<script src="../../common/app/script/empty.js"></script>
+	<script src="../../common/app/script/empty_vue.js"></script>
 	<script>
+		/* 系统请求地址 */
+		var checkUrl = system.check;
+		var usercenterUrl = system.usercenter;
+
 		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
 		var url_token = updateNullString(getURLParameter('token'), localToken);
-			var token = updateNullString($.cookie('token'), url_token);
+		var token = updateNullString($.cookie('token'), url_token);
 
 		var checkschoolid = updateNullString(getURLParameter('checkschoolid'), "");
+		var manageId = updateNullString(getURLParameter('manageid'), "");
 		var managename = updateNullString(getURLParameter('managename'), "无");
-		var schoolname = updateNullString(getURLParameter('schoolname'), "无");
-
-		var chargeusername = updateNullString(getURLParameter('chargeusername'), "无");
-		var checkpersonname = updateNullString(getURLParameter('checkperson'), "");
-		var groupchargeusername = updateNullString(getURLParameter('groupchargeusername'), "");
-
 		var groupnum = getURLParameter('groupnum');
+
+		var itemjson = updateNullString(getURLParameter('itemjson'), "");
+		var taskItem = JSON.parse(itemjson);
+		var schoolname = updateNullString(taskItem.schoolname, "无");
+		var chargeusercode = updateNullString(taskItem.chargeusercode, "");
+		var chargeusername = updateNullString(taskItem.chargeusername, "无");
+		var checkpersonname = updateNullString(taskItem.checkpersonname, "");
+		var groupchargeusercode = updateNullString(taskItem.groupchargeusercode, "");
+		var groupchargeusername = updateNullString(taskItem.groupchargeusername, "");
 
 		/**当前用户是否是有编辑检查权限*/
 		var isHaveEditCheck = getURLParameter('isHaveEditCheck');
@@ -165,6 +178,7 @@
 		/**当前用户是否是学校自查方式的检查学校管理员*/
 		var isCheckSchoolManager = true;
 
+		/**当前用户是否有编辑检查人员的权限*/
 		var isCanEditCheckUser = false;
 		if (isHaveEditCheck || isCheckSchoolManager) {
 			isCanEditCheckUser = true;
@@ -172,27 +186,37 @@
 
 		/**当前用户是否有分配任务的权限*/
 		var isAssignTaskManager = false;
+		if (isHaveEditCheck || isCheckSchoolManager) {
+			isAssignTaskManager = true;
+		}
 
 		/**当前用户是否显示审核按钮*/
 		var isShowAuditauthority = false;
 
-
-		//临时测试
-		usercode = "1400002516";
-		checkschoolid = "4028818e6f8d2df1016f8d5d6abb054e";
+		var localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+		if (localOrgId.length == 0) {
+			getUserInfoRequest(system.usercenter, usercode, token, function() {
+				localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+			});
+		}
 
 		var chargeusertitle = "总负责人";
+		var chageshowusercode = chargeusercode;
 		var chageshowusername = chargeusername;
 		var isGroup = false;
 		if (groupnum > 0) {
 			chargeusertitle = "带队领导";
 			isGroup = true;
+			chageshowusercode = groupchargeusercode;
 			chageshowusername = groupchargeusername;
 		}
 
 		var vm = new Vue({
 			el: ".content",
 			data: {
+				show: true,
+				isneterror: false,
+				errorMsg: "",
 				managename: managename, //检查项目
 				checkschoolname: schoolname, //检查对象
 				chargeshowusertitle: chargeusertitle, //总负责人或带队领导
@@ -207,18 +231,58 @@
 				isCheckUser: isCheckUser,
 				isCanEditCheckUser: isCanEditCheckUser,
 				isAssignTaskManager: isAssignTaskManager,
-				isShowAuditauthority: isShowAuditauthority
+				isShowAuditauthority: isShowAuditauthority,
+				selelctPersonCount: "0", //检查人员数量 
+				selectPeopleList: [], //存储选中的用户code的数组【页面来回传值使用】
 			},
 			mounted: function mounted() {
+				//请求页面数据
 				requestCheckSchoolInfomationDataFromServer()
 			},
 			methods: {
-				editCheckUserAction: function(e) {
-
+				//重试
+				xa_showRequestErrorEmpty: function(msg, isneterror) {
+					this.show = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+				},
+				retryMsg: function() {
+					requestCheckSchoolInfomationDataFromServer();
 				},
 
-				assignTaskAction: function(e) {
+				/* 编辑检查人员 */
+				editCheckUserAction: function(e) {
+					CodeSTD.form({
+						url: "add_person.html",
+						params: {
+							"usercode": usercode,
+							"token": token,
+							"isSingle": false,
+							"frompage": "exam_confirm_info",
+							"checkschoolid": checkschoolid,
+							"schoolname":schoolname,
+							"chargeusercode": chageshowusercode,
+							"chargeusertitle":chargeusertitle,//总负责人或带队领导
+							"checkschoolgroupid": "", //查询App 此值为空
+						},
+					});
+				},
 
+				/* 分配任务 */
+				assignTaskAction: function(e) {
+					var itemJson = JSON.stringify(taskItem); //对象转字符串
+					CodeSTD.form({
+						url: "exam_assign_task_step1.html",
+						params: {
+							"usercode": usercode,
+							"token": token,
+							"frompage": "exam_confirm_info",
+							"checkschoolid": checkschoolid,
+							"schoolname":schoolname,
+							"chargeusercode": chageshowusercode,
+							"chargeusertitle":chargeusertitle,//总负责人或带队领导
+						},
+					});
 				}
 			}
 		})
@@ -230,7 +294,7 @@
 			//无网络加载
 			if (navigator.onLine == false) {
 				mui.hideLoading();
-				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				vm.xa_showRequestErrorEmpty("网络似乎有点问题", true);
 				return;
 			}
 
@@ -239,37 +303,33 @@
 				"token": token,
 				"checkschoolid": checkschoolid
 			};
-
-			var urlString = getCurrentSubSystemBaseUrl() + "getCheckSchoolInformation.action";
-
-			//临时测试需删除
-			urlString = "https://14.ss360.org/safecheck/" + "getCheckSchoolInformation.action";
-
-			jQuery_Request_Post(urlString, paramDic, 'json', true, function(object) {
+			var urlString = checkUrl + "getCheckSchoolInformation.action";
+			jQuery_Request_Post(urlString, paramDic, 'json', true, function(responseData) {
 					mui.hideLoading();
-					var result = object["ret"];
+					var result = responseData["ret"];
 					/*loadmore的需要判断分页的数据是否有值，有值了数据源加上去
 						没有值 判断原数据源是否有值，没有值，空页面显示；
 					 有值了，页面依然显示原数据源，然后toast提示用户，暂无更多数据【表明用户下拉加载的无数据】；*/
 					if (result) {
-						var dataDic = object["data"];
+						var dataDic = responseData["data"];
 						vm.checkuserlist = dataDic["checkuserlist"];
 						vm.finish = parseInt(dataDic["finish"]);
 						vm.getscore = parseFloat((dataDic["getscore"]));
 						vm.auditauthority = dataDic["auditauthority"];
 						vm.assignstatus = parseInt(dataDic["assignstatus"]);
 						getCheckUserName(vm.checkuserlist);
+						updateSelectCheckUser(vm.checkuserlist); //更新本地检查人员
 						if (vm.auditauthority == '1' && vm.finish == 1) {
 							vm.isShowAuditauthority = true;
 						}
-
+						vm.show = true;
 					} else {
-						showRequestErrorEmpty(updateNullString(object["msg"], "暂无相关数据"), true, false);
+						vm.xa_showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), true);
 					}
 				},
 				function(error) {
 					mui.hideLoading();
-					showRequestErrorEmpty("数据加载时出了问题", true, true);
+					vm.xa_showRequestErrorEmpty("数据加载时出了问题", false);
 				})
 		}
 
@@ -281,25 +341,37 @@
 					realshownamestring += a.username + " ";
 				})
 			}
-			vm.checkshowpersonname = realshownamestring;
+			vm.checkshowpersonname = updateNullString(realshownamestring, '暂未添加');
 		}
 
-
-		//请求返回数据为空或失败显示的空页面
-		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
-			var imgpath = "../../common/app/images/nopage/img_noList.png";
-			if (isNetwork == false) {
-				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+		/* 获取检查人员编辑检查人员数组 存储到本地 用于编辑检查人员 */
+		function updateSelectCheckUser(checkuserlist) {
+			var userPersonArray = [];
+			if (checkuserlist.length > 0) {
+				checkuserlist.map(function(a) {
+					var item = {};
+					item.jid = a.usercode;
+					item.nickname = a.username;
+					item.eduname = a.eduname;
+					item.orgname = a.schoolname;
+					item.orgid = a.schoolcode;
+					userPersonArray.push(item);
+				})
 			}
-			//空页面[接口请求失败]
-			$.Empty.showEmptyView({
-				"imgPath": imgpath,
-				"errorMsg": errorMsg,
-				"isShowMsg": true,
-				"isShowRetry": isShowRetry,
-				"appendDom": ".content"
-			}, function() {});
+			//已有人员存储至本地
+			if (userPersonArray.length > 0) {
+				dLog("编辑数据有值");
+				var realSelectPeople = JSON.stringify(userPersonArray);
+				localStorage.setItem("selfDepSelectPeople", realSelectPeople);
+			}
+			//取本地数据
+			var people = localStorage.getItem("selfDepSelectPeople");
+			vm.selectPeopleList = JSON.parse(people);
+			if (vm.selectPeopleList != null && vm.selectPeopleList.length > 0) {
+				vm.selelctPersonCount = vm.selectPeopleList.length;
+			}
 		}
+		
 	</script>
 
 

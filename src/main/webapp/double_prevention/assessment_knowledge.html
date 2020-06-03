@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>应用首页</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../common/extend/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../common/extend/font-awesome/css/font-awesome.min.css">
+  <script src="./js/isFinish.js"></script>
+  <!--平台原有样式-->
+  <link rel="stylesheet" href="css/_all-skins.min.css">
+  <link rel="stylesheet" href="css/AdminLTE.min.css">
+  <link rel="stylesheet" href="css/julong.css">
+  <script type="text/javascript" src="../common/extend/mui/js/mui.js"></script>
+  <script type="text/javascript" src="../common/extend/mui/css/mui.css"></script>
+  <script src="../common/extend/julong/base_common.js"></script>
+  <script src="../common/extend/julong/julong.js"></script>
+  <script src="../common/system/system.js"></script>
+  <script type="text/javascript" src="../common/extend/vue/vue.min.js"></script>
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="../common/extend/element-ui/lib/theme-chalk/index.css">
+  <!-- 引入组件库 -->
+  <script type="text/javascript" src="../common/extend/element-ui/lib/index.js"></script>
+
+  <!--页面核心样式-->
+  <link rel="stylesheet" href="css/doubel.css">
+</head>
+
+<body style="background-color: #f0f2f5;">
+  <section class="content" id="app" v-cloak>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="setp">
+          <ul>
+            <li><a href="preparation.html">预备篇</a> </li>
+            <li class="setp_end"><a href="system_group.html">建立双重体系制度</a> </li>
+            <li class="setp_ing"><a href="assessment_knowledge.html">培训考核 <div class="step_bar"><span
+                    data-num="15"></span><i></i></div></a>
+              <div class="smstep">
+                <ul>
+                  <li class="setp_ing"><a href="assessment_knowledge.html">双重知识库</a></li>
+                  <li class=""><a href="assessment_plan.html">培训计划</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class=""><a href="control_divide.html">风险分级管理控</a></li>
+            <li class=""><a href="notice.html">风险公告</a></li>
+            <li class=""><a href="government.html">隐患排查治理</a></li>
+            <li class=""><a href="summary.html">过程资料汇总</a> </li>
+            <li class=""><a href="estimate.html">建设评估</a></li>
+            <li><a href="improvement_communicate.html">持续改进</a></li>
+          </ul>
+        </div>
+        <div class="thmenubg"></div>
+        <div class="steptit"> 
+          <span :class="finish.indexOf('培训考核')!=-1?'finish':''">第2步：培训考核（双重知识库）</span>
+          <a class="btn btn-primary pull-right" @click="isFinish('培训考核')">我已完成该流程</a> 
+        </div>
+        <ul class="clearfix" style="background: #fafafa;">
+          <div class="col-xs-2"  style="padding: 0;">
+            <div class="">
+              <div class="box-header with-border" >
+                <h3 class="box-title">课程列表 </h3>
+               <!---- <a href="#" class="label label-primary">编辑</a>-->
+              </div>
+              <div class="box-body ">
+                <div class="leftmenu">
+                  <ul>
+                    <li :class="`${activeName==da.name?'active':''}`" @click="isActive(da.name,'',da)"
+                      v-for="(da,i) in jsonData" :key="i">
+                      <a>{{da.name}}<i>{{da.c4}}</i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-10"  style="padding: 0;">
+            <div class="box box-widget" style="margin-bottom: 0;">
+              <div class="box-header with-border">
+                <h3 class="box-title">双重知识库总篇</h3>
+                <!----<a href="#" class="label label-primary">编辑</a>-->
+              </div>
+              <div class="box-body">
+                <div class="knowlnav">
+                  <ul>
+                    <li v-for="(cData,i) in columnData" :key="i" v-show="isInfo" @click="showInfo(cData)">
+                      <a>
+                        <p><img :src="cData.imagePic" aria-hidden="true" class="infoIcon"></img>{{cData.rmsTitle}}</p>
+                        <ol><span>时间：{{cData.rmsCreateDate}}</span> <span>浏览量：{{cData.downNumber}}</span></ol>
+                      </a>
+                    </li>
+                    <div v-show="!isInfo" class="infoBox" v-for="(co,i) in columnDataInfo" :key="i">
+                      <!-- <iframe :src="co.rmsPath" frameborder="0"  class="infoIfr"></iframe> -->
+                      <img :src="co.rmsPath" alt="" v-show="co.rmsFormat=='jpg'" class="infoImg"> 
+                    </div>
+                    <!-- <li>
+                      <a href="knowledge_txt.html">
+                        <p><span class="glyphicon glyphicon-list-alt"
+                            aria-hidden="true"></span>两体系双重预防体系风险分级管控和隐患排查治理季节性安全检查…</p>
+                        <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="knowledge_txt.html">
+                        <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>推进安全风险分级管控和隐患排查治理建设方案
+                        </p>
+                        <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+                      </a>
+                    </li>
+
+                    <li>
+                      <a href="#">
+                        <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>构建安全风险分级管控和隐患排查治理</p>
+                        <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>构建安全风险分级管控和隐患排查治理</p>
+                        <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理实施细则</p>
+                        <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+                      </a>
+                    </li> -->
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
+      <div class="back back1" v-show="!isInfo" @click="isInfo=true"><span><a>返回</a></span></div>
+    </div>
+  </section>
+  <script src="../common/extend/jquery/jquery-1.10.2.min.js"></script>
+  <script src="../common/extend/bootstrap/js/bootstrap.min.js"></script>
+  <script>
+    $(".step_bar").each(function () {
+      var num = $(this).children("span").attr("data-num")
+      $(this).children("span").width(num + "%")
+      $(this).children("i").text(num + "%")
+      $(this).children("i").css({ left: num + '%' })
+    })
+  </script>
+  <script>
+    new Vue({
+      el: "#app",
+      data: {
+        activeName: "双重知识总篇",
+        columuList: [],
+        jsonData: [],
+        // 栏目详情
+        columnData: [],
+        // 是否查看知识库内容
+        isInfo: true,
+        columnDataInfo: [],
+        finish: ""
+      },
+      mounted() {
+        this.getColumuList();
+        this.isInfo=true;
+        this.finish=JSON.parse(sessionStorage.getItem("finish"));
+        
+      },
+      methods: {
+        isActive(name, url, data) {
+          this.activeName = name;
+          sessionStorage.setItem("activeName", this.activeName);
+          if (url) {
+            location.href = url;
+          }
+          this.getColumnInfo(data);
+          this.isInfo = true;
+        },
+        // 获取栏目列表
+        getColumuList() {
+          var that=this;
+          var urlString = system.RMS + `/ks/getPublicTree.do?listvo.likePid=anfang001&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809"
+          }
+          jQuery_Request_Post(urlString, paramDic, 'json', false, function(res) {
+            that.jsonData=res;
+            // 默认展示第一条数据
+            that.activeName = that.jsonData[0].name;
+            that.getColumnInfo(that.jsonData[0].name)
+          })
+        },
+        // 获取栏目详情
+        getColumnInfo(data) {
+          var urlString = system.RMS + `/resource/publicResInfo.do?jsonData={"bookCode":"anfang"}&timestamp='+timestamp+'&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809",
+            rmsKsId: data.id
+          }
+          var that = this;
+          jQuery_Request_Get(urlString, paramDic, 'json', false, function (res) {
+            that.columnData = res.ResInfo;
+
+          })
+        },
+        // 查看栏目三级闲情
+        showInfo(data) {
+          var urlString = system.RMS + `/resplay/rmsCdnPlayPath.do?data={"rcode":"${data.rmsCode}","type":"1"}&jsoncallback=?`;
+          var paramDic = {
+            token: "239AF19F98183D517C031F86F0152B6B",
+            usercode: "1008809",
+            rmsKsId: data.rmsKsId
+          }
+          var that = this;
+          jQuery_Request_Get(urlString, paramDic, 'json', false, function (res) {
+            that.columnDataInfo = res.ResPath;
+          })
+          this.isInfo = false;
+        },
+        isFinish(name){
+          finishStep(name);
+          this.finish=sessionStorage.getItem("finish");
+          location.href="assessment_plan.html";
+
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

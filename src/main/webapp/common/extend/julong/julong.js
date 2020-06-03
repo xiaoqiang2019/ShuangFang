@@ -9,10 +9,11 @@ if (isAPPLocalTest) {
 	/**当前登录用户code87000000562  
 	 * https://yj.ss360.org 347【保险经理 + 教育局用户】 355【学生】 349【学校用户】 
 	 * https://hnxy.ss360.org 37200000030[育测 学校用户] 37200000042【育测学生账户】
-	 * http://ceshi.ss360.org 870000005564
+	 * http://ceshi.ss360.org 870000005564【学校用户】 870000004932【教育局用户】  
+	 * http://14.ss360.org 1400002516
 	 */
-	localUserCode = "37200000030";
-	localToken = "julongabcd"; //统一julongabcd
+	localUserCode = "37200000041";
+	localToken = "";
 }
 
 /**页面跳转封装*/
@@ -73,6 +74,7 @@ function jQuery_ajax(type, url, pars, dataType, jsonCallBack, success, error) {
 	var num = Math.floor(Math.random() * 1000 + 1); //随机数
 	pars.request_timestamp = timestamp + "_" + num;
 
+
 	//设置全局beforeSend
 	$.ajaxSettings.beforeSend = function(xhr, setting) {
 		//beforeSend演示,也可在$.ajax({beforeSend:function(){}})中设置单个Ajax的beforeSend
@@ -99,6 +101,11 @@ function jQuery_ajax(type, url, pars, dataType, jsonCallBack, success, error) {
 		url: url,
 		type: type,
 		data: pars,
+		xhrFields: {withCredentials: true},
+		beforeSend: function(xhr) {
+		    xhr.withCredentials = true;
+		},
+		// crossDomain:true,
 		dataType: dataType.length > 0 ? dataType : 'json',
 		timeout: 20000,
 		success: function(responseObject) {
@@ -143,7 +150,7 @@ function requestSuccessReturnDic(responseObject){
 			});
 		}
 	}
-}
+} 
 
 /**
  * jQueryGet请求操作

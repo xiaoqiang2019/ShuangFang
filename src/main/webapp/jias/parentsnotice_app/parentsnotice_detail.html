@@ -439,11 +439,18 @@
 				var ret = responseData["ret"];
 				if (ret) {
 					requestData = responseData["data"];
-					var show_content = updateNullString(requestData["content"], "");
-					if (show_content.length > 0) {
-						updateViewMethod();
-					} else {
-						showRequestErrorEmpty("告知书正文内容为空", true, true);
+					var status = requestData["status"];//0未发布 1已发布 2下架
+					if(status==2&&if_receipt=="1"){
+						//非预览状态下 已下架 不展示内容 预览状态显示
+						 showRequestErrorEmpty("告知书已下架", true, false);
+					}
+					else{
+						var show_content = updateNullString(requestData["content"], "");
+						if (show_content.length > 0) {
+							updateViewMethod();
+						} else {
+							showRequestErrorEmpty("告知书正文内容为空", true, true);
+						}
 					}
 				} else {
 					var msg = updateNullString(responseData["msg"], "获取数据失败");

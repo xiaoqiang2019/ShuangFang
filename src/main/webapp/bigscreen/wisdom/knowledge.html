@@ -5,138 +5,202 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>应用首页</title>
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<script type="text/javascript" src="../../common/extend/mui/js/mui.js"></script>
+<script type="text/javascript" src="../../common/extend/mui/css/mui.css"></script>
+<script src="../../common/extend/julong/julong.js"></script>
+<script src="../../common/extend/julong/base_common.js"></script>
+<script src="../../common/system/system.js"></script>
 <script src="../../common/extend/jquery/jquery.min.js"></script>
 <script src="../../common/extend/bootstrap/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="../../common/extend/bootstrap/css/bootstrap.min.css">
 <script src="js/showtime.js"></script>
+<script type="text/javascript" src="../../common/extend/vue/vue.min.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="../../common/extend/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script type="text/javascript" src="../../common/extend/element-ui/lib/index.js"></script>
+<!-- 引入axios -->
+<script type="text/javascript" src="../../common/extend/axios/dist/axios.min.js"></script>
 <link rel="stylesheet" href="css/style.css">
   </head>
-  <body>
-<header>
-		<a href="#" class="logo"><img src="images/logo.png"></a>
-		<h1>校园安全智慧屏</h1>
-	<div class="time" id="showTime">2020.05.09.16:45:28</div>
-</header>
-	  <div class="navbox">
-		<div class="topbar box">
-		  <p><img src="images/bud.png">郑州铁路职业技术学院-机电工程学院</p>
-		  <p><img src="images/user.png"> 责任人：魏保立、戴明宏</p>
-		  <p><img src="images/notice.png"><a href="#">关于“五一”期间加强疫情防控和落实中央八项规定精神的通知</a><span>16:24</span></p>
-		  </div>
-		<div class="nav01">
-		  <div class="box pull-left h100" style="width:20%">
-			  <div class="boxtit">双重知识库 </div>
-			  
-			  <div class="boxnav leftmenu">
-			  <ul>
-				  <li class="active"><a href="knowledge.html">双重知识总篇  <i>12</i></a></li>
-				  <li><a href="#">消防安全篇 <i>5</i></a></li>
-				  <li><a href="#">校舍安全篇 <i>3</i></a></li>
-				  <li><a href="#">食品安全篇 <i>2</i></a></li>
-				  <li><a href="#">校车安全篇 <i>2</i></a></li>
-				  <li><a href="#">应急管理篇 <i>2</i></a></li>
-				  </ul>
-			  </div>
-			</div>
-		  <div class="box pull-right  h100" style="width:calc(80% - 12px)">
-			  <div class="boxtit">双重知识库总篇 </div>
-			  <div class="knowlnav boxnav">
-			  <ul>
-				  <li>
-				  <a href="knowledge_txt.html">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>双重预防机制建设要点</p>
-					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li>
-				  <li>
-				  <a href="knowledge_txt.html">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>两体系双重预防体系风险分级管控和隐患排查治理季节性安全检查…</p>
-					   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li>
-				  <li>
-				  <a href="knowledge_txt.html">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>推进安全风险分级管控和隐患排查治理建设方案</p>
-					   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li>
-				  
-				  <li>
-				  <a href="#">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>构建安全风险分级管控和隐患排查治理</p>
-					  <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li>
-				  <li>
-				  <a href="#">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理工作方案</p>
-					  <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li><li>
-				  <a href="#">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>“安全风险分级管控和隐患排查治理两个体系”建设作业指导书</p>
-					   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li>
-				  <li>
-				  <a href="#">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>积极构建安全风险分级管控和隐患排查治理双重预防机制的策略</p>
-					   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li><li>
-				  <a href="#">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理双重预防机制有关知识</p>
-					   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li><li>
-				  <a href="#">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理实施细则</p>
-					   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li><li>
-				  <a href="#">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>构建安全风险分级管控和隐患排查治理</p>
-					   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li>
-				  <li>
-				  <a href="#">
-					  <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理实施细则</p>
-					   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
-					  </a>
-				  </li>
-				  
-				  </ul>
-			  </div>
-			</div>
-		  </div>
-	  </div>
-	  <div class="foot">
-		<ul>
-			<li><a href="#" data-toggle="modal" data-target="#myModal"><i></i><span>双防大数据</span></a></li>
-			<li><a href="fourcolorimg.html"><i></i><span>风险四色图</span></a></li>
-			<li><a href="risk_level.html"><i></i><span>风险分级管控</span></a></li>
-			<li><a href="danger_gover.html"><i></i><span>隐患排查治理</span></a></li>
-			<li class="active"><a href="knowledge.html"><i></i><span>双防知识库</span></a></li>
-			<li><a href="website.html"><i></i><span>微官网</span></a></li>
-			<li><a href="exit.html"><i></i><span>系统桌面</span></a></li>
+  <body style="padding: 0;">
 
-		</ul>
-	  </div>
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog fordatamodal" role="document">
-	 <div class="back"  data-dismiss="modal" aria-label="Close"><span>返回</span></div>
-    <iframe src="data/index.html" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
-  </div>
-</div> 
-<script>
-	$('#myModal').on('show.bs.modal', function (e) {
-	$("#iframe1").attr("src","")
-	})
-	  $('#myModal').on('shown.bs.modal', function (e) {
-	$("#iframe1").attr("src","../double_bigscreen/index.html")
-	})
-	</script>
+	<div class="h100" id="app">
+		<div class="box pull-left h100" style="width:20%">
+			<div class="boxtit">双重知识库 </div>
+			
+			<div class="boxnav leftmenu">
+				<ul class="knowledgeUl">
+					<li :class="`${activeName==da.name?'active':''}`" @click="isActive(da.name,'',da)" v-for="(da,i) in jsonData" :key="i"><a>{{da.name}}<i>{{da.c4}}</i></a></li>
+				</ul>
+			</div>
+		  </div>
+		<div class="box pull-right  h100" style="width:calc(80% - 12px)">
+			<div class="boxtit">双重知识库总篇 </div>
+			<div class="knowlnav boxnav">
+			<ul>
+				<li v-for="(cData,i) in columnData" :key="i" v-show="isInfo" @click="showInfo(cData)">
+					<!--  :href="`knowledge_txt.html`" -->
+					<a>
+						<p><img :src="cData.imagePic" aria-hidden="true" class="infoIcon"></img>{{cData.rmsTitle}}</p>
+						<!-- <p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>{{cData.rmsTitle}}</p> -->
+						<ol><span>时间：{{cData.rmsCreateDate}}</span> <span>浏览量：{{cData.downNumber}}</span></ol>
+					</a>
+				</li>
+				<!-- <li>
+				<a :href="`knowledge_txt.html`">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>双重预防机制建设要点</p>
+				   <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li>
+				<li>
+				<a :href="`knowledge_txt.html`">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>两体系双重预防体系风险分级管控和隐患排查治理季节性安全检查…</p>
+					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li>
+				<li>
+				<a :href="`knowledge_txt.html`">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>推进安全风险分级管控和隐患排查治理建设方案</p>
+					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li>
+				
+				<li>
+				<a href="#">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>构建安全风险分级管控和隐患排查治理</p>
+					<ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li>
+				<li>
+				<a href="#">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理工作方案</p>
+					<ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li><li>
+				<a href="#">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>“安全风险分级管控和隐患排查治理两个体系”建设作业指导书</p>
+					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li>
+				<li>
+				<a href="#">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>积极构建安全风险分级管控和隐患排查治理双重预防机制的策略</p>
+					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li><li>
+				<a href="#">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理双重预防机制有关知识</p>
+					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li><li>
+				<a href="#">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理实施细则</p>
+					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li><li>
+				<a href="#">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>构建安全风险分级管控和隐患排查治理</p>
+					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li>
+				<li>
+				<a href="#">
+					<p><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>安全风险分级管控和隐患排查治理实施细则</p>
+					 <ol><span>时间：2020-05-09</span> <span>浏览量：192</span></ol>
+					</a>
+				</li>
+				 -->
+					<div v-show="!isInfo" class="infoBox" v-for="(co,i) in columnDataInfo" :key="i">
+						<!-- <iframe :src="co.rmsPath" frameborder="0"  class="infoIfr"></iframe> -->
+						<img :src="co.rmsPath" alt="" v-show="co.rmsFormat=='jpg'" class="infoImg"> 
+					</div>
+				</ul>
+			</div>
+		  </div>
+		  <div class="back back1" v-show="!isInfo" @click="isInfo=true"><span><a>返回</a></span></div>
+		</div>
   </body>
+  <script>
+	  new Vue({
+			el: "#app",
+			data:{
+				activeName: "双重知识总篇",
+				columuList: [],
+				jsonData: [],
+				// 栏目详情
+				columnData: [],
+				// 是否查看知识库内容
+				isInfo: true,
+				columnDataInfo:[]
+			},
+			mounted:function(){
+				mui.init();
+				this.getColumuList();
+			},
+			methods:{
+				isActive(name,url,data){
+					this.activeName=name;
+					sessionStorage.setItem("activeName",this.activeName);
+					if(url){
+						location.href=url;
+					}
+					this.getColumnInfo(data);
+					this.isInfo=true;
+				},
+				// 获取栏目列表
+				getColumuList(){
+					var that=this;
+					var urlString=system.RMS+`/ks/getPublicTree.do?listvo.likePid=anfang&jsoncallback=?`;
+					var paramDic={
+						token:"239AF19F98183D517C031F86F0152B6B",
+						usercode: "1008809"
+					}
+					jQuery_Request_Post(urlString, paramDic, 'json', false, function(res) {
+						that.jsonData=res;
+						// 默认展示第一条数据
+						that.activeName=that.jsonData[0].name;
+						that.getColumnInfo(that.jsonData[0].name)
+					})
+				},
+				// 获取栏目详情
+				getColumnInfo(data){
+					var urlString=system.RMS+`/resource/publicResInfo.do?jsonData={"bookCode":"anfang"}&timestamp='+timestamp+'&jsoncallback=?`;
+					var paramDic={
+						token:"239AF19F98183D517C031F86F0152B6B",
+						usercode: "1008809",
+						rmsKsId: data.id
+					}
+					var that=this;
+					jQuery_Request_Get(urlString, paramDic, 'json', false, function(res) {
+						that.columnData=res.ResInfo;
+						dLog(that.columnData)
+					})
+				},
+				// 查看栏目三级闲情
+				showInfo(data){
+					var urlString=system.RMS+`/resplay/rmsCdnPlayPath.do?data={"rcode":"${data.rmsCode}","type":"1"}&jsoncallback=?`;
+					var paramDic={
+						token:"239AF19F98183D517C031F86F0152B6B",
+						usercode: "1008809",
+						rmsKsId: data.rmsKsId
+					}
+					var that=this;
+					jQuery_Request_Get(urlString, paramDic, 'json', false, function(res) {
+						that.columnDataInfo=res.ResPath;
+						setTimeout(function(){
+							var ifr=$("iframe");
+							console.log(ifr);
+							console.log(ifr[0].contentWindow.document.getElementsByTagName("img"));
+							// document.getElementsByTagName()
+							
+							ifr[0].contentWindow.document.body.width="100%";
+						})
+					})
+					this.isInfo=false;
+					
+				}
+			}
+	  })
+  </script>
 </html>

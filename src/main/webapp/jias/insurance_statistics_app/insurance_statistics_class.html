@@ -409,7 +409,7 @@
 
 							}
 						} else {
-							context.xa_showRequestErrorEmpty(updateNullString(object['err_msg'], ""),
+							context.xa_showRequestErrorEmpty(updateNullString(object['msg'], ""),
 								false, true);
 						}
 					},
@@ -459,7 +459,7 @@
 								context.showcontent = true;
 							context.initChar();
 						} else {
-							context.xa_showRequestErrorEmpty(updateNullString(object['err_msg'], "暂无相关信息"),
+							context.xa_showRequestErrorEmpty(updateNullString(object['msg'], "暂无相关信息"),
 								false, true);
 						}
 					},
@@ -668,7 +668,7 @@
 								context.xa_showRequestErrorEmpty("暂无相关信息", false, true);
 							}
 						} else {
-							context.xa_showRequestErrorEmpty(updateNullString(object['err_msg'], "暂无相关信息"),
+							context.xa_showRequestErrorEmpty(updateNullString(object['msg'], "暂无相关信息"),
 								false, true);
 						}
 					},

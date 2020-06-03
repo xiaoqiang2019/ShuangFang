@@ -370,7 +370,7 @@
 							}
 						}
 					} else {
-						vm.xa_showRequestErrorEmpty(updateNullString(object["err_msg"], "暂无相关数据"), false);
+						vm.xa_showRequestErrorEmpty(updateNullString(object["msg"], "暂无相关数据"), false);
 					}
 					if (pulltofresh) {
 						mui('.cell-list').pullRefresh().endPulldownToRefresh(false);

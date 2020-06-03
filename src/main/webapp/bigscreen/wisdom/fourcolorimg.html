@@ -16,644 +16,613 @@
 	<script src="js/showtime.js"></script>
 	<link rel="stylesheet" href="css/style.css">
 </head>
-
-<body>
-	<header>
-		<a href="#" class="logo"><img src="images/logo.png"></a>
-		<h1>校园安全智慧屏</h1>
-		<div class="time" id="showTime">2020.05.09.16:45:28</div>
-	</header>
-	<div class="navbox">
-		<div class="topbar box">
-			<p><img src="images/bud.png">郑州铁路职业技术学院-机电工程学院</p>
-			<p><img src="images/user.png"> 责任人：魏保立、戴明宏</p>
-			<p><img src="images/notice.png"><a href="#">关于“五一”期间加强疫情防控和落实中央八项规定精神的通知</a><span>16:24</span></p>
-		</div>
-		<div class="nav01">
-			<div class=" pull-left h100" style="width:65%">
-				<div class="tabs2 box" style="background: none; box-shadow: none;">
-					<!-- Swiper -->
-					<div class="swiper-container">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide active"><a href="#">匠心楼1层</a></div>
-							<div class="swiper-slide"><a href="#">匠心楼2层</a></div>
-							<div class="swiper-slide"><a href="#">匠心楼5层</a></div>
-							<div class="swiper-slide"><a href="#">毓秀楼1层</a></div>
-							<div class="swiper-slide"><a href="#">毓秀楼2层</a></div>
-						</div>
+<body style="padding: 0;">
+	<div class="h100">
+		<div class=" pull-left h100" style="width:65%">
+			<div class="tabs2 box" style="background: none; box-shadow: none;">
+				<!-- Swiper -->
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide active"><a href="#">匠心楼1层</a></div>
+						<div class="swiper-slide"><a href="#">匠心楼2层</a></div>
+						<div class="swiper-slide"><a href="#">匠心楼5层</a></div>
+						<div class="swiper-slide"><a href="#">毓秀楼1层</a></div>
+						<div class="swiper-slide"><a href="#">毓秀楼2层</a></div>
 					</div>
-					<span class="tips">左右滑动</span>
-					<script>
-						//初始化tabs菜单
-						var swiper = new Swiper('.swiper-container', {
-							slidesPerView: 'auto',
-							spaceBetween: 0,
-						});
-
-						//是否显示提示	
-						sum = 0
-						for (var i = 0; i < $(".swiper-slide").length; i++) {
-							sum += $(".swiper-slide").eq(i).width()
-						}
-						var sboxw = $(".swiper-wrapper").width()
-						if (sum > sboxw) {
-							$(".tips").show()
-						} else {
-							$(".tips").hide()
-						}
-					</script>
-
 				</div>
-				<div class="fourcolorimg box" style="border-radius: 0 5px 5px 5px;">
-					<div class="maplegend">
-						<span>重大风险Ⅰ级</span>
-						<span>较大风Ⅱ级</span>
-						<span>一般风险Ⅲ级</span>
-						<span>低风险Ⅳ级</span>
-					</div>
-					<div class="maplegend2">
-						<span>巡检正常</span>
-						<span>未巡检</span>
-						<span>存在隐患</span>
-						<span>存在重大隐患</span>
-					</div>
-					<div class="imgbox">
-						<div class="mapdot" style="position: relative;" id="add1">
-							<div class="dot active">
-								<div class="state state04"><span>1</span></div>
-								<div class="dotnav"></div>
-							</div>
-							<div class="dot ">
-								<div class="state state03"><span>2</span></div>
-								<div class="dotnav"></div>
-							</div>
-							<div class="dot ">
-								<div class="state state03"><span>3</span></div>
-								<div class="dotnav"></div>
-							</div>
-							<div class="dot">
-								<div class="state state01"><span>4</span></div>
-								<div class="dotnav"></div>
-							</div>
-							<div class="dot">
-								<div class="state state03"><span>5</span></div>
-								<div class="dotnav"></div>
-							</div>
-							<img src="images/01.png">
+				<span class="tips">左右滑动</span>
+				<script>
+					//初始化tabs菜单
+					var swiper = new Swiper('.swiper-container', {
+						slidesPerView: 'auto',
+						spaceBetween: 0,
+					});
+
+					//是否显示提示	
+					sum = 0
+					for (var i = 0; i < $(".swiper-slide").length; i++) {
+						sum += $(".swiper-slide").eq(i).width()
+					}
+					var sboxw = $(".swiper-wrapper").width()
+					if (sum > sboxw) {
+						$(".tips").show()
+					} else {
+						$(".tips").hide()
+					}
+				</script>
+
+			</div>
+			<div class="fourcolorimg box" style="border-radius: 0 5px 5px 5px;">
+				<div class="maplegend">
+					<span>重大风险Ⅰ级</span>
+					<span>较大风Ⅱ级</span>
+					<span>一般风险Ⅲ级</span>
+					<span>低风险Ⅳ级</span>
+				</div>
+				<div class="maplegend2">
+					<span>巡检正常</span>
+					<span>未巡检</span>
+					<span>存在隐患</span>
+					<span>存在重大隐患</span>
+				</div>
+				<div class="imgbox">
+					<div class="mapdot" style="position: relative;" id="add1">
+						<div class="dot active">
+							<div class="state state04"><span>1</span></div>
+							<div class="dotnav"></div>
 						</div>
+						<div class="dot ">
+							<div class="state state03"><span>2</span></div>
+							<div class="dotnav"></div>
+						</div>
+						<div class="dot ">
+							<div class="state state03"><span>3</span></div>
+							<div class="dotnav"></div>
+						</div>
+						<div class="dot">
+							<div class="state state01"><span>4</span></div>
+							<div class="dotnav"></div>
+						</div>
+						<div class="dot">
+							<div class="state state03"><span>5</span></div>
+							<div class="dotnav"></div>
+						</div>
+						<img src="images/01.png">
 					</div>
 				</div>
 			</div>
-			<div class="pull-right  h100" style="width:calc(35% - 12px); padding-top:38px;;">
-				<div class="box nav02" style="height:100px; margin-bottom: 12px; background: none;">
-					<div>
-						<h2>219</h2>
-						<p>风险总数</p>
-					</div>
-
-					<div class="label-danger" data-toggle="modal" data-target="#myModal2">
-						<h2>21</h2>
-						<p>重大风险 </p>
-					</div>
-					<div class="label-red" data-toggle="modal" data-target="#myModal2">
-						<h2>50</h2>
-						<p>较大风险</p>
-					</div>
-					<div class="label-warning" data-toggle="modal" data-target="#myModal2">
-						<h2>62</h2>
-						<p>一般风险 </p>
-					</div>
-					<div class="label-primary" data-toggle="modal" data-target="#myModal2">
-						<h2>86</h2>
-						<p>低风险 </p>
-					</div>
+		</div>
+		<div class="pull-right  h100" style="width:calc(35% - 12px); padding-top:38px;;">
+			<div class="box nav02" style="height:100px; margin-bottom: 12px; background: none;">
+				<div>
+					<h2>219</h2>
+					<p>风险总数</p>
 				</div>
-				<div class="box" style="height:calc(100% - 112px); margin-bottom: 12px">
-					<div class="dangerlist">
-						<h2>
-							<div class="state state04">1</div><span>大车间风险管控</span>
-						</h2>
-						<div class="dangerlistnav">
-							<!-- Nav tabs -->
-							<ul class="nav nav-tabs" role="tablist">
-								<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
-										data-toggle="tab">风险告知卡</a></li>
-								<li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
-										data-toggle="tab">风险点清单</a></li>
-								<li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
-										data-toggle="tab">警示标识</a></li>
-							</ul>
 
-							<!-- Tab panes -->
-							<div class="tab-content tab-content01">
-								<div role="tabpanel" class="tab-pane active" id="home">
+				<div class="label-danger" data-toggle="modal" data-target="#myModal2">
+					<h2>21</h2>
+					<p>重大风险 </p>
+				</div>
+				<div class="label-red" data-toggle="modal" data-target="#myModal2">
+					<h2>50</h2>
+					<p>较大风险</p>
+				</div>
+				<div class="label-warning" data-toggle="modal" data-target="#myModal2">
+					<h2>62</h2>
+					<p>一般风险 </p>
+				</div>
+				<div class="label-primary" data-toggle="modal" data-target="#myModal2">
+					<h2>86</h2>
+					<p>低风险 </p>
+				</div>
+			</div>
+			<div class="box" style="height:calc(100% - 112px); margin-bottom: 12px">
+				<div class="dangerlist">
+					<h2>
+						<div class="state state04">1</div><span>大车间风险管控</span>
+					</h2>
+					<div class="dangerlistnav">
+						<!-- Nav tabs -->
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+									data-toggle="tab">风险告知卡</a></li>
+							<li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+									data-toggle="tab">风险点清单</a></li>
+							<li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
+									data-toggle="tab">警示标识</a></li>
+						</ul>
 
-									<ul class="imglist  imglist1  lightgallery">
-										<li class="col-xs-6" data-src="">
-											<div class="imgbox">
-												<img src="">
-											</div>
+						<!-- Tab panes -->
+						<div class="tab-content tab-content01">
+							<div role="tabpanel" class="tab-pane active" id="home">
 
-										</li>
-									</ul>
-								</div>
-								<div role="tabpanel" class="tab-pane tablebox" id="profile">
+								<ul class="imglist  imglist1  lightgallery">
+									<li class="col-xs-6" data-src="">
+										<div class="imgbox">
+											<img src="">
+										</div>
 
-									<div>
-										<table class="table table-bordered table2">
-											<tbody>
-												<tr>
-													<th colspan="3">风险点编号 </th>
-													<td>1-1</td>
-													<th>风险类型 </th>
-													<td width="80">静态风险 </td>
-												</tr>
-												<tr>
-													<th colspan="3">风险点名称 </th>
-													<td><strong class=" text-primary">配电箱（柜） </strong></td>
-													<th>风险等级 </th>
-													<td class="label-warning  class=" label-warning="" text-center""="">
-														III级 </td>
-												</tr>
-												<tr>
-													<th colspan="3">风险因素 </th>
-													<td>配电箱/柜管理不到位 </td>
-													<th>管控单位/责任人 </th>
-													<td>吕蒙 </td>
-												</tr>
-												<tr>
-													<th colspan="3">可能导致事故及后果 </th>
-													<td colspan="3">管理不善，引发电气火灾事故或造成人员触电 </td>
-												</tr>
-												<tr>
-													<th>序号 </th>
-													<th colspan="2">检查事项 </th>
-													<th colspan="2">风险控制措施 </th>
-													<th>检查频次 </th>
-												</tr>
-												<tr>
-													<td>1</td>
-													<td colspan="2">点检保养人员是否经培训合格持证上岗 </td>
-													<td colspan="2">人员招聘、选用时应优先录用带有上岗证的人员;定期参加安全培训 </td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td colspan="2">配电箱内断路器是否有漏电保护、过载保护、短路保护功能 </td>
-													<td colspan="2">加装带有漏电保护、过载保护、短路保护功能的断路器 </td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td colspan="2">配电箱门是否做等电位跨接 </td>
-													<td colspan="2">配电箱门做等电位跨接措施 </td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td colspan="2">配电箱内是否存放可燃物或危化品 </td>
-													<td colspan="2">明确责任人，定期巡查；配电箱内不得存放可燃物、危化品;电工应培训合格后持证上岗;配发绝缘手套、绝缘鞋
-													</td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td colspan="2">配电箱进出线孔洞是否未封堵 </td>
-													<td colspan="2">使用不燃或难燃材料封堵；明确负责人，定期检查 </td>
-													<td>周检 </td>
-												</tr>
-											</tbody>
-										</table>
-										<table class="table table-bordered table2">
-											<tbody>
-												<tr>
-													<th colspan="3">风险点编号 </th>
-													<td>1-2</td>
-													<th>风险类型 </th>
-													<td width="80">静态风险 </td>
-												</tr>
-												<tr>
-													<th colspan="3">风险点名称 </th>
-													<td><strong class=" text-primary">计算机教室 </strong></td>
-													<th>风险等级</th>
-													<td class="label-warning  text-center">III级</td>
-												</tr>
-												<tr>
-													<th colspan="3">风险因素 </th>
-													<td>计算机教室管理不到位 </td>
-													<th>管控单位/责任人 </th>
-													<td>陈光伟</td>
-												</tr>
-												<tr>
-													<th colspan="3">可能导致事故及后果 </th>
-													<td colspan="3">管理不善，引发电气火灾事故或造成人员触电 </td>
-												</tr>
-												<tr>
-													<td>序号 </td>
-													<td colspan="2">检查事项 </td>
-													<td colspan="2">风险控制措施 </td>
-													<td>检查频次 </td>
-												</tr>
-												<tr>
-													<td>1</td>
-													<td colspan="2">电源是否加装漏电保护装置、过负载保护装置 </td>
-													<td colspan="2">电源应加装漏电保护装置、过负载保护装置并定期测试;明确责任人，定期检查;定期对管理人员安全培训
-													</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td colspan="2">是否存在私拉乱接电源线或电源线破损现象 </td>
-													<td colspan="2">明确责任人，定期进行检查，发现问题及时维修 </td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td colspan="2">教室桌椅、设备、设施固定是否牢固 </td>
-													<td colspan="2">明确责任人，定期检查 </td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td colspan="2">计算机教室是否存在使用可燃物做装饰的现象 </td>
-													<td colspan="2">使用不燃或阻燃材料做装饰;明确责任人，定期检查 </td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td colspan="2">是否设置视频监控系统 </td>
-													<td colspan="2">设置视频监控系统;定期进行检查 </td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>6</td>
-													<td colspan="2">计算机教室不使用期间是否上锁管控 </td>
-													<td colspan="2">明确责任人，非上课期间应上锁管控 </td>
-													<td>日检 </td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-
-									<div>
-										<table class="table table-bordered table2">
-											<tbody>
-												<tr>
-													<th colspan="3">风险点编号 </th>
-													<td>1-3</td>
-													<th>风险类型 </th>
-													<td width="80">静态风险 </td>
-												</tr>
-												<tr>
-													<th colspan="3">风险点名称 </th>
-													<td><strong class=" text-primary">机电工程学院6-5层-配电箱</strong></td>
-													<th>风险等级</th>
-													<td class="label-warning  text-center">II级</td>
-												</tr>
-												<tr>
-													<th colspan="3">风险因素 </th>
-													<td>&nbsp;</td>
-													<th>管控单位/责任人 </th>
-													<td>柳科技</td>
-												</tr>
-												<tr>
-													<th colspan="3">可能导致事故及后果 </th>
-													<td colspan="3">&nbsp;</td>
-												</tr>
-												<tr>
-													<td>序号 </td>
-													<td colspan="2">检查事项 </td>
-													<td colspan="2">检查人</td>
-													<td>检查频次 </td>
-												</tr>
-												<tr>
-													<td>1</td>
-													<td colspan="2">配电箱、柜是否张贴安全管理责任人信息</td>
-													<td colspan="2">邵华</td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td colspan="2">是否张贴警示标示（当心触电、当心弧光）</td>
-													<td colspan="2">邵华</td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td colspan="2">是否张贴配电箱点检表</td>
-													<td colspan="2">邵华</td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td colspan="2">配电箱内是否存放可燃物或危化品</td>
-													<td colspan="2">邵华</td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td colspan="2">配电箱内接线端是否存在氧化或高温变色现象</td>
-													<td colspan="2">邵华</td>
-													<td>周检 </td>
-												</tr>
-												<tr>
-													<td>6</td>
-													<td colspan="2">配电箱门、门锁、指示灯等是否损坏</td>
-													<td colspan="2">邵华</td>
-													<td>周检 </td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-
-
-
-									<div>
-										<table class="table table-bordered table2">
-											<tbody>
-												<tr>
-													<th colspan="3">风险点编号 </th>
-													<td>1-5</td>
-													<th>风险类型 </th>
-													<td width="80">静态风险 </td>
-												</tr>
-												<tr>
-													<th colspan="3">风险点名称 </th>
-													<td><strong class=" text-primary">内燃机综合实训室1 </strong></td>
-													<th>风险等级</th>
-													<td class="label-warning  text-center">III级</td>
-												</tr>
-												<tr>
-													<th colspan="3">风险因素 </th>
-													<td>&nbsp;</td>
-													<th>管控单位/责任人 </th>
-													<td>晋兵营</td>
-												</tr>
-												<tr>
-													<th colspan="3">可能导致事故及后果 </th>
-													<td colspan="3">&nbsp;</td>
-												</tr>
-												<tr>
-													<td>序号 </td>
-													<td colspan="2">检查事项 </td>
-													<td colspan="2">检查人</td>
-													<td>检查频次 </td>
-												</tr>
-												<tr>
-													<td>1</td>
-													<td colspan="2">实训室内门窗、教学设备是否完好（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td colspan="2">是否对学生进行安全教育（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td colspan="2">设备设施安全装置是否有效（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td colspan="2">是否张贴警示标识（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td colspan="2">是否张贴安全操作规程（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>6</td>
-													<td colspan="2">是否有油污、积水现象（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-
-									<div>
-										<table class="table table-bordered table2">
-											<tbody>
-												<tr>
-													<th colspan="3">风险点编号 </th>
-													<td>1-4</td>
-													<th>风险类型 </th>
-													<td width="80">静态风险 </td>
-												</tr>
-												<tr>
-													<th colspan="3">风险点名称 </th>
-													<td><strong class=" text-primary">机电工程学院6-5层消防器材 </strong></td>
-													<th>风险等级</th>
-													<td class="label-warning  text-center">II级</td>
-												</tr>
-												<tr>
-													<th colspan="3">风险因素 </th>
-													<td>&nbsp;</td>
-													<th>管控单位/责任人 </th>
-													<td>楚钊</td>
-												</tr>
-												<tr>
-													<th colspan="3">可能导致事故及后果 </th>
-													<td colspan="3">&nbsp;</td>
-												</tr>
-												<tr>
-													<td>序号 </td>
-													<td colspan="2">检查事项 </td>
-													<td colspan="2">检查人</td>
-													<td>检查频次 </td>
-												</tr>
-												<tr>
-													<td>1</td>
-													<td colspan="2">室内消火栓配置是否符合国家标准要求</td>
-													<td colspan="2">楚钊</td>
-													<td>月检 </td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td colspan="2">室内消火栓应是否张贴使用提示</td>
-													<td colspan="2">楚钊</td>
-													<td>月检 </td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td colspan="2">消火栓应是否定期进行点检</td>
-													<td colspan="2">楚钊</td>
-													<td>月检 </td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td colspan="2">检查消火栓末端压力表压力是否符合要求</td>
-													<td colspan="2">楚钊</td>
-													<td>月检 </td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td colspan="2">是否定期对消火栓末端试水进行测试</td>
-													<td colspan="2">楚钊</td>
-													<td>月检 </td>
-												</tr>
-												<tr>
-													<td>6</td>
-													<td colspan="2">消火栓配件是否有缺失、损坏现象</td>
-													<td colspan="2">楚钊</td>
-													<td>月检 </td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-									<div>
-										<table class="table table-bordered table2">
-											<tbody>
-												<tr>
-													<th colspan="3">风险点编号 </th>
-													<td>1-6</td>
-													<th>风险类型 </th>
-													<td width="80">静态风险 </td>
-												</tr>
-												<tr>
-													<th colspan="3">风险点名称 </th>
-													<td><strong class=" text-primary">机械拆装实训室 </strong></td>
-													<th>风险等级</th>
-													<td class="label-warning  text-center">III级</td>
-												</tr>
-												<tr>
-													<th colspan="3">风险因素 </th>
-													<td>&nbsp;</td>
-													<th>管控单位/责任人 </th>
-													<td>晋兵营</td>
-												</tr>
-												<tr>
-													<th colspan="3">可能导致事故及后果 </th>
-													<td colspan="3">&nbsp;</td>
-												</tr>
-												<tr>
-													<td>序号 </td>
-													<td colspan="2">检查事项 </td>
-													<td colspan="2">检查人</td>
-													<td>检查频次 </td>
-												</tr>
-												<tr>
-													<td>1</td>
-													<td colspan="2">实训室内门窗、教学设备是否完好（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>2</td>
-													<td colspan="2">是否对学生进行安全教育（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>3</td>
-													<td colspan="2">设备设施安全装置是否有效（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>4</td>
-													<td colspan="2">是否张贴警示标识（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>5</td>
-													<td colspan="2">是否张贴安全操作规程（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-												<tr>
-													<td>6</td>
-													<td colspan="2">是否有油污、积水现象（课前）</td>
-													<td colspan="2">索小娟</td>
-													<td>日检 </td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-
-								</div>
-								<div role="tabpanel" class="tab-pane" id="messages">
-
-									<ul class="imglist imglist2  lightgallery">
-										<li class="col-xs-3" data-src="images/icon1.jpg">
-											<div class="imgbox">
-												<img src="images/icon1.jpg">
-											</div>
-										</li>
-										<li class="col-xs-3" data-src="images/icon2.jpg">
-											<div class="imgbox">
-												<img src="images/icon2.jpg">
-											</div>
-										</li>
-										<li class="col-xs-3" data-src="images/icon3.jpg">
-											<div class="imgbox">
-												<img src="images/icon3.jpg">
-											</div>
-										</li>
-										<li class="col-xs-3" data-src="images/icon4.jpg">
-											<div class="imgbox">
-												<img src="images/icon4.jpg">
-											</div>
-										</li>
-										<li class="col-xs-3" data-src="images/icon5.jpg">
-											<div class="imgbox">
-												<img src="images/icon5.jpg">
-											</div>
-										</li>
-									</ul>
-
-								</div>
+									</li>
+								</ul>
 							</div>
+							<div role="tabpanel" class="tab-pane tablebox" id="profile">
 
+								<div>
+									<table class="table table-bordered table2">
+										<tbody>
+											<tr>
+												<th colspan="3">风险点编号 </th>
+												<td>1-1</td>
+												<th>风险类型 </th>
+												<td width="80">静态风险 </td>
+											</tr>
+											<tr>
+												<th colspan="3">风险点名称 </th>
+												<td><strong class=" text-primary">配电箱（柜） </strong></td>
+												<th>风险等级 </th>
+												<td class="label-warning  class=" label-warning="" text-center""="">
+													III级 </td>
+											</tr>
+											<tr>
+												<th colspan="3">风险因素 </th>
+												<td>配电箱/柜管理不到位 </td>
+												<th>管控单位/责任人 </th>
+												<td>吕蒙 </td>
+											</tr>
+											<tr>
+												<th colspan="3">可能导致事故及后果 </th>
+												<td colspan="3">管理不善，引发电气火灾事故或造成人员触电 </td>
+											</tr>
+											<tr>
+												<th>序号 </th>
+												<th colspan="2">检查事项 </th>
+												<th colspan="2">风险控制措施 </th>
+												<th>检查频次 </th>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td colspan="2">点检保养人员是否经培训合格持证上岗 </td>
+												<td colspan="2">人员招聘、选用时应优先录用带有上岗证的人员;定期参加安全培训 </td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td colspan="2">配电箱内断路器是否有漏电保护、过载保护、短路保护功能 </td>
+												<td colspan="2">加装带有漏电保护、过载保护、短路保护功能的断路器 </td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td colspan="2">配电箱门是否做等电位跨接 </td>
+												<td colspan="2">配电箱门做等电位跨接措施 </td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>4</td>
+												<td colspan="2">配电箱内是否存放可燃物或危化品 </td>
+												<td colspan="2">明确责任人，定期巡查；配电箱内不得存放可燃物、危化品;电工应培训合格后持证上岗;配发绝缘手套、绝缘鞋
+												</td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>5</td>
+												<td colspan="2">配电箱进出线孔洞是否未封堵 </td>
+												<td colspan="2">使用不燃或难燃材料封堵；明确负责人，定期检查 </td>
+												<td>周检 </td>
+											</tr>
+										</tbody>
+									</table>
+									<table class="table table-bordered table2">
+										<tbody>
+											<tr>
+												<th colspan="3">风险点编号 </th>
+												<td>1-2</td>
+												<th>风险类型 </th>
+												<td width="80">静态风险 </td>
+											</tr>
+											<tr>
+												<th colspan="3">风险点名称 </th>
+												<td><strong class=" text-primary">计算机教室 </strong></td>
+												<th>风险等级</th>
+												<td class="label-warning  text-center">III级</td>
+											</tr>
+											<tr>
+												<th colspan="3">风险因素 </th>
+												<td>计算机教室管理不到位 </td>
+												<th>管控单位/责任人 </th>
+												<td>陈光伟</td>
+											</tr>
+											<tr>
+												<th colspan="3">可能导致事故及后果 </th>
+												<td colspan="3">管理不善，引发电气火灾事故或造成人员触电 </td>
+											</tr>
+											<tr>
+												<td>序号 </td>
+												<td colspan="2">检查事项 </td>
+												<td colspan="2">风险控制措施 </td>
+												<td>检查频次 </td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td colspan="2">电源是否加装漏电保护装置、过负载保护装置 </td>
+												<td colspan="2">电源应加装漏电保护装置、过负载保护装置并定期测试;明确责任人，定期检查;定期对管理人员安全培训
+												</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td colspan="2">是否存在私拉乱接电源线或电源线破损现象 </td>
+												<td colspan="2">明确责任人，定期进行检查，发现问题及时维修 </td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td colspan="2">教室桌椅、设备、设施固定是否牢固 </td>
+												<td colspan="2">明确责任人，定期检查 </td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>4</td>
+												<td colspan="2">计算机教室是否存在使用可燃物做装饰的现象 </td>
+												<td colspan="2">使用不燃或阻燃材料做装饰;明确责任人，定期检查 </td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>5</td>
+												<td colspan="2">是否设置视频监控系统 </td>
+												<td colspan="2">设置视频监控系统;定期进行检查 </td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>6</td>
+												<td colspan="2">计算机教室不使用期间是否上锁管控 </td>
+												<td colspan="2">明确责任人，非上课期间应上锁管控 </td>
+												<td>日检 </td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div>
+									<table class="table table-bordered table2">
+										<tbody>
+											<tr>
+												<th colspan="3">风险点编号 </th>
+												<td>1-3</td>
+												<th>风险类型 </th>
+												<td width="80">静态风险 </td>
+											</tr>
+											<tr>
+												<th colspan="3">风险点名称 </th>
+												<td><strong class=" text-primary">机电工程学院6-5层-配电箱</strong></td>
+												<th>风险等级</th>
+												<td class="label-warning  text-center">II级</td>
+											</tr>
+											<tr>
+												<th colspan="3">风险因素 </th>
+												<td>&nbsp;</td>
+												<th>管控单位/责任人 </th>
+												<td>柳科技</td>
+											</tr>
+											<tr>
+												<th colspan="3">可能导致事故及后果 </th>
+												<td colspan="3">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>序号 </td>
+												<td colspan="2">检查事项 </td>
+												<td colspan="2">检查人</td>
+												<td>检查频次 </td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td colspan="2">配电箱、柜是否张贴安全管理责任人信息</td>
+												<td colspan="2">邵华</td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td colspan="2">是否张贴警示标示（当心触电、当心弧光）</td>
+												<td colspan="2">邵华</td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td colspan="2">是否张贴配电箱点检表</td>
+												<td colspan="2">邵华</td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>4</td>
+												<td colspan="2">配电箱内是否存放可燃物或危化品</td>
+												<td colspan="2">邵华</td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>5</td>
+												<td colspan="2">配电箱内接线端是否存在氧化或高温变色现象</td>
+												<td colspan="2">邵华</td>
+												<td>周检 </td>
+											</tr>
+											<tr>
+												<td>6</td>
+												<td colspan="2">配电箱门、门锁、指示灯等是否损坏</td>
+												<td colspan="2">邵华</td>
+												<td>周检 </td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+
+
+								<div>
+									<table class="table table-bordered table2">
+										<tbody>
+											<tr>
+												<th colspan="3">风险点编号 </th>
+												<td>1-5</td>
+												<th>风险类型 </th>
+												<td width="80">静态风险 </td>
+											</tr>
+											<tr>
+												<th colspan="3">风险点名称 </th>
+												<td><strong class=" text-primary">内燃机综合实训室1 </strong></td>
+												<th>风险等级</th>
+												<td class="label-warning  text-center">III级</td>
+											</tr>
+											<tr>
+												<th colspan="3">风险因素 </th>
+												<td>&nbsp;</td>
+												<th>管控单位/责任人 </th>
+												<td>晋兵营</td>
+											</tr>
+											<tr>
+												<th colspan="3">可能导致事故及后果 </th>
+												<td colspan="3">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>序号 </td>
+												<td colspan="2">检查事项 </td>
+												<td colspan="2">检查人</td>
+												<td>检查频次 </td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td colspan="2">实训室内门窗、教学设备是否完好（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td colspan="2">是否对学生进行安全教育（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td colspan="2">设备设施安全装置是否有效（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>4</td>
+												<td colspan="2">是否张贴警示标识（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>5</td>
+												<td colspan="2">是否张贴安全操作规程（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>6</td>
+												<td colspan="2">是否有油污、积水现象（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div>
+									<table class="table table-bordered table2">
+										<tbody>
+											<tr>
+												<th colspan="3">风险点编号 </th>
+												<td>1-4</td>
+												<th>风险类型 </th>
+												<td width="80">静态风险 </td>
+											</tr>
+											<tr>
+												<th colspan="3">风险点名称 </th>
+												<td><strong class=" text-primary">机电工程学院6-5层消防器材 </strong></td>
+												<th>风险等级</th>
+												<td class="label-warning  text-center">II级</td>
+											</tr>
+											<tr>
+												<th colspan="3">风险因素 </th>
+												<td>&nbsp;</td>
+												<th>管控单位/责任人 </th>
+												<td>楚钊</td>
+											</tr>
+											<tr>
+												<th colspan="3">可能导致事故及后果 </th>
+												<td colspan="3">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>序号 </td>
+												<td colspan="2">检查事项 </td>
+												<td colspan="2">检查人</td>
+												<td>检查频次 </td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td colspan="2">室内消火栓配置是否符合国家标准要求</td>
+												<td colspan="2">楚钊</td>
+												<td>月检 </td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td colspan="2">室内消火栓应是否张贴使用提示</td>
+												<td colspan="2">楚钊</td>
+												<td>月检 </td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td colspan="2">消火栓应是否定期进行点检</td>
+												<td colspan="2">楚钊</td>
+												<td>月检 </td>
+											</tr>
+											<tr>
+												<td>4</td>
+												<td colspan="2">检查消火栓末端压力表压力是否符合要求</td>
+												<td colspan="2">楚钊</td>
+												<td>月检 </td>
+											</tr>
+											<tr>
+												<td>5</td>
+												<td colspan="2">是否定期对消火栓末端试水进行测试</td>
+												<td colspan="2">楚钊</td>
+												<td>月检 </td>
+											</tr>
+											<tr>
+												<td>6</td>
+												<td colspan="2">消火栓配件是否有缺失、损坏现象</td>
+												<td colspan="2">楚钊</td>
+												<td>月检 </td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div>
+									<table class="table table-bordered table2">
+										<tbody>
+											<tr>
+												<th colspan="3">风险点编号 </th>
+												<td>1-6</td>
+												<th>风险类型 </th>
+												<td width="80">静态风险 </td>
+											</tr>
+											<tr>
+												<th colspan="3">风险点名称 </th>
+												<td><strong class=" text-primary">机械拆装实训室 </strong></td>
+												<th>风险等级</th>
+												<td class="label-warning  text-center">III级</td>
+											</tr>
+											<tr>
+												<th colspan="3">风险因素 </th>
+												<td>&nbsp;</td>
+												<th>管控单位/责任人 </th>
+												<td>晋兵营</td>
+											</tr>
+											<tr>
+												<th colspan="3">可能导致事故及后果 </th>
+												<td colspan="3">&nbsp;</td>
+											</tr>
+											<tr>
+												<td>序号 </td>
+												<td colspan="2">检查事项 </td>
+												<td colspan="2">检查人</td>
+												<td>检查频次 </td>
+											</tr>
+											<tr>
+												<td>1</td>
+												<td colspan="2">实训室内门窗、教学设备是否完好（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td colspan="2">是否对学生进行安全教育（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td colspan="2">设备设施安全装置是否有效（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>4</td>
+												<td colspan="2">是否张贴警示标识（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>5</td>
+												<td colspan="2">是否张贴安全操作规程（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+											<tr>
+												<td>6</td>
+												<td colspan="2">是否有油污、积水现象（课前）</td>
+												<td colspan="2">索小娟</td>
+												<td>日检 </td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+							</div>
+							<div role="tabpanel" class="tab-pane" id="messages">
+
+								<ul class="imglist imglist2  lightgallery">
+									<li class="col-xs-3" data-src="images/icon1.jpg">
+										<div class="imgbox">
+											<img src="images/icon1.jpg">
+										</div>
+									</li>
+									<li class="col-xs-3" data-src="images/icon2.jpg">
+										<div class="imgbox">
+											<img src="images/icon2.jpg">
+										</div>
+									</li>
+									<li class="col-xs-3" data-src="images/icon3.jpg">
+										<div class="imgbox">
+											<img src="images/icon3.jpg">
+										</div>
+									</li>
+									<li class="col-xs-3" data-src="images/icon4.jpg">
+										<div class="imgbox">
+											<img src="images/icon4.jpg">
+										</div>
+									</li>
+									<li class="col-xs-3" data-src="images/icon5.jpg">
+										<div class="imgbox">
+											<img src="images/icon5.jpg">
+										</div>
+									</li>
+								</ul>
+
+							</div>
 						</div>
 
+					</div>
 
 
-						<div class="dangerlistfoot">
-							<div class="dangend">
-								<div>
-									<h4 class="ellipsis1"><span class="glyphicon glyphicon-warning-sign"
-											aria-hidden="true"></span> 大车间存在一般隐患 </h4>
-									<h5 class="ellipsis1">所有设备设施、特种设备未制定SOP</h5>
-									<p>上报人：孙成成 [4.28 12:56]</p>
-								</div>
-								<div>
-									<ol>管控责任人：吕蒙</ol>
-									<ol>指派处理人：韩建</ol>
-									<ol>处理期限：4月30日</ol>
-								</div>
+
+					<div class="dangerlistfoot">
+						<div class="dangend">
+							<div>
+								<h4 class="ellipsis1"><span class="glyphicon glyphicon-warning-sign"
+										aria-hidden="true"></span> 大车间存在一般隐患 </h4>
+								<h5 class="ellipsis1">所有设备设施、特种设备未制定SOP</h5>
+								<p>上报人：孙成成 [4.28 12:56]</p>
+							</div>
+							<div>
+								<ol>管控责任人：吕蒙</ol>
+								<ol>指派处理人：韩建</ol>
+								<ol>处理期限：4月30日</ol>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="foot">
-		<ul>
-			<li><a href="#" data-toggle="modal" data-target="#myModal"><i></i><span>双防大数据</span></a></li>
-			<li class="active"><a href="fourcolorimg.html"><i></i><span>风险四色图</span></a></li>
-			<li><a href="risk_level.html"><i></i><span>风险分级管控</span></a></li>
-			<li><a href="danger_gover.html"><i></i><span>隐患排查治理</span></a></li>
-			<li><a href="knowledge.html"><i></i><span>双防知识库</span></a></li>
-			<li><a href="website.html"><i></i><span>微官网</span></a></li>
-			<li><a href="exit.html"><i></i><span>系统桌面</span></a></li>
-		</ul>
-	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog fordatamodal" role="document">
-			<div class="back" data-dismiss="modal" aria-label="Close"><span>返回</span></div>
-			<iframe src="" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
 		</div>
 	</div>
 

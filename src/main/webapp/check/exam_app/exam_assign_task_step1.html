@@ -1,0 +1,318 @@
+<!-- 以下代码可以直接全部copy到新建的html中 基础引用 不可缺少 有自定义的在单个html中实现-->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>第一步:任务分配</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+
+		<style>
+			.school-title {
+				color: gray;
+				font-size: 12px;
+				text-align: center;
+			}
+
+			.top-desc {
+				padding-left: 14px;
+				padding-right: 14px;
+				color: rgb(160, 122, 80);
+				font-size: 12px;
+			}
+
+			.cell-item {
+				display: flex;
+				display: -webkit-flex;
+				align-items: center;
+				justify-content: space-between;
+				-webkit-justify-content: space-between;
+				-webkit-align-items: center;
+				height: 65px;
+			}
+
+			.cell-item-left {
+				width: calc(100% - 30px);
+			}
+
+			.cell-item-right {
+				display: block;
+				background: url(../../common/app/images/main_blue_white_uncheck.png) no-repeat center;
+				width: 20px;
+				height: 20px;
+				background-size: 100% 100%;
+			}
+
+			.cell-item-right.active {
+				background: url(../../common/app/images/main_blue_white_check.png) no-repeat center;
+				width: 20px;
+				height: 20px;
+				background-size: 100% 100%;
+			}
+
+			.sort-uncheckuser {
+				color: gray;
+				font-size: 12px;
+			}
+
+			.sortassignusername {
+				color: rgb(59, 162, 255);
+				font-size: 12px;
+			}
+
+			.footbtn a {
+				color: rgb(59, 162, 255);
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>第一步:任务分配</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div v-cloak class="content">
+			<div id="app" v-if="show">
+				<div class="school-title">{{schoolTitle}}</div>
+				<div class="top-desc">
+					选中检查任务分类，点击分配人员，将检查任务分给相应的检查人员；分配完毕后点击完成
+				</div>
+				<div>
+					<ul class="mui-table-view">
+						<li v-for="(item,index) in itemList " :key="item.sortid" class="cell-item mui-table-view-cell" @tap="selectItemClicked($event,index)">
+							<div class="cell-item-left">
+								<div class="sortname">{{item.sortname}}</div>
+								<div v-if="item.userlist.length==0" class="sort-uncheckuser">未分配</div>
+								<div v-else class="sortassignusername">{{item.sortassignusername}}</div>
+							</div>
+							<i class="cell-item-right" v-bind:class="{'active':item.itemSelected}"></i>
+						</li>
+					</ul>
+				</div>
+				<div class="footbtn flex_center">
+					<a href="javascript:;" class="flex_center finish-btn" @tap="finishAction()">完成</a>
+					<a href="javascript:;" class="flex_center setting-uncheck-btn" @tap="settingUnCheckAction()">设置不检查</a>
+					<a href="javascript:;" class="flex_center assign-person-btn" @tap="assignPersonAction()">分配人员</a>
+				</div>
+			</div>
+			<!-- 空视图 -->
+			<empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="true" v-bind:isneterror="isneterror" v-on:retryclick="retryMsg"></empty>
+		</div>
+
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/extend/vue/vue.min.js"></script>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/app/script/empty_vue.js"></script>
+	<script>
+		/* 系统请求地址 */
+		var checkUrl = system.check;
+		var usercenterUrl = system.usercenter;
+
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+
+		var checkschoolid = updateNullString(getURLParameter('checkschoolid'), "");
+		var checkschoolname = updateNullString(getURLParameter('schoolname'), "");
+		var chargeusercode = updateNullString(getURLParameter('chargeusercode'), "");
+		var chargeusertitle = updateNullString(getURLParameter('chargeusertitle'), "");
+		var assigntype = updateNullString(getURLParameter('assigntype'), ""); //分组分配任务时需要传值
+		var groupid = updateNullString(getURLParameter('groupid'), ""); //分组分配任务时需要传值
+
+		var vm = new Vue({
+			el: ".content",
+			data: {
+				show: true,
+				isneterror: false,
+				errorMsg: "",
+				schoolTitle: checkschoolname,
+				selectSortId: "",
+				itemList: [], //列表数据
+			},
+			mounted: function mounted() {
+				//请求页面数据
+				requestCheckClassifyListDataFromServer()
+			},
+			methods: {
+				//重试
+				xa_showRequestErrorEmpty: function(msg, isneterror) {
+					this.show = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+				},
+				retryMsg: function() {
+					requestCheckClassifyListDataFromServer();
+				},
+
+				/* 点击任务分类cell */
+				selectItemClicked: function(e, index) {
+					var	item = this.itemList[index];
+					item.itemSelected = !item.itemSelected;
+					dLog("点击事件" + index + "是否选中" + item.itemSelected);
+					
+					//以下三行代码若不写，界面渲染不成功 写了就可以成功 不知道为什么？？？啊啊啊啊啊啊
+					// var oldid = item.sortid;
+					// item.sortid = "0";
+					// item.sortid = oldid;
+					
+					 vm.$forceUpdate();
+				},
+
+				/* 选择的分类数据 */
+				xa_caculateAllSelectSort: function() {
+					var that = this;
+					var sortselectId = '';
+					if (that.itemList.length > 0) {
+						that.itemList.map(function(a) {
+							sortselectId += a.sortid + " ";
+						})
+					}
+					vm.selectSortId = sortselectId;
+				},
+
+				/* 完成 */
+				finishAction: function() {
+					history.go(-1);
+				},
+
+				/* 设置不检查 */
+				settingUnCheckAction: function() {
+					CodeSTD.form({
+						url: "exam_setting_uncheck.html",
+						params: {
+							"usercode": usercode,
+							"token": token,
+							"frompage": "exam_assign_task_step1",
+							"checkschoolid": checkschoolid,
+							"schoolname":checkschoolname,
+							"chargeusercode": chargeusercode,
+							"chargeusertitle":chargeusertitle,//总负责人或带队领导
+							"checkschoolgroupid": "", //查询App 此值为空
+						},
+					});
+				},
+
+				/* 分配人员 */
+				assignPersonAction: function() {
+					CodeSTD.form({
+						url: "exam_assign_task_step2.html",
+						params: {
+							"usercode": usercode,
+							"token": token,
+							"frompage": "exam_assign_task_step1",
+							"checkschoolid": checkschoolid,
+							"chargeusercode": chargeusercode
+						},
+					});
+				},
+
+			}
+		})
+
+
+		// 获取分配任务页数据
+		function requestCheckClassifyListDataFromServer() {
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				vm.xa_showRequestErrorEmpty("网络似乎有点问题", true);
+				return;
+			}
+
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"checkschoolid": checkschoolid,
+				"groupid": groupid,
+				"assigntype": assigntype
+			};
+			var urlString = checkUrl + "getAssignTaskSortList.action";
+			jQuery_Request_Post(urlString, paramDic, 'json', true, function(responseData) {
+					mui.hideLoading();
+					var result = responseData["ret"];
+					if (result) {
+						vm.itemList = responseData["data"];
+						if (vm.itemList.length > 0) {
+							updateSortCheckUser();
+							vm.show = true;
+						} else {
+							vm.xa_showRequestErrorEmpty("暂无相关数据", false);
+						}
+					} else {
+						vm.xa_showRequestErrorEmpty(updateNullString(responseData["msg"], "获取数据失败"), false);
+					}
+				},
+				function(error) {
+					mui.hideLoading();
+					vm.xa_showRequestErrorEmpty(error, false);
+				})
+		}
+
+		/* 重新组装数据源 */
+		function updateSortCheckUser() {
+			if (vm.itemList.length > 0) {
+				vm.itemList.map(function(item) {
+					item.itemSelected = false; //设置默认未选中
+					var sortassignusercode = '';
+					var sortassignusername = '';
+					var userlist = item.userlist;
+					userlist.map(function(user) {
+						var showUsername = user.username;
+						if (chargeusertitle.length > 0) {
+							var isChargePeople = xa_isChargePeople(user.usercode);
+							if (isChargePeople) {
+								showUsername = user.username + '(' + chargeusertitle + ')';
+							}
+						}
+						sortassignusercode += user.usercode + ",";
+						sortassignusername += showUsername + " ";
+					})
+					item.sortassignusercode = sortassignusercode;
+					item.sortassignusername = sortassignusername;
+				})
+			}
+		}
+
+		/* 判断当前用户身份是否是带队领导或总负责人 */
+		function xa_isChargePeople(usercode) {
+			var isChargePeople = false;
+			if (chargeusercode.length > 0) {
+				var chargePeopleArray = chargeusercode.split(',');
+				for (var i = 0; i < chargePeopleArray.length; i++) {
+					var user = chargePeopleArray[i];
+					if (user == usercode) {
+						isChargePeople = true;
+						break;
+					}
+				}
+			}
+			return isChargePeople;
+		}
+	</script>
+
+
+</html>

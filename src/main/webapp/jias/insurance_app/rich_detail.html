@@ -222,7 +222,7 @@
 						}
 					}
 				} else {
-					showRequestErrorEmpty(updateNullString(responseData["err_msg"], "暂无相关数据"), false, false);
+					showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), false, false);
 				}
 			}, function(error) {
 				mui.hideLoading();

@@ -138,7 +138,7 @@
 					mui.toast("提交成功");
 					history.go(-2)
 				} else {
-					mui.alert(updateNullString(responseData["err_msg"], "提交失败"), true, false);
+					mui.alert(updateNullString(responseData["msg"], "提交失败"), true, false);
 				}
 			}, function(error) {
 				mui.hideLoading();
