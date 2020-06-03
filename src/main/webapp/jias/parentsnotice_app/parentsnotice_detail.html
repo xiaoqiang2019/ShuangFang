@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>告知书详情</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<!-- 此样式影响富文本内容加载 -->
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js?ver=1"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../common/app/css/loadrichtext.css" />
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<style>
+			.top_title {
+				font-size: 19px;
+				line-height: 30px;
+				color: rgb(17,17,17);
+				text-align: center;
+			}
+			.content-bg {
+				background-color: transparent;
+				margin: 10px 14px;
+			}
+			
+			#notice-content{
+				padding-bottom: 5px;
+			}
+			
+			#confirmed {
+				background-color: transparent;
+				display: none;
+			}
+			#confirmed img {
+				margin-top: 10px;
+				display: block;
+				max-width: 100%;
+				height: auto;
+			}
+
+			#unconfirmed {
+				background-color: white;
+			}
+
+			#capture-content {
+				background-color: white;
+				border: 1px solid lightgray;
+			}
+			
+			.receipt {
+				margin: 10px;
+				}
+				
+			.receipt h2 {
+				font-size: 19px;
+				line-height: 40px;
+				color: rgb(17,17,17);
+				text-align: center;
+				}
+				
+			/* 同意选择框 */
+			#agree-bg{
+				padding-left: 15px;	
+				height: 40px;
+			}     
+			#agree-label {
+				font-size: 14px;
+				font-weight: bold;
+			}  
+			#agree-btn {
+				margin-top: 3px;
+				width: 15px;
+				height: 15px;
+				background: url(../../common/app/images/write_ic_unselected.png) no-repeat;
+				background-size: 15px 15px;
+				border-style: none;
+			 } 
+			 #agree-btn.active {
+				 margin-top: 3px;
+				 width: 15px;
+				 height: 15px;
+				 background: url(../../common/app/images/write_ic_selected.png) no-repeat;
+				 background-size: 15px 15px;
+				 border-style: none;
+			  }
+					
+			.content-cell {
+				position: relative;
+				width: 100%;
+				height: 120px;
+				margin-bottom:10px;
+			}
+			.content-cell label {
+				position: absolute;
+				height: 25px;
+				line-height: 25px;
+				left: 0px;
+				width: 85px;
+				font-size: 14px;
+				font-weight: bold;
+				padding-left: 10px;
+			}
+			.content-cell .right-content {
+				position: absolute;
+				left: 80px;
+				width: calc(100% - 90px);
+				height: 120px;
+				background-color: rgb(247,247,247);
+				border: 1px solid rgb(222,222,222);
+				border-radius:3px;
+				font-size: 14px;
+			}
+			
+			#remark-content {
+				padding: 0px;
+				margin-right: 10px;
+			}
+			
+			
+			.signature_box_before{
+				display: block;
+				background-color: transparent;
+				position: absolute;
+				font-size: 14px;
+				color: rgb(59, 162, 255);
+				text-align: center;
+				width: 80px;
+				height: 40px;
+				line-height: 40px;
+				left: 50%;
+				margin-left: -40px;
+				margin-top: 40px;
+			}
+			
+			.signature_box_after{
+				display: none;
+				background-color: green;
+			}
+			.signature_box_after img{
+				position: absolute;
+				left: 30px;
+				height: 85px;
+				max-width: calc(100% - 60px);
+			}
+			.signature_box_after .sign_time{
+				position: absolute;
+				left: 8px;
+				height: 15px;
+				bottom: 5px;
+				font-size: 12px;
+				color: rgb(102,102,102);
+			}
+			.signature_box_after .sign_reset_btn{
+				position: absolute;
+				right: 8px;
+				bottom: 5px;
+				height: 15px;
+				font-size: 14px;
+				color: rgb(59,162,255);
+			}
+
+			.sub_content{
+				margin: 20px 0px 0px;
+			}
+			.submit{
+				width: 100%;
+				height: 40px;
+				border: none;
+				background-color: #3ba2ff;
+				font-size: 16px;
+				color: white;
+			}
+			
+			.mask{
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				margin: 0px;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.3);
+				z-index: 900;
+				overflow: hidden;
+				display: none;
+			}
+			.signature_mask{
+				position: absolute;
+				width: 100%;
+				z-index: 901;
+				background-color: white;
+				display: none;
+			}
+			.signature_mask .signature_photo{
+				width: 100%;
+				height: 50px;
+				line-height: 50px;
+				background-color: rgb(143,144,168);
+				color: white;
+				text-align: center;
+			}
+			.signature_mask .close_btn_b{
+				position: absolute;
+				top: 53px;
+				right: 5px;
+				font-size: 35px;
+				color: rgb(51,51,51);
+				z-index: 1000;
+			}
+			
+			.signature_mask .signature_title{
+				margin: 10px 10px;
+				height: 20px;
+				font-size: 19px;
+				text-align: center;
+			}
+			
+			.signature_mask #signature{
+				position: relative !important;
+				margin: 15px 15px;
+				height: 170px;
+				background-color: white;
+				border: 1px dashed red;
+				display: block;
+			}
+			
+			.signature_footer input{
+				width: calc(50% - 20px);
+				height: 40px;
+				font-size: 17px;
+				margin-bottom: 10px;
+			}
+			
+			.signature_footer input:first-child{
+				margin-left: 15px;
+				margin-right: 5px;
+				background-color: white;
+				color: rgb(17,17,17);
+				border: lightgray 1px solid;
+			}
+			
+			.signature_footer input:last-child{
+				background-color: rgb(59, 162, 255);
+				border: none;
+				color: white;
+			}
+			
+			.img-upload{
+				position: absolute; opacity: 0; filter:Alpha(opacity=0);
+				width: 100%;
+				height: 50px;
+				line-height: 50px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>告知书详情</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<h1 class="top_title"></h1>
+			<div class="content-bg">
+				<div id="notice-content"></div>
+				<div id="confirmed">
+					<img src="../../common/app/images/main_defult_nophoto.png">
+				</div>
+				<div id="unconfirmed">
+					<div id="capture-content">
+						<div class="receipt">
+							<h2 class="receipt_title"></h2>
+							<div id="receipt-content"> </div>
+						</div>
+						<div id="agree-bg">
+							<!-- 此处未使用checkbox的原因是因为点击下一步需要截图，截图控件中包若含字体图标库，截图样式会丢失，所以使用按钮方式实现 -->
+							<button id="agree-btn"></button>
+							<label id="agree-label">以上内容我已阅读知晓并同意</label>
+						</div>
+
+						<div class="content-cell" id="remark">
+							<label>家长意见</label>
+							<textarea id="remark-content" class="right-content" rows="5" placeholder="" maxlength="500"></textarea>
+						</div>
+
+						<div class="content-cell">
+							<label>家长签名</label>
+							<div id="signature_box_before_bg" class="right-content">
+								<div class="signature_box_before">点击签名</div>
+								<div class="signature_box_after">
+									<img src="../../common/app/images/main_defult_nophoto.png" />
+									<div class="sign_time">日期：</div>
+									<div class="sign_reset_btn">重置</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="sub_content">
+						<button class="submit">下一步</button>
+					</div>
+				</div>
+			</div>
+			<div class="mask"></div>
+			<div class="signature_mask">
+				<!-- //暂时屏蔽拍照操作
+				<input type="file" accept="image/*" capture="camera" class="img-upload">
+				<div class="signature_photo">无法完成签字？请前往拍照</div> -->
+				<div class="signature_photo">请在红色虚线内进行签名</div>
+				<a class="close_btn_b mui-icon mui-icon-closeempty"></a>
+				<div class="signature_title">家长签字</div>
+				<div id="signature"></div>
+				<div class="signature_footer">
+					<input id="clear" type="button" value="重写">
+					<input id="save" type="button" value="完成">
+				</div>
+			</div>
+		</div>
+
+	</body>
+
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+
+	<!-- 电子签名 -->
+	<script src="../../common/extend/script/jSignature.min.js"></script>
+	<!-- 时间-->
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<!-- 文本框自适应 -->
+	<script src="../../common/extend/script/autoTextarea.js"></script>
+	<!-- 系统相册 -->
+	<script src="../../common/extend/script/img-upload.js"></script>
+	<!-- 截图 -->
+	<script src="../../common/extend/script/html2_canvas.js"></script>
+
+	<script>
+		mui.plusReady(function() {
+			plus.screen.lockOrientation('landscape-secondary');
+		});
+
+		$(function() {
+			//获取浏览器的userAgent,并转化为小写
+			var ua = navigator.userAgent.toLowerCase();
+			//判断是否是苹果手机，是则是true
+			var isIos = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);
+			if (isIos) {
+				$("input:file").removeAttr("capture");
+			};
+		})
+
+		// 是否已同意 选中事件
+		var agree_checked = false;
+		//如果用jquery，会很方便实现
+		$('#agree-bg').click(function() {
+			$('#agree-btn').toggleClass('active'); //每次点击的时候，将当前的元素切换active样式
+			//如果有，则去掉，否则添加
+			xa_getAgreeCheckedValue(); //获取选中状态
+		});
+
+		function xa_getAgreeCheckedValue() {
+			var agree_checkboxbtn = document.getElementById('agree-btn');
+			if (agree_checkboxbtn.className.indexOf('active')) { //说明已经是选中状态
+				agree_checked = false;
+				dLog("点击事件 不同意");
+			} else {
+				agree_checked = true;
+				dLog("点击事件 已同意");
+			}
+		}
+
+		//获取告知书详情
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var notice_id = updateNullString(getURLParameter('notice_id'), "");
+		var record_id = updateNullString(getURLParameter('record_id'), "");
+		var if_receipt = updateNullString(getURLParameter('if_receipt'), "0"); //是否需要回执信息
+		var requestData = "";
+		var confirm_type = false; //是否已确认（已回执）
+		var remark_type = false; //是否展示家长意见
+		var if_vcode = 0; //是否需要手机验证码确认 0不需要 1需要 
+
+		//临时测试 需删除
+		// if_receipt = "1";
+		// usercode = "37200000030";
+		// token = "julongabcd"; //统一julongabcd
+		// notice_id = "370355722019414016"
+
+
+		//发送真正的网络请求
+		requestParentsNoticeDetailDataFromServer();
+
+		//获取用户个人信息
+		var userphone = updateNullString(localStorage.getItem("phone"), "");
+		if (userphone.length == 0) {
+			getUserInfoRequest(system.usercenter, usercode, token, function() {
+				userphone = updateNullString(localStorage.getItem("phone"), "");
+			})
+		}
+
+		//获取详情数据
+		function requestParentsNoticeDetailDataFromServer() {
+			//无网络加载
+			if (navigator.onLine == false) {
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+			if (notice_id.length <= 0) {
+				this.showRequestErrorEmpty("告知书标识不能为空", true, true);
+				return;
+			}
+
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"notice_id": notice_id,
+				"record_id": record_id,
+				"if_receipt": if_receipt //是否获取回执信息 0不获取 1获取
+			};
+			var url = system.jias + "v1/noticeparents/get";
+			mui.showLoading();
+			jQuery_Request_Post(url, paramDic, "json", false, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					requestData = responseData["data"];
+					var show_content = updateNullString(requestData["content"], "");
+					if (show_content.length > 0) {
+						updateViewMethod();
+					} else {
+						showRequestErrorEmpty("告知书正文内容为空", true, true);
+					}
+				} else {
+					var msg = updateNullString(responseData["msg"], "获取数据失败");
+					mui.toast(msg);
+					showRequestErrorEmpty(msg, true, true);
+				}
+			}, function(error) {
+				mui.hideLoading();
+				var msg = updateNullString(error, "请求失败!")
+				mui.toast(msg);
+				showRequestErrorEmpty(msg, true, true);
+			})
+		}
+
+		//请求结束 更新显示布局
+		function updateViewMethod() {
+			//更新标题
+			var showtitle = updateNullString(requestData["title"], "告知书")
+			$(".top_title").text(showtitle);
+			$(".receipt_title").text(showtitle + "回执单");
+			//告知书正文
+			$('#notice-content').empty();
+			$('#notice-content').append(requestData["content"]);
+			//回执单正文
+			$('#receipt-content').empty();
+			var show_receipt_content = updateNullString(requestData["receipt"], "");
+			if (show_receipt_content.length > 0) {
+				$('.receipt').show();
+				$('#receipt-content').append(requestData["receipt"]);
+			} else {
+				$('.receipt').hide();
+			}
+
+			//是否需要短信验证 0不需要 1需要
+			if_vcode = requestData["if_vcode"];
+			//是否已确认
+			if (requestData["if_receipt"] == 1) {
+				confirm_type = true;
+			} else {
+				confirm_type = false;
+			}
+			//是否展示家长意见
+			if (requestData["if_suggestions"] == 1) {
+				remark_type = true;
+			} else {
+				remark_type = false;
+			}
+			//是否已确认
+			if (confirm_type == true) {
+				//已确认
+				$('#confirmed').show();
+				$('#unconfirmed').hide();
+				//加载本地截取图片 后续要换成网络图片
+				var dataurl = updateNullString(requestData["receipt_pic"], "");
+				if (dataurl.length > 0) {
+					$("#confirmed img").attr("src", dataurl);
+				}
+			} else {
+				//未确认
+				$('#confirmed').hide();
+				$('#unconfirmed').show();
+				deleteDataImage();
+			}
+
+			//家长意见
+			if (remark_type == true) {
+				$('#remark').show();
+				//设置输入框内容自适应
+				autoTextarea($("#remark-content")[0]);
+				$('#remark-content').on('input', function() {
+					var height = $(this).height()
+					$(this).parents('.content-cell').css('height', height + 'px')
+					// $('#remark').css('height', height + 'px');
+				})
+			} else {
+				$('#remark').hide();
+			}
+
+		}
+
+		var nullCanvasUrl; //空白canvas内容，用来判断用户是否绘制
+		//$("#signature_box_before_bg").on('click', '.signature_box_before',function(e){
+		// });
+		$('.signature_box_before').click(function(e) {
+			$("#signature").empty()
+			var screenHeight = document.documentElement.clientHeight,
+				screenWidth = document.documentElement.clientWidth;
+			var signatureMaskHeight = $('.signature_mask').height(),
+				signatureHeight = $('#signature').height();
+			var realTop = screenHeight - signatureMaskHeight;
+			$('.signature_mask').css({
+				top: realTop + 'px'
+			});
+			//canvas宽高 动态赋值，不用100%
+			$("#signature").jSignature({
+				width: screenWidth,
+				height: signatureHeight,
+				UndoButton: false,
+				sizeRatio: 1,
+				color: '#000',
+				"background-color": 'red',
+				'decor-color': 'rgba(0,0,0,0)', //底部横线设置为透明
+				'lineWidth': 2,
+			})
+			$('.content').css('overflow', 'hidden')
+			$('body').css('overflow', 'hidden')
+			$(".signature_mask").show();
+			$(".mask").show();
+			var firstCanvas = $("#signature").jSignature("getData", "image");
+			nullCanvasUrl = "data:" + firstCanvas[0] + "," + firstCanvas[1];
+		})
+
+		$('.close_btn_b').click(function() {
+			// alert("隐藏按钮");
+			hideMask();
+			$('.signature_box_before').show();
+			$('.signature_box_after').hide();
+		})
+
+		//得到系统相册选择后图片
+		$(".signature_mask input").on('change', function() {
+			imgUpload.readURL(this, function(imgUrl) {
+				showPhoto(imgUrl)
+			});
+		});
+		//调用系统相册同时隐藏签字板
+		$('.signature_mask .img-upload').click(function() {
+			hideMask();
+		})
+
+		// 下一步 先截图 后进入短信验证页
+		$('.sub_content .submit').click(function() {
+
+			//是否预览
+			if (if_receipt == "0") {
+				alert("当前为预览模式，不支持操作下一步")
+			} else {
+				//下一步操作
+				//截图之前 先判断说明有没有值，没有需隐藏
+				//判断是否同意
+				//判断家长是否输入意见、是否签名
+				if (agree_checked == false) {
+					alert("请先勾选我已阅读知晓并同意");
+				} else {
+					//判断是否输入家长意见，如果没有需要隐藏家长意见输入框
+					var content = document.querySelector('#remark-content').value;
+					if (remark_type == true) {
+						if (updateNullString(content, "").length == 0) {
+							alert("请输入意见");
+							return;
+						}
+					}
+
+					if ($('.signature_box_after').is(':hidden') == true) {
+						alert("请先签名");
+					} else {
+						if (updateNullString(content, "").length == 0) {
+							//家长意见输入框隐藏
+							$('#remark').hide();
+						}
+						//隐藏重置按钮
+						$(".sign_reset_btn").hide();
+						captureAction();
+					}
+				}
+			}
+		});
+
+		function captureAction() {
+			deleteDataImage();
+			var node = document.getElementById('capture-content');
+			html2canvas(node, {
+				allowTaint: true,
+				useCORS: true
+			}).then(function(canvas) {
+				try {
+					var b64 = canvas.toDataURL("image/png");
+					localStorage.setItem("dataurl", b64);
+					popToSms();
+				} catch (err) {
+					captureFailedOptration()
+				}
+			});
+		}
+
+		function captureFailedOptration() {
+			//隐藏的家长意见和重置按钮需显示出来
+			if (remark_type == true) {
+				$('#remark').show();
+			}
+			//显示重置按钮
+			if ($('.signature_box_after').is(':hidden') == false) {
+				$(".sign_reset_btn").show();
+			}
+		}
+
+		function popToSms() {
+			var userphone = updateNullString(localStorage.getItem("phone"), "");
+			var content = document.querySelector('#remark-content').value;
+			var suggestion = updateNullString(content, "");
+
+			CodeSTD.form({
+				url: "parentsnotice_sms.html",
+				params: {
+					"usercode": usercode,
+					"token": token,
+					"phone": userphone,
+					"suggestion": suggestion,
+					"notice_id": notice_id,
+					"record_id": record_id,
+					"if_vcode": if_vcode
+				}
+			});
+		};
+
+		//reset
+		$('.sign_reset_btn').click(function() {
+			$('.signature_box_before').show();
+			$('.signature_box_after').hide();
+		})
+		// 重写
+		document.getElementById("clear").addEventListener('tap', function() {
+			$("#signature").jSignature("reset");
+		});
+		//完成
+		document.getElementById("save").addEventListener('tap', function() {
+			//验证canvas画布是否为空函数
+			var datapair = $("#signature").jSignature("getData", "image");
+			var currentUrl = "data:" + datapair[0] + "," + datapair[1];
+			if (nullCanvasUrl == currentUrl) {
+				alert('请开始签名！');
+			} else {
+				showPhoto(currentUrl);
+			}
+		});
+
+		function showPhoto(imgUrl) {
+			$('.signature_box_before').hide();
+			$('.signature_box_after').show();
+
+			//图片
+			var datapair = $("#signature").jSignature("getData", "image");
+			$(".signature_box_after img").attr("src", imgUrl)
+			//时间
+			$(".signature_box_after .sign_time").text(new moment().format('YYYY-MM-DD HH:mm'));
+			hideMask();
+		}
+
+		function hideMask() {
+			$('.content').css('overflow', 'scroll')
+			$('body').css('overflow', 'scroll')
+			$("#signature").jSignature("reset");
+			$(".signature_mask").hide();
+			$(".mask").hide();
+		}
+
+		//请求返回数据为空或失败显示的空页面
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".content"
+			}, function() {
+				//重新刷新数据
+				requestParentsNoticeDetailDataFromServer();
+			});
+		}
+
+		function deleteDataImage() {
+			var dataurl = updateNullString(localStorage.getItem("dataurl"), "");
+			if (dataurl.length > 0) {
+				dLog("删除存在的图片");
+				localStorage.removeItem("dataurl");
+				dataurl = updateNullString(localStorage.getItem("dataurl"), "");
+			}
+		}
+	</script>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- 问题扣分 - 列表页 -->
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>问题扣分</title>
+
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+
+		<script src="../../common/extend/vue/vue.min.js"></script>
+		<script src="../../common/app/script/empty_vue.js"></script>
+		
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+		
+		<style type="text/css">
+			
+			.tab-list-view {
+				padding-bottom: 70px;
+			}
+			
+			/* header-view */
+			.header-view {
+				background-color: #fff;
+				color: #999;
+				font-size: 15px;
+				line-height: 44px;
+				text-align: center;
+				border-bottom: #DEDEDE solid 1px;
+			}
+
+			/* top-list */
+			.top-list-cell {
+				display: flex;
+				align-items: center;
+				flex-direction: row;
+				justify-content: center;
+				border-bottom: #DEDEDE solid 1px;
+			}
+
+			.top-list-cell span {
+				font-size: 16px;
+				color: #111;
+				display: inline-block;
+				padding: 10px 6px 10px 14px;
+				width: calc(100% - 97px);
+			}
+
+			.top-list-cell-switch {
+				background-image: url(../../common/app/images/exam_ic_switch_off.png);
+				background-repeat: no-repeat;
+				background-size: 64px 26px;
+				height: 26px;
+				width: 64px;
+				display: inline-block;
+				margin-right: 14px;
+			}
+
+			/* middle-view */
+			.middle-view-tab {
+				display: flex;
+				align-items: center;
+				flex-direction: row;
+				justify-content: center;
+				border-bottom: #DEDEDE solid 1px;
+				height: 50px;
+			}
+
+			.middle-view-tab span {
+				color: #999;
+				font-size: 13px;
+				text-align: center;
+				width: 145px;
+			}
+
+			.middle-view-tab i {
+				width: 50px;
+				height: 1px;
+				margin: auto 4px;
+				background-color: #DEDEDE;
+			}
+
+			/* bottom-list */
+			.bottom-list-cell {
+				display: flex;
+				align-items: center;
+				flex-direction: row;
+				justify-content: center;
+				border-bottom: #DEDEDE solid 1px;
+			}
+
+			.bottom-list-cell-left {
+				display: inline-block;
+				width: calc(100% - 93px);
+				padding: 10px 6px 10px 14px;
+			}
+
+			.bottom-list-cell label {
+				font-size: 15px;
+				color: #ef3030;
+				border: #EF3030 solid 1px;
+				border-radius: 3px;
+				padding: 4px 14px;
+				display: inline-block;
+				width: 60px;
+				height: 30px;
+				margin-right: 14px;
+			}
+
+			.bottom-list-cell-title {
+				color: #111;
+				font-size: 16px;
+			}
+
+			.bottom-list-cell-desc {
+				color: #999;
+				font-size: 13px;
+				padding-top: 6px;
+			}
+
+			/* tab-bottom-view */
+			.tab-bottom-view {
+				display: flex;
+				align-items: center;
+				flex-direction: row;
+				border-top: #DEDEDE solid 6px;
+				border-bottom: #DEDEDE solid 1px;
+				height: 46px;
+			}
+
+			.tab-bottom-view span {
+				color: #333;
+				font-size: 16px;
+				padding-left: 14px;
+				width: calc(100% - 19px);
+			}
+
+			.tab-bottom-view-arrow {
+				padding-right: 14px;
+			}
+
+			/* bottom-view */
+			.bottom-view {
+				border-top: #dedede solid 1px;
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				height: 50px;
+				line-height: 50px;
+				width: 100%;
+				z-index: 10;
+				background-color: #fff;
+			}
+						
+			.bottom-view span {
+				display: inline-block;
+				color: #111;
+				font-size: 16px;
+				line-height: inherit;
+				padding-left: 14px;
+			}
+
+			.bottom-view label {
+				background-color: #3ba2ff;
+				display: inline-block;
+				line-height: inherit;
+				width: 150px;
+				text-align: center;
+				color: #fff;
+				float: right;
+			}
+			
+			.mark-view {
+				position: absolute;
+				left: 0;
+				bottom: 50px;
+				background-color: #fff;
+				color: rgb(153,153,153);
+				font-size: 13px;
+				text-align: center;
+				height: 20px;
+				width: 100%;
+				z-index: 10;
+			}
+			
+			/* comment */
+			.cell-right-arrow {
+				background-image: url(../../common/app/images/main_table_arrow.png);
+				background-size: 15px 15px;
+				background-repeat: no-repeat;
+				display: inline-block;
+				width: 15px;
+				height: 15px;
+				margin-right: 4px;
+			}
+
+			.float-left {
+				float: left;
+			}
+
+			.float-right {
+				float: right;
+			}
+
+			.color-red {
+				color: #ef3030;
+			}
+
+			.switch-on-img {
+				background-image: url(../../common/app/images/exam_ic_switch_on.png);
+			}
+
+			.switch-off-img {
+				background-image: url(../../common/app/images/exam_ic_switch_off.png);
+			}
+		</style>
+
+	</head>
+	<body>
+		<div id="app">
+			<div v-if="show">
+				<div class="tab-list-view mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="header-view">
+							{{exameditmodel.content}}
+						</div>
+						<div class="top-list-tab">
+							<div v-for="(item, index) in datasource.optionallist" :key="index">
+								<ul class="top-list-cell">
+									<span v-on:tap="addProblem(item,true)">{{item.content}}（扣{{item.score}}分）</span>
+									<i class="cell-right-arrow"></i>
+									<ul v-if="item.checkstatus == 1">
+										<!-- 选中 -->
+										<div class="top-list-cell-switch switch-on-img" v-on:tap="deleteRecordedWithItem(item)"></div>
+									</ul>
+									<ul v-else>
+										<div class="top-list-cell-switch switch-off-img" v-on:tap="addRecordedWithItem(item)"></div>
+									</ul>
+								</ul>
+							</div>
+						</div>
+						<div class="middle-view-tab" v-if="datasource.recordlist.length > 0">
+							<i class="cell-right-arrow"></i>
+							<span>以下问题项为自定义添加可删除或修改</span>
+							<i class="cell-right-arrow"></i>
+						</div>
+						<div class="bottom-list-tab">
+							<div v-for="(item, index) in datasource.recordlist" :key="index">
+								<ul class="bottom-list-cell">
+									<div class="bottom-list-cell-left" v-on:tap="addProblem(item,false)">
+										<span class="bottom-list-cell-title">{{item.content}} (扣{{item.score}}分)</span>
+										<div>
+											<span class="bottom-list-cell-desc float-left">{{item.username}}</span>
+											<span class="bottom-list-cell-desc float-right">{{moment(item.createtime).format('L LT')}}</span>
+										</div>
+									</div>
+									<i class="cell-right-arrow"></i>
+									<label v-on:tap="deleteRecordMethod(item)">删除</label>
+								</ul>
+							</div>
+						</div>
+						<div class="tab-bottom-view" v-on:tap="addProblem(null,false)">
+							<span>添加新问题</span>
+							<i class="cell-right-arrow tab-bottom-view-arrow"></i>
+						</div>
+					</div>
+				</div>
+				<div class="mark-view" v-if="examPorblemScore>exameditmodel.score">
+					扣分已超过总分,实际得分按0计算
+				</div>
+				<div class="bottom-view">
+					<span>共{{exameditmodel.score}}分，本次扣<i class="color-red">{{examPorblemScore}}</i>分</span>
+					<label @click="javascript:history.back(-1)">完成</label>
+				</div>
+			</div>
+			<empty v-else v-bind:errormsg="errorMsg" v-bind:showretry="showretry" v-bind:isneterror="isneterror" v-on:retryclick="retryMsg"></empty>
+		</div>
+	</body>
+
+	<script>
+		(function($) {
+			//阻尼系数  
+			var deceleration = mui.os.ios ? 0.003 : 0.0009;
+			$('.mui-scroll-wrapper').scroll({
+				bounce: true,
+				indicators: true, //是否显示滚动条  
+				deceleration: deceleration
+			});
+			mui(".mui-scroll-wrapper").on('tap', 'li', function(event) {
+				this.click();
+			});
+			$.ready(function() {
+				mui.init({
+					pullRefresh: {
+						container: '.mui-scroll-wrapper',
+						down: {
+							style: 'circle',
+							offset: '0px',
+							auto: true,
+							callback: vm.pulldownRefresh
+						},
+					}
+				});
+			});
+		})(mui);
+
+		var vm = new Vue({
+			el: '#app',
+			mounted() {
+				//初始化数据
+				var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+				var url_token = updateNullString(getURLParameter('token'), localToken),
+					token = updateNullString($.cookie('token'), url_token);
+				this.usercode = usercode;
+				this.token = token;
+				
+				this.changescore = updateNullString(getURLParameter('changescore'), '');
+				this.checkschoolid = updateNullString(getURLParameter('checkschoolid'), '');
+				var model_string = updateNullString(getURLParameter('exameditmodel'), '');
+				if (model_string.length) {
+					this.exameditmodel = JSON.parse(model_string);
+				}
+				
+				this.getProgblemList_Request();
+			},
+			data: {
+				// 空白页 - 
+				'emptymsg': "无",
+				'show': true,
+				'isneterror': false,
+				'errormsg': "",
+				'showretry': true,
+				// 初始化 - 
+				'changescore': 0,
+				'checkschoolid': '',
+				'exameditmodel': {
+					"content": "问题扣分",
+					"contentid": "",
+					"score": 0,
+				},
+				'examPorblemScore': 0, //总扣除分数
+				'usercode': '',
+				'token': '',
+				
+				//界面数据 - 
+				'datasource': {
+					'optionallist': [{
+						"uuid": "",
+						"content": "",
+						"score": 0,
+						"checkstatus": 0,
+						"questionid": "",
+						"usercode": "",
+						"username": "",
+						"createtime": 0
+					}],
+					"recordlist": [{
+						"questionid": "",
+						"usercode": "",
+						"username": "",
+						"content": "",
+						"createtime": 0,
+						"score": 0
+					}]
+				}
+			},
+			methods: {
+				//下拉刷新
+				pulldownRefresh() {
+					this.getProgblemList_Request()
+				},
+				//停止刷新
+				endRefresh() {
+					mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh(false);
+				},
+				//重试
+				xa_showRequestErrorEmpty(msg, isneterror) {
+					this.show = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+				},
+				retryMsg() {
+					dLog('重新获取数据 ----------- kkk');
+					this.getProgblemList_Request()
+				},
+				// 请求当前界面数据
+				getProgblemList_Request() {
+					if (navigator.onLine == 'false') {
+						this.endRefresh();
+						vm.xa_showRequestErrorEmpty("网络似乎有点问题");
+						return false;
+					}
+					
+					var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+					var url_token = updateNullString(getURLParameter('token'), localToken);
+					var token = updateNullString($.cookie('token'), url_token);
+
+					var paramDic = {
+						"usercode": this.usercode,
+						"token": this.token,
+						"checkschoolid": this.checkschoolid,
+						"contentid": this.exameditmodel.contentid,
+					};
+					var url = system.check + "/getOptionalAndRecordProblemList.action";
+
+					mui.showLoading();
+					jQuery_Request_Post(url, paramDic, "json", true, (responseData) => {
+						mui.hideLoading();
+						var ret = responseData["ret"];
+						if (ret) {
+							this.endRefresh();
+							console.log('数据获取成功');
+							var data = responseData['data'];
+							if (data.length == 0) {
+								this.xa_showRequestErrorEmpty('暂无相关数据');
+							} else {
+								this.datasource = responseData["data"];
+								this.updateExamPorblemScore();
+							}
+						} else {
+							// mui.toast(updateNullString(responseData["msg"], "获取数据失败"));
+							this.xa_showRequestErrorEmpty('数据加载时出了些问题');
+						}
+					}, function(error) {
+						mui.hideLoading();
+						vm.endRefresh();
+						// var msg = updateNullString(error, "请求失败!");
+						vm.xa_showRequestErrorEmpty('数据加载时出了些问题');
+					});
+				},
+				// 计算扣除的分数 - 保留两位小数
+				updateExamPorblemScore() {
+					var score = 0;
+					var optionallist = this.datasource.optionallist;
+					var recordlist = this.datasource.recordlist;
+					for (var i = 0, len = optionallist.length; i < len; i++) {
+						var item = optionallist[i];
+						if (item.checkstatus == 1) {
+							//扣分
+							score += item.score;
+						}
+					}
+
+					for (var i = 0, len = recordlist.length; i < len; i++) {
+						var item = recordlist[i];
+						score += item.score;
+					}
+					this.examPorblemScore = score.toFixed(2);
+				},
+
+				// 删除记录问题
+				deleteRecordMethod(item) {
+					mui.confirm('确定要删除该问题记录吗？', '', ['取消', '确定'], function(e){
+						if (e.index == 1) {
+							vm.deleteRecordedWithItem(item);
+						}
+					});
+				},
+				deleteRecordedWithItem(item) {
+					var param = {
+						"usercode": this.usercode,
+						"token": this.token,
+						"questionid": item.questionid,
+						"getscore": item.score,
+						"status": this.changescore == 1 ? '2' : '1'
+					}
+					var url = system.check + '/deleteQuestionOfSelf.action';
+					mui.showLoading();
+					jQuery_Request_Post(url, param, "json", true, (responseData) => {
+						mui.hideLoading();
+						var ret = responseData["ret"];
+						if (ret) {
+							console.log('状态修改成功');
+							this.getProgblemList_Request();
+						} else {
+							var errtype = responseData["errtype"];
+							if (errtype == '1') {
+								// 本次大检查已审核
+								vm.checkIsInsanityAlert();
+							} else {
+								mui.toast(updateNullString(responseData["msg"], "操作失败"));
+							}
+						}
+					}, function(error) {
+						mui.hideLoading();
+						var msg = updateNullString(error, "请求失败!")
+						mui.toast(msg);
+					});
+				},
+				// 添加记录问题
+				addRecordedWithItem(item) {
+					var param = {
+						"usercode": this.usercode,
+						"token": this.token,
+						"question.usercode": this.usercode,
+						"question.pointid": this.checkschoolid,
+						"question.normid": this.exameditmodel.contentid,
+						"question.risksstatus": "1",
+						"question.status": "0",
+						"question.title": "",
+						"question.content": item.content,
+						"question.picpath": "",
+						"question.filepath": "",
+						"question.datalength": "0",
+						"question.videopath": "",
+						"question.videopicpath": "",
+						"question.opinion": "",
+						"question.limitdate": "",
+						"question.score": item.score,
+						"question.getscore": 0,
+						"status": this.changescore == 1 ? '2' : '1',
+						'question.problemid': item.uuid
+					};
+					var url = system.check + "/saveSafetyProblem.action";
+					mui.showLoading();
+					jQuery_Request_Post(url, param, "json", true, (responseData) => {
+						mui.hideLoading();
+						var ret = responseData["ret"];
+						if (ret) {
+							console.log('状态修改成功');
+							this.getProgblemList_Request();
+						} else {
+							var msg = updateNullString(responseData["msg"], "操作失败");
+							var errtype = updateNullString(responseData["errtype"], '');
+							if (errtype == '1') {
+								// 本次大检查已审核
+								vm.checkIsInsanityAlert();
+							}
+							else {
+								mui.toast(updateNullString(responseData["msg"], "操作失败"));
+							}
+						}
+					}, function(error) {
+						mui.hideLoading();
+						var msg = updateNullString(error, "请求失败!")
+						mui.toast(msg);
+					});
+				},
+				//添加/编辑问题
+				addProblem(item, isCan) {
+					CodeSTD.form({
+						url: "exam_record_problem.html",
+						params: {
+							'usercode': this.usercode,
+							'username': this.username,
+							"checkschoolid": this.checkschoolid,
+							'changescore': this.changescore,
+							'contentid': this.exameditmodel.contentid,
+							"sortscore": this.exameditmodel.score,
+							'isCan': isCan,
+							'examPorblemScore': this.examPorblemScore,
+							
+							'examModel': !item ? '' : JSON.stringify(item),
+							'questionId': !item ? '' : item.questionid,
+							'parent_uuid': !item ? '' : item.uuid
+						},
+					});
+				},
+				// 本次大检查已审核
+				checkIsInsanityAlert() {
+					//检查已审核
+					mui.confirm('当前检查已审核完毕,是否查看检查结果?', '', ['取消', '查看'], function(e){
+						if (e.index == 0) {
+							//取消
+							javascript:history.back(-1);
+						}
+						if (e.index == 1) {
+							//查看
+							var url = system.check + '/safety/phontCheckMidResultPage.action?checkschoolid=' + vm.checkschoolid + '&sharetype=1';
+							window.location.href = url;
+						}
+					});
+				}
+			}
+		});
+	</script>
+
+
+</html>

@@ -1,0 +1,126 @@
+.container {
+	background-color: white;
+	margin: 0 auto;
+	display: block;
+	height: 100%;
+}
+
+/* 标签栏设置 */
+.category {
+	display: block;
+	overflow: hidden;
+	width: 100%;
+	height: 40px;
+	left: 0px;
+}
+
+.category ul {
+	display: block;
+	background-color: transparent;
+	height: 100%;
+	border-bottom: 1px solid #DEDEDE;
+}
+
+.category ul li {
+	display: inline-block;
+	width: 32%;
+	height: 100%;
+	font-size: 16px;
+	text-align: center;
+	border-bottom: 1px solid transparent;
+	padding: 10px;
+	margin: 0px;
+}
+
+.category ul li.active {
+	border-bottom-color: #3BA2FF;
+	color: #3BA2FF;
+}
+
+/* 标签栏对应内容设置 */
+.content-wapper {
+	display: block;
+	position: relative;
+	overflow-y: hidden;
+	background-color: white;
+	height: calc(100% - 40px);
+}
+
+.cont {
+	display: none;
+}
+
+.cont.active {
+	position: absolute;
+	display: block;
+	overflow-y: scroll;
+	background-color: transparent;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.empty {
+	display: none;
+}
+
+.empty.active {
+	display: block;
+	background-color: transparent;
+	position: absolute;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.cont ul li {
+	width: 100%;
+	height: 50px;
+}
+
+.cont ul li a {
+	display: block;
+	border-bottom: 1px solid #DEDEDE;
+	background-color: transparent;
+	height: 100%;
+}
+
+.cont ul li a .cont_main {
+	position: relative;
+	height: 100%;
+	background-color: transparent;
+}
+
+.cont ul li a .cont_main span {
+	position: absolute;
+	top: 12px;
+	left: 14px;
+	vertical-align: center;
+	max-width: calc(100% - 80px);
+	text-align: left;
+	background-color: transparent;
+	color: #111111;
+	font-size: 16px;
+}
+
+.cont ul li a .cont_main img {
+	position: absolute;
+	top: 30%;
+	right: 80px;
+	width: 20px;
+	height: 20px;
+}
+
+.cont ul li a .cont_main button {
+	position: absolute;
+	top: 10px;
+	right: 14px;
+	height: 30px;
+	color: #3BA2FF;
+	font-size: 16px;
+	padding-top: 3px;
+	vertical-align: center;
+	border-color: #3BA2FF;
+}

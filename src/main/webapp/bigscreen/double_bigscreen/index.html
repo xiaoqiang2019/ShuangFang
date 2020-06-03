@@ -1,0 +1,1894 @@
+﻿<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>index</title>
+	<script src="https://blog-static.cnblogs.com/files/gxsyj/polyfill.min.js"></script>
+	<script type="text/javascript" src="../../common/extend/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="../../common/extend/echarts/echarts.min.js"></script>
+	<link rel="stylesheet" href="css/dp_double.css">
+	<script src="https://blog-static.cnblogs.com/files/gxsyj/browser.min.js"></script>
+	<script type="text/javascript" src="../../common/extend/vue/vue.min.js"></script>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<!-- 引入组件库 -->
+	<script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
+	<script>
+		$(window).load(function () {
+			$(".loading").fadeOut()
+		})  
+	</script>
+</head>
+
+<body>
+
+	<div class="head">
+		<h1><img src="images/head02.png">机电工程学院双重预防大数据<img src="images/head01.png"></h1>
+		<div class="time" id="showTime">2020/04/30星期四11:26:13</div>
+		<script>
+			var t = null;
+			t = setTimeout(time, 1000);//開始运行
+			function time() {
+				clearTimeout(t);//清除定时器
+				dt = new Date();
+				var y = dt.getFullYear();
+				var mt = dt.getMonth() + 1;
+				var day = dt.getDate();
+				var h = dt.getHours();//获取时
+				var m = dt.getMinutes();//获取分
+				var s = dt.getSeconds();//获取秒
+				var t = null;
+
+				var a = ["日", "一", "二", "三", "四", "五", "六"];
+				var week = new Date().getDay();
+				var str = a[week];
+
+				document.getElementById("showTime").innerHTML = y + "." + Appendzero(mt) + "." + Appendzero(day) + " 星期" + str + Appendzero(h) + ":" + Appendzero(m) + ":" + Appendzero(s);
+				function Appendzero(obj) {
+					if (obj < 10) return "0" + "" + obj;
+					else return obj;
+				}
+				t = setTimeout(time, 1000); //设定定时器，循环运行     
+			} 
+		</script>
+	</div>
+	<div class="loading">
+		<div class="loadbox"> <img src="images/loading.gif"> 页面加载中... </div>
+	</div>
+	<div class="mainbox" id="mainbox">
+		<ul class="clearfix nav1">
+			<li style="width:27%">
+				<div class="box">
+					<div class="tit"><span>基本情况</span></div>
+					<div class="alldata">
+						<p> 教职工人数：<span>47</span></p>
+						<p> 学生人数：<span>1036</span></p>
+					</div>
+					<div class="boxnav group flex2">
+						<div class="score">
+							<h3><span>99</span></h3>
+							<div class="paiming">第一名</div>
+							<p>双重预防 工作积分</p>
+						</div>
+						<div>
+							<div class="groupother flex">
+								<i>组长：</i>
+								<ol><span style="opacity: 1; font-weight: bold;">魏保立</span><span
+										style="opacity: 1; font-weight: bold;">戴明宏</span></ol>
+							</div>
+							<div class="groupother flex">
+								<i>副组长：</i>
+								<ol><span>晋兵营</span> <span>陈光伟</span></ol>
+							</div>
+							<div class="groupother flex">
+								<i>成 员：</i>
+								<ol>
+									<span>刘艳宾</span>
+									<span>齐晓华</span>
+									<span>文晓娟</span>
+									<span>王丽平</span>
+									<span>李春亚</span>
+									<span>杨辰飞</span>
+
+									<span>张念淮</span>
+									<span>索小娟</span>
+									<span>刘博</span>
+									<span>王文超</span>
+									<span>刘华洲</span>
+									<span>张帆</span>
+
+									<span>史艳红</span>
+									<span>张建国</span>
+									<span>潘卫彬</span>
+								</ol>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<div class="box">
+					<div class="tit"><span>安全工作动态 </span></div>
+					<div class="boxnav">
+						<div class="scrollDiv news">
+							<ul>
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2020-04-03</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+								<li class="flex2">
+									<div class="">
+										<h3>韩建一般隐患处理延期</h3>
+										<p>2020-04-03</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-danger">-2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2020-04-03</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2020-04-03</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2020-04-03</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2019-09-20</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+								<li class="flex2">
+									<div class="">
+										<h3>韩建按时完成一般隐患处理</h3>
+										<p>2019-09-20</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+1</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2019-09-20</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2019-09-20</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2019-09-20</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2019-09-20</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+
+								<li class="flex2">
+									<div class="">
+										<h3>孙成成发现上报隐患</h3>
+										<p>2019-09-20</p>
+									</div>
+									<div class=" text-center">
+										<h3 class="text-success">+2</h3>
+										<p>安全指数</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+			</li>
+			<li style="width: 46%">
+				<div class="box mapbox" style="overflow: hidden; position: relative">
+					<!----	<div class="maptab">
+			<a href="#" class="active">校园全景图</a>
+			<a href="#">主教学楼</a>
+			<a href="#">实验楼</a>
+			<a href="#">图书馆</a>
+			</div>-->
+					<div class="tit"><span>校园安全风险四色分布</span></div>
+					<div class="boxnav">
+						<div class="map">
+							<div class="titabs flex">
+								<a class="active" href="#">匠心楼1层</a>
+								<a href="#">匠心楼2层</a>
+								<a href="#">匠心楼5层</a>
+								<a href="#">毓秀楼1层</a>
+								<a href="#">毓秀楼2层</a>
+							</div>
+
+
+							<div class="mapimg">
+								<div class="maplegend">
+									<span>重大风险Ⅰ级</span>
+									<span>较大风Ⅱ级</span>
+									<span>一般风险Ⅲ级</span>
+									<span>低风险Ⅳ级</span>
+								</div>
+								<div class="maplegend2">
+									<span>巡检正常</span>
+									<span>未巡检</span>
+									<span>存在隐患</span>
+									<span>存在重大隐患</span>
+								</div>
+
+								<div class="mapadd">
+									<div class="dot" style="left: 18%; top:7%;">
+										<div class="state state04"><span>1</span></div>
+										<div class="dotnav"></div>
+									</div>
+									<div class="dot" style="left: 30%; top:15%;">
+										<div class="state state04"><span>2</span></div>
+										<div class="dotnav"></div>
+									</div>
+									<div class="dot" style="left: 15%; top:20%;">
+										<div class="state state04"><span>3</span></div>
+										<div class="dotnav"></div>
+									</div>
+									<img src="images/01.png">
+								</div>
+							</div>
+						</div>
+
+						<div class="risk">
+							<ul>
+								<li class="flex active">
+									<div class="state state04"><span>1</span></div>
+									<div>
+										<div class="flex2">
+											<p>所有设备设施、特种设备（数控机床、加工中心、叉车、行车等）未制定SOP（安全操作规程）</p>
+											<span>04-03 14:24</span>
+										</div>
+										<div class="labelbox">
+											<span class="label_info">大车间：重大风险</span>
+											<span>风险来源：隐患发现</span>
+											<span>管控责任人：未设置</span>
+											<span>上报人：孙成成</span>
+
+										</div>
+									</div>
+								</li>
+								<li class="flex">
+									<div class="state state04"><span>2</span></div>
+									<div>
+										<div class="flex2">
+											<p>行车不使用的时候，行车主功能部件未进行归位（设置专用停靠区）</p>
+											<span>04-03 14:20</span>
+										</div>
+										<div class="labelbox">
+											<span class="label_info">大车间：重大风险</span>
+											<span>风险来源：隐患发现</span>
+											<span>管控责任人：未设置</span>
+											<span>上报人：孙成成</span>
+
+										</div>
+									</div>
+
+								</li>
+								<li class="flex">
+									<div class="state state04"><span>3</span></div>
+									<div>
+										<div class="flex2">
+											<p>叉车不使用或无人操作的情况下，未取下叉车钥匙</p>
+											<span>04-03 14:16</span>
+										</div>
+										<div class="labelbox">
+											<span class="label_info">大车间：重大风险</span>
+											<span>风险来源：隐患发现</span>
+											<span>管控责任人：未设置</span>
+											<span>上报人：孙成成</span>
+
+										</div>
+									</div>
+
+								</li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+			</li>
+			<li style="width: 27%">
+				<div class="box box2">
+					<div class="tit"><span>风险点总数（219）</span></div>
+					<div class="boxnav fxd01">
+						<ul>
+							<li>
+								<div>
+									<span>重大风险</span>
+									<h3 class=" text-danger">21</h3>
+								</div>
+							</li>
+							<li>
+								<div>
+									<span>较大风险</span>
+									<h3 class="text-red">50</h3>
+								</div>
+							</li>
+							<li>
+								<div>
+									<span>一般风险</span>
+									<h3 class=" text-warning">62</h3>
+								</div>
+							</li>
+							<li>
+								<div>
+									<span>低风险</span>
+									<h3 class="text-primary">86</h3>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="box ">
+					<div class="tit"><span>隐患总数（3）</span></div>
+					<div class="boxnav">
+						<div class="dangerbox flex2">
+							<div><span>重大隐患</span>
+								<h2>0</h2>
+							</div>
+							<div><span>一般隐患</span>
+								<h2>3</h2>
+							</div>
+						</div>
+						<div id="echart1" style="height: 42%;"></div>
+						<div id="echart2" style="height: 42%;"></div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="modal">
+		<div class="box" id="modalApp">
+			<div class="mdclose"> </div>
+			<div class="tit"><span id="tit">风险点总数</span></div>
+			<div class="boxnav" style="overflow-y: scroll;">
+				<div>
+					<!-- <el-table border :data="list">
+						<el-table-column prop="proName" label="项目名称" align="center" width="184"></el-table-column>
+						<el-table-column prop="checkName" label="检查对象" align="center" width="184"></el-table-column>
+						<el-table-column prop="hiddenDenger" label="潜在风险" width="573"></el-table-column>
+						<el-table-column prop="type" label="事故类型" align="center"></el-table-column>
+					</el-table> -->
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tbody id="dictCon">
+							<tr>
+								<th>项目名称</th>
+								<th>检查对象</th>
+								<th>潜在风险</th>
+								<th>事故类型</th>
+							</tr>
+							<tr>
+								<td>高处作业</td>
+								<td>高处作业</td>
+								<td>高空作业未佩戴安全带、安全帽、安全绳</td>
+								<td>高处坠落</td>
+
+							</tr>
+							<tr>
+
+								<td>电工作业</td>
+								<td>电工作业</td>
+								<td>电工未经过岗前培训，未持证上岗</td>
+								<td>其他伤害</td>
+
+
+							</tr>
+
+							<tr>
+								<td>特种设备管理</td>
+								<td>特种设备安全管理</td>
+								<td>特种设备管理不到位</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>
+									组织管理</td>
+								<td>安全工作领导责任制</td>
+								<td>未建立学校安全工作领导小组</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>组织管理</td>
+								<td>岗位安全职责体系</td>
+								<td>没有层层签订安全责任状</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>组织管理</td>
+								<td>学校安全管理制度</td>
+								<td>制度不健全不完善</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>组织管理</td>
+								<td>安全管理机构</td>
+								<td>未按规定成立安全工作机构</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td> 高处作业</td>
+								<td>高处作业</td>
+								<td>高空动火作业，未进行申请且未做防护措施</td>
+								<td>火灾</td>
+
+							</tr>
+							<tr>
+
+								<td>电工作业</td>
+								<td>电工作业</td>
+								<td>未佩戴绝缘手套、电工鞋，未使用绝缘工具作业</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>特种设备管理</td>
+								<td>特种设备安全管理</td>
+								<td>学校购买/使用不符合安全技术要求的特种设备</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>组织管理</td>
+								<td>安全工作领导责任制</td>
+								<td>工作开展不力</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>组织管理</td>
+								<td>岗位安全职责体系</td>
+								<td>学校岗位安全工作职责不明确</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>组织管理</td>
+								<td>学校安全管理制度</td>
+								<td>制度不切合学校实际</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>组织管理</td>
+								<td>安全管理机构</td>
+								<td>没有配备专兼职保卫干部，高校专职保卫干部配备数量达不到规定标准</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>组织管理</td>
+								<td>经费投入</td>
+								<td>安全经费被挪用</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>高处作业</td>
+								<td>高处作业</td>
+								<td>在6级及以上的大风以及暴雨、打雷、大雾等恶劣天气下进行高处作业</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>电工作业</td>
+								<td>电工作业</td>
+								<td>维修电气设施时，电工进行带电作业</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>特种设备管理</td>
+								<td>特种设备安全管理</td>
+								<td>未配备特种设备安全管理人员、检测人员和作业人员</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>组织管理</td>
+								<td>岗位安全职责体系</td>
+								<td>岗位安全工作职责落实不到位</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>组织管理</td>
+								<td>学校安全管理制度</td>
+								<td>制度贯彻落实不到位</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>组织管理</td>
+								<td>安全管理机构</td>
+								<td>安全保卫干部履职能力不强</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>高处作业</td>
+								<td>高处作业</td>
+								<td>安全绳、安全带、安全帽存在老化且未定期进行安全检测</td>
+								<td>高处坠落</td>
+							</tr>
+
+							<tr>
+								<td>特种设备管理</td>
+								<td>特种设备安全管理</td>
+								<td>特种设备安全管理人员、作业人员未经安全教育和技能培训，持证上岗</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机电实训室风险辨识</td>
+								<td>机电实训室</td>
+								<td>未张贴警示标识</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>特种设备管理</td>
+								<td>特种设备安全管理</td>
+								<td>学校未自行检测和维护保养特种设备</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>特种设备管理</td>
+								<td>特种设备安全管理</td>
+								<td>国家规定实行检验的特种设备未及时申报并接受检验</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>特种设备管理</td>
+								<td>特种设备安全管理</td>
+								<td>学校未购买特种设备安全责任保险</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>特种设备管理</td>
+								<td>特种设备安全管理</td>
+								<td>学校未建立特种设备安全技术档案</td>
+								<td>其他伤害</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div>
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tbody id="dictCon2">
+							<tr>
+								<th>项目名称</th>
+								<th>检查对象</th>
+								<th>潜在风险</th>
+								<th>事故类型</th>
+							</tr>
+
+							<tr>
+								<td>机电实训室风险辨识</td>
+								<td>机电实训室</td>
+								<td>实训室不使用期间未上锁管控</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机械实训课</td>
+								<td>机电实训课</td>
+								<td>实验完成后设备配件未及时归位</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训课</td>
+								<td>机电实训课</td>
+								<td>实验完成后设备配件未及时归位</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>实训操作课</td>
+								<td>实训操作课</td>
+								<td>学生未按照实验操作规程及设备注意事项操作实训设备</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机械实训课</td>
+								<td>机电实训课</td>
+								<td>未对学生进行安全教育</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训课</td>
+								<td>机电实训课</td>
+								<td>未对学生进行安全教育</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>实训操作课</td>
+								<td>实训操作课</td>
+								<td>未对学生进行安全培训和注意事项宣导</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>公共安全教育</td>
+								<td>未积极组织开展公共安全教育</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>心理健康教育</td>
+								<td>学生因学习、感情、家庭等原因产生心理问题得不到及时疏导</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>人员用电管理</td>
+								<td>违规使用大功率电器</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室管理</td>
+								<td>实验室管理不规范，未落实&ldquo;四无一保&rdquo;</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>室内消火栓风险辨识</td>
+								<td>室内消火栓</td>
+								<td>室内消火栓系统未按照标准设置且不能正常运行</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>灭火器箱风险辨识</td>
+								<td>灭火器箱</td>
+								<td>设置不合理，影响疏散逃生</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>灭火器风险辨识</td>
+								<td>灭火器</td>
+								<td>灭火器未按照标准配置</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>电梯风险辨识</td>
+								<td>电梯</td>
+								<td>电梯管理员未持证上岗</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机电实训室风险辨识</td>
+								<td>机电实训室</td>
+								<td>学生未按照老师要求操作实验器具、器材</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机械实训课</td>
+								<td>机电实训课</td>
+								<td>未张贴设备安全操作规程</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训课</td>
+								<td>机电实训课</td>
+								<td>未张贴设备安全操作规程</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>实训操作课</td>
+								<td>实训操作课</td>
+								<td>老师监督不到位</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>公共安全教育</td>
+								<td>公共安全教育内容不全</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>人员用电管理</td>
+								<td>电工未经培训合格持证上岗</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室管理</td>
+								<td>实验室未制定管理制度</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>室内消火栓风险辨识</td>
+								<td>室内消火栓</td>
+								<td>未定期进行末端试水测试</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>灭火器风险辨识</td>
+								<td>灭火器</td>
+								<td>灭火器位置不明显、不便于取用，且影响安全疏散</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>电梯风险辨识</td>
+								<td>电梯</td>
+								<td>电梯紧急呼叫按钮损坏或失效</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机电实训室风险辨识</td>
+								<td>机电实训室</td>
+								<td>未对安全保护装置进行检查</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机械实训课</td>
+								<td>机电实训课</td>
+								<td>设备周围有积水、油污现象</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训课</td>
+								<td>机电实训课</td>
+								<td>设备周围有积水、油污现象</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>实训操作课</td>
+								<td>实训操作课</td>
+								<td>老师有脱岗不在职情况</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>安全教育与培训</td>
+								<td>公共安全教育</td>
+								<td>公共安全教育形式单一</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>人员用电管理</td>
+								<td>未及时关闭用电产品电源</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室管理</td>
+								<td>未制定安全操作规程及应急处置流程</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>室内消火栓风险辨识</td>
+								<td>室内消火栓</td>
+								<td>末端消火栓压力表压力未在正常范围内或为0</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>灭火器风险辨识</td>
+								<td>灭火器</td>
+								<td>灭火器失压</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>电梯风险辨识</td>
+								<td>电梯</td>
+								<td>电梯内照明系统故障</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训室风险辨识</td>
+								<td>机电实训室</td>
+								<td>未配发安全防护用具</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机械实训课</td>
+								<td>机电实训课</td>
+								<td>设备作业区域未规划警示区域</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训课</td>
+								<td>机电实训课</td>
+								<td>设备作业区域未规划警示区域</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>实训操作课</td>
+								<td>实训操作课</td>
+								<td>学生不听从老师指挥</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>安全教育与培训</td>
+								<td>公共安全教育</td>
+								<td>学校公共安全教育资源不足</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室管理</td>
+								<td>未建立实验室建设、管理、教学档案</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>室内消火栓风险辨识</td>
+								<td>室内消火栓</td>
+								<td>未张贴室内消火栓使用提示</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>灭火器风险辨识</td>
+								<td>灭火器</td>
+								<td>灭火器配备数量不足</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>电梯风险辨识</td>
+								<td>电梯</td>
+								<td>电梯内运行有异响</td>
+								<td>机械伤害</td>
+							</tr>
+							<tr>
+								<td>机械实训课</td>
+								<td>机电实训课</td>
+								<td>老师监督不到位</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训课</td>
+								<td>机电实训课</td>
+								<td>老师监督不到位</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>实训操作课</td>
+								<td>实训操作课</td>
+								<td>实训教师迟到、早退、不在岗</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室管理</td>
+								<td>实验教学仪器设备未按学科和类别，分室、分柜、定位存放</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>室内消火栓风险辨识</td>
+								<td>室内消火栓</td>
+								<td>未定期对消火栓进行点检</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>灭火器风险辨识</td>
+								<td>灭火器</td>
+								<td>一个计算单元内配置的灭火器数量少于2具</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>电梯风险辨识</td>
+								<td>电梯</td>
+								<td>电梯内有异味</td>
+								<td>中毒和窒息</td>
+							</tr>
+
+							<tr>
+								<td>机电实训室风险辨识</td>
+								<td>机电实训室</td>
+								<td>未张贴机电实训室管理规定及注意事项</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机械实训课</td>
+								<td>机电实训课</td>
+								<td>老师有脱岗不在职情况</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训课</td>
+								<td>机电实训课</td>
+								<td>老师有脱岗不在职情况</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>实训操作课</td>
+								<td>实训操作课</td>
+								<td>实训教师对学生缺课情况未及时向班主任、学校及家长通报</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>公共安全教育</td>
+								<td>学校未把教师开展公共安全教育的情况作为教师考核的重要依据</td>
+								<td>其他伤害</td>
+
+							</tr>
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室管理</td>
+								<td>化学药品要和仪器未分开存放</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>室内消火栓风险辨识</td>
+								<td>室内消火栓</td>
+								<td>消火栓配件存在缺失、损坏现象</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>灭火器风险辨识</td>
+								<td>灭火器</td>
+								<td>未定期对灭火器进行点检</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>电梯风险辨识</td>
+								<td>电梯</td>
+								<td>电梯内手机无信号</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机电实训室风险辨识</td>
+								<td>机电实训室</td>
+								<td>实训室未设置专人负责管理</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机械实训课</td>
+								<td>机电实训课</td>
+								<td>学生不听从老师指挥</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>机电实训课</td>
+								<td>机电实训课</td>
+								<td>学生不听从老师指挥</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>实训操作课</td>
+								<td>实训操作课</td>
+								<td>学生擅自离开实训室</td>
+								<td>其他伤害</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div>
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tbody id="dictCon3">
+							<tr>
+								<th>项目名称</th>
+								<th>检查对象</th>
+								<th>潜在风险</th>
+								<th>事故类型</th>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>教职工安全培训</td>
+								<td>调岗和新进教职工未进行上岗前的安全培训</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>用电安全管理制度</td>
+								<td>未制定学校用电安全管理制度</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>用电设备管理</td>
+								<td>用电设备不符合国家标准</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>教师管理</td>
+								<td>准入管理</td>
+								<td>有违法犯罪行为</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>教师管理</td>
+								<td>准入管理</td>
+								<td>身体状况、业务能力、政治素质不适合任职条件的人员进入学校任教</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室建设</td>
+								<td>实验室用的教学仪器设备不合格</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>计算机教室风险辨识</td>
+								<td>计算机教室</td>
+								<td>电源未加装漏电保护装置、过负载保护装置</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>强电间风险辨识</td>
+								<td>强电间</td>
+								<td>强电间内穿墙孔洞未封堵</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>配电箱/柜风险辨识</td>
+								<td>配电箱（柜）</td>
+								<td>点检保养人员未经培训合格持证上岗</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>机械实训室风险辨识</td>
+								<td>机械实训室</td>
+								<td>未对安全保护装置进行检查</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>组织管理</td>
+								<td>安全档案</td>
+								<td>档案管理不规范，不系统，缺少各种记录、登记及相关佐证材料</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>教师管理</td>
+								<td>准入管理</td>
+								<td>患有传染性疾病或精神疾病</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>心理健康教育</td>
+								<td>不重视心理健康教育，心理健康教育活动开展少</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>安全教育与培训</td>
+								<td>教职工安全培训</td>
+								<td>管理制度、法律法规培训不够</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>用电安全管理制度</td>
+								<td>学校用电安全管理制度未落实</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>用电设备管理</td>
+								<td>用电设备电源未加装漏电保护装置、过负载保护装置</td>
+								<td>触电</td>
+							</tr>
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室建设</td>
+								<td>实验室未根据教育部的有关规定和课程标准进行设置</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>计算机教室风险辨识</td>
+								<td>计算机教室</td>
+								<td>私拉乱接电源线或电源线破损</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>强电间风险辨识</td>
+								<td>强电间</td>
+								<td>强电间内存在可燃物</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>配电箱/柜风险辨识</td>
+								<td>配电箱（柜）</td>
+								<td>配电箱内断路器无漏电保护、过载保护、短路保护功能</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>机械实训室风险辨识</td>
+								<td>机械实训室</td>
+								<td>未张贴警示标识</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>心理健康教育</td>
+								<td>取得资质的心理健康教师数量不足</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>教职工安全培训</td>
+								<td>岗位安全职责培训不够</td>
+								<td>其他伤害</td>
+
+							</tr>
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>用电设备管理</td>
+								<td>用电设备电气线路敷设不规范</td>
+								<td>火灾</td>
+
+							</tr>
+							<tr>
+								<td>实验室管理及建设</td>
+								<td>实验室建设</td>
+								<td>实验室用房不足</td>
+								<td>其他伤害</td>
+
+							</tr>
+							<tr>
+								<td>计算机教室风险辨识</td>
+								<td>计算机教室</td>
+								<td>教室桌椅、设备、设施固定不牢固</td>
+								<td>其他伤害</td>
+
+							</tr>
+
+							<tr>
+								<td>强电间风险辨识</td>
+								<td>强电间</td>
+								<td>存在常明灯现象</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>配电箱/柜风险辨识</td>
+								<td>配电箱（柜）</td>
+								<td>配电箱门未做等电位跨接</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>教师管理</td>
+								<td>准入管理</td>
+								<td>不坚持正确的政治方向或加入邪教</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>安全教育与培训</td>
+								<td>教职工安全培训</td>
+								<td>单位安全管理人员安全培训不到位</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>学校电气安全管理</td>
+								<td>用电设备管理</td>
+								<td>未定期对用电设备进行维护保养</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>计算机教室风险辨识</td>
+								<td>计算机教室</td>
+								<td>使用可燃物做装饰</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>机械实训室风险辨识</td>
+								<td>机械实训室</td>
+								<td>未配发安全防护用具</td>
+								<td>其他伤害</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div>
+					<table border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+								<th>项目名称</th>
+								<th>检查对象</th>
+								<th>潜在风险</th>
+								<th>事故类型</th>
+							</tr>
+
+							<tr>
+								<td>课间课外活动</td>
+								<td>课间课外活动</td>
+								<td>值班教师没有切实履行职责、加强巡视；学生追逐打闹、大声喧哗等</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>运动会</td>
+								<td>运动会</td>
+								<td>工作人员缺岗缺位；组织不严密；入场、退场秩序乱</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>课堂教学</td>
+								<td>课堂教学</td>
+								<td>老师未定期参加安全培训，不能及时发现场地存在的安全隐患</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>教室风险辨识</td>
+								<td>教室</td>
+								<td>教室内电气线路存在破损现象</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>专用教室风险辨识</td>
+								<td>专用教室</td>
+								<td>电气线路敷设不规范，绝缘层破损</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>办公室风险辨识</td>
+								<td>办公室</td>
+								<td>办公室内存在使用大功率电器现象</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>储物室风险辨识</td>
+								<td>储物室</td>
+								<td>储物室内穿墙孔洞未封堵</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>楼梯走廊风险辨识</td>
+								<td>楼梯走廊</td>
+								<td>电气线路混乱，绝缘层破损</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>会议室风险辨识</td>
+								<td>会议室</td>
+								<td>会议室内电气线路有破损现象</td>
+								<td>触电</td>
+							</tr>
+							<tr>
+								<td>卫生间风险辨识</td>
+								<td>卫生间</td>
+								<td>卫生间内有吸烟现象</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>活动室风险辨识</td>
+								<td>活动室</td>
+								<td>电源驱动的体育设施电源开关未加装漏电保护装置</td>
+								<td>触电</td>
+							</tr>
+
+							<tr>
+								<td>课间课外活动</td>
+								<td>课间课外活动</td>
+								<td>活动场地地面不平、有障碍物</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>运动会</td>
+								<td>运动会</td>
+								<td>场地、设施存在安全隐患</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>课堂教学</td>
+								<td>课堂教学</td>
+								<td>任课教师迟到或早退，无老师管理，课堂秩序混乱</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>教室风险辨识</td>
+								<td>教室</td>
+								<td>未张贴教室管理规定</td>
+								<td>其他伤害</td>
+
+							</tr>
+
+							<tr>
+								<td>专用教室风险辨识</td>
+								<td>专用教室</td>
+								<td>未明确管理责任人</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>办公室风险辨识</td>
+								<td>办公室</td>
+								<td>办公室内电气线路存在破损现象</td>
+								<td>触电</td>
+							</tr>
+							<tr>
+								<td>储物室风险辨识</td>
+								<td>储物室</td>
+								<td>私拉乱接电源线</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>灭火器箱风险辨识</td>
+								<td>灭火器箱</td>
+								<td>灭火器箱有锈蚀现象</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>楼梯走廊风险辨识</td>
+								<td>楼梯走廊</td>
+								<td>存放杂物、可燃物</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>会议室风险辨识</td>
+								<td>会议室</td>
+								<td>消火栓、灭火器被埋压、圈占</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>卫生间风险辨识</td>
+								<td>卫生间</td>
+								<td>卫生间内有打架、斗殴现象</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>活动室风险辨识</td>
+								<td>活动室</td>
+								<td>安全出口、疏散通道被占用、封堵</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>运动会</td>
+								<td>运动会</td>
+								<td>学生兴奋难以监管且自我保护能力差</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>课堂教学</td>
+								<td>课堂教学</td>
+								<td>任课教师对学生缺课情况未及时向班主任及学校、家长通报</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>教师管理</td>
+								<td>日常行为管理</td>
+								<td>教师对学校或上级有关政策的不满得不到有效疏导</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>教室风险辨识</td>
+								<td>教室</td>
+								<td>桌椅存在破损、不牢固现象</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>专用教室风险辨识</td>
+								<td>专用教室</td>
+								<td>未制定专用教室管理制度</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>办公室风险辨识</td>
+								<td>办公室</td>
+								<td>电脑多、插排多、线路乱</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>储物室风险辨识</td>
+								<td>储物室</td>
+								<td>储藏室内未进行人员、火源管控</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>楼梯走廊风险辨识</td>
+								<td>楼梯走廊</td>
+								<td>楼梯间内存放电动车或给电动车充电</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>会议室风险辨识</td>
+								<td>会议室</td>
+								<td>安全出口、疏散通道被占用、封堵</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>卫生间风险辨识</td>
+								<td>卫生间</td>
+								<td>卫生间内有积水现象</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>卫生间风险辨识</td>
+								<td>卫生间</td>
+								<td>卫生间内未设置防滑垫</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>活动室风险辨识</td>
+								<td>活动室</td>
+								<td>消火栓、灭火器被埋压、圈占</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>教室风险辨识</td>
+								<td>教室</td>
+								<td>风扇、灯具、黑板、投影仪等设备设施安装不牢固</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>课堂教学</td>
+								<td>课堂教学</td>
+								<td>学生擅自离开教室</td>
+								<td>其他伤害</td>
+							</tr>
+
+							<tr>
+								<td>专用教室风险辨识</td>
+								<td>专用教室</td>
+								<td>门窗、设施、座椅等有破损</td>
+								<td>其他伤害</td>
+							</tr>
+							<tr>
+								<td>办公室风险辨识</td>
+								<td>办公室</td>
+								<td>办公室内存在排插串联现象</td>
+								<td>火灾</td>
+							</tr>
+							<tr>
+								<td>储物室风险辨识</td>
+								<td>储物室</td>
+								<td>未对储藏室进行断电</td>
+								<td>火灾</td>
+							</tr>
+
+							<tr>
+								<td>楼梯走廊风险辨识</td>
+								<td>楼梯走廊</td>
+								<td>楼梯间出入口处防火门破损，不能关闭</td>
+								<td>中毒和窒息</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div>
+					<div class="pagetable">
+						<!-- <el-table border :data="list">
+							<el-table-column prop="proName" label="检查点" width="335"></el-table-column>
+							<el-table-column prop="checkName" label="负责人" align="center" width="110"></el-table-column>
+							<el-table-column prop="hiddenDenger" label="检查项目" width="280"></el-table-column>
+							<el-table-column prop="type" label="检查结果" align="center" width="137"></el-table-column>
+							<el-table-column prop="type" label="检查人" align="center" width="74"></el-table-column>
+							<el-table-column prop="type" label="检查时间" align="center"></el-table-column>
+						</el-table> -->
+						<table border="0" cellpadding="0" cellspacing="0">
+							<tbody>
+								<tr>
+									<th>检查点</th>
+									<th width="110">负责人</th>
+									<th>检查项目</th>
+									<th width="140">检查结果</th>
+									<th width="70">检查人</th>
+									<th width="50">检查时间</th>
+								</tr>
+								<tr>
+									<td rowspan="5">捣固车驾驶及 作业模拟仿真综合实训室 （D09-32型捣固车仿真实训网络教室系统）(风险级别：IV级)</td>
+									<td rowspan="5">戴明宏</td>
+									<td rowspan="1">捣固车仿真实训网络教室使用后是否切断电源(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>刘博</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">捣固车仿真实训网络教室是否有排插串联现象(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>刘博</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">捣固车仿真实训网络教室桌椅是否存在破损、不牢固现象(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>刘博</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">捣固车仿真实训网络教室电源总开关是否加装漏电保护装置(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>刘博</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">捣固车仿真实训网络教室内风扇、灯具、黑板、投影仪等设备设施安装是否牢固(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>刘博</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table border="0" cellpadding="0" cellspacing="0" style="display: none;">
+							<tbody>
+								<tr>
+									<th>检查点</th>
+									<th width="110">负责人</th>
+									<th>检查项目</th>
+									<th width="140">检查结果</th>
+									<th width="70">检查人</th>
+									<th width="50">检查时间</th>
+								</tr>
+								<tr>
+									<td rowspan="4">机电工程学院1-CAD-CAM实训室1(风险级别：IV级)</td>
+									<td rowspan="4">魏保立</td>
+									<td rowspan="1">是否存在私拉乱接电源线，电源线破损现象(日检1次)</td>
+									<td>05-22 ( 未检查)</td>
+									<td>刘华洲</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">电气设施电源是否加装漏电及过负载保护装置(日检1次)</td>
+									<td>05-22 ( 未检查)</td>
+									<td>刘华洲</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">教室桌椅、设备、设施固定是否牢固(日检1次)</td>
+									<td>05-22 ( 未检查)</td>
+									<td>刘华洲</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">计算机教室是否存在使用可燃物做装饰(日检1次)</td>
+									<td>05-22 ( 未检查)</td>
+									<td>刘华洲</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table border="0" cellpadding="0" cellspacing="0" style="display: none;">
+							<tbody>
+								<tr>
+								<tr>
+									<th>检查点</th>
+									<th width="110">负责人</th>
+									<th>检查项目</th>
+									<th width="140">检查结果</th>
+									<th width="70">检查人</th>
+									<th width="50">检查时间</th>
+								</tr>
+								<tr>
+									<td rowspan="5">工程机械底盘实训室 （挖掘机模拟驾驶器）(风险级别：IV级)</td>
+									<td rowspan="5">晋兵营</td>
+									<td rowspan="1">挖掘机模拟驾驶器是否做保护接地(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>索小娟</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">挖掘机模拟驾驶器电源是否带有漏电保护装置(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>索小娟</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">挖掘机模拟驾驶器电气元件是否有损坏现象(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>索小娟</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">挖掘机模拟驾驶器周围是否存放杂物(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>索小娟</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td rowspan="1">挖掘机模拟驾驶器是否定期进行维护、保养(周检1次)</td>
+									<td>05-18 ( 未检查)</td>
+									<td>索小娟</td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<nav style="text-align: center;">
+						<ul class="pagination pagebtn">
+							<li class="active"><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#">6</a></li>
+							<li><a href="#">7</a></li>
+							<li><a href="#">8</a></li>
+						</ul>
+					</nav>
+				</div>
+				<div>
+					<!-- <el-table border :data="list">
+						<el-table-column type="index" width="30"></el-table-column>
+						<el-table-column prop="proName" label="图像" width="120">
+							<template slot-scope="scope">
+								<td><img src="images/img1.png"></td>
+							</template>
+						</el-table-column>
+						<el-table-column prop="checkName" label="项目" align="center" width="315"></el-table-column>
+						<el-table-column prop="hiddenDenger" label="隐患级别" width="85"></el-table-column>
+						<el-table-column prop="type" label="上报人" align="center" width="69"></el-table-column>
+						<el-table-column prop="type" label="时间" align="center" width=""></el-table-column>
+						<el-table-column prop="type" label="隐患位置" align="center"></el-table-column>
+						<el-table-column prop="type" label="处理人" align="center" width="69"></el-table-column>
+						<el-table-column prop="type" label="处理时间" align="center" width="85"></el-table-column>
+						<el-table-column prop="type" label="处理结果" align="center" width="85"></el-table-column>
+					</el-table> -->
+					<table width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+							<tr>
+							<tr>
+								<th>&nbsp;</th>
+								<th>图像</th>
+								<th>项目</th>
+								<th>隐患级别</th>
+								<th>上报人</th>
+								<th>时间</th>
+								<th>隐患位置</th>
+								<th>处理人</th>
+								<th>处理时间</th>
+								<th>处理结果</th>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td><img src="images/img1.png"></td>
+								<td>叉车不使用或无人操作的情况下，未取下叉车钥匙</td>
+								<td>一般隐患</td>
+								<td>孙成成</td>
+								<td>2020-04-03</td>
+								<td>现代工业技术实训中心</td>
+								<td>韩建</td>
+								<td>2020-04-03</td>
+								<td>已开会强调</td>
+							</tr>
+
+							<tr>
+								<td>2</td>
+								<td><img src="images/img2.png"></td>
+								<td>行车不使用的时候，行车主功能部件未进行归位（设置专用停靠区） </td>
+								<td>一般隐患</td>
+								<td>孙成成</td>
+								<td>2020-04-03</td>
+								<td>现代工业技术实训中心</td>
+								<td>韩建</td>
+								<td>2020-04-03</td>
+								<td>无</td>
+							</tr>
+
+							<tr>
+								<td>3</td>
+								<td><img src="images/img3.png"></td>
+								<td>叉车不使用或无人操作的情况下，未取下叉车钥匙</td>
+								<td>一般隐患</td>
+								<td>孙成成</td>
+								<td>2020-04-03</td>
+								<td>现代工业技术实训中心</td>
+								<td>韩建</td>
+								<td>2020-04-03</td>
+								<td>无</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		new Vue({
+			el: "#mainbox",
+			data:  {
+				list: [
+
+				],
+			},
+			mounted:function() {
+				
+				
+			},
+			methods: function(){
+
+			}
+		})
+		new Vue({
+			el: "#modalApp",
+			data: {
+				list: [
+					{
+						proName: "机械实训课",
+						checkName: "机电实训课",
+						hiddenDenger: "实验完成后设备配件未及时归位",
+						type: "其他伤害"
+					}
+				],
+			},
+			mounted: function() {
+				
+			},
+			methods: function(){
+
+			}
+		})
+	</script> 
+	<script type="text/javascript" src="js/dp_double_echart.js"></script>
+	<script type="text/javascript" src="../../common/extend/liMarquee/jquery.liMarquee.js"></script>
+	<script>
+		$('.scrollDiv').liMarquee({
+			direction: 'up',
+			scrollamount: 30,
+			runshort: false,
+			drag: false,
+		});
+	</script>
+
+	<script>
+		$(".titabs a").click(function () {
+			var index = $(this).index()
+			var i = index + 1
+			$(this).addClass("active").siblings().removeClass("active")
+			$(".mapadd img").attr("src", "images/0" + i + ".png")
+			if (i == 1) {
+				$(".water-dot").show()
+				$(".risk").show()
+				$(".dot").show()
+
+			} else {
+				$(".water-dot").hide()
+				$(".risk").hide()
+				$(".dot").hide()
+			}
+		})
+		$(".fxd01 li").click(function () {
+			var index1 = $(this).index()
+			var textit = $(this).children("div").children("span").text()
+			$(".modal").addClass("in").fadeIn()
+			$("#tit").text(textit)
+
+			$(".modal  .boxnav>div").eq(index1).show().siblings().hide()
+		})
+		$(".mdclose").click(function () {
+			$(".modal").removeClass("in").fadeOut()
+		})
+
+
+
+		$("#echart1").click(function () {
+			$(".modal").addClass("in").fadeIn()
+			$("#tit").text("巡检详情")
+			$(".modal  .boxnav>div").eq(4).show().siblings().hide()
+		})
+
+		$("#echart2").click(function () {
+			$(".modal").addClass("in").fadeIn()
+			$("#tit").text("整改详情")
+			$(".modal  .boxnav>div").eq(5).show().siblings().hide()
+		})
+
+		$(".pagebtn li").click(function () {
+			var index = $(this).index()
+			$(this).addClass("active").siblings().removeClass("active")
+			$(".pagetable table").eq(index).show().siblings("table").hide()
+		})
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>保障内容详情</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<script src="../../common/extend/vue/vue.min.js"></script>
+		
+		<style>
+			body {
+				overflow: visible;
+			}
+
+			.content {
+				width: 100%;
+				height: 100%;
+				background-color: white;
+
+			}
+
+			.item-top {
+				font-size: 17px;
+				font-weight: bold;
+				color: #111111;
+				display: flex;
+				display: -webkit-flex;
+				justify-content: space-between;
+				-webkit-justify-content: space-between;
+				padding-top: 16px;
+				padding-bottom: 10px;
+				line-height: 17px;
+			}
+
+			.security_content {
+				font-size: 13px;
+				color: #666666;
+				line-height: 15px;
+				display: inline-block;
+				margin-bottom: 14px;
+
+			}
+
+			.security-list li {
+				margin-left: 14px;
+				margin-right: 14px;
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: column;
+				border-bottom: #DEDEDE solid 1px;
+				-webkit-flex-direction: column;
+
+			}
+
+			
+		</style>
+	</head>
+	<body>
+		<header > 
+			<h1>保障内容详情</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div v-cloak  class="content">
+			<div v-if="show" class="security-list">
+				<ul  >
+					<li  v-for="(item,index) in securityList">
+					<div class="item-top">
+						<span>{{item.item_name}} </span>
+						<span> {{item.itemquota}}</span>
+					</div>
+					<div class="security_content">
+						{{item.item_detail}}
+					</div>
+
+					</li>
+				</ul>
+
+			</div>
+				
+          <empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="false"  ></empty>
+		</div>
+
+
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode), //客户端登录的用户code
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			items = updateNullString(getURLParameter('items'), "");
+		new Vue({
+			el: '.content',
+			data: {
+				show: true,
+				errorMsg:"暂无相关数据",
+				securityList: []
+			},
+			methods: {
+
+			},
+			mounted: function mounted() {
+				var details = updateNullString(getURLParameter('items'), "");
+				var array = JSON.parse(details);
+			    if(array.length==0){
+				   this.show=false;
+			   }else{
+				this.securityList = array;
+			}
+			}
+
+
+
+		});
+	</script>
+</html>

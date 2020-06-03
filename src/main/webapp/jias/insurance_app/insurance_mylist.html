@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<script src="../../common/extend/vue/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+		<title>我的保单</title>
+		<style>
+
+			a {
+						margin: 0px;
+					}
+		
+					body {
+						overflow: hidden;
+					}
+		
+					.mui-bar {
+						padding-right: 0px;
+					}
+		
+					.content {
+						width: 100%;
+						height: 100%;
+						background-color: white;
+						
+		
+					}
+		
+					.item-content {
+					     display: flex;
+					    display: -webkit-flex;
+						-webkit-flex-direction: column;
+						flex-direction: column;
+						margin-top: 13px;
+		
+		
+					}
+		
+					.item-top {
+						display: flex;
+						display: -webkit-flex;
+						flex-direction: row;
+						-webkit-flex-direction: row;
+						justify-content: space-between;
+						-webkit-justify-content: space-between;
+					}
+		
+					.item_title {
+						font-size: 16px;
+						line-height: 16px;
+						font-weight: bold;
+					}
+		
+					.guarantee_msg {
+						font-size: 14px;
+						line-height: 14px;
+						margin-top: 10px;
+						color: #666666;
+		
+					}
+		
+					.mui-table-view {
+						padding: 0px 0px 13px 15px
+					}
+		
+					.mui-table-view img {
+						width: 60px;
+						height: 50px;
+					}
+		
+					.right-days,#notstart,#notpay {
+						margin: 10px 15px;
+						color: #f38c02;
+						text-align: center;
+						font-size: 13px;
+						line-height: 14px;
+					}
+		
+					.right-days span {
+						font-size: 16px;
+						font-weight: bold;
+					}
+					.item_bottom{
+						display: flex;
+						display: -webkit-flex;
+						justify-content: flex-end;
+						-webkit-justify-content: flex-end;
+						margin-top: 10px;
+						display: -webkit-flex;
+						-webkit-justify-content: flex-end;
+					}
+					
+					.right-btn{
+						border: #3ba2ff solid 1px;
+						color: #3ba2ff;
+						font-size: 13px;
+						padding: 2px 10px;
+						border-radius: 12px;
+						margin-right: 14px;
+					}
+					#notpay{
+						color: red;
+					}
+					#notstart{
+						color: #f38c02;
+					}
+				</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1>我的保单</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div v-cloak class=" content">
+			<div v-if="show" id="pullrefresh" class="mui-scroll-wrapper ">
+				<div class="mui-scroll">
+					<ul>
+						<li class="mui-table-view" v-for="(item,index) in items" :key="index">
+							<a>
+								<div class="item-top">
+									<div class="item-content">
+										<span class="item_title"> {{item.product_name}}</span>
+										<!-- <div v-if="isnull(item.)" class="guarantee_msg"> 研学地点：<span>{{item.address}}</span></div> -->
+										<div class="guarantee_msg"> 被保人：<span>{{item.insured.length>0?item.insured[0].insured_username:emptymsg}}</span><span
+											 v-show="item.insured.length>1">等{{item.insured.length}}人</span></div>
+									</div>
+									<div>
+										<div class="right-days" v-if="item.order_status==1&&item.expired==1">
+											<div>已保障</div>
+											<span v-show="item.order_status==1&&item.expired==1"> {{item.daynum}}</span>
+										</div>
+										<div id="notstart" v-else-if="item.order_status==1&&item.expired==0">待生效</div>
+										<img v-else-if="item.order_status==1&&item.expired==-1" src="../../common/app/images/mine_img_disabled.png">
+										<div id="notpay" v-else>待支付</div>
+									</div>
+
+
+								</div>
+								<div>
+									<div class="guarantee_msg"> 保障期限：<span>{{item.period_start}} 至 {{item.period_end}}</span></div>
+
+									<div class="item_bottom">
+										<button v-if="item.order_status==1&&item.expired==1" type="button" @click="applyClaims(index)" class="right-btn">
+											申请理赔
+										</button>
+										<button v-if="item.order_status==0" type="button" class="right-btn" @click="deleteOrder(index)">
+											取消保单
+										</button>
+										<button type="button" class="right-btn" v-on:click="item_details(item.order_id,item.insured.length)">
+											保单详情
+										</button>
+
+									</div>
+							</a>
+
+
+						</li>
+					</ul>
+
+				</div>
+			</div>
+			<empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="true" v-bind:isneterror="isneterror" v-on:retryclick="retryMsg"></empty>
+		</div>
+
+		</div>
+
+
+
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/app/script/empty_vue.js"></script>
+	<script>
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+	var realHeight = $(window).height();
+	if (isAPPHeaderShow) {
+		$(".content").css({
+			'top': '44px'
+		})
+		$('.content').css('height', realHeight + 'px').css('height', '-=44px');
+	} else {
+		$(".content").css({
+			'top': '0px'
+		})
+		$('.content').css('height', realHeight + 'px').css('height', '-=0px');
+	}
+
+		//请求返回数据为空或失败显示的空页面
+		var list = new Vue({
+			el: '.content',
+			data: {
+				show: true,
+				isneterror: false,
+				errorMsg: "",
+				items: [],
+				emptymsg: "无"
+			},
+			methods: {
+				//判断空
+				isnull: function(obj) {
+					if (typeof obj == "undefined" || obj == null || obj == "") {
+						return true;
+					} else {
+						return false;
+					}
+
+				},
+				//保单详情
+				item_details: function(orderId, itemlength) {
+					var peoplePultiple = itemlength > 1 ? 0 : 1;
+					CodeSTD.form({
+						url: "insurance_detail.html",
+						params: {
+							"usercode": usercode,
+							"token": token,
+							"orderid": orderId
+						},
+					});
+
+				},
+
+				//重试
+				xa_showRequestErrorEmpty: function(msg, isneterror) {
+					this.show = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+				},
+
+				retryMsg: function() {
+					xa_getMyList();
+				},
+				deleteOrder: function(pos) {
+					var btnArray = ["取消", "确定"];
+					mui.confirm('确认取消保单吗？', '取消保单', btnArray, function(e) {
+						if (e.index == 1) {
+							deleteMyOrder(pos)
+						}
+					})
+				},
+				applyClaims: function(index) {
+					var itemJson = this.items[index]
+					CodeSTD.form({
+						url: "rich_detail.html",
+						params: {
+							"usercode": usercode,
+							"token": token,
+							"title": "理赔流程",
+							"orderID": itemJson['order_id'],
+							"orderNo": itemJson['order_no'],
+							"productID": itemJson['product_id'],
+							"orderID": itemJson['order_id'],
+							"orderNo": itemJson['order_no'],
+							"productID": itemJson['product_id'],
+							"claimsHotline": itemJson['claims_hotline']
+						},
+					});
+
+				}
+
+			},
+			mounted: function mounted() {
+				/**
+				 * 上拉加载下拉刷新
+				 */
+				var context = this;
+				mui.init({
+					swipeBack: false,
+					pullRefresh: {
+						container: '#pullrefresh',
+						down: {
+							style: 'circle',
+							auto: true,
+							color: '#2BD009', //可选，默认“#2BD009” 下拉刷新控件颜色
+							offset: (isAPPHeaderShow == true) ? '50px' : '0px', //可选 默认0px,下拉刷新控件的起始位置
+							callback: function() {
+								xa_getMyList(true)
+							}
+
+						}
+					},
+
+				});
+			}
+
+		});
+
+		function xa_getMyList(pulltofresh) {
+			if (navigator.onLine == false) {
+				list.xa_showRequestErrorEmpty("网络似乎有点问题", true);
+				return;
+			}
+			
+			var timestamp = moment().valueOf()
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"secret": getSecretKey,
+				"timestamp": timestamp
+			};
+			mui.showLoading()
+			urlString = system.jias + "/v1/order/myorder";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+					if (result) {
+						var data = object["data"];
+						//pull to refrsh
+						if (data.length > 0) {
+							list.items = data;
+							list.show = true;
+						} else {
+							list.xa_showRequestErrorEmpty("暂无相关数据",false);
+						}
+					} else {
+						list.xa_showRequestErrorEmpty(updateNullString(object["err_msg"], "暂无相关数据"), false);
+					}
+					if (pulltofresh) {
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+					}
+				},
+				function(error) {
+					mui.hideLoading();
+					if (pulltofresh) {
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
+					}
+					list.xa_showRequestErrorEmpty("数据加载时出了问题",false);
+				})
+		}
+
+		function deleteMyOrder(index) {
+			var order_id = list.items[index]["order_id"]
+			var paramDic = {
+				"usercode": usercode,
+				"order_id": order_id,
+				"token": token
+			};
+
+			var urlString = system.jias + "/v1/order/delete";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+					if (result) {
+						mui.toast("取消成功");
+						list.items.splice(index, 1);
+					if(list.items.length == 0){
+						list.xa_showRequestErrorEmpty("暂无相关数据",false)
+					}
+					} else {
+						mui.toast(updateNullString(object["err_msg"], "暂无相关数据"),false);
+					}
+				},
+				function(error) {
+					mui.hideLoading();
+				})
+
+
+		}
+	</script>
+</html>

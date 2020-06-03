@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<!DOCTYPE html>
+	<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>理赔统计</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<link rel="stylesheet" type="text/css" href="../../common/extend/mui/css/mui.picker.min.css" />
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<script src="../../common/extend/mui/js/mui.picker.min.js"></script>
+		<script src="../../common/extend/vue/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../common/app/script/empty_vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../common/app/script/showLoading.js"></script>
+		<style>
+			.content {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				overflow-y: scroll;
+
+			}
+
+			.top-org {
+				font-size: 17px;
+				font-weight: bold;
+				text-align: center;
+				padding-top: 15px;
+				padding-bottom: 15px;
+
+			}
+
+			.top-wapper {
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: row;
+				-webkit-flex-direction: row;
+				height: 40px;
+				align-items: center;
+				-webkit-align-items: center;
+				border-bottom: #dedede solid 1px;
+
+
+			}
+
+			.top-wapper div {
+				width: 100%;
+				text-align: center;
+
+			}
+
+			#select_month,
+			#select_kind {
+				font-size: 14px;
+				border: none;
+			}
+
+			.statistical_num {
+				display: flex;
+				display: -webkit-flex;
+				justify-content: center;
+				-webkit-justify-content: center;
+
+			}
+
+			.chart {
+				width: 150px;
+				height: 150px;
+				float: left;
+
+			}
+
+			.person_num {
+				font-size: 14px;
+				line-height: 14px;
+				display: inline-block;
+				margin: 30px;
+			}
+
+			.person_num div {
+				margin-bottom: 10px;
+
+			}
+
+			.person_num div span {
+				color: #666666;
+
+			}
+
+			.cell-line {
+				height: 6px;
+				background-color: #efeff4;
+
+
+			}
+
+			.statistics_head span {
+				width: 100%;
+				text-align: center;
+				word-wrap: break-word;
+				word-break: break-all;
+				overflow: hidden;
+
+			}
+
+			.case-num {
+				color: #3ba2ff;
+				text-decoration: underline;
+				text-align: center;
+
+			}
+
+			.puchase-img {
+				height: 16px;
+				width: 5px;
+
+			}
+
+			.bottom-wapper {
+				display: flex;
+				width: 100%;
+				display: -webkit-flex;
+				flex-direction: column;
+				-webkit-flex-direction: column;
+				align-items: center;
+				-webkit-align-items: center;
+
+
+			}
+
+			.char_title {
+				font-size: 18px;
+				color: #111111;
+				margin-top: 16px;
+
+			}
+
+			.pull-down {
+				display: flex;
+				display: -webkit-flex;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				align-items: center;
+				-webkit-align-items: center;
+				font-size: 14px;
+				padding: 10px;
+				border-bottom: 1px solid #E0E0E0;
+			}
+
+			.mask {
+				position: absolute;
+				width: 100%;
+				height: calc(100% - 90px);
+				background-color: rgb(0, 0, 0, 0.3);
+				z-index: 1;
+			}
+
+			.menu-img {
+				width: 16px;
+				height: 12px;
+
+			}
+
+			.menu-unselected {
+				color: #333333;
+
+			}
+
+			.menu-selected {
+				color: #3ba2ff;
+
+			}
+
+			#casechart,
+			#accidentchart,
+			#claimmoneychart {
+				height: 256px;
+				width: 80%;
+				margin-top: -20px;
+
+			}
+
+			#claimmoneychart {
+				margin-bottom: 50px;
+
+			}
+
+			.text_blue {
+				color: #3ba2ff;
+				text-decoration: underline;
+				text-align: center;
+			}
+
+			#filter-kind {
+				position: absolute;
+				background-color: white;
+				z-index: 2;
+				width: 100%;
+				overflow-y: scroll;
+				border-top: 1px solid rgb(222, 222, 222);
+
+
+			}
+		</style>
+	</head>
+
+<body>
+	<header>
+		<h1>理赔统计</h1>
+		<a href="javascript:history.back(-1)" class="left flex_center">
+			<div class="arrow_left"></div>
+		</a>
+	</header>
+	<div v-cloak class="content" id="main">
+		<div v-if="showcontent">
+			<div class="top-org">{{areaname}} </div>
+			<div class="top-wapper">
+				<div>
+					<button type="button" id="select_month" data-options='{"type":"month"}'
+						class="  mui-btn mui-icon mui-icon-arrowdown mui-right" v-on:click="selecrtMonth">
+						{{currentMonth}}
+					</button>
+				</div>
+				<div>
+					<button type="button" id="select_kind" @click="showKind"
+						class="mui-btn mui-icon mui-icon-arrowdown mui-right">{{kindname}}</button>
+
+
+				</div>
+
+
+			</div>
+			<div id="filter-kind" v-show="showkindlist">
+				<ul>
+					<li v-for="(item,index) in kindlist">
+						<div class="pull-down" @click="selectCurrent(index)">
+							<span :class="{'menu-selected':item.selected,'menu-selected':item.selected}">
+								{{item.dict_name}}</span>
+							<img class="menu-img" v-show="item.selected"
+								src="../../common/app/images/main_ic_selected.png">
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="mask" v-show="showkindlist"></div>
+
+			<div class="statistical_num">
+				<div class="chart" id="piechart"></div>
+				<div class="person_num">
+					<div>
+						案件数：<span v-bind:class="{text_blue:case_num>0}" @click="toClaimList">{{case_num}}</span>
+					</div>
+					<div>
+						待受理：<span>{{notaccept_num}}</span>
+					</div>
+					<div>
+						受理中：<span>{{accept_num}}</span>
+					</div>
+					<div>
+						已驳回：<span>{{reject_num}}</span>
+					</div>
+					<div>
+						已结案：<span>{{end_num}}</span>
+					</div>
+				</div>
+
+			</div>
+			<div class="cell-line"></div>
+			<div class="bottom-wapper">
+				<span class="char_title">案件分类统计</span>
+				<div class="chart" id="casechart"></div>
+				<span class="char_title">按事故类型统计</span>
+				<div class="chart" id="accidentchart"></div>
+				<span class="char_title">按赔付金额统计</span>
+				<div class="chart" id="claimmoneychart"></div>
+			</div>
+		</div>
+		<empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="showretry" v-bind:isneterror="isneterror"
+			v-on:retryclick="retryMsg"></empty>
+	</div>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/extend/echarts/echarts.min.js"></script>
+
+	<script>
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var areaid = updateNullString(getURLParameter('areaid'), "");
+		//区域类型用于判断访问区、校、班接口 区0，校1，班2 学生3
+		var orgtype = updateNullString(getURLParameter('orgtype'), "-1");
+		//选择保险类型
+		var insuranceCode = updateNullString(getURLParameter('insuranceCode'), "");
+		var insuranceMonth = updateNullString(getURLParameter('insuranceMonth'), "");
+		new Vue({
+			el: '.content',
+			data: {
+				//班级名称
+				areaname: "",
+				//月份
+				currentMonth: "",
+				showcontent: true,
+				//案件数
+				case_num: 0,
+				//待受理数
+				notaccept_num: 0,
+				//受理数
+				accept_num: 0,
+				//结案数
+				end_num: 0,
+				//驳回数量
+				reject_num: 0,
+				//保险类型
+				kindname: '',
+				kindcode: "",
+				kindlist: [],
+				claimrate: 0,
+				showkindlist: false,
+				currentUserType: "70",
+				//柱状图数据源
+				kindnum: [],
+				casename: [],
+				charcolors: ['#3ba2ff', '#ed8618', '#3fdab4', '#e4d70b'],
+				claimcolors: ['#efdb30', '#ef9730', '#ef5d30', '#fa1919'],
+				claimsums: [],
+				//缩放属性
+				zoomarray: [{
+						start: 0, //默认为0
+						end: 50, //默认为100
+						type: 'slider',
+						show: true,
+						xAxisIndex: [0],
+						handleSize: 0, //滑动条的 左右2个滑动条的大小
+						height: 4, //组件高度
+						fillerColor: new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
+							//给颜色设置渐变色 前面4个参数，给第一个设置1，第四个设置0 ，就是水平渐变
+							//给第一个设置0，第四个设置1，就是垂直渐变
+							offset: 0,
+							color: '#3ba2ff'
+						}]),
+						backgroundColor: '#ddd', //两边未选中的滑动条区域的颜色
+						showDataShadow: false, //是否显示数据阴影 默认auto
+						showDetail: false, //即拖拽时候是否显示详细数值信息 默认true
+						filterMode: 'filter',
+					},
+					//下面这个属性是里面拖到
+					{
+						type: 'inside',
+						show: true,
+						xAxisIndex: [0],
+						zoomOnMouseWheel: false,
+						height: 4, //组件高度
+						start: 0, //默认为1
+						end: 50, //默认为100
+					},
+				],
+				errorMsg: "",
+				isneterror: false,
+				showretry: true
+
+			},
+			methods: {
+				//获取月份
+				getNowMonth: function () {
+					var date = new Date();
+					var month = date.getMonth() + 1;
+					if (month < 10) {
+						month = "0" + month;
+					}
+					return date.getFullYear() + "-" + month;
+				},
+
+				//设置饼图的数据
+				init_pieChar: function () {
+					var option = {
+						series: [{
+							name: '保险情况',
+							type: 'pie',
+							//不响应鼠标事件，默认false响应
+							silent: true,
+							radius: ['50%', '70%'],
+							//调整图表位置
+							// center: ["20%","50%" ], 　
+							avoidLabelOverlap: false,
+							//鼠标悬停不放大
+							animation: false,
+
+							label: {
+								//内部 文字大小
+								normal: {
+									show: true,
+									position: 'center',
+									color: 'black',
+									fontSize: '16',
+								},
+								emphasis: {
+									show: true,
+									//鼠标悬停不放大
+									textStyle: {
+										fontSize: '16',
+									}
+								}
+							},
+							labelLine: {
+								//是否显示线
+								normal: {
+									show: false
+								}
+							},
+							data: [{
+									value: this.end_num,
+									name: this.claimrate * 100 + "%\n理赔率",
+									itemStyle: {
+										color: "#ff0000",
+										animation: false
+									}
+
+								},
+								{
+									value: this.case_num - this.end_num,
+									name: '',
+									itemStyle: {
+										color: "#e4e4e4",
+										animation: false
+									},
+
+								}
+
+							]
+						}]
+
+					};
+					var byId = function (id) {
+						return document.getElementById(id);
+					};
+					var piechart = echarts.init(byId('piechart'));
+					piechart.setOption(option);
+
+				},
+
+				init_chart: function (datas, names, colors, zooms, chartid) {
+					//柱状图设置
+					var caseoption = {
+						color: ['#3398DB'],
+						silent: true,
+						tooltip: {
+							//提示信息不显示
+							show: false,
+						},
+						grid: {
+							left: '3%',
+							right: '4%',
+							bottom: "50px",
+							containLabel: true,
+						},
+						//设置x轴属性
+						xAxis: [{
+							type: 'category',
+							//x轴名称
+							data: names,
+							axisTick: {
+								//去除横线
+								alignWithLabel: true,
+
+							},
+							axisLine: {
+								lineStyle: {
+									color: '#858585'
+								} // x轴坐标轴颜色
+							},
+							axisLabel: {
+								show: true,
+								interval: 0,
+								textStyle: {
+									color: '#666666', //更改坐标轴文字颜色
+									fontSize: 10 //更改坐标轴文字大小
+								},
+
+								barCategoryGap: 100,
+								formatter: val => {
+									//x轴文字超过4个字自动换行
+									let txt = val
+									if (chartid != 'claimmoneychart') {
+										if (val.length > 4) {
+											txt = val.substr(0, 4) + '\n' + val.substr(4, val
+												.length - 1);
+										}
+									}
+									return txt
+								}
+							},
+							axisTick: { // 坐标轴 刻度
+								show: false, // 是否显示
+
+							}
+
+
+						}],
+						//设置y轴属性
+						yAxis: [{
+							type: 'value',
+							splitLine: {
+								show: false
+							},
+							axisTick: { // 坐标轴 刻度
+								show: false, // 是否显示
+							},
+							axisLine: {
+								lineStyle: {
+									color: '#858585'
+								} // x轴坐标轴颜色
+							}
+
+						}],
+						//设置柱形图
+						series: [{
+							name: '',
+							type: 'bar',
+							barWidth: 20,
+							//数据源
+							data: datas,
+							barCateGoryGap: 2,
+							label: {
+								show: true, // 开启显示
+								rotate: 0, // 旋转70度
+								position: 'top', // 在上方显示
+								distance: 10, // 距离图形元素的距离。当 position 为字符描述值（如 'top'、'insideRight'）时候有效。
+								verticalAlign: 'middle',
+								textStyle: { // 数值样式
+									color: 'black',
+									fontSize: 12
+								}
+							},
+							itemStyle: {
+								normal: {
+									// 随机显示
+									//color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+									// 定制显示（按顺序）
+									color: function (params) {
+										var colorList = colors;
+										return colorList[params.dataIndex]
+									}
+								},
+							},
+						}],
+						//设置缩放属性
+						dataZoom: zooms
+					};
+					var byId = function (id) {
+						return document.getElementById(id);
+					};
+					var casechart = echarts.init(byId(chartid));
+					casechart.setOption(caseoption);
+
+
+				},
+				//选择月份
+				selecrtMonth: function () {
+					this.showkindlist = false
+					var app = this;
+					mui.init();
+					var dtPicker = new mui.DtPicker({
+						type: 'month',
+						value: app.currentMonth
+
+					});
+					dtPicker.show(function (selectItems) {
+						app.currentMonth = selectItems.text;
+						app.xa_getCharContent();
+					})
+
+				},
+				/**
+				 * 选择保险类型
+				 */
+				showKind: function () {
+					this.showkindlist = !this.showkindlist
+
+				},
+				selectCurrent: function (index) {
+					var item = this.kindlist[index]
+					var isSelect = item['selected']
+					if (isSelect) {
+						this.showkindlist = false
+						return
+					} else {
+						for (var i = 0; i < this.kindlist.length; i++) {
+							this.kindlist[i]['selected'] = false
+						}
+						item['selected'] = true
+						this.kindcode = item['code']
+						this.kindname = item['dict_name']
+						this.showkindlist = false
+						this.xa_getCharContent()
+
+					}
+				},
+
+				//四舍五入保留2位小数（不够位数，则用0替补）
+				keepTwoDecimalFull: function (num) {
+					var result = parseFloat(num);
+					if (isNaN(result)) {
+						return false;
+					}
+					result = Math.round(num * 100) / 100;
+					var s_x = result.toString();
+					var pos_decimal = s_x.indexOf('.');
+					if (pos_decimal < 0) {
+						pos_decimal = s_x.length;
+						s_x += '.';
+					}
+					while (s_x.length <= pos_decimal + 2) {
+						s_x += '0';
+					}
+					return s_x;
+				},
+				//获取保险类型
+				xa_getInsuranceType: function () {
+					if (navigator.onLine == false) {
+						this.xa_showRequestErrorEmpty("网络似乎有点问题", true, true);
+						return;
+					}
+					var url = system.jias + "/v1/dict/list_by_parent";
+					var paramDic = {
+						"parent_code": "insure_classify",
+						"usercode": usercode,
+						"token": token
+					}
+					var context = this;
+					mui.showLoading()
+					jQuery_Request_Post(url, paramDic, 'json', false, function (object) {
+							mui.hideLoading();
+							var result = object["ret"];
+							console.log(object)
+							if (result) {
+								var data = object['data'];
+								if (data.length > 0) {
+									context.kindlist = data;
+									if (context.kindlist.length > 0) {
+										for (var i = 0; i < context.kindlist.length; i++) {
+											var item = context.kindlist[i]
+											if (!isEmpty(context.kindcode)) {
+												if (item["code"] == context.kindcode) {
+													item['selected'] = true;
+													context.kindname = item['dict_name'];
+													context.kindcode = item['code'];
+												} else {
+													item['selected'] = false;
+												}
+											} else {
+												if (i == 0) {
+													item['selected'] = true;
+													context.kindname = item['dict_name'];
+													context.kindcode = item['code'];
+												} else {
+													item['selected'] = false;
+												}
+											}
+
+										}
+										context.xa_getCharContent()
+									} else {
+										context.xa_showRequestErrorEmpty("暂无保险类型", false, true);
+									}
+
+								}
+							} else {
+								context.xa_showRequestErrorEmpty(updateNullString(object['err_msg'], ""),
+									false, true);
+							}
+						},
+						function (error) {
+							mui.hideLoading();
+							context.xa_showRequestErrorEmpty("获取保险类型失败", false, true);
+						})
+
+
+				},
+				//获取图表信息
+				xa_getCharContent: function () {
+					if (navigator.onLine == false) {
+						this.xa_showRequestErrorEmpty("网络似乎有点问题", true);
+						return;
+					}
+					var url = system.jias + "/v1/statis/cliam";
+					var paramDic = "";
+					if (0 == orgtype || 1 == orgtype) {
+						paramDic = {
+							"areaid": areaid
+						};
+					} else if (2 == orgtype) {
+						paramDic = {
+							"orgid": areaid,
+						};
+					} else {
+						paramDic = {
+							"classid": areaid,
+						};
+					}
+					paramDic['time_range'] = this.currentMonth,
+						paramDic['product_classify'] = this.kindcode,
+						paramDic['usercode'] = usercode,
+						paramDic['token'] = token,
+						paramDic['usertype'] = this.currentUserType;
+					var context = this;
+					mui.showLoading()
+					jQuery_Request_Post(url, paramDic, 'json', false, function (object) {
+							mui.hideLoading();
+							var result = object["ret"];
+							if (result) {
+								var data = object['data'];
+								if (0 == orgtype || 1 == orgtype) {
+									context.areaname = data['areaname'];
+								} else if (2 == orgtype) {
+									context.areaname = data['orgname'];
+								} else {
+									context.areaname = data['classname'];
+								}
+								context.case_num = data['case_size'],
+									//待受理数
+									context.notaccept_num = data['submitted_size'],
+									//受理数
+									context.accept_num = data['accepted_size'];
+								//结案数
+								context.end_num = data['colsed_size'];
+								//驳回数
+								context.reject_num = data['rejected_size'];
+								//类赔率
+								var rate = context.end_num / context.case_num;
+								if (rate > 0) {
+									if (rate > 1) {
+										rate = 1;
+									}
+									context.claimrate = context.keepTwoDecimalFull(rate);
+								} else {
+									context.claimrate = 0;
+								}
+								var kindNum = [],
+									kindName = [],
+									accidentNum = [],
+									accidentName = [],
+									amountNum = [],
+									amountName = [];
+
+								//类型分类
+								var statis_classify = data['statis_classify'];
+								for (var i = 0; i < statis_classify.length; i++) {
+									kindNum.push(statis_classify[i]['count'])
+									kindName.push(statis_classify[i]['name'])
+								}
+								//事故
+								var statis_type = data['statis_type'];
+								for (var i = 0; i < statis_type.length; i++) {
+									accidentNum.push(statis_type[i]['count'])
+									accidentName.push(statis_type[i]['name'])
+								}
+								//金额
+								var payment_type = data['payment_type']
+								for (var i = 0; i < payment_type.length; i++) {
+									amountNum.push(payment_type[i]['count'])
+									amountName.push(payment_type[i]['name'])
+								}
+								context.showcontent = true;
+								context.init_pieChar();
+								context.init_chart(kindNum, kindName, context.charcolors, [], 'casechart')
+								if (statis_type.length > 6) {
+									context.init_chart(accidentNum, accidentName, context.charcolors, context
+										.zoomarray, 'accidentchart')
+								} else {
+									context.init_chart(accidentNum, accidentName, context.charcolors, [],
+										'accidentchart')
+								}
+								context.init_chart(amountNum, amountName, context.claimcolors, [],
+									'claimmoneychart')
+							} else {
+								context.xa_showRequestErrorEmpty(updateNullString(object['err_msg'],
+									"暂无相关信息"), false, true);
+							}
+						},
+						function (error) {
+							mui.hideLoading();
+							context.xa_showRequestErrorEmpty("获取统计数据失败", false, true);
+						})
+				},
+				retryMsg: function () {
+					this.xa_getCharContent();
+				},
+				/**
+				 * 追加选中的月份和保险类型
+				 */
+				xa_addUrlPostfix: function () {
+					var selectMonth = "",
+						selectKind = "";
+					if (this.currentMonth != null && this.currentMonth != undefined && this.currentMonth.length >
+						0) {
+						selectMonth = this.currentMonth
+						var newurl = changeURLPar(window.location.href, 'selectMonth',
+						selectMonth); //将uid和现有的页面地址拼接
+						window.history.replaceState(null, null, newurl); //向当前url添加参数
+					}
+					if (this.kindcode != null && this.kindcode != undefined && this.kindcode.length > 0) {
+						selectKind = this.kindcode
+						var newurl = changeURLPar(window.location.href, 'selectKind',
+						selectKind); //将uid和现有的页面地址拼接
+						window.history.replaceState(null, null, newurl); //向当前url添加参数
+					}
+				},
+				/**
+				 * 显示空视图
+				 * @param {Object} msg 错误信息
+				 * @param {Object} showretry 是否显示重试
+				 * @param {Object} isneterror 是否网络错误
+				 */
+				xa_showRequestErrorEmpty: function (msg, isneterror, showretry) {
+					this.showcontent = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+					this.showretry = showretry;
+				},
+				//跳转到理赔列表
+				toClaimList: function () {
+					if (this.case_num == 0) {
+						return;
+					}
+					this.xa_addUrlPostfix();
+					var par = {};
+					if (0 == orgtype || 1 == orgtype) {
+						par['areaid'] = areaid;
+						par['range'] = 3
+					} else if (2 == orgtype) {
+						par['orgid'] = areaid;
+						par['range'] = 0
+					} else if (3 == orgtype) {
+						par['classid'] = areaid;
+						par['range'] = 4
+					}
+					par['usercode'] = usercode,
+						par['time_range'] = this.currentMonth,
+						par['product_classify'] = this.kindcode,
+						par['usertype'] = this.currentUserType,
+						par['token'] = token;
+					CodeSTD.form({
+						url: "../claim_app/claim_list.html",
+						params: par
+					});
+
+
+				}
+			},
+			mounted() {
+				var selectMonth = updateNullString(getURLParameterArgument('selectMonth'), ""),
+					selectKind = updateNullString(getURLParameterArgument('selectKind'), "");
+				mui.init();
+				if (!isEmpty(insuranceMonth)) {
+					this.currentMonth = insuranceMonth;
+				} else {
+					this.currentMonth = this.getNowMonth();
+				}
+				this.kindcode = insuranceCode;
+				if (!isEmpty(selectKind)) {
+					this.kindcode = selectKind
+				}
+				if (!isEmpty(selectMonth)) {
+					this.currentMonth = selectMonth
+				}
+				this.xa_getInsuranceType();
+
+			}
+
+
+		});
+	</script>
+
+</body>
+
+</html>
+
+
+</html>

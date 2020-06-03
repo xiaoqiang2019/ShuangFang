@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>校车详情</title>
+
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<link rel="stylesheet" href="../../common/app/css/iconfont.css">
+
+		<style type="text/css">
+			.cell-content {
+				display: flex;
+				display: -webkit-flex;
+				font-size: 15px;
+				margin: 10px 15px;
+			}
+
+			.cell-left {
+				margin-right: 10px;
+				width: 66px;
+			}
+
+			.cell-right {
+				max-width: calc(100% - 66px - 10px);
+			}
+
+			.icon-arrow-right {
+				font-size: 15px;
+				color: gray;
+			}
+
+			/* 空页面 */
+			.empty_wrapper {
+				overflow: hidden;
+				height: 100%;
+				background-color: white;
+			}
+
+			.empty_wrapper img {
+				margin-top: calc(50%/3);
+				width: 190px;
+				height: 190px;
+				margin-left: calc(50% - 95px);
+			}
+
+			.empty_wrapper p {
+				background-color: transparent;
+				font-size: 14px;
+				color: #999999;
+				margin-top: 20px;
+				width: 100%;
+				text-align: center;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.telphone {
+				color: rgb(59, 162, 255);
+			}
+
+			.telphone:hover {
+				color: rgb(59, 162, 255);
+			}
+
+			.empty_wrapper a {
+				border: 1px solid #3BA2FF;
+				float: left;
+				padding: 5px;
+				width: 70px;
+				border-radius: 5px;
+				font-size: 14px;
+				color: #3BA2FF;
+				margin-top: 10px;
+				text-align: center;
+				margin-left: calc(50% - 35px);
+			}
+		</style>
+
+	</head>
+	<body>
+		<header>
+			<h1>校车详情</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+
+		<div v-cloak class="content">
+			<div id="app" v-show="!empty_show">
+				<ul>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">车牌号</div>
+						<div class="cell-right app-dark-gray-color">{{object.license_plate}}</div>
+					</li>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">核载人数</div>
+						<div class="cell-right app-dark-gray-color">{{object.nuclear_load_num}}</div>
+					</li>
+					<li class="cell-content" v-show="show_route">
+						<div class="cell-left app-light-gray-color">校车路线</div>
+						<div class="cell-right app-blue-color" @click="gotoRouteDetailMethod(object.route_id)">
+							{{object.route_name}}
+							<span class="iconfont icon-arrow-right"></span>
+						</div>
+					</li>
+					<li class="cell-content" v-show="show_teacher==1">
+						<div class="cell-left app-light-gray-color">跟车老师</div>
+						<div class="cell-right app-dark-gray-color">
+							<!-- {{getShowUserNameMethod(object.teacher_list,0)}} -->
+							<ul>
+								<li v-for="(item,index) in object.teacher_list" :key="index">
+									{{item.username}}
+									<a class="telphone" :href="'tel:' + item.phone">{{item.phone}}</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="cell-content" v-show="show_driver==1">
+						<div class="cell-left app-light-gray-color">司机</div>
+						<div class="cell-right app-dark-gray-color">
+							<!-- {{getShowUserNameMethod(object.driver_list,1)}} -->
+							<ul>
+								<li v-for="(item,index) in object.driver_list" :key="index">
+									{{item.drivername}}
+									<a class="telphone" :href="'tel:' + item.phone">{{item.phone}}</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">是否租用</div>
+						<div class="cell-right app-dark-gray-color">{{object.is_rent==1?'是':'否'}}</div>
+					</li>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">专用校车</div>
+						<div class="cell-right app-dark-gray-color">{{object.is_special==1?'是':'否'}}</div>
+					</li>
+					<!-- <li class="cell-content">
+							<div class="cell-left app-light-gray-color">乘车学生</div>
+							<div class="cell-right app-dark-gray-color">{{getShowUserNameMethod(object.student_list,2)}}</div>
+					</li> -->
+				</ul>
+			</div>
+			<div class="empty_wrapper" v-show="empty_show">
+				<img src="../../common/app/images/nopage/img_noList.png" v-if="empty_isnetwork" />
+				<img src="../../common/app/images/nopage/img_noNetwork.png" v-else />
+				<p>{{empty_error_msg}}</p>
+				<a v-show="empty_isshowretry" @click="emptyRetryAction()">重新加载</a>
+			</div>
+		</div>
+		<script src="../../common/extend/vue/vue.min.js"></script>
+		<script src="../../common/app/script/navConfig.js"></script>
+		<script>
+			mui.init();
+
+			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+			var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+			var busid = updateNullString(getURLParameter('busid'), "");
+
+			//测试使用
+			// busid = "402881fe7168646001716868d5680006";
+			// busid = "4028818c7212969d01721349a33e03dd"
+			
+			var vm = new Vue({
+				el: '.content',
+				data: {
+					object: {
+						"license_plate": "",
+						"nuclear_load_num": 0,
+						"route_id": "",
+						"route_name": "",
+						"teacher_list": [],
+						"student_list": [],
+						"driver_list": [],
+						"is_special": 0,
+						"is_rent": 0,
+						"busid": ""
+					},
+					busid: busid,
+					show_route: false,
+					show_teacher: 0,
+					show_driver: 0,
+					empty_show: false,
+					empty_error_msg: "",
+					empty_isnetwork: true,
+					empty_isshowretry: true
+				},
+				mounted: function mounted() {
+					this.requestSchoolBusDetailDataFromServer();
+				},
+				methods: {
+					//请求返回数据为空或失败显示的空页面
+					showRequestErrorEmpty: function(errorMsg, isNetwork, isShowRetry) {
+						this.empty_show = true;
+						this.empty_error_msg = errorMsg;
+						this.empty_isnetwork = isNetwork;
+						this.empty_isshowretry = isShowRetry;
+					},
+
+					//空页面重新加载
+					emptyRetryAction: function() {
+						dLog("重新加载");
+						this.requestSchoolBusDetailDataFromServer();
+					},
+
+					//获取详情数据
+					requestSchoolBusDetailDataFromServer: function() {
+						//无网络加载
+						this.empty_show = false;
+						if (navigator.onLine == false) {
+							this.showRequestErrorEmpty("网络似乎有点问题", false, true);
+							return;
+						}
+						if (busid.length <= 0) {
+							this.showRequestErrorEmpty("校车标识不能为空", true, true);
+							return;
+						}
+						var paramDic = {
+							"usercode": usercode,
+							"token": token,
+							"businfo.busid": busid
+						};
+						var url = system.usercenter + "/schoolbus/getInformationOfCurrentBus.action";
+						mui.showLoading();
+						jQuery_Request_Post(url, paramDic, "json", true, function(responseData){
+							mui.hideLoading();
+							var ret = responseData["ret"];
+							if (ret) {
+								vm.object = responseData["data"];
+								dLog(vm.object);
+								if (updateNullString(vm.object.route_name, "").length > 0) {
+									vm.show_route = true;
+								}
+								if (vm.object.teacher_list.length > 0) {
+									vm.show_teacher = 1;
+								}
+								if (vm.object.driver_list.length > 0) {
+									vm.show_driver = 1;
+								}
+							} else {
+								var msg = updateNullString(responseData["msg"], "获取数据失败");
+								mui.toast(msg);
+								vm.showRequestErrorEmpty(msg, true, true);
+							}
+						}, function(error) {
+							mui.hideLoading();
+							var msg = updateNullString(error, "请求失败!")
+							mui.toast(msg);
+							vm.showRequestErrorEmpty(msg, true, true);
+						});
+					},
+
+					//跳转到详情页面
+					gotoRouteDetailMethod: function(route_id) {
+						CodeSTD.form({
+							url: "schoolbus_route_detail.html",
+							params: {
+								"usercode": usercode,
+								"token": token,
+								"busid": vm.busid,
+								"routeid": route_id
+							},
+						});
+					},
+
+					//转化跟车老师和乘车学生、司机type=1
+					getShowUserNameMethod: function(userlist, type) {
+						var realshownamestring = "";
+						if (userlist.length > 0) {
+							userlist.map(function (item) {
+							  if (type == 1) {
+							    realshownamestring += item.drivername + " ";
+							  } else {
+							    realshownamestring += item.username + " ";
+							  }
+							});
+						}
+						if (realshownamestring.length > 0) {
+							if (type == 1) {
+								vm.show_driver = 1;
+							} else {
+								vm.show_teacher = 1;
+							}
+						}
+						return realshownamestring;
+					}
+
+				}
+			})
+			
+			vm.requestSchoolBusDetailDataFromServer();
+			
+		</script>
+		
+	</body>
+</html>

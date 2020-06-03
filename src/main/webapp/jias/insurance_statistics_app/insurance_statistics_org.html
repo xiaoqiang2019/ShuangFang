@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<!DOCTYPE html>
+		<html>
+
+			<head>
+				<meta charset="utf-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+				<meta name="apple-mobile-web-app-capable" content="yes">
+				<meta name="apple-mobile-web-app-status-bar-style" content="black">
+				<title>保险统计</title>
+				<!-- mui基类 -->
+				<script src="../../common/extend/mui/js/mui.js"></script>
+				<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+				<!-- jquery -->
+				<script src="../../common/extend/jquery/jquery.min.js"></script>
+				<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+				<!-- 学安基类 -->
+				<script src="../../common/extend/julong/base_common.js"></script>
+				<link rel="stylesheet" href="../../common/app/css/base_css.css">
+				<link rel="stylesheet" type="text/css" href="../../common/extend/mui/css/mui.picker.min.css" />
+				<script src="../../common/system/system.js"></script>
+				<script src="../../common/extend/julong/julong.js"></script>
+				<script src="../../common/extend/mui/js/mui.picker.min.js"></script>
+				<script src="../../common/extend/vue/vue.min.js" type="text/javascript" charset="utf-8"></script>
+				<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+				<script src="../../common/app/script/showLoading.js"></script>
+				<script src="../../common/app/script/empty_vue.js"></script>
+				<style>
+					.content {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				overflow-y: scroll;
+
+			}
+
+			.top-org {
+				font-size: 17px;
+				font-weight: bold;
+				text-align: center;
+				padding-top: 15px;
+				padding-bottom: 15px;
+
+			}
+
+			.top-wapper {
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: row;
+				-webkit-flex-direction: row;
+				height: 40px;
+				align-items: center;
+				-webkit-align-items: center;
+				border-bottom: #dedede solid 1px;
+				padding: 0px 15px;
+
+			}
+
+			.top-wapper div {
+				width: 50%;
+				text-align: center;
+
+
+			}
+
+			#select_month,
+			#select_kind {
+				font-size: 14px;
+				border: none;
+			}
+
+			.statistical_num {
+				display: flex;
+				display: -webkit-flex;
+				justify-content: center;
+				-webkit-justify-content: center;
+				align-items: center;
+				-webkit-align-items: center;
+
+			}
+
+			.chart {
+				width: 150px;
+				height: 150px;
+				float: left;
+
+			}
+
+			.person_num {
+				float: right;
+				font-size: 14px;
+				line-height: 14px;
+				display: inline-block;
+				margin: 30px;
+
+			}
+
+			.person_num div {
+				margin-bottom: 10px;
+
+			}
+
+			.person_num div span {
+				color: #666666;
+
+			}
+
+			.cell-line {
+				height: 6px;
+				background-color: #efeff4;
+
+
+			}
+
+			.statistics-list {
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: row;
+				-webkit-flex-direction: row;
+				min-height: 40px;
+				padding: 0px 10px;
+				align-items: center;
+				-webkit-align-items: center;
+				font-size: 14px;
+				border-bottom: #dedede solid 1px;
+
+			}
+
+			.statistics-list span {
+				width: 18%;
+				text-align: center;
+				word-wrap: break-word;
+				word-break: break-all;
+				overflow: hidden;
+			}
+
+			#orgtitle {
+				width: 28%;
+			}
+
+			.text_blue,
+			#claim-num {
+				color: #3ba2ff;
+				text-decoration: underline;
+				text-align: center;
+
+			}
+
+			.puchase-img {
+				height: 16px;
+				width: 5px;
+
+			}
+
+			#filter-kind {
+				position: absolute;
+				background-color: white;
+				z-index: 2;
+				width: 100%;
+				overflow-y: scroll;
+				border-top: 1px solid rgb(222, 222, 222);
+
+
+			}
+			.pull-down {
+				display: flex;
+				display: -webkit-flex;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				align-items: center;
+				-webkit-align-items: center;
+				font-size: 14px;
+				padding: 10px;
+				border-bottom: 1px solid  #E0E0E0;
+			}
+
+			.menu-img {
+				width: 16px;
+				height: 12px;
+
+			}
+
+			.menu-unselected {
+				color: #333333;
+
+			}
+
+			.menu-selected {
+				color: #3ba2ff;
+
+			}
+			
+			.mask{
+				position: absolute;
+				width: 100%;
+				height: calc(100% - 90px);
+				background-color: rgb(0,0,0,0.3);
+				z-index: 1;
+			}
+			.turndown{
+				height: 12px;
+			}
+			
+		</style>
+			</head>
+
+	<body>
+		<header>
+			<h1>保险统计</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+
+		<div v-cloak class="content" id="main">
+			<div v-if="showcontent">
+				<div class="top-org">{{areaname}} </div>
+				<div class="top-wapper">
+					<div>
+						<button type="button" id="select_month" data-options='{"type":"month"}' class="  mui-btn mui-icon mui-icon-arrowdown mui-right"
+						 v-on:click="selecrtMonth">
+							{{currentMonth}}
+						</button>
+					</div>
+					<div>
+
+						<button type="button" id="select_kind" @click="showKind" class="mui-btn mui-icon mui-icon-arrowdown mui-right">
+							{{kindname}}
+						</button>
+					</div>
+				</div>
+				<div id="filter-kind" v-show="showkindlist">
+					<ul>
+						<li v-for="(item,index) in kindlist">
+							<div class="pull-down" @click="selectCurrent(index)">
+								<span :class="{'menu-selected':item.selected,'menu-selected':item.selected}">
+									{{item.dict_name}}</span>
+								<img class="menu-img" v-show="item.selected" src="../../common/app/images/main_ic_selected.png">
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="mask" v-show="showkindlist"></div>
+				<div class="statistical_num">
+					<div class="chart" id="pieChart"></div>
+					<div class="person_num">
+						<div v-if="0==orgtype">
+							辖区：<span>{{all_count}}个,{{user_total}}人</span>
+						</div>
+						<div v-else>
+							总人数：<span>{{user_total}}人</span>
+						</div>
+						<div>
+							已投保：<span>{{insured_num}}</span>
+						</div>
+						<div>
+							未投保：<span>{{noinsurednum}}</span>
+						</div>
+						<div>
+							理赔：<span v-bind:class="{text_blue:claim_num>0}" @click="toClaim(-1,claim_num)">
+								{{claim_num}}次
+							</span>
+						</div>
+					</div>
+				</div>
+				<div class="cell-line"></div>
+				<div class="statistics-list">
+					<span id="orgtitle">{{tabtitle}} </span>
+					<span > 购买率 <img class="turndown" src="../../common/app/images/insurance_statistics_down.png" ></span>
+					<span> 已投保 </span>
+					<span>未投保 </span>
+					<span>理赔 </span>
+				</div>
+				<div class="statistics-list" v-for="(item,index) in areaList">
+					<span v-if="0==orgtype" id="orgtitle" v-bind:class="{text_blue:item.order_user_total>0}" v-on:click="toSchool(index)">{{item.areaname}}
+					</span>
+					<span v-else-if="1==orgtype" id="orgtitle" v-bind:class="{text_blue:item.order_user_total>0}" v-on:click="toSchool(index)">{{item.orgname}}
+					</span>
+					<span v-else id="orgtitle" v-bind:class="{text_blue:item.order_user_total>0}" v-on:click="toSchool(index)">{{item.classname}}
+					</span>
+					<span> {{item.order_rate}}</span>
+					<span> {{item.order_user_total}} </span>
+					<span>{{item.unorder_user_total}}</span>
+					<span v-bind:class="{text_blue:item.claim_count>0}" @click="toClaim(index,item.claim_count)">{{item.claim_count}}</span>
+				</div>
+			</div>
+			<empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="showretry" v-bind:isneterror="isneterror" v-on:retryclick="retryMsg"></empty>
+		</div>
+        <script src="../../common/app/script/navConfig.js"></script>
+		<script src="../../common/extend/echarts/echarts.min.js"></script>
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+		
+
+		<script>
+			var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+			var areaid = updateNullString(getURLParameter('areaid'), "");
+			//区域类型用于判断访问区、校、班接口 区0，校1，班2
+			var orgtype = updateNullString(getURLParameter('orgtype'), "-1");
+			var insuranceCode = updateNullString(getURLParameter('insuranceCode'), "");
+			var insuranceMonth = updateNullString(getURLParameter('insuranceMonth'), "");
+			var usertype = "";
+			new Vue({
+				el: '.content',
+				data: {
+					areaname: "",
+					currentMonth: "",
+					showcontent: true,
+					isneterror: false,
+					showretry: true,
+					//总人数或辖区人数
+					all_count: 0,
+					user_total: 0,
+					//已投保
+					insured_num: 0,
+					//未投保
+					noinsurednum: 0,
+					orderrate: "",
+					//理赔次数
+					claim_num: 0,
+					tabtitle: "地区",
+					kindname: "",
+					kindcode: "",
+					orgtype: 0,
+					showkindlist: false,
+					errorMsg: "",
+					kindlist: [],
+					areaList: []
+
+				},
+				methods: {
+					//设置当前月份
+					getNowMonth: function() {
+						var date = new Date();
+						var month = date.getMonth() + 1;
+						if (month < 10) {
+							month = "0" + month;
+						}
+						return date.getFullYear() + "-" + month;
+
+					},
+					//获取保险类型
+					xa_getInsuranceType: function() {
+						if (navigator.onLine == false) {
+							this.xa_showRequestErrorEmpty("网络似乎有点问题", true, true);
+							return;
+						}
+						var url = system.jias + "/v1/dict/list_by_parent";
+						var paramDic = {
+							"parent_code": "insure_classify",
+							"usercode": usercode,
+							"token": token
+						}
+						var context = this;
+						mui.showLoading()
+						jQuery_Request_Post(url, paramDic, 'json', false, function(object) {
+								mui.hideLoading();
+								var result = object["ret"];
+								console.log(object)
+								if (result) {
+									var data = object['data'];
+									if (data.length > 0) {
+										context.kindlist = data;
+										if (context.kindlist.length > 0) {
+											for (var i = 0; i < context.kindlist.length; i++) {
+												var item = context.kindlist[i]
+												if (!isEmpty(context.kindcode)) {
+													if (item["code"] == context.kindcode) {
+														item['selected'] = true;
+														context.kindname = item['dict_name'];
+														context.kindcode = item['code'];
+													} else {
+														item['selected'] = false;
+													}
+												} else {
+													if (i == 0) {
+														item['selected'] = true;
+														context.kindname = item['dict_name'];
+														context.kindcode = item['code'];
+													} else {
+														item['selected'] = false;
+													}
+												}
+
+											}
+											context.xa_getAreaContent()
+										} else {
+											context.xa_showRequestErrorEmpty("暂无保险类型", false, true);
+										}
+
+									}
+								} else {
+									context.xa_showRequestErrorEmpty(updateNullString(object['err_msg'], ""),
+										false, true);
+								}
+							},
+							function(error) {
+								mui.hideLoading();
+								context.xa_showRequestErrorEmpty("获取保险类型失败", false, true);
+							})
+
+
+					},
+					//获取区域信息
+					xa_getAreaContent: function() {
+						if (navigator.onLine == false) {
+							this.xa_showRequestErrorEmpty("网络似乎有点问题", true);
+							return;
+						}
+						var url = "";
+						var paramDic = "";
+						if (0 == orgtype) {
+							url = system.jias + "/v1/statis/product/area";
+							paramDic = {
+								"areaid": areaid,
+								"time_range": this.currentMonth,
+								"product_classify": this.kindcode,
+								"usercode": usercode,
+								"token": token,
+								"usertype": "70"
+
+
+							}
+						} else if (1 == orgtype) {
+							url = system.jias + "/v1/statis/product/org";
+							paramDic = {
+								"areaid": areaid,
+								"time_range": this.currentMonth,
+								"product_classify": this.kindcode,
+								"usercode": usercode,
+								"token": token,
+								"usertype": "70"
+
+							}
+						} else {
+							url = system.jias + "/v1/statis/product/class";
+							paramDic = {
+								"orgid": areaid,
+								"time_range": this.currentMonth,
+								"product_classify": this.kindcode,
+								"usercode": usercode,
+								"token": token,
+								"usertype": "70"
+
+							}
+						}
+						var context = this;
+						mui.showLoading()
+						jQuery_Request_Post(url, paramDic, 'json', false, function(object) {
+								mui.hideLoading();
+								var result = object["ret"];
+								if (result) {
+									var data = object['data'];
+									context.areaList = data['items'];
+									if (0 == orgtype || 1 == orgtype) {
+										context.areaname = data['areaname'];
+									} else {
+										context.areaname = data['orgname'];
+									}
+									//已投保人数
+									context.insured_num = data['order_user_total'],
+										//未投保人数
+										context.noinsurednum = data['unorder_user_total'],
+										//理赔数量
+										context.claim_num = data['claim_count'];
+									//投保率
+									context.orderrate = data['order_rate'];
+									//辖区数量
+									context.all_count = data['total'],
+										//总人数
+										context.user_total = data['user_total'],
+										context.showcontent = true;
+									context.initChar();
+								} else {
+									context.xa_showRequestErrorEmpty(updateNullString(object['err_msg'],
+										"暂无相关信息"), false, true);
+								}
+							},
+							function(error) {
+								mui.hideLoading();
+								context.xa_showRequestErrorEmpty("获取统计数据失败", false, true);
+							})
+					},
+					/**
+					 * 显示空视图
+					 * @param {Object} msg 错误信息
+					 * @param {Object} showretry 是否显示重试
+					 * @param {Object} isneterror 是否网络错误
+					 */
+					xa_showRequestErrorEmpty: function(msg, isneterror, showretry) {
+						this.showcontent = false;
+						this.errorMsg = msg;
+						this.isneterror = isneterror;
+						this.showretry = showretry;
+					},
+					/**
+					 * 重试按钮
+					 */
+					retryMsg: function() {
+						this.xa_getAreaContent();
+					},
+					/**
+					 * 选择保险类型
+					 */	
+					showKind: function() {
+						this.showkindlist = !this.showkindlist
+
+					},
+					selectCurrent: function(index) {
+						var item = this.kindlist[index]
+						var isSelect = item['selected']
+						if (isSelect) {
+							this.showkindlist = false
+							return
+						} else {
+							for (var i = 0; i < this.kindlist.length; i++) {
+								this.kindlist[i]['selected'] = false
+							}
+							item['selected'] = true
+							this.kindcode = item['code']
+							this.kindname = item['dict_name']
+							this.showkindlist = false
+							this.xa_getAreaContent()
+
+						}
+					},
+
+					//设置饼图的数据
+					initChar: function() {
+						var option = {
+							series: [{
+								name: '保险情况',
+								type: 'pie',
+								radius: ['50%', '70%'],
+								//调整图表位置
+								// center: ["25%", "50%"], 　
+								avoidLabelOverlap: false,
+								//鼠标悬停不放大
+								animation: false,
+								silent: true,
+								label: {
+									normal: {
+										show: true,
+										position: 'center',
+										color: 'black',
+										fontSize: '15',
+									},
+									emphasis: {
+										show: true,
+										//鼠标悬停不放大
+										textStyle: {
+											fontSize: '15',
+										}
+									}
+								},
+								labelLine: {
+									//是否显示线
+									normal: {
+										show: false
+									}
+								},
+								data: [{
+										value: this.insured_num,
+										name: this.orderrate + "\n订购率",
+										itemStyle: {
+											color: "#ff9200",
+											animation: false
+										}
+
+									},
+									{
+										value: this.noinsurednum,
+										name: '',
+										itemStyle: {
+											color: "#e4e4e4",
+											animation: false
+										},
+
+									}
+
+								]
+							}]
+						};
+						var byId = function(id) {
+							return document.getElementById(id);
+						};
+						var pieChart = echarts.init(byId('pieChart'));
+						pieChart.setOption(option);
+
+					},
+
+					//选择月份
+					selecrtMonth: function() {
+						this.showkindlist = false
+						var app = this;
+						mui.init();
+						var dtPicker = new mui.DtPicker({
+							type: 'month',
+							value: app.currentMonth
+
+						});
+						dtPicker.show(function(selectItems) {
+							app.currentMonth = selectItems.text;
+							app.xa_getAreaContent();
+						})
+
+					},
+					/**跳转区域、学校、班级
+					 * @param {Object} index 下标
+					 */
+					toSchool: function(index) {
+						var item = this.areaList[index];
+						if (item['order_user_total'] == 0) {
+							return
+						}
+						this.xa_addUrlPostfix();
+						var areaid = item['areaid']
+						var leaf = item['leaf']
+						var tourl = "insurance_statistics_org.html";
+						var type = this.orgtype;
+						if (0 == this.orgtype && 0 == leaf) {
+							//跳转区域
+							type = 1;
+						} else if (1 == this.orgtype) {
+							//跳转学校
+							type = 2;
+							areaid = item['orgid']
+						} else if (2 == this.orgtype) {
+							areaid = item['classid']
+							tourl = "insurance_statistics_class.html";
+						}
+						CodeSTD.form({
+							url: tourl,
+							params: {
+								"orgtype": type,
+								"usercode": usercode,
+								"token": token,
+								"areaid": areaid,
+								"insuranceCode": this.kindcode,
+								"insuranceMonth": this.currentMonth
+
+							}
+						});
+					},
+					/**
+					 * 跳转到理赔
+					 */
+					toClaim: function(index, claimnum) {
+						if (claimnum == 0) {
+							return
+						}
+						var selectAreaId = "",
+							currentOrgType = "";
+						selectAreaId = areaid,
+							currentOrgType = orgtype;
+						//下标不等于-1，列表点击理赔,等于-1是头部理赔总次数点击
+						if (index != -1) {
+							//列表理赔的点击事件
+							var item = this.areaList[index];
+							if (0 == orgtype) {
+								//区域下点击传areaid
+								selectAreaId = item['areaid']
+								currentOrgType = 0;
+							} else if (1 == orgtype) {
+								//学校列表点击,选中的是学校所以orgtype传2
+								selectAreaId = item['orgid']
+								currentOrgType = 2;
+							} else {
+								//班级列表，选中的班级类型传3
+								selectAreaId = item['classid']
+								currentOrgType = 3;
+							}
+						} else {
+							//头部理赔总次数点击，查看当前机构下的理赔统计
+							if (0 == orgtype || 1 == orgtype) {
+								//机构状态0、1是区域下的地区和学校获取的数据都是通过areaid
+								currentOrgType = 0;
+							}
+
+						}
+						this.xa_addUrlPostfix();
+						CodeSTD.form({
+							url: "claim_statistics_org.html",
+							params: {
+								"orgtype": currentOrgType,
+								"insuranceCode": this.kindcode,
+								"insuranceMonth": this.currentMonth,
+								"usercode": usercode,
+								"token": token,
+								"areaid": selectAreaId
+							},
+						});
+					},
+					/**
+					 * 追加选中的月份和保险类型
+					 */
+					xa_addUrlPostfix: function() {
+						if (this.currentMonth != null && this.currentMonth != undefined && this.currentMonth.length >
+							0) {
+							var newurl = changeURLPar(window.location.href, 'selectMonth', this
+								.currentMonth); //将uid和现有的页面地址拼接
+							window.history.replaceState(null, null, newurl); //向当前url添加参数
+						}
+						if (this.kindcode != null && this.kindcode != undefined && this.kindcode.length > 0) {
+							var newurl = changeURLPar(window.location.href, 'selectKind', this
+								.kindcode); //将uid和现有的页面地址拼接
+							window.history.replaceState(null, null, newurl); //向当前url添加参数
+						}
+
+					}
+				},
+				mounted: function mounted() {
+					mui.init();
+					setSecretKey();
+					var selectMonth = updateNullString(getURLParameterArgument('selectMonth'), ""),
+						selectKind = updateNullString(getURLParameterArgument('selectKind'), "");
+					var isParent = "";
+					var orgid = "";
+					if (!isEmpty(insuranceMonth)) {
+						this.currentMonth = insuranceMonth;
+					} else {
+						this.currentMonth = this.getNowMonth();
+					}
+					this.kindcode = insuranceCode;
+					if (!isEmpty(selectKind)) {
+						this.kindcode = selectKind
+					}
+					if (!isEmpty(selectMonth)) {
+						this.currentMonth = selectMonth
+					}
+					if (areaid == "") {
+						//获取个人信息
+						var context = this;
+						    getUserInfoRequest(system.usercenter, usercode, token, function() {
+							orgid = updateNullString(localStorage.getItem("orgid"), "");
+							areaid = updateNullString(localStorage.getItem("areaid"), "")
+							usertype = updateNullString(localStorage.getItem("usertype"), "")
+							areaname = updateNullString(localStorage.getItem("areaname"), "");
+							isParent = updateNullString(localStorage.getItem("isParent"), "true");
+							//设置机构类型  orgtype 0 区域列表 1 学校列表 2 班级列表 3人员列表
+							if (30 == usertype && isParent) {
+								//教育局用户，有下一层显示区域
+								orgtype = 0;
+								context.tabtitle = "地区"
+								$("title").html("局保险统计"); 
+							} else if (30 == usertype && !isParent) {
+								//教育局用户有没有下一层直接进入学校
+								orgtype = 1;
+								context.tabtitle = "学校"
+								$("title").html("局保险统计"); 
+							} else if (40 == usertype || 60 == usertype) {
+								//教师用户进入班级
+								orgtype = 2;
+								areaid = orgid;
+								context.tabtitle = "班级"
+								$("title").html("校保险统计"); 
+							} else {
+								//其他角色没有权限
+								context.xa_showRequestErrorEmpty("没有权限", false, false)
+								return;
+							}
+								context.orgtype = orgtype;
+								//获取类型
+								context.xa_getInsuranceType();
+						});
+						
+					}else {
+						this.orgtype = orgtype;
+						if(1 == orgtype){
+							$("title").html("局保险统计"); 
+						}else if(2 == orgtype){
+							$("title").html("校保险统计"); 
+						}
+						this.xa_getInsuranceType();
+					
+					}
+					
+				
+
+
+
+				}
+			});
+		</script>
+
+	</body>
+
+</html>
+
+
+</html>

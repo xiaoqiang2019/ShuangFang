@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>云眼</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 平台李鹏使用的px和rem转换 46.875 -->
+		<script src="../../common/extend/script/hotcss.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件   -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<!-- 本页面css -->
+		<link href="../../ucenter/monitor_app/css/monitorSchoolList.css" rel="stylesheet" />
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<!-- 空页面 -->
+		<script src="../../common/app/script/empty.js"></script>
+		<style>
+			.container {
+				overflow: auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>河南省教育厅</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="container">
+			<div class="category">
+				<ul>
+					<li class="active">直属学校</li>
+					<li>下属单位</li>
+					<li>当前机构</li>
+				</ul>
+			</div>
+			<div class="content-wapper">
+				<div class="cont active" id="cont0"></div>
+				<div class="cont" id="cont1"></div>
+				<div class="cont" id="cont2"></div>
+			</div>
+		</div>
+	</body>
+	<!-- <!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var basetoken = updateNullString(getURLParameter('basetoken'), "");
+		var currentOrgID = updateNullString(getURLParameter('orgid'), ''); //当前选中的机构id
+		var currentSchoolName = updateNullString(getURLParameter('orgname'), ''); //当前选中的机构名称
+		var _isNeedAccount = updateNullString(getURLParameter('_isNeedAccount'), "false"); //2017.10.23 服务端需要首次传user.usercode 教育局点击下一级进去不传递user.usercode 与其他地方判断不一致
+		$("title").html(currentSchoolName);
+		$("header h1").html(currentSchoolName);
+		var indexC = 0; //选项卡选中 index
+		getSchoolListData(); //首次加载
+
+		var feederSchoolsArray = []; //直属学校
+		var subUnitsArray = []; //下属单位
+		var currentAgencyArray = [{
+			"name": currentSchoolName,
+			"code": currentOrgID,
+			"type": 999
+		}]; //当前机构
+
+		function getSchoolListData() {
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+
+
+			// 获取学校列表
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"user.orgid": currentOrgID,
+			};
+			if (_isNeedAccount = 'true') {
+				paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"user.usercode": usercode,
+					"user.orgid": currentOrgID,
+				};
+			}
+			var url = system.usercenter + "/togetCheckSchoolList.action";
+			mui.showLoading();
+			jQuery_Request_Post(url, paramDic, "json", true, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					var schoolJsonList = responseData["list"];
+					getRequestData(schoolJsonList);
+				} else {
+					mui.toast(updateNullString(responseData["msg"], "获取单位列表失败"));
+					showRequestErrorEmpty("数据加载时出了问题", true, true);
+				}
+			}, function(error) {
+				mui.hideLoading();
+				var msg = updateNullString(error, "请求获取单位列表失败!")
+				mui.toast(msg);
+				showRequestErrorEmpty("数据加载时出了问题", true, true);
+			});
+
+		}
+
+		//解析请求成功返回的数据
+		function getRequestData(schoolJsonList) {
+			feederSchoolsArray = [];
+			subUnitsArray = [];
+			if (schoolJsonList.length > 0) {
+				for (var i = 0; i < schoolJsonList.length; i++) {
+					var schoolJson = schoolJsonList[i];
+					var type = schoolJson["type"];
+					//直属校
+					if (type == 1) {
+						feederSchoolsArray.push(schoolJson);
+					}
+					//下属单位
+					else if (type == 3) {
+						subUnitsArray.push(schoolJson)
+					}
+				}
+				createContent(indexC);
+			} else {
+				showRequestErrorEmpty("数据为空", true, false);
+			}
+		}
+
+		//请求返回数据为空或失败显示的空页面
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//三个子页面全部展示空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": "#cont" + indexC
+			}, function() {
+				getSchoolListData();
+			});
+			mui('.content-wapper').pullRefresh().endPulldownToRefresh(false);
+		}
+
+		//创建列表内容元素
+		function createContent() {
+			$(".cont ul").remove();
+			if (indexC == 0) {
+				if (feederSchoolsArray.length > 0) {
+					createFeederSchoolsUI(feederSchoolsArray);
+				} else {
+					//直属校下展示空页面【无数据】
+					showRequestErrorEmpty("暂无直属校", true, false);
+				}
+
+			} else if (indexC == 1) {
+				if (subUnitsArray.length > 0) {
+					createSubUnitsUI(subUnitsArray);
+					//直属校和当前机构 右侧没有选择按钮，调整右侧箭头位置
+					$(".cont_main span").css("max-width", "calc(100 % -28 - 70)");
+					$(".cont_main img").css("right", "80px");
+				} else {
+					//下属单位下展示空页面【无数据】
+					showRequestErrorEmpty("暂无下属单位", true, false);
+				}
+			} else if (indexC == 2) {
+				createCurrentAgencyUI(currentAgencyArray);
+			}
+		}
+
+
+		//选项卡切换
+		$('.category ul li').click(function() {
+			indexC = $(this).index();
+			$(this).addClass('active').siblings().removeClass('active');
+			$('.cont').eq(indexC).addClass('active').siblings().removeClass('active');
+			createContent(indexC);
+
+			if (navigator.onLine == false) {
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+		})
+
+		//点击下属单位的选择按钮 回到理赔列表页面做筛选
+		$(".container").on("tap", ".cont.active ul li a .cont_main button", function(e) {
+			var liObj = $(this).parents("li");
+			var spanObj = $(liObj).find("span");
+			var name = spanObj.text();
+			var code = $(liObj).attr("code");
+
+			e.stopPropagation(); //选择按钮被点击，不想触发li的点击
+			dLog("click button，" + getCurrentIndexCName() + "-" + name + "_" + code);
+
+			CodeSTD.form({
+				url: 'claim_list.html',
+				params: {
+					usercode: usercode,
+					token: localToken,
+					orgid: code,
+					orgname: name,
+				},
+			});
+		});
+
+		//点击li
+		$(".container").on("tap", ".cont.active ul li", function() {
+			var liObj = $(this);
+			var spanObj = $(liObj).find("span");
+			var name = spanObj.text();
+			var code = $(this).attr("code");
+			var type = $(this).attr("type");
+			//选择了 直属校/当前机构
+			if (type == 1 || type == 999) {
+
+			}
+			//下属单位，继续选择
+			else if (type == 3) {
+				// top.location.href('claim_schoolList.html')
+				// location.replace('claim_schoolList.html')
+				CodeSTD.form({
+					url: 'claim_schoollist.html',
+					params: {
+						usercode: usercode,
+						token: localToken,
+						orgid: code,
+						orgname: name,
+						isNeedAccount: "true",
+					},
+				});
+			}
+			dLog("click " + getCurrentIndexCName() + "-" + name + "_" + code);
+		});
+
+		function getCurrentIndexCName() {
+			if (indexC == 0) {
+				return "直属学校";
+			} else if (indexC == 1) {
+				return "下属单位";
+			} else if (indexC == 2) {
+				return "当前机构";
+			}
+			return "";
+		}
+
+		//创建直属学校UI
+		function createFeederSchoolsUI(array) {
+			var html = [];
+			html.push('<ul>');
+			for (var i = 0; i < array.length; i++) {
+				var obj = array[i];
+				var name = obj["name"];
+				var code = obj["code"];
+				var type = obj["type"];
+				html.push('<li code="' + code + '" type="' + type + '"><a><div class="cont_main"><span>' + name +
+					'</span><button type="button" class="mui-btn mui-btn-outlined">选择</button></div></a></li>'
+				);
+			}
+			html.push('</ul>');
+			$("#cont0").append(html.join(""));
+		}
+		//创建下属单位UI
+		function createSubUnitsUI(array) {
+			var html = [];
+			html.push('<ul>');
+			for (var i = 0; i < array.length; i++) {
+				var obj = array[i];
+				var name = obj["name"];
+				var code = obj["code"];
+				var type = obj["type"];
+				html.push('<li code="' + code + '" type="' + type + '"><a><div class="cont_main"><span>' + name +
+					'</span><img src="../../common/app/images/main_table_arrow.png"/><button type="button" class="mui-btn mui-btn-outlined">选择</button></div></a></li>'
+				);
+			}
+			html.push('</ul>');
+			$("#cont1").append(html.join(""));
+		}
+		//创建当前机构UI
+		function createCurrentAgencyUI(array) {
+			var html = [];
+			html.push('<ul>');
+			for (var i = 0; i < array.length; i++) {
+				var obj = array[i];
+				var name = obj["name"];
+				var code = obj["code"];
+				var type = obj["type"];
+				html.push('<li code="' + code + '" type="' + type + '"><a><div class="cont_main"><span>' + name +
+					'</span><button type="button" class="mui-btn mui-btn-outlined">选择</button></div></a></li>'
+				);
+			}
+			html.push('</ul>');
+			$("#cont2").append(html.join(""));
+		}
+	</script>
+
+
+</html>

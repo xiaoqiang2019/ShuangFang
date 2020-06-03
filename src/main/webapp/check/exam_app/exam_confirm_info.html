@@ -1,0 +1,306 @@
+<!-- 以下代码可以直接全部copy到新建的html中 基础引用 不可缺少 有自定义的在单个html中实现-->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>确认检查信息</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+
+		<style>
+			.cell-content {
+				display: flex;
+				display: -webkit-flex;
+				font-size: 15px;
+				margin: 10px 15px;
+			}
+
+			.cell-left {
+				margin-right: 10px;
+				width: 66px;
+			}
+
+			.cell-right {
+				max-width: calc(100% - 66px - 10px);
+			}
+
+			.check-user {
+				max-width: calc(100% - 66px - 50px);
+			}
+
+			.edit-user-btn,
+			.assign-task-btn {
+				margin-left: 10px;
+				width: 35px;
+				height: 25px;
+				border-color: #007AFF;
+			}
+
+			.footbtn a {
+				color: rgb(59, 162, 255);
+			}
+
+			.exam-check {
+				background-color: white;
+				color: rgb(59, 162, 255);
+			}
+
+			.exam-check-blue {
+				background-color: rgb(59, 162, 255);
+				color: white !important;
+				;
+			}
+
+			.exam-verify {
+				background-color: rgb(59, 162, 255);
+				color: white !important;
+			}
+
+			.audited-img {
+				width: 53px;
+				height: 53px;
+				margin-left: 20px;
+				margin-top: -15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>确认检查信息</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<div id="app">
+				<ul>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">检查项目</div>
+						<div class="cell-right app-dark-gray-color">{{managename}}</div>
+					</li>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">检查对象</div>
+						<div class="cell-right app-dark-gray-color">{{checkschoolname}}</div>
+					</li>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">{{chargeshowusertitle}}</div>
+						<div class="cell-right app-dark-gray-color">{{chageshowusername}}</div>
+					</li>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">检查人员</div>
+						<div class="cell-right app-dark-gray-color check-user">{{checkshowpersonname}}</div>
+						<button class="edit-user-btn app-blue-color" v-show="isCanEditCheckUser" @click="editCheckUserAction($event)">编辑</button>
+					</li>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">任务分配</div>
+						<div class="cell-right app-dark-gray-color">{{assignstatus == 0?"未分配":((assignstatus==1)?"部分分配":"已分配")}}</div>
+						<button class="assign-task-btn app-blue-color" v-show="isAssignTaskManager" @click="assignTaskAction($event)">分配</button>
+					</li>
+					<li class="cell-content">
+						<div class="cell-left app-light-gray-color">当前状态</div>
+						<div class="cell-right app-red-color" v-if="finish==0">待检查</div>
+						<div class="cell-right app-green-color" v-else-if="finish==1">{{"检查完成待审核 " + getscore+ "分"}} </div>
+						<div class="cell-right app-orange-color" v-else-if="finish==2">检查中</div>
+						<div class="cell-right app-dark-gray-color" v-else-if="finish==3">待提交</div>
+						<div class="cell-right app-green-color" v-else-if="finish==4">{{"检查完成 " + getscore+ "分"}}
+						</div>
+						<img class="audited-img" src="../../common/app/images/exam_audit_passed.png" v-show="finish==4" />
+					</li>
+				</ul>
+			</div>
+
+			<div class="footbtn flex_center" v-show="finish!=4">
+				<a href="javascript:;" class="flex_center exam-score" v-show="finish==1||finish==4">查看分数</a>
+				<a href="javascript:;" class="flex_center exam-check" v-show="isCheckUser||isCanEditCheckUser" v-if="isShowAuditauthority==true">{{finish == 0?"开始检查":"继续检查"}}</a>
+				<a href="javascript:;" class="flex_center exam-check-blue" v-show="isCheckUser||isCanEditCheckUser" v-else="isShowAuditauthority==false">{{finish == 0?"开始检查":"继续检查"}}</a>
+				<a href="javascript:;" class="flex_center exam-verify " v-show="isShowAuditauthority">审核</a>
+			</div>
+		</div>
+
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/extend/vue/vue.min.js"></script>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+
+		var checkschoolid = updateNullString(getURLParameter('checkschoolid'), "");
+		var managename = updateNullString(getURLParameter('managename'), "无");
+		var schoolname = updateNullString(getURLParameter('schoolname'), "无");
+
+		var chargeusername = updateNullString(getURLParameter('chargeusername'), "无");
+		var checkpersonname = updateNullString(getURLParameter('checkperson'), "");
+		var groupchargeusername = updateNullString(getURLParameter('groupchargeusername'), "");
+
+		var groupnum = getURLParameter('groupnum');
+
+		/**当前用户是否是有编辑检查权限*/
+		var isHaveEditCheck = getURLParameter('isHaveEditCheck');
+		/**当前用户是否是检查人*/
+		var isCheckUser = true;
+		/**当前用户是否是学校自查方式的检查学校管理员*/
+		var isCheckSchoolManager = true;
+
+		var isCanEditCheckUser = false;
+		if (isHaveEditCheck || isCheckSchoolManager) {
+			isCanEditCheckUser = true;
+		}
+
+		/**当前用户是否有分配任务的权限*/
+		var isAssignTaskManager = false;
+
+		/**当前用户是否显示审核按钮*/
+		var isShowAuditauthority = false;
+
+
+		//临时测试
+		usercode = "1400002516";
+		checkschoolid = "4028818e6f8d2df1016f8d5d6abb054e";
+
+		var chargeusertitle = "总负责人";
+		var chageshowusername = chargeusername;
+		var isGroup = false;
+		if (groupnum > 0) {
+			chargeusertitle = "带队领导";
+			isGroup = true;
+			chageshowusername = groupchargeusername;
+		}
+
+		var vm = new Vue({
+			el: ".content",
+			data: {
+				managename: managename, //检查项目
+				checkschoolname: schoolname, //检查对象
+				chargeshowusertitle: chargeusertitle, //总负责人或带队领导
+				chageshowusername: chageshowusername.replace(/,/g, " "),
+				checkshowpersonname: checkpersonname.replace(/,/g, " "), //检查人员
+				isNeedGroup: isGroup,
+				assignstatus: 0, //分配任务状态	0：未分配；1：部分分类已分配；2：所有检查分类均已分配
+				finish: 0, //完成状态  0待检查 1已完成 2检查中 3待提交 4已审核
+				checkuserlist: [],
+				getscore: 0,
+				auditauthority: "", //1代表有权限，0代表没有
+				isCheckUser: isCheckUser,
+				isCanEditCheckUser: isCanEditCheckUser,
+				isAssignTaskManager: isAssignTaskManager,
+				isShowAuditauthority: isShowAuditauthority
+			},
+			mounted: function mounted() {
+				requestCheckSchoolInfomationDataFromServer()
+			},
+			methods: {
+				editCheckUserAction: function(e) {
+
+				},
+
+				assignTaskAction: function(e) {
+
+				}
+			}
+		})
+
+
+		// 获取确认信息页数据
+		function requestCheckSchoolInfomationDataFromServer() {
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"checkschoolid": checkschoolid
+			};
+
+			var urlString = getCurrentSubSystemBaseUrl() + "getCheckSchoolInformation.action";
+
+			//临时测试需删除
+			urlString = "https://14.ss360.org/safecheck/" + "getCheckSchoolInformation.action";
+
+			jQuery_Request_Post(urlString, paramDic, 'json', true, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+					/*loadmore的需要判断分页的数据是否有值，有值了数据源加上去
+						没有值 判断原数据源是否有值，没有值，空页面显示；
+					 有值了，页面依然显示原数据源，然后toast提示用户，暂无更多数据【表明用户下拉加载的无数据】；*/
+					if (result) {
+						var dataDic = object["data"];
+						vm.checkuserlist = dataDic["checkuserlist"];
+						vm.finish = parseInt(dataDic["finish"]);
+						vm.getscore = parseFloat((dataDic["getscore"]));
+						vm.auditauthority = dataDic["auditauthority"];
+						vm.assignstatus = parseInt(dataDic["assignstatus"]);
+						getCheckUserName(vm.checkuserlist);
+						if (vm.auditauthority == '1' && vm.finish == 1) {
+							vm.isShowAuditauthority = true;
+						}
+
+					} else {
+						showRequestErrorEmpty(updateNullString(object["msg"], "暂无相关数据"), true, false);
+					}
+				},
+				function(error) {
+					mui.hideLoading();
+					showRequestErrorEmpty("数据加载时出了问题", true, true);
+				})
+		}
+
+		//根据数组得出检查人员
+		function getCheckUserName(checkuserlist) {
+			var realshownamestring = ''
+			if (checkuserlist.length > 0) {
+				checkuserlist.map(function(a) {
+					realshownamestring += a.username + " ";
+				})
+			}
+			vm.checkshowpersonname = realshownamestring;
+		}
+
+
+		//请求返回数据为空或失败显示的空页面
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".content"
+			}, function() {});
+		}
+	</script>
+
+
+</html>

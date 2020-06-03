@@ -1,0 +1,194 @@
+.mui-scroll-wrapper {
+	top: 120px;
+	bottom: 50px;
+	border-top: 1px solid rgb(222, 222, 222);
+}
+
+/* 时间开始 */
+#today-time {
+	background-color: white;
+	width: 100%;
+	height: 100%;
+	font-size: 16px;
+	text-align: center;
+	color: rgb(17, 17, 17);
+	border-bottom: 1px solid rgb(222, 222, 222);
+}
+/* 时间结束 */
+/* 年级选择+显示延时学生 开始 */
+#class-div {
+	width: 100%;
+	height: 40px;
+	background-color: white;
+	text-align: center;
+	border-bottom: 1px solid rgb(222, 222, 222);
+}
+#grade-button {
+	width: 50%;
+	max-width: 50%;
+	height: 40px;
+	background-color: transparent;
+	text-align: left;
+	float: left;
+	color: rgb(59, 162, 255);
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#delay-bg-div {
+	float: right;
+	background-color: transparent;
+	height: 40px;
+	width: 160px;
+}
+#delay-label {
+	float: left;
+	color: rgb(51, 51, 51);
+	padding-right: 5px;
+	font-size: 16px;
+	text-align: right;
+	height: 40px;
+	line-height: 40px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#delay-switch {
+	top: 5px;
+	float: left;
+}
+/* 年级选择+显示延时学生 结束 */
+
+/* 班级数量显示+全选/反选 开始*/
+#class-nubmer-bg-div {
+	background-color: white;
+	width: 100%;
+	height: 40px;
+	font-size: 16px;
+	color: rgb(102,102,102);
+}
+
+#class-number-label {
+	width: 50%;
+	height: 40px;
+	line-height: 40px;
+	background-color: transparent;
+	padding-left: 10px;
+	float: left;
+}
+
+#select-all-button {
+	background-color: transparent;
+	width: 50%;
+	color: rgb(59, 162, 255);
+	font-size: 16px;
+	text-align: right;
+	padding-top: 0px;
+	height: 40px;
+	line-height: 40px;
+	right: 0rem;
+	outline: none;
+	border: none;
+	float: right;
+}
+/* 班级数量显示+全选/反选 结束*/
+
+/* 可以滚动的列表样式 开始 开始*/
+
+/* cell中input checkbox  */
+#list-cell-input {
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	line-height: 66px;
+}
+
+/* cell中img */
+#list-cell-img {
+	width: 40px;
+	height: 40px;
+	margin-top: 11px;
+}
+
+/* 图片样式 */
+.arrow-down-id {
+	width: 15px;
+	height: 10px;
+	/* 	right: 5px;
+			top: 35%; */
+}
+
+/* mui按钮样式 */
+.mui-button-diy {
+	border: none;
+	font-size: 15px;
+	text-align: center;
+	width: 6.25rem;
+	height: 40px;
+}
+
+/* 列表中[延时]样式 */
+#delay-info-class {
+	color: rgb(255, 137, 65);
+	font-size: 11px;
+	outline: none;
+	border: none;
+	height: 66px;
+}
+
+#late-list li {
+	padding-top: 0px;
+	height: 66px;
+	line-height: 66px;
+}
+
+.mui-table-view-cell {
+	padding: 0px;
+	font-size: 15px;
+}
+
+/* 可以滚动的列表样式 开始 结束*/
+
+#stuNullview {
+	background-color: white;
+	top: 80px;
+	bottom: 50px;
+	text-align: center;
+}
+#stuNullview span{color: #999; font-size:1rem;}
+#stuNullview img {
+width: 50%;
+}
+
+.mui-popup-input textarea {
+	height: 70px;
+	color: rgb(51, 51, 51);
+	font-size: 15px;
+	padding: 4px 4px;
+	margin-top: 10px;
+	overflow-y: visible;
+}
+
+#bottom-notify-div {
+	position: absolute;
+	z-index: 10;
+	bottom: 50px;
+	width: 100%;
+	height: 25px;
+	color: rgb(153, 153, 153);
+	font-size: 13px;
+	text-align: center;
+	background-color: white;
+	border-top: 1px solid rgb(222, 222, 222);
+}
+
+#notify-button {
+	position: absolute;
+	bottom: 0px;
+	z-index: 10;
+	width: 100%;
+	height: 3.125rem;
+	border-radius: 0px;
+	color: white;
+	font-size: 16px;
+	background-color: rgb(59, 162, 255);
+}

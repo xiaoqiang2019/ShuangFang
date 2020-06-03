@@ -1,0 +1,1 @@
+1、存放涉及手机端的公共的css，images,script

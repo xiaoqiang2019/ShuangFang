@@ -1,0 +1,124 @@
+<!-- 以下代码可以直接全部copy到新建的html中 基础引用 不可缺少 有自定义的在单个html中实现-->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>编辑人员</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			.cell-person {
+				display: flex;
+				display: -webkit-flex;
+				align-items: center;
+				justify-content: space-between;
+				-webkit-justify-content: space-between;
+				-webkit-align-items: center;
+				height: 65px;
+			}
+
+			#cell-delete-icon {
+				width: 20px;
+				height: 20px;
+			}
+
+			.footer-wapper a:active,
+			.footer-wapper a:hover,
+			.footer-wapper a:link,
+			.footer-wapper a:visited {
+				color: white;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>编辑人员</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<ul class="mui-table-view">
+				<li v-for="(person,index) in people" class="cell-person mui-table-view-cell" @click="deleteItemClicked($event,index)">
+					<div>{{person.nickname}}</div>
+					<img id="cell-delete-icon" src="../../common/app/images/apply_ic_delete.png">
+				</li>
+			</ul>
+		</div>
+		<div class="footer-wapper fxbtn">
+			<!-- <a href="javascript:;" class="flex_center app-blue-color">添加</a> -->
+			<a href="#" class="app-white-color" @click="saveClicked()">保存</a>
+		</div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/extend/vue/vue.min.js"></script>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script>
+		$(function() {
+			var contentHeight = $('.content').height();
+			var footerHeight = $('.footer-wapper').height();
+			var realHeight = contentHeight - footerHeight;
+			$('.content').css("height", realHeight + 'px')
+		})
+
+		var vm = new Vue({
+			el: '.footer-wapper',
+			methods: {
+				saveClicked: function() {
+					var realSelectPeople = JSON.stringify(vm.people);
+					localStorage.setItem("selfDepSelectPeople", realSelectPeople)
+					history.go(-1)
+				}
+			}
+		});
+
+
+		var vm = new Vue({
+			el: ".content",
+			data: {
+				people: []
+			},
+			mounted: function mounted() {
+				var that = this,
+					people = localStorage.getItem("selfDepSelectPeople");
+				that.people = JSON.parse(people)
+			},
+			methods: {
+				deleteItemClicked: function(e, index) {
+					var that = this,
+						json = that.people[index],
+						uesrname = updateNullString(json["nickname"], "");
+					if (uesrname.length > 0) {
+						var btnArray = ['取消', '确定'];
+						mui.confirm('确定要删除' + uesrname + '吗？', '提示', btnArray, function(e) {
+							if (e.index == 1) {
+								that.people.splice(index, 1)
+							}
+						})
+					}
+				}
+			}
+		})
+	</script>
+</html>

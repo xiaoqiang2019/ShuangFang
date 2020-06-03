@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- 专项检查 --- 检查分类打分页面 -->
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>{{title_string}}</title>
+
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		
+		<script src="../../common/extend/vue/vue.min.js"></script>
+		<script src="../../common/app/script/navConfig.js"></script>
+		<script src="../../common/app/script/empty_vue.js"></script>
+		
+		<style type="text/css">
+			
+			.top-view {
+				background-color: #fff;
+				border-bottom: #DEDEDE solid 1px;
+				height: 50px;
+				line-height: 50px;
+				color: #999;
+				font-size: 14px;
+				text-align: center;
+			}
+			
+			.wrap-connect {
+				background-color: #fff;
+				padding-bottom: 50px;
+			}
+			
+			.top-header-view {
+				height: 40px;
+				border-bottom: #DEDEDE solid 0.5px;
+			}
+
+			.top-header-view span {
+				margin-top: 10px;
+				color: rgb(51, 51, 51);
+				font-size: 16px;
+				border-left: rgb(59, 162, 255) solid 4px;
+				padding-left: 10px;
+				display: inline-block;
+				width: calc(100% - 14px);
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.cell-swipe-view {
+				padding: 0 14px;
+			}
+
+			.cell-swipe-view span {
+				display: block;
+				color: rgb(51, 51, 51);
+				font-size: 16px;
+				padding: 10px 0;
+			}
+
+			.cell-swipe-view label {
+				display: block;
+				color: rgb(153, 153, 153);
+				font-size: 14px;
+				margin-bottom: 8px;
+			}
+
+			.sheet-title {
+				height: 37px;
+				line-height: 37px;
+				text-align: center;
+				font-size: 14px;
+				color: #999;
+			}
+
+			/* 底部View */
+			.bottom-view {
+				border-top: #dedede solid 1px;
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				height: 50px;
+				line-height: 50px;
+				width: 100%;
+				background-color: #fff;
+				z-index: 2;
+				font-size: 0;
+			}
+
+			.bottom-view-left {
+				display: inline-block;
+				line-height: inherit;
+				width: 50%;
+
+				text-align: center;
+				font-size: 17px;
+				background-color: #fff;
+				color: #42a4fe;
+			}
+
+			.bottom-view-right {
+				display: inline-block;
+				line-height: inherit;
+				width: 50%;
+
+				text-align: center;
+				font-size: 17px;
+				background-color: #42A4FE;
+				color: #fff;
+			}
+
+			/* Footer View */
+			.cell-footer-view {
+				height: 46px;
+				line-height: 46px;
+				border-top: #DEDEDE solid 1px;
+				display: flex;
+				border-bottom: #DEDEDE solid 6px;
+			}
+
+			/* 打分 */
+			.left-footer-btn {
+				display: flex;
+				align-items: center;
+				flex-direction: row;
+				justify-content: center;
+				width: 50%;
+			}
+
+			.left-footer-score {
+				display: inline-block;
+				margin: 0;
+				padding: 0;
+				font-size: 16px;
+			}
+
+			.left-footer-btn i {
+				background-image: url(../../common/app/images/main_arrow_down.png);
+				background-size: 15px 8px;
+				background-repeat: no-repeat;
+				display: inline-block;
+				width: 15px;
+				height: 8px;
+				margin: 0 2px;
+				vertical-align: middle;
+			}
+
+			.left-footer-name {
+				display: inline-block;
+				font-size: 12px;
+				color: #999;
+				margin: 0;
+				padding: 0;
+			}
+
+			/* 记录问题css */
+			.right-footer-btn {
+				display: flex;
+				align-items: center;
+				flex-direction: row;
+				justify-content: center;
+				width: 50%;
+			}
+
+			.right-footer-btn i {
+				background-image: url(../../common/app/images/write_ic_edit.png);
+				background-size: 24px 24px;
+				background-repeat: no-repeat;
+				display: inline-block;
+				width: 24px;
+				height: 24px;
+				vertical-align: middle;
+				margin: 0 2px;
+			}
+
+			.right-footer-btn span {
+				display: inline-block;
+				margin: 0;
+				padding: 0;
+				font-size: 16px;
+				color: #333;
+			}
+
+			/* actionSheet */
+			.wrap {
+				background-color: rgba(0, 0, 0, .4);
+				position: fixed;
+				height: 100%;
+				width: 100%;
+				z-index: 2020;
+				display: none;
+			}
+
+			.sheet-bottom-view {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+			}
+
+			.sheet-cell {
+				background-color: #fff;
+				list-style: none;
+				height: 50px;
+				line-height: 50px;
+				text-align: center;
+				font-size: 17px;
+				color: #333;
+			}
+
+			.sheet-cancel {
+				background-color: #fff;
+				list-style: none;
+				height: 56px;
+				line-height: 56px;
+				text-align: center;
+				font-size: 17px;
+				color: #333;
+				border-top: #DEDEDE solid 6px;
+			}
+
+
+			/* kkkkk */
+			.blue-color {
+				color: #007AFF;
+			}
+
+			.red-color {
+				color: #f53d3d;
+			}
+
+			.green-color {
+				color: #50b811;
+			}
+
+			.black-color {
+				color: #111;
+			}
+
+			.width-100 {
+				width: 100%;
+			}
+
+			.width-50 {
+				width: 50%;
+			}
+
+			.border-bottom-1 {
+				border-bottom: #DEDEDE solid 1px;
+			}
+
+			.display-block {
+				display: block;
+			}
+
+			.display-none {
+				display: none;
+			}
+		</style>
+
+	</head>
+	<body>
+
+		<div id="app">
+			<!-- actionSheet -->
+			<div :class="wrapClass">
+				<div class="sheet-bottom-view">
+					<action-sheet v-for="item in sheetlist" :item="item">
+					</action-sheet>
+				</div>
+			</div>
+			
+			<div v-if="show">
+				<!-- 界面UI -->
+				<div class="mui-scroll-wrapper app-white-color" v-for="item in datasource">
+					<div class="mui-scroll wrap-connect">
+						<div class="top-view" v-if="changescore == '1'">
+							以下检查项可修改分数
+						</div>
+						<div v-for="(model, index) in item.contentlist" :key="index">
+							<div class="cell-swipe-view">
+								<span>{{index+1}}.{{model.content}}({{model.score}}分)</span>
+								<label>{{model.standard}}</label>
+							</div>
+							<!-- cell-footer-view -->
+							<ul v-if="model.checkscoretype == 1">
+								<!-- 不检查 -->
+								<div class="cell-footer-view">
+									<div class="left-footer-btn black-color width-100" v-on:tap="btnClick(2, model)">
+										<span class="left-footer-score">不检查</span>
+										<i></i>
+										<span class="left-footer-name">({{model.username}})</span>
+									</div>
+								</div>
+							</ul>
+							<ul v-else>
+								<ul v-if="!model.getscore">
+									<!-- 没有分数 -->
+									<div class="cell-footer-view">
+										<div class="left-footer-btn blue-color width-100" v-on:tap="btnClick(1, model)">
+											<span class="left-footer-score">打分</span>
+											<i></i>
+											<span class="left-footer-name display-none">({{model.username}})</span>
+										</div>
+									</div>
+								</ul>
+								<ul v-else>
+									<!-- 有分数 -->
+									<ul v-if="model.getscore == model.score">
+										<!-- 满分 -->
+										<ul v-if="model.questionid.length == 0">
+											<!-- 满分 - 没有问题 -->
+											<div class="cell-footer-view">
+												<div class="left-footer-btn green-color width-100" v-on:tap="btnClick(2, model)">
+													<span class="left-footer-score">{{parseFloat(model.getscore).toFixed(2)}}分</span>
+													<i></i>
+													<span class="left-footer-name">({{model.username}})</span>
+												</div>
+											</div>
+										</ul>
+										<ul v-else>
+											<!-- 满分 - 有问题 -->
+											<div class="cell-footer-view">
+												<!-- 满分 - 有问题 -->
+												<div class="left-footer-btn green-color width-50" v-on:tap="btnClick(2, model)">
+													<span class="left-footer-score">{{parseFloat(model.getscore).toFixed(2)}}分</span>
+													<i></i>
+													<span class="left-footer-name">({{model.username}})</span>
+												</div>
+												<div class="right-footer-btn" v-on:tap="gotoProblemListMethodWithModel(model)">
+													<i></i>
+													<ul v-if="model.questionid.length == 0">
+														<span>记录问题</span>
+													</ul>
+													<ul v-else>
+														<span>{{'已记录'+ '('+model.questionid.split(',').length + ')'}}</span>
+													</ul>
+												</div>
+											</div>
+										</ul>
+									</ul>
+									<ul v-else>
+										<!-- 非满分 -->
+										<div class="cell-footer-view">
+											<div class="left-footer-btn red-color width-50" v-on:tap="btnClick(2, model)" v-if="model.getscore < model.passscore">
+												<!-- 打分小于及格分  不及格 红色 -->
+												<span class="left-footer-score">{{parseFloat(model.getscore).toFixed(2)}}分</span>
+												<i></i>
+												<span class="left-footer-name">({{model.username}})</span>
+											</div>
+											<div class="left-footer-btn green-color width-50" v-on:tap="btnClick(2, model)" v-else>
+												<span class="left-footer-score">{{parseFloat(model.getscore).toFixed(2)}}分</span>
+												<i></i>
+												<span class="left-footer-name">({{model.username}})</span>
+											</div>
+										
+											<div class="right-footer-btn" v-on:tap="gotoProblemListMethodWithModel(model)">
+												<i></i>
+												<ul v-if="model.questionid.length == 0">
+													<span>记录问题</span>
+												</ul>
+												<ul v-else>
+													<span>{{'已记录'+ '('+model.questionid.split(',').length + ')'}}</span>
+												</ul>
+											</div>
+										</div>
+									</ul>
+								</ul>
+							</ul>
+										
+						</div>
+					</div>
+				</div>
+				<div class="bottom-view">
+					<span :class="bottomViewNocheck" v-on:tap="allNoCheckMethod">全部不检查</span>
+					<span :class="bottomViewFinish" v-on:tap="javascript:history.back(-1)">完成</span>
+				</div>
+			</div>
+			<empty v-else v-bind:errormsg="errorMsg" v-bind:showretry="showretry" v-bind:isneterror="isneterror" v-on:retryclick="retryMsg"></empty>
+
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		(function($) {
+			//阻尼系数  
+			var deceleration = mui.os.ios ? 0.003 : 0.0009;
+			$('.mui-scroll-wrapper').scroll({
+				bounce: true,
+				indicators: true, //是否显示滚动条  
+				deceleration: deceleration
+			});
+			mui(".mui-scroll-wrapper").on('tap', 'li', function(event) {
+				this.click();
+			});
+			$.ready(function() {
+				mui.init({
+					pullRefresh: {
+						container: '.mui-scroll-wrapper',
+						down: {
+							style: 'circle',
+							offset: '0px',
+							auto: true,
+							callback: vm.pulldownRefresh
+						},
+					}
+				});
+			});
+		})(mui);
+		
+		Vue.component('action-sheet', {
+			props: ['item'],
+			template: '<li :class="item.style" @click="item.methods(item.id, item.model)">{{item.name}}</li>'
+		})
+
+		var vm = new Vue({
+			el: "#app",
+			data: {
+				// 空白页 -
+				'emptymsg': "无",
+				'show': true,
+				'isneterror': false,
+				'errormsg': "",
+				'showretry': true,
+				// 初始化 -
+				'changescore': 0, // 值为1代表 已审核后且有审核权限修改分数
+				'sortid_string': '', // *必传
+				'sortname_string': '', // *必传
+				'checkschoolid': '', // *必传
+				
+				'usercode': '',
+				'username': '',
+				'token': '',
+				'sheetlist': [],
+				'recordPorblemNum': 0,
+				// 样式
+				'wrapClass': 'wrap',
+				"bottomViewNocheck": "bottom-view-left display-none",
+				"bottomViewFinish": "bottom-view-right width-100",
+				// 界面数据 - 
+				"datasource": [{
+					"sortgetscore": 0,
+					"sortid": '',
+					"sortname": '',
+					"sortrealname": '',
+					"sortscore": 0,
+					"copypower": '',
+					"editpower": '',
+					"delpower": '',
+					"definedpower": '',
+					"checkstatus": '',
+					"contentlist": [{
+						"checkscoretype": 0,
+						"content": "",
+						"contentid": "",
+						"getscore": 0,
+						"limitdate": "",
+						"opinion": "",
+						"optionallistnum": "",
+						"passscore": "",
+						"questioncontent": "",
+						"questionid": "",
+						"sortgetscore": "",
+						"score": 0,
+						"sortid": "",
+						"standard": "",
+						"userdefined": 0,
+						"username": "",
+						"usercode": "",
+						"contentschoolproblem": []
+					}]
+				}]
+			},
+			mounted() {
+				var title_string = updateNullString(getURLParameter('title'), "检查内容详情");
+				$("title").html(title_string);
+				$("header h1").html(title_string);
+				
+				var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+				var url_token = updateNullString(getURLParameter('token'), localToken),
+					token = updateNullString($.cookie('token'), url_token);
+				this.usercode = usercode;
+				this.token = token;
+				this.username = '记得传name'; //updateNullString(getURLParameter('username'), localToken);
+				
+				this.changescore = 0;
+				this.checkschoolid = '4028818e6fb1ea9d016fb2aef83c0002';
+				this.sortid_string = '4028818e6b02a48c016b084613e3162c';
+				this.sortname_string = '学校大门';
+
+				this.GetCurrentData_Request();
+			},
+			methods: {
+				//下拉刷新
+				pulldownRefresh() {
+					this.GetCurrentData_Request()
+				},
+				//停止刷新
+				endRefresh() {
+					mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh(false);
+				},
+				//重试
+				xa_showRequestErrorEmpty(msg, isneterror) {
+					this.show = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+				},
+				retryMsg() {
+					dLog('重新获取数据 ----------- kkk');
+					this.GetCurrentData_Request()
+				},
+				//获取当前界面的数据
+				GetCurrentData_Request() {
+					if (navigator.onLine == 'false') {
+						this.endRefresh();
+						vm.xa_showRequestErrorEmpty("网络似乎有点问题");
+						return false;
+					}
+					
+					var paramDic = {
+						"usercode": this.usercode,
+						"token": this.token,
+						"sortid": this.sortid_string,
+						"checkschoolid": this.checkschoolid
+					};
+					var url = system.check + "/getSafetyCheckSchoolItem.action";
+					if (this.changescore == '1') {
+						//获得可现场修改的检查结果列表
+						url = system.check + "/getSpotModifyCheckContent.action";
+					}
+					
+					mui.showLoading();
+					jQuery_Request_Post(url, paramDic, "json", true, (responseData) => {
+						mui.hideLoading();
+						var ret = responseData["ret"];
+						if (ret) {
+							this.endRefresh();
+							var sortlist = responseData["data"]["sortlist"];
+							if (sortlist.length == 0) {
+								this.xa_showRequestErrorEmpty('暂无相关数据');
+							}
+							else {
+								this.datasource = sortlist
+								this.updateBottomViewUI();
+							}
+						} else {
+							// mui.toast(updateNullString(responseData["msg"], "获取数据失败"));
+							this.xa_showRequestErrorEmpty('数据加载时出了些问题');
+						}
+					}, function(error) {
+						mui.hideLoading();
+						vm.endRefresh();
+						// var msg = updateNullString(error, "请求失败!")
+						vm.xa_showRequestErrorEmpty('数据加载时出了些问题');
+					});
+				},
+				//打分btn tag 1打分  2其他
+				btnClick(tag, model) {
+					dLog('打分 --- btnclick');
+					var list_one = [{
+							id: 0,
+							name: '打满分',
+							style: 'sheet-cell green-color border-bottom-1',
+							methods: this.sheetCellBtnClick,
+							model: model
+						},
+						{
+							id: 1,
+							name: '扣分',
+							style: 'sheet-cell red-color border-bottom-1',
+							methods: this.sheetCellBtnClick,
+							model: model
+						},
+						{
+							id: 2,
+							name: '该项不检查',
+							style: 'sheet-cell border-bottom-1',
+							methods: this.sheetCellBtnClick,
+							model: model
+						},
+						{
+							id: 4,
+							name: '取消',
+							style: 'sheet-cancel',
+							methods: this.sheetCellBtnClick,
+							model: model
+						}
+					];
+					var list_two = [{
+							id: 0,
+							name: '打满分',
+							style: 'sheet-cell green-color border-bottom-1',
+							methods: this.sheetCellBtnClick,
+							model: model
+						},
+						{
+							id: 1,
+							name: '扣分',
+							style: 'sheet-cell red-color border-bottom-1',
+							methods: this.sheetCellBtnClick,
+							model: model
+						},
+						{
+							id: 2,
+							name: '该项不检查',
+							style: 'sheet-cell border-bottom-1',
+							methods: this.sheetCellBtnClick,
+							model: model
+						},
+						{
+							id: 3,
+							name: '重置',
+							style: 'sheet-cell',
+							methods: this.sheetCellBtnClick,
+							model: model
+						},
+						{
+							id: 4,
+							name: '取消',
+							style: 'sheet-cancel',
+							methods: this.sheetCellBtnClick,
+							model: model
+						}
+					];
+					this.sheetlist = (tag == 1) ? list_one : list_two;
+					this.wrapClass = 'wrap display-block'
+				},
+				sheetCellBtnClick(tag, model) {
+					this.wrapClass = 'wrap';
+					switch (tag) {
+						case 0:
+							{
+								console.log('打满分 ------ ' + tag + model.username);
+								model.getscore = model.score;
+								model.checkscoretype = "0";
+								model.questionid = '';
+								model.usercode = this.usercode;
+								model.username = this.username;
+							
+								this.refreshDataRequest(); //更新数据
+							}
+							break;
+						case 1:
+							{
+								console.log('扣分 ------ ' + tag + model.username);
+								this.gotoProblemListMethodWithModel(model);
+							}
+							break;
+						case 2:
+							{
+								console.log('该项不检查 ------ ' + tag + model.username);
+								model.getscore = model.passscore;
+								model.checkscoretype = "1";
+								model.questionid = "";
+								model.usercode = this.usercode;
+								model.username = this.username;
+								
+								this.refreshDataRequest(); //更新数据
+							}
+							break;
+						case 3:
+							{
+								console.log('重置 ------ ' + tag + model.username);
+								var btnArray = ['取消', '确定'];
+								mui.confirm('是否重置分数并清除已记录问题？', '', btnArray, function(e) {
+									if (e.index == 1) {
+										model.getscore = '';
+										model.checkscoretype = '0';
+										model.questionid = "";
+										model.usercode = vm.usercode;
+										model.username = vm.username;
+										vm.refreshDataRequest(); //更新数据
+									}
+								});
+							}
+							break;
+						case 4:
+							{
+								console.log('取消 ------ ' + tag + model.username);
+							}
+							break;
+						default:
+							break;
+					}
+				},
+				//上报数据
+				refreshDataRequest() {
+					var list = this.datasource[0];
+					var conlist = list.contentlist;
+					var conArray = [];
+					for (var i = 0; i < conlist.length; i++) {
+						var dic = {
+							"contentid": conlist[i].contentid,
+							"score": conlist[i].getscore,
+							"questionid": conlist[i].questionid,
+							"usercode": conlist[i].usercode,
+							"checkscoretype": conlist[i].checkscoretype
+						};
+						conArray.push(dic);
+					}
+
+					var param = {
+						"status": (this.changescore=='1')?'2':'1',
+						"usercode": this.usercode,
+						"checkschoolid": this.checkschoolid,
+						"contentlist": conArray
+					};
+
+					var paramString = JSON.stringify(param);
+					var connectDic = {
+						'data': paramString,
+						"token": this.token
+					}
+					var url = system.check + "/createCheckManageResult.action";
+
+					mui.showLoading();
+					jQuery_Request_Post(url, connectDic, "json", true, (responseData) => {
+						mui.hideLoading();
+						var ret = responseData["ret"];
+						if (ret) {
+							console.log("修改状态成功 -------- ok");
+							this.updateBottomViewUI();
+						} else {
+							var msg = updateNullString(responseData["msg"], "操作失败");
+							var errtype = updateNullString(responseData["errtype"], '');
+							if (errtype == '1') {
+								// 本次大检查已审核
+								vm.checkIsInsanityAlert();
+							}
+							else {
+								mui.toast(updateNullString(responseData["msg"], "修改失败"));
+							}
+						}
+					}, function(error) {
+						mui.hideLoading();
+						var msg = updateNullString(error, "请求失败!")
+						mui.toast(msg);
+					});
+
+				},
+				//更新bottomView 布局
+				updateBottomViewUI() {
+					var nocheck = false; //默认全部不检查
+					var list = this.datasource[0];
+					var conlist = list.contentlist;
+					for (var i = 0; i < conlist.length; i++) {
+						//checkscoretype 0检查  1不检查
+						var checkscoretype = conlist[i].checkscoretype;
+						if (checkscoretype != 1) {
+							nocheck = true;
+							break;
+						}
+					}
+					if (nocheck) {
+						this.bottomViewNocheck = 'bottom-view-left';
+						this.bottomViewFinish = 'bottom-view-right';
+					} else {
+						this.bottomViewNocheck = 'bottom-view-left display-none';
+						this.bottomViewFinish = 'bottom-view-right width-100';
+					}
+				},
+				//跳转扣分页面
+				gotoProblemListMethodWithModel(model) {
+					CodeSTD.form({
+						url: "exam_problem_list.html",
+						params: {
+							'usercode': this.usercode,
+							'username': this.username,
+							"changescore": this.changescore,
+							"checkschoolid": this.checkschoolid,
+							"exameditmodel": JSON.stringify(model),
+							
+							/**  exameditmodel 对象
+							   "checkscoretype":0,
+                        "content":"设置保安值班室",
+                        "contentid":"4028818e6b02a48c016b084613ed1634",
+                        "contentschoolproblem":Array[0],
+                        "getscore":"",
+                        "limitdate":null,
+                        "opinion":"",
+                        "optionallistnum":6,
+                        "passscore":3,
+                        "questioncontent":"",
+                        "questionid":"",
+                        "score":5,
+                        "sortid":"",
+                        "standard":"1.保安值班；2.值班。",
+                        "usercode":"",
+                        "userdefined":0,
+                        "username":""
+							 */
+						},
+					});
+					
+					
+				},
+				//全部不检查
+				allNoCheckMethod() {
+					dLog('点击 -- 全部不检查 ---- btnclick');
+					var btnArray = ['取消', '确定'];
+					mui.confirm('确定将全部检查项设置为不检查？', '', btnArray, function(e) {
+						if (e.index == 1) {
+							var list = vm.datasource[0];
+							var conlist = list.contentlist;
+							
+							for (var i = 0; i < conlist.length; i++) {
+								var model = conlist[i];
+								model.getscore = model.passscore;
+								model.checkscoretype = "1";
+								model.questionid = "";
+								model.usercode = vm.usercode;
+								// model.username = vm.username;
+							}
+							vm.refreshDataRequest(); //更新数据
+						}
+					});
+				},
+				// 本次大检查已审核
+				checkIsInsanityAlert() {
+					//检查已审核
+					mui.confirm('当前检查已审核完毕,是否查看检查结果?', '', ['取消', '查看'], function(e){
+						if (e.index == 0) {
+							//取消
+							javascript:history.back(-1);
+						}
+						if (e.index == 1) {
+							//查看
+							var url = system.check + '/safety/phontCheckMidResultPage.action?checkschoolid=' + vm.checkschoolid + '&sharetype=1';
+							window.location.href = url;
+						}
+					});
+				}
+			}
+		});
+	</script>
+
+
+</html>

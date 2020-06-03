@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>批量处理学生信息</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<script src="../../common/extend/mui/css/mui.zoom.js"></script>
+		<script src="../../common/extend/mui/js/mui.previewimage.js"></script>
+		
+		<!--  xuean 自定义js文件   -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+
+		<style type="text/css">
+			h1{
+				text-align: center;
+				font-size: 22px;
+				line-height: 50px;
+			}
+			h2{
+				font-size: 18px;
+				line-height: 25px;
+			}
+			.remark{
+				font-size: 14px;
+				color:rgb(153, 153, 153);
+				line-height:20px;
+			}
+			.mui-table-view-cell img {
+				width: 100%;
+			}
+			.mui-table-view-cell:after{height:0 !important}
+			
+		</style>
+
+	</head>
+
+	<body>
+		<header>
+			<h1>批量处理学生信息</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+
+		<div class="content">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<h1>如何批量处理学生不应返校状态？</h1>
+				</li>
+				<li class="mui-table-view-cell">
+					<h2>第一步：使用账号密码或App扫一扫扫码登陆电脑端平台，点击“机构管理”-“学生管理”-“选择对应的班级”。</h2>
+					<div class="remark">
+						注：平台地址可在App首页底部‘我的’模块中，点击‘设置’-‘关于’-‘官方网站’查看。
+					</div>
+					<img src="images/batch_step1.png" data-preview-group="step" data-preview-src="images/batch_step1.png" alt="">
+				</li>
+				<li class="mui-table-view-cell">
+					<h2>第二步：选中需要调整信息的学生，点击“导出Excel”,导出学生表格。</h2>
+					<img src="images/batch_step2.png" data-preview-group="step" data-preview-src="images/batch_step2.png" alt="">
+				</li>
+				<li class="mui-table-view-cell">
+					<h2>第三步：打开导出的Excel表格，编辑对应的学生的注校类型或返校日期。</h2>
+					<div class="remark" style="color: red;">
+						注:原表格中学生姓名不可修改。
+					</div>
+					<img src="images/batch_step3.png" data-preview-group="step" data-preview-src="images/batch_step3.png" alt="">
+				</li>
+				<li class="mui-table-view-cell">
+					<h2>第四步：打开平台，选择对应班级，点击“导入Excel”,导入修改后的学生Excel表格，完成批量处理学生信息。</h2>
+					<img src="images/batch_step4.png" data-preview-group="step" data-preview-src="images/batch_step4.png" alt="">
+				</li>
+			</ul>
+		</div>
+
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script>
+		mui.init();
+		mui.previewImage();
+	</script>
+
+</html>

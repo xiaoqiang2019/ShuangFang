@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>选择检查内容</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<script src="../../common/extend/vue/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			.item-content{
+					border-bottom: #DEDEDE solid 1px;
+					padding: 14px;
+				}
+				.item-title{
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap; 
+					display: inline-block;
+					width: calc(100% - 84px);
+					font-size: 16px;
+					line-height: 16px;
+					margin-top: 6.5px;
+				}
+				.item-content img{
+					width: 19px;
+					height: 19px;
+					
+				}
+				
+				.item-content button{
+					color: #3BA2FF;
+					font-size: 15px;
+					border: #3BA2FF solid 1px;
+					border-radius: 5px;
+					width: 55px;
+					height: 29px;
+				}
+				.item-area{
+					width: 19px;
+					height: 19px;
+					padding: 3px;
+					text-align: center;
+					background-color: #3ba2ff;
+					border-radius: 3px;
+					color: white;
+					font-size: 12px;
+							
+				}
+				
+			</style>
+
+	</head>
+
+	<body>
+		<header>
+			<h1>选择检查内容</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<div >
+				<ul>
+					<li class="item-content" v-for="(item,index) in checklist">
+					<div>
+						<span class="item-area">{{item.arealevel}}</span>
+						<span class="item-title">{{item.typename}}</span>
+						<button type="button">选择</button>
+					</div>
+
+					</li>
+				</ul>
+
+			</div>
+		</div>
+
+
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+
+	<script>
+		new Vue({
+			el: ".content",
+			data: {
+				checklist: [{
+
+				}],
+
+			},
+			methods: {
+				
+
+
+			}
+
+
+		})
+	</script>
+
+
+</html>

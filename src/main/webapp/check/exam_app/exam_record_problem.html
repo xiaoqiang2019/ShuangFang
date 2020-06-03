@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>添加问题</title>
+
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<script src="../../common/extend/julong/regular.js" type="text/javascript" charset="utf-8"></script>
+
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+		<script src="../../common/extend/mui/js/mui.picker.min.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.picker.min.css" />
+		<script src="../../common/extend/mui/js/mui.poppicker.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.poppicker.css" />
+
+		<style type="text/css">
+			input,
+			textarea,
+				{
+				margin: 0;
+				padding: 0;
+			}
+
+			.color-red {
+				color: #EF3030 !important;
+			}
+
+			.color-666 {
+				color: #666 !important;
+			}
+
+			.padding-left-14 {
+				padding-left: 14px !important;
+			}
+			
+			.height-50px {
+				height: 50px !important;
+				line-height: 50px !important;
+			}
+			
+			.display-none {
+				display: none;
+			}
+
+			.wrap-cell {
+				margin-top: 8px;
+			}
+
+			.wrap-cell span {
+				color: #111;
+				font-size: 16px;
+				vertical-align: top;
+			}
+
+			.left-span-top {
+				display: inline-block;
+				width: 94px;
+				height: 40px;
+				line-height: 40px;
+				padding-left: 8px;
+			}
+
+			.right-textarea {
+				display: inline-flexbox;
+				padding: 6px 8px;
+				font-size: 16px;
+				width: calc(100% - 110px);
+				height: 120px;
+			}
+
+			.wrap-cell .right-inputtext {
+				display: inline-block;
+				font-size: 16px;
+				width: calc(100% - 110px);
+				height: 40px;
+				padding: 4px 8px;
+				margin: 0;
+			}
+
+			.wrap-cell .border-0 {
+				border: 0;
+				padding: 0;
+			}
+
+			.imgs-list {
+				display: inline-block;
+				height: 50px;
+				width: calc(100% - 110px);
+			}
+
+			.imgs-list li {
+				display: inline-block;
+				height: inherit;
+				width: 50px;
+				margin-right: 8px;
+			}
+
+			.imgs-list-li {
+				position: relative;
+			}
+
+			.imgs-list-li img {
+				height: inherit;
+				width: 50px;
+			}
+
+			.imgs-list-li i {
+				position: absolute;
+				top: 0;
+				right: 0;
+				width: 15px;
+				height: 15px;
+
+				background-image: url(../../common/app/images/apply_ic_delete.png);
+				background-repeat: no-repeat;
+				background-size: 15px 15px;
+				background-position: center;
+			}
+
+			.imgs-list-add {
+				background-image: url(../../common/app/images/main_img_default.png);
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: 50px 50px;
+				display: inline-block;
+				width: 50px;
+				height: 50px;
+			}
+
+			.wrap-cell-date {
+				display: inline-flex;
+				font-size: 16px;
+				color: #bbb;
+				max-width: calc(100% - 110px);
+				height: 40px;
+				line-height: 40px;
+
+				background-image: url(../../common/app/images/main_table_arrow.png);
+				background-position: right;
+				background-repeat: no-repeat;
+				background-size: 15px 15px;
+				background-origin: border-box;
+				padding-right: 20px;
+			}
+
+			.bottom-submit-btn {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				width: 100%;
+				height: 50px;
+				color: #42A4FE;
+				font-size: 17px;
+				line-height: 50px;
+				text-align: center;
+				border-top: #DEDEDE solid 1px;
+			}
+		</style>
+
+	</head>
+	<body>
+
+		<div id="app">
+			<div class="wrap-cell">
+				<span class="left-span-top"><i class="color-red">*</i>问题描述</span>
+				<textarea class="right-textarea" placeholder="请输入(500字以内)" v-model="problemDesc"></textarea>
+			</div>
+			<div class="wrap-cell">
+				<span :class="wrapCellSpanClass"><i :class="wrapCellSpaniClass">*</i>扣除分数</span>
+				<input type="text" :class="wrapCellInputTextClass" :placeholder="input_placeholder" :readonly="wrapCellInputIsEdit=='true'?'readonly':false"
+				 v-model="deductScore" />
+			</div>
+			<div class="wrap-cell">
+				<span class="left-span-top padding-left-14 height-50px">添加图片</span>
+				<ul class="imgs-list">
+					<li class="imgs-list-li" v-for="(item, index) in imgsArray">
+						<img :src="item" data-preview-group="11" :data-preview-src="item" onerror="this.src='../../common/app/images/main_defult_nophoto.png'">
+						<i @click="deleteImg(item, index)"></i>
+					</li>
+					<li class="imgs-list-add" @click="addPhotoMethod" v-if="imgsArray.length<4"></li>
+				</ul>
+			</div>
+			<div class="wrap-cell" v-if="false">
+				<span class="left-span-top padding-left-14">添加语音</span>
+				<div class="imgs-list-add">
+				</div>
+			</div>
+			<div class="wrap-cell">
+				<span class="left-span-top padding-left-14">整改意见</span>
+				<textarea class="right-textarea" placeholder="请输入(500字以内)" v-model="suggest"></textarea>
+			</div>
+			<div class="wrap-cell">
+				<span class="left-span-top padding-left-14">整改期限</span>
+				<div :class="wrapCellDateClass" @click="dateBtnClick">{{redate}}</div>
+			</div>
+
+			<div class="bottom-submit-btn" @click="submitBtnClick">
+				提交
+			</div>
+		</div>
+
+	</body>
+	
+	<script src="../../common/extend/vue/vue.min.js"></script>
+	<script src="../../common/extend/mui/css/mui.zoom.js"></script>
+	<script src="../../common/extend/mui/js/mui.previewimage.js"></script>
+	<script type="text/javascript">
+		
+		mui.previewImage();
+		
+		var vm = new Vue({
+			el: '#app',
+			mounted() {
+
+				var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+				var url_token = updateNullString(getURLParameter('token'), localToken),
+					token = updateNullString($.cookie('token'), url_token);
+				this.usercode = usercode;
+				this.token = token;
+				
+				this.checkschoolid = updateNullString(getURLParameter('checkschoolid'), '');
+				this.changeScore = updateNullString(getURLParameter('changescore'), '');
+				this.wrapCellInputIsEdit = updateNullString(getURLParameter('isCan'), '');
+
+				this.sortscore = updateNullString(getURLParameter('sortscore'), '');
+				this.examPorblemScore = updateNullString(getURLParameter('examPorblemScore'), '');
+				this.contentid = updateNullString(getURLParameter('contentid'), '');
+
+				var json_string = updateNullString(getURLParameter('examModel'), '');
+				if (json_string.length) {
+					this.itemModel = JSON.parse(json_string);
+				}
+
+
+				this.input_placeholder = '请输入(数值不能大于' + this.sortscore + '分)';
+				if (this.itemModel.questionid) {
+					this.getSafetyProblemRequest();
+				} else {
+					if (this.itemModel.uuid) {
+						this.datamodel.content = this.itemModel.content;
+						this.datamodel.score = this.itemModel.score;
+						this.updateMeunData();
+					}
+				}
+			},
+			data: {
+				// 样式
+				'isEdit': false,
+				'wrapCellInputIsEdit': false,
+				'wrapCellSpanClass': 'left-span-top', //扣除分数文本的样式
+				'wrapCellSpaniClass': 'color-red',
+				'wrapCellInputTextClass': 'right-inputtext', //扣除分数input的样式
+				'wrapCellDateClass': 'wrap-cell-date',
+
+				// 提交数据
+				'problemDesc': '', //问题描述
+				'deductScore': '', //扣除分数
+				'media': '', //媒体
+				'voice': '', //语音
+				'suggest': '', //整改建议
+				'redate': '请选择', //整改日期
+				'imgsArray': [],
+				// 基础数据
+				'usercode': '',
+				'token': '',
+				'imgsMaxNum': 4,
+				'examPorblemScore': 0,
+				'checkschoolid': '',
+				'sortscore': '',
+				'input_placeholder': '请输入',
+				'contentid': '',
+				'changeScore': '',
+				'itemModel': {
+					"uuid": "",
+					"content": "",
+					"score": 0,
+					"checkstatus": 0,
+					"questionid": "",
+					"usercode": "",
+					"username": "",
+					"createtime": 0
+				},
+				'datamodel': {
+					"checktime": 0,
+					"content": "",
+					"createtime": 0,
+					"datalength": "0",
+					"filename": "",
+					"filepath": "",
+					"headphoto": "",
+					"limitdate": 0,
+					"limitdatelong": 0,
+					"normid": "",
+					"normname": "",
+					"opinion": "",
+					"orgid": "",
+					"picexportlist": [],
+					"picpath": "",
+					"pointid": "",
+					"remark": "",
+					"risksstatus": 0,
+					"schoolcode": "",
+					"status": 0,
+					"title": "",
+					"usercode": "",
+					"username": "",
+					"uuid": "",
+					"videolong": "",
+					"videopath": "",
+					"videopicpath": "",
+					"score": 0,
+					"problemid": ""
+				}
+			},
+			methods: {
+				//根据questionId获取编辑内容
+				getSafetyProblemRequest() {
+					var param = {
+						"usercode": this.usercode,
+						"token": this.token,
+						'question.uuid': this.itemModel.questionid,
+					};
+					var url = system.check + 'getSafetyProblem.action';
+
+					mui.showLoading();
+					jQuery_Request_Post(url, param, "json", true, function(responseData) {
+						mui.hideLoading();
+						var ret = responseData["ret"];
+						if (ret) {
+							console.log('根据questionId获取编辑内容');
+							vm.datamodel = responseData['data'];
+							vm.updateMeunData();
+
+						} else {
+							mui.toast(updateNullString(responseData["msg"], "获取数据失败"));
+						}
+					}, function(error) {
+						mui.hideLoading();
+						var msg = updateNullString(error, "请求失败!")
+						mui.toast(msg);
+					});
+				},
+				// 提交数据
+				submitBtnClick() {
+			
+					var desc_string = updateNullString(this.problemDesc, '');
+					var score_string = this.deductScore;
+					var message_string = updateNullString(this.suggest, '');
+					var date_string = updateNullString(this.redate, '');
+					
+					// 问题描述
+					if (!desc_string) {
+						mui.toast('请输入问题描述');
+						return;
+					} else if (judgeStringIsHaveEmoji(desc_string) == true) {
+						mui.toast('文本内容不能包含表情');
+						return;
+					}
+					
+					// 扣除分数
+					if (!score_string) {
+						mui.toast('请输入扣除分数');
+						return;
+					} else if (judgeTwoDecimalPlacesRegular(score_string) == false) {
+						mui.toast('扣除分数为非负整数或者两位小数！');
+						return;
+					} else {
+						if (score_string > this.sortscore) {
+							mui.toast('扣除分数不能大于' + this.sortscore + '分');
+							return;
+						}
+					}
+					
+					// 添加图片
+					var picpath_string = '';
+					if (this.imgsArray.length > 0) {
+						picpath_string = this.imgsArray.join(',');
+					}
+					
+					// 整改意见
+					if (judgeStringIsHaveEmoji(message_string) == true) {
+						mui.toast('文本内容不能包含表情');
+						return;
+					}
+
+					//整改期限
+					var redate_string = '';
+					if (date_string != '请选择') {
+						redate_string = date_string;
+					}
+					//得分
+					var question_score = parseFloat(score_string) + parseFloat(this.examPorblemScore);
+					var rel_getscore = 0;
+					if (question_score < parseFloat(this.sortscore)) {
+						rel_getscore = parseFloat(this.sortscore) - question_score;
+					}
+
+					var param = {
+						"usercode": this.usercode,
+						"token": this.token,
+						"question.usercode": this.usercode,
+						"question.pointid": this.checkschoolid,
+						"question.normid": this.contentid,
+						"question.risksstatus": "1",
+						"question.status": "0",
+						"question.title": "",
+						"question.content": desc_string,
+						"question.picpath": picpath_string,
+						"question.filepath": updateNullString(this.datamodel.filepath, ''),
+						"question.datalength": updateNullString(this.datamodel.datalength, ''),
+						"question.videopath": updateNullString(this.datamodel.videopath, ''),
+						"question.videopicpath": updateNullString(this.datamodel.videopicpath, ''),
+						"question.opinion": message_string,
+						"question.limitdate": redate_string,
+						"question.score": score_string,
+						"question.getscore": rel_getscore,
+						"status": this.changeScore == 1 ? "2" : "1",
+						'question.uuid': updateNullString(this.itemModel.questionid, ''),
+						'question.problemid': updateNullString(this.itemModel.uuid, ''),
+					};
+					var url = system.check + '/saveSafetyProblem.action';
+
+					mui.showLoading();
+					jQuery_Request_Post(url, param, "json", true, function(responseData){
+						mui.hideLoading();
+						var ret = responseData["ret"];
+						if (ret) {
+							console.log('问题提交成功');
+							javascript: history.back(-1);
+						} else {
+							var msg = updateNullString(responseData["msg"], "操作失败");
+							var errtype = updateNullString(responseData["errtype"], '');
+							if (errtype == '1') {
+								// 本次大检查已审核
+								vm.checkIsInsanityAlert();
+							}
+							else {
+								mui.toast(updateNullString(responseData["msg"], "操作失败"));
+							}
+						}
+					}, function(error) {
+						mui.hideLoading();
+						var msg = updateNullString(error, "请求失败!")
+						mui.toast(msg);
+					});
+				},
+				//更新界面数据
+				updateMeunData() {
+					dLog(this.datamodel.score + ' ----------- ' + this.datamodel.content);
+					//问题描述
+					var desc_string = updateNullString(this.datamodel.content, '');
+					if (desc_string.length > 0) {
+						this.problemDesc = desc_string;
+					}
+					//扣除分数
+					var score_string = this.datamodel.score;
+					if (score_string > 0) {
+						this.deductScore = score_string;
+					}
+
+					var isCan = this.wrapCellInputIsEdit;
+					if (isCan == 'true') {
+						this.wrapCellInputTextClass = 'right-inputtext border-0';
+						this.wrapCellSpanClass = 'left-span-top padding-left-14';
+						this.wrapCellSpaniClass = 'color-red display-none';
+					} else {
+						this.wrapCellInputTextClass = 'right-inputtext';
+						this.wrapCellSpanClass = 'left-span-top';
+						this.wrapCellSpaniClass = 'color-red';
+					}
+					
+					// 添加图片
+					var picpath_string = updateNullString(this.datamodel.picpath, '');
+					if (picpath_string.length > 0) {
+						this.imgsArray = picpath_string.split(',');
+					}
+					
+					// 整改建议
+					var message_string = updateNullString(this.datamodel.opinion, '');
+					if (message_string.length > 0) {
+						this.suggest = message_string;
+					}
+
+					// 整改日期
+					var date_string = this.datamodel.limitdatelong;
+					if (!date_string) {
+						this.wrapCellDateClass = 'wrap-cell-date';
+						this.redate = '请选择';
+					} else {
+						this.wrapCellDateClass = 'wrap-cell-date color-666';
+						this.redate = moment(date_string).format('YYYY-MM-DD');
+					}
+				},
+				// 删除图片
+				deleteImg(item, index) {
+					dLog('删除图片 ---- 被点击了 ' + item);
+					this.imgsArray.splice(index, 1);
+				},
+				// 整改期限 - 点击方法
+				dateBtnClick() {
+					dLog('整改期限 -- 被点击了');
+					var _self = this;
+					var currentValue = moment().format('YYYY-MM-DD');
+					if (vm.redate.length != 0 && vm.redate != '请选择') {
+						currentValue = moment(vm.redate).format('YYYY-MM-DD');
+					}
+					var options = {
+						'type': 'date',
+						'value': currentValue,
+					}
+
+					_self.picker = new mui.DtPicker(options);
+					_self.picker.show(function(rs) {
+						/*
+						 * rs.value 拼合后的 value
+						 * rs.text 拼合后的 text
+						 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+						 * rs.m 月，用法同年
+						 * rs.d 日，用法同年
+						 * rs.h 时，用法同年
+						 * rs.i 分（minutes 的第二个字母），用法同年
+						 */
+						dLog('选择结果 222 : ' + rs.text)
+						vm.redate = rs.text;
+						vm.wrapCellDateClass = 'wrap-cell-date color-666';
+
+						//直接释放 - 下次使用在重新创建
+						_self.picker.dispose();
+						_self.picker = null;
+					});
+				},
+				// 添加照片
+				addPhotoMethod() {
+					var num = this.imgsMaxNum - this.imgsArray.length;
+					var param = '{"type":"picture","number":"' + num + '"}'
+					if (typeof(xa) != "undefined") {
+						xa.uploadImage(param, function(url) {
+							dLog('图片添加成功 --- ' + url);
+							vm.imgsArray.push(url);
+						});
+					}
+				},
+				// 本次大检查已审核
+				checkIsInsanityAlert() {
+					//检查已审核
+					mui.confirm('当前检查已审核完毕,是否查看检查结果?', '', ['取消', '查看'], function(e){
+						if (e.index == 0) {
+							//取消
+							javascript:history.back(-1);
+						}
+						if (e.index == 1) {
+							//查看
+							var url = system.check + '/safety/phontCheckMidResultPage.action?checkschoolid=' + vm.checkschoolid + '&sharetype=1';
+							window.location.href = url;
+						}
+					});
+				}
+			}
+
+		});
+	</script>
+
+	<script>
+		var xa_s_tag = document.createElement('script');
+		xa_s_tag.type = 'text/javascript';
+		xa_s_tag.async = true;
+		xa_s_tag.charset = 'utf-8';
+		xa_s_tag.crossDomain = true;
+		xa_s_tag.src = system.h5app + '/h5/jsapi?upload=1&_v=' + new Date().getTime();
+		var root_s = document.getElementsByTagName('script')[0];
+		root_s.parentNode.insertBefore(xa_s_tag, root_s);
+	</script>
+
+</html>

@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>选择被保人</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<style>
+			.class-select{
+				display: block;
+				width: 100%;
+				height: 40px;
+				line-height: 40px;
+				position: relative;
+				border-bottom: 1px solid rgb(222,222,222);
+			}
+			
+			.class-select .mui-btn{
+				position: absolute;
+				border: none;
+				padding: 0px;
+				font-size: 16px;
+				padding-top: 9px;
+				left: 50%;
+			}
+			
+			.mutiple-wapper{
+				bottom: 50px;
+				height: 40px;
+				display: none;
+			
+				text-align: center;
+			}
+			
+			.all-people{
+				position: absolute;
+				left: 0px;
+				padding-left: 15px;
+				height: 40px;
+				line-height: 40px;
+				font-size: 14px;
+				color: rgb(153,153,153);
+			}
+		.mui-checkbox{
+			position: absolute;
+			right: 0px;
+			color: rgb(59, 162, 255);
+		}
+		.mui-checkbox input[type=checkbox]:before {
+		   color: rgb(59, 162, 255);
+		}             
+		.mui-checkbox input[type=checkbox]:checked:before {  
+		   color: rgb(59, 162, 255);
+		}  
+		
+		
+		.student-cell{
+			position: relative;
+			border-bottom: 1px solid rgb(222,222,222);
+			padding: 10px 15px;
+			height: 55px;
+			width: 100%;
+		}
+		
+		.student-cell .mutiple-i{
+			position: absolute;
+			right: 15px;
+			top: calc(50% - 11px);
+			width: 22px;
+			height: 22px;
+			background: url(../../common/app/images/main_blue_white_uncheck.png) no-repeat right center;
+			background-size: 100%;
+		}
+		
+		.student-cell.active .mutiple-i {
+			position: absolute;
+			background: url(../../common/app/images/main_blue_white_check.png) no-repeat right center;
+			background-size: 100%;	
+		}
+		
+		.student-cell .single-i{
+			position: absolute;
+			right: 15px;
+			top: calc(50% - 11px);
+			width: 22px;
+			height: 22px;
+		}
+		
+		.student-cell.active .single-i {
+			position: absolute;
+			background: url(../../common/app/images/main_ic_selected.png) no-repeat right center;
+			background-size: 100%;	
+		}
+
+		.cell-img{
+			float: left;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			margin-right: 12px; 
+		}
+		
+		.cell-name{
+			font-size: 17px;
+			color: rgb(17,17,17);
+		}
+		
+		
+		.cell-idc,.cell-idc-empty{
+			font-size: 13px;
+			color: rgb(153,153,153);
+			display: block;
+		}
+		
+		.footer-wapper{
+			font-size: 17px;
+		}
+		.footer-wapper a:last-child{
+			background-color: rgb(59, 162, 255);
+			color: white;
+		}
+		
+		.manual-input{
+			display: block;
+			background-color: white;
+			color: rgb(59, 162, 255);
+			left: 0px;
+			width: 50%;
+		}
+		/* 保存 底部按钮多选样式 */
+		.mutiple-style{
+			left: 50%;
+			width: 50%;
+		}
+	
+		.cell-class,.cell-class-empty{
+		display: inline-block;
+		vertical-align: bottom;
+		margin-left: 10px;
+		font-size: 10px;
+		color: rgb(153,153,153);
+		background-color: rgb(239,239,244);
+	}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>选择被保人</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="class-select">
+			<button type="button" id="class-btn" class="mui-btn mui-icon mui-icon-arrowdown mui-right"></button>
+		</div>
+		<div class="content">
+			<div class="student-list">
+			</div>
+		</div>
+		<div class="mutiple-wapper footbtn flex_center">
+			<div class="all-people">已选择0人</div>
+			<div class="mui-input-row mui-checkbox">
+				<label>全选</label>
+				<input name="checkbox1" value="Item 3" type="checkbox">
+			</div>
+		</div>
+
+		<div class="footer-wapper footbtn flex_center">
+			<!-- <a href="javascript:;" class="manual-input">手动输入</a> -->
+			<a href="javascript:;" class="save-btn">保存</a>
+		</div>
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<!-- 班级选择 -->
+	<link href="../../common/app/css/commonClass.css" rel="stylesheet">
+	<script src="../../common/app/script/student.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/extend/script/hotcss.js"></script>
+	<script src="../../common/app/script/showLoading.js"></script>
+	<link href="../../common/app/css/showLoading.css" />
+	<script src="../../common/extend/julong/aes.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode), //客户端登录的用户code
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			isSingleStr = updateNullString(getURLParameter('isSingle'), "true"),
+			isSingle = isSingleStr == 'true' ? true : false,
+			isShowClass = false;
+		var timestamp = "";
+		var selectLi = [];
+		var studentList = [];
+		var cachePeopleString = localStorage.getItem(usercode + "insuredPerson"), //获取缓存的人员数据
+			cachePeopleJsonList = JSON.parse(cachePeopleString);
+		//单人投保
+		if(isSingle){
+			localStorage.removeItem(usercode + "insuredPerson") //清除缓存的学生选中人员
+			localStorage.removeItem("selfDepSelectPeople") //清除缓存的老师选中人员
+		}
+		var selectGradeCode, selectGradeName, selectClassCode, selectClassName;
+		if (cachePeopleJsonList != null && cachePeopleJsonList.length > 0) {
+			selectLi = cachePeopleJsonList;
+			$('.all-people').text('已选择' + cachePeopleJsonList.length + '人')
+			$('.mui-input-row input')[0].checked = false;
+			var value = $('.mui-input-row input')[0].checked ? "true" : "false";
+			$('.mui-input-row label').text(value == 'true' ? "全不选" : "全选");
+			if (isSingle) {
+				var json = cachePeopleJsonList[0],
+					selectGradeCode = json["gradecode"],
+					selectGradeName = json["gradename"],
+					selectClassCode = json["classname"],
+					selectClassName = json["classname"];
+			}
+		}
+		var localRealusertype = localStorage.getItem('usertype')
+		var localOrgId = updateNullString(localStorage.getItem("orgid"), "")
+		//家长用户直接展示学生信息，不用展示班级，获取名下孩子
+		if (localRealusertype == "70" || localRealusertype == "80") {
+			isShowClass = false
+			requestAllChildFromServer()
+		} else {
+			isShowClass = true
+			//传入参数，初始化学生列表 获取默认值
+			$.student.initStudent({
+				"usercode": usercode,
+				"orgid": localOrgId,
+				"token": token,
+				"selectGradeCode": selectGradeCode,
+				"selectClassCode": selectClassCode,
+				"limit": "0"
+			}, function(e) {
+				selectGradeCode = e["gradecode"];
+				selectGradeName = e["gradename"];
+				selectClassCode = e["classcode"];
+				selectClassName = e["classname"];
+				$('#class-btn').text(selectClassName)
+				resizeClassSize()
+				requestClassStudentFromServer(selectGradeCode, selectClassCode);
+			});
+		}
+		resizeContentHeight();
+		setupDefaultInfo()
+
+		/**点击选择班级
+		 */
+		$("#class-btn").click(function() {
+			$.student.show(function(e) {
+				selectGradeCode = e["gradecode"];
+				selectGradeName = e["gradename"];
+				selectClassCode = e["classcode"];
+				selectClassName = e["classname"];
+				$('#class-btn').text(selectClassName)
+				requestClassStudentFromServer(selectGradeCode, selectClassCode);
+			})
+		})
+
+		/**点击事件
+		 */
+		$(".student-list").on("click", "li", function() {
+			if (isSingle) {
+				var index = $(this).attr('data-index');
+				$(this).addClass("active").siblings().removeClass("active");
+				selectLi = [];
+				var classCode = $(this).attr('data-classcode')
+				var className = $(this).attr('data-classname')
+				var studentIdcard = $(this).attr('data-studentidc')
+				var gradecode = $(this).attr('data-gradecode')
+				var gradename = $(this).attr('data-gradename')
+				var item = studentList[index];
+				item.classcode = classCode;
+				item.classname = className;
+				item.gradecode = gradecode;
+				item.gradename = gradename;
+				item.timestamp = $(this).attr('data-time')
+				selectLi.push(item);
+			} else {
+				var allCount = $('.student-list ul li');
+				var index = $(this).attr('data-index');
+				var studentcode = $(this).attr('data-studentcode');
+				if ($(this).hasClass('active')) {
+					$(this).removeClass("active");
+					var pos = getSelectListIndex(studentcode);
+					if (pos != -1) {
+						selectLi.splice(pos, 1);
+					}
+					$('.mui-input-row input')[0].checked = false;
+				} else {
+					$(this).addClass("active");
+					var classCode = $(this).attr('data-classcode')
+					var className = $(this).attr('data-classname')
+					var studentIdcard = $(this).attr('data-studentidc')
+					var gradecode = $(this).attr('data-gradecode')
+					var gradename = $(this).attr('data-gradename')
+					var item = studentList[index];
+					item.classcode = classCode;
+					item.classname = className;
+					item.gradecode = gradecode;
+					item.gradename = gradename;
+					item.timestamp = $(this).attr('data-time')
+					selectLi.push(item);
+					var selectCount = $('.student-list ul li.active');
+					if (allCount.length == selectCount.length) {
+						$('.mui-input-row input')[0].checked = true;
+					}
+				}
+				$('.all-people').text('已选择' + selectLi.length + '人')
+				var value = $('.mui-input-row input')[0].checked ? "true" : "false";
+				$('.mui-input-row label').text(value == 'true' ? "全不选" : "全选");
+			}
+		});
+		/**
+		 * 全选 or 全不选 点击
+		 */
+		mui('.mui-input-row').on('change', 'input', function() {
+			var value = this.checked ? "true" : "false";
+			$('.mui-input-row label').text(this.checked ? "全不选" : "全选");
+			//全选
+			if (this.checked) {
+				$('.student-list ul li').addClass("active");
+				if (studentList.length > 0) {
+					var activeList = $('.student-list ul li.active');
+					for (var i = 0; i < studentList.length; i++) {
+						var item = studentList[i],
+							studentcode = item['studentcode'];
+						var pos = getSelectListIndex(studentcode);
+						if (pos == -1) {
+							var classCode = $(activeList[i]).attr('data-classcode')
+							var className = $(activeList[i]).attr('data-classname')
+							var studentIdcard = $(activeList[i]).attr('data-studentidc')
+							var gradecode = $(activeList[i]).attr('data-gradecode')
+							var gradename = $(activeList[i]).attr('data-gradename')
+							item.classcode = classCode;
+							item.classname = className;
+							item.gradecode = gradecode;
+							item.gradename = gradename;
+							item.idcard = studentIdcard;
+							item.timestamp = $(activeList[i]).attr('data-time')
+							selectLi.push(item);
+						}
+					}
+				}
+			}
+			//取消全选
+			else {
+				$('.student-list ul li').removeClass("active")
+				for (var i = 0; i < studentList.length; i++) {
+					var item = studentList[i],
+						studentcode = item['studentcode'];
+					var pos = getSelectListIndex(studentcode);
+					if (pos != -1) {
+						selectLi.splice(pos, 1);
+					}
+				}
+
+			}
+			$('.all-people').text('已选择' + selectLi.length + '人')
+
+		});
+		/**
+		 * 手动输入点击
+		 */
+		$('.manual-input').click(function() {
+			CodeSTD.form({
+				url: "insured_edit.html",
+				params: {
+					"usercode": usercode,
+					"token": token
+				},
+			});
+		})
+
+		function getSelectListIndex(studentcode) {
+			for (var i = 0; i < selectLi.length; i++) {
+				if (selectLi[i]['studentcode'] == studentcode) {
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		/**
+		 * 保存按钮点击
+		 */
+		$('.save-btn').click(function() {
+			var cacheStudentArray = [];
+			if (selectLi.length > 0) {
+				for (var i = 0; i < selectLi.length; i++) {
+					var liObj = selectLi[i],
+						studentname = liObj['studentname'],
+						studentcode = liObj['studentcode'],
+						studentIDC = liObj['idcard'],
+						realClassCode = liObj['classcode'],
+						realClassName = liObj['classname'],
+						realGradeCode = liObj['gradecode'],
+						realGradeName = liObj['gradename'],
+						realTime = liObj['timestamp'];
+						//单选学生是是可以直接获取班级信息的，不用在json数据种获取，具体可参看UI设计
+						if(isSingle){
+							realClassCode = selectClassCode;
+							realClassName = selectClassName;
+							realGradeCode = selectGradeCode;
+							realGradeName = selectGradeName;
+						}
+						var stuJson = {
+							"studentname": studentname,
+							"studentcode": studentcode,
+							"idcard": updateNullString(studentIDC, ""),
+							"classcode": realClassCode,
+							"classname": realClassName,
+							"gradecode": realGradeCode,
+							"gradename": realGradeName,
+							"timestamp": realTime
+						};
+					cacheStudentArray.push(stuJson)
+				}
+				localStorage.setItem(usercode + "insuredPerson", JSON.stringify(cacheStudentArray))
+			}
+			history.back(-1)
+		})
+		/**学生列表数据
+		 * */
+		function createStudentList(array, timestamp) {
+			var html = [];
+			html.push('<ul>')
+			for (var i = 0; i < array.length; i++) {
+				var studentJson = array[i],
+					realStuName = '',
+					realClasscode = '',
+					realClassName = '',
+					realStuCode = '',
+					realHeadImg = '',
+					realStuIDC = '',
+					realPhone = '';
+				//是家长用户，班级code是接口返回的orgid
+				var localRealusertype = localStorage.getItem('usertype')
+
+				if (localRealusertype == '40' || localRealusertype == '60' ) {
+					realClasscode = selectClassCode
+					realClassName = selectClassName
+					realStuName = updateNullString(studentJson['studentname'], '')
+					realStuCode = updateNullString(studentJson['studentcode'], '')
+					realStuIDC = updateNullString(studentJson['idcard'], '')
+					var faceimg = updateNullString(studentJson['faceimg'], ''),
+						headphoto = updateNullString(studentJson['headphoto'], '');
+					realHeadImg = updateNullString(faceimg, headphoto);
+					if (realHeadImg.length <= 0) {
+						realHeadImg = "../../common/app/images/main_avatar.png"
+					}
+				} else {
+					realClasscode = updateNullString(studentJson['orgid'], '')
+					realClassName = updateNullString(studentJson['orgname'], '')
+					realStuName = updateNullString(studentJson['nickname'], '')
+					realStuCode = updateNullString(studentJson['jid'], '')
+					var faceimg = updateNullString(studentJson['himg'], '')
+					realHeadImg = updateNullString(faceimg, "../../common/app/images/main_avatar.png");
+					realStuIDC = updateNullString(studentJson['idcard'], '')
+					realPhone = updateNullString(studentJson['phone'], '')
+				}
+				var result = isExitStudent(realStuCode)
+				if (result) {
+					html.push('<li class = "student-cell active" data-index= "' + i + '" data-studentcode = "' + realStuCode +
+						'" data-gradecode = "' + selectGradeCode + '" data-gradename = "' + selectGradeName +
+						'" data-classcode = "' + realClasscode + '" data-classname = "' + realClassName + '" data-studentidc = "' +
+						realStuIDC +
+						'" data-time= "' + timestamp + '">');
+				} else {
+					html.push('<li class="student-cell" data-index = "' + i + '" data-studentcode = "' + realStuCode +
+						'" data-gradecode = "' + selectGradeCode + '" data-gradename = "' + selectGradeName +
+						'" data-classcode = "' + realClasscode + '" data-classname = "' + realClassName + '" data-studentidc= "' +
+						realStuIDC +
+						'" data-time= "' + timestamp + '">');
+				}
+				html.push('<a>');
+				html.push('<img class="cell-img" src="' + realHeadImg + '" />');
+				html.push('<span class="cell-name">' + realStuName + '</span>');
+				if (realClassName.length <= 0) {
+					html.push('<span class="cell-class-empty">无班级</span>');
+
+				} else {
+					html.push('<span class="cell-class">' + realClassName + '</span>');
+				}
+				if (realStuIDC.length <= 0) {
+					html.push('<span class="cell-idc-empty app-red-color">身份证号码为空</span>');
+				} else {
+					var realShowIDC = aesDecrypt(realStuIDC, timestamp)
+					html.push('<span class="cell-idc">' + realShowIDC + '</span>');
+				}
+				html.push('<i></i>');
+				html.push('</a></li>');
+			}
+			html.push('</ul>')
+			$('.student-list').html(html.join(''))
+			$('.student-cell i').attr('class', isSingle ? 'single-i' : 'mutiple-i');
+		}
+
+		/** 获取某个班级下学生数据【和createStudentList 配合使用】
+		 * */
+		function requestClassStudentFromServer(gradeCode, classCode) {
+			var url = system.usercenter + "/delayedclass/getStudentListOfClass.action",
+				secret = getSecretKey();
+			timestamp = moment().valueOf()
+			paramDic = {
+				usercode: usercode,
+				token: token,
+				gradecode: gradeCode,
+				classcode: classCode,
+				orgid: localStorage.getItem('orgid'),
+				secret: updateNullString(secret, ''),
+				timestamp: timestamp
+			};
+			mui.showLoading()
+			$('.mui-input-row input')[0].checked = false;
+			var value = $('.mui-input-row input')[0].checked ? "true" : "false";
+			$('.mui-input-row label').text(value == 'true' ? "全不选" : "全选");
+			jQuery_Request_Post(url, paramDic, "json", false, function(object) {
+				mui.hideLoading()
+				var result = object["ret"];
+				if (result) {
+					var dataJson = object['data'];
+					studentList = dataJson["studentlist"];
+					if ($.isArray(studentList) && studentList.length > 0) {
+						$('.mui-input-row').show()
+						createStudentList(studentList, timestamp)
+						if (isInclude(studentList, selectLi)) {
+							$('.mui-input-row input')[0].checked = true;
+						} else {
+							$('.mui-input-row input')[0].checked = false;
+						}
+						var value = $('.mui-input-row input')[0].checked ? "true" : "false";
+						$('.mui-input-row label').text(value == 'true' ? "全不选" : "全选");
+					} else {
+						commonShowRequestErrorEmpty(".student-list", "暂无相关数据", true, false);
+						$('.mui-input-row').hide()
+					}
+
+				} else {
+					var msg = updateNullString(object["msg"], "获取学生失败!")
+					commonShowRequestErrorEmpty(".student-list", msg, true, true)
+				}
+			}, function(error) {
+				mui.hideLoading()
+				commonShowRequestErrorEmpty(".student-list", "数据加载时出了问题", true, true);
+			});
+		}
+		/** 家长用户获取名下所有学生
+		 * */
+		function requestAllChildFromServer() {
+			var url = system.usercenter + "/getrelateduser.action",
+				timestamp = moment.valueOf(),
+				paramDic = {
+					"usercode": usercode,
+					"user.usercode": usercode,
+					"token": token,
+					"secret": updateNullString(getSecretKey(), ''),
+					"timestamp": timestamp
+				};
+			mui.showLoading()
+			jQuery_Request_Post(url, paramDic, "json", false, function(object) {
+				mui.hideLoading()
+				var result = object["ret"];
+				if (result) {
+					var dataList = object['userlist'];
+					if ($.isArray(dataList) && dataList.length > 0) {
+						createStudentList(dataList)
+
+					} else {
+						commonShowRequestErrorEmpty(".student-list", "暂无相关数据", true, false);
+					}
+
+				} else {
+					var msg = updateNullString(object["msg"], "获取学生失败!")
+					commonShowRequestErrorEmpty(".student-list", msg, true, true)
+
+				}
+			}, function(error) {
+				mui.hideLoading()
+				commonShowRequestErrorEmpty(".student-list", "数据加载时出了问题", true, true);
+			});
+		}
+		/** 初始值设置
+		 * */
+		function setupDefaultInfo() {
+			if (isSingle) {
+				$('.mutiple-wapper').hide(); //全选隐藏
+				$('.manual-input').hide(); //隐藏手动输入
+			} else {
+				$('.mutiple-wapper').show(); //全选显示
+				//家长用户没有手动输入
+				if (localRealusertype != "70") {
+					//多选：更改底部按钮【手动输入 + 保存】
+					$('.manual-input').show();
+				} else {
+					$('.manual-input').hide();
+				}
+			}
+
+			if (isShowClass) {
+				$('.class-select').show();
+				resizeClassSize()
+			} else {
+				$('.class-select').hide();
+			}
+
+		}
+
+		function resizeClassSize() {
+			var btnWidth = $('#class-btn').width();
+			$('#class-btn').css({
+				'left': '50%'
+			}).css({
+				'left': '-=' + btnWidth / 2 + 'px'
+			});
+		}
+
+		function isExitStudent(val) {
+			if (selectLi != null && selectLi.length > 0) {
+				for (var i = 0; i < selectLi.length; i++) {
+					var classJson = selectLi[i],
+						studentcode = updateNullString(classJson['studentcode'], "");
+					if (val == studentcode) {
+						return true;
+					}
+				}
+			}
+			return false
+		}
+		//计算页面可滑动区域【确定视图高度】
+		function resizeContentHeight() {
+			var contentHeight = $('.content').height();
+			var footerHeight = $('.footer-wapper').height();
+			var mutipleHeight = $('.mutiple-wapper').height();
+			var realHeight = contentHeight - footerHeight - mutipleHeight - 40;
+			$('.content').css({
+				height: realHeight + 'px'
+			});
+		}
+
+		function isInclude(ary0, ary1) {
+			var itemAry = [];
+			for (var i = 0; i < ary0.length; i++) {
+				var studentcode = ary0[i]['studentcode'];
+				for (var j = 0; j < ary1.length; j++) {
+					var code = ary1[j]['studentcode'];
+					if (code == studentcode) {
+						itemAry.push(code);
+					}
+				}
+			}
+			if (itemAry.length == ary0.length) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	</script>
+</html>

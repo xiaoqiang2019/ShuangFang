@@ -1,0 +1,117 @@
+
+/* 班级选择按钮 */
+.scselect {
+	border: none;
+	text-align: center;
+	height: 40px;
+	background-color: white;
+}
+
+.scselect span {
+	display: inline-block;
+	vertical-align: middle;
+	max-width: 90%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	background-color: white;
+	padding-top: 0px;
+	margin-top: 0px;
+	line-height: 40px;
+}
+
+/* 搜索框 */
+.search01 {
+	background-color: white;
+	height: 35px;
+	position: relative;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.search01 input {
+	width: 100%;
+	height: 30px;
+	border-radius: 5px;
+	border: none;
+	background: #efeff4 url(../../../common/app/images/main_search.png) no-repeat;
+	font-size: 14px;
+	text-align: center;
+	background-position: 46% center;
+	background-size: auto 46%;
+	text-indent: 8%;
+	line-height: normal;
+	display: inline-block;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 10px 0;
+}
+
+.search01 input:focus {
+	background-position: 3% center;
+	text-align: left;
+	text-indent: 9%;
+}
+
+#scancel {
+	position: absolute;
+	right: 0;
+	font-size: 14px;
+	color: #3BA2FF !important;
+	top: 0;
+	line-height: 30px;
+	padding-right:20px;
+	display: none
+}
+
+/* 学生列表 */
+.sclist {
+	padding-bottom: 50px;
+	width: 100%;
+	height: calc(100% - 130px);
+	overflow-y: scroll;
+}
+
+.sclist li a {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	align-items: center;
+	padding: 5px 14px;
+}
+
+.sclist li a .headimg {
+	width: 38px;
+	height: 38px;
+	margin-right: 10px;
+	position: relative;
+}
+
+.sclist li a img{
+	max-width: 100%;
+	display: block;
+	border-radius:100%;
+	width: 100%;
+	height: 100%;
+}
+
+.sclist li a span {
+	font-size: 16px;
+	line-height: 38px;
+}
+
+.sclist li {
+	border-bottom: 1px solid #eee;
+}
+
+.sclist .headimg i {
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	right: -5px;
+	top: -5px;
+	background:url(../../../common/app/images/ic_caution.png) left top no-repeat;
+	background-size: 15px 15px;
+}

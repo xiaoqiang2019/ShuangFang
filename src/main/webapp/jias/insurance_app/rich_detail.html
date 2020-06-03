@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>富文本页面</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<script src="../../common/app/script/empty.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			.content {
+				width: 100%;
+				height: 100% ;
+				overflow-y: scroll;
+			}
+				.section-title {
+					font-weight: bold;
+					color: #111111;
+					font-size: 16px;
+					border: none;
+				}
+				
+				.titile-cell {
+					font-size: 16px;
+					font-weight: bold;
+					color: #111111;
+					line-height: 20px;
+					margin-top: 10px;
+				
+				}
+			
+				.cell-msg{
+					color: #111111;
+					font-size: 14px;
+					line-height: 20px;		
+				}
+				#telphone{
+					color: #0062CC;
+				}
+				.cell-top{
+					margin : 0px 15px ;
+					display: none;
+				}
+				#claim-btn {
+					position: fixed;
+					bottom: 0;
+					color: white;
+					left: 0;
+					width: 100%;
+					font-size: 16px;
+					height: 50px;
+					background-color: #3ba2ff;
+					border: none;	
+					display: none;
+				
+				}
+				.details{
+						margin:   15px;
+					overflow-y: scroll;
+				}
+				.remark{
+					color: #999999;
+					font-size: 14px;
+					margin: 0 14px;
+					display: none;
+					
+				}
+				.details iframe,
+				.details video,
+				.details img{
+					max-width: 100% !important;
+					width:100% !important;
+				}
+				.details video{
+					height: auto;
+				}
+			
+			</style>
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>页面标题</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<div class="cell-top">
+				<div class="section-title"><i></i><span>理赔流程</span></div>
+				<div class="titile-cell"> 一、在线报案</div>
+				<p class="cell-msg">
+					1.在线填报理赔信息，提交理赔材料；
+				</p>
+				<p class="cell-msg">
+					2.致电 <a id="telphone" class="app-blue-color">400-133-0600</a> 申请理赔；
+				</p>
+
+				<div class="titile-cell">二、审核材料</div>
+				<p class="cell-msg">
+					保险公司审核理赔材料是否完整；
+				</p>
+
+				<div class="titile-cell">三、赔付完成</div>
+				<p class="cell-msg">
+					保险公司审核通过后完成赔付；
+				</p>
+			</div>
+			<div class="details"></div>
+			<p class="remark">注：申请在线理赔，表示本人同意通过本服务平台向保险公司提交理赔申请及所需材料，并同意保险公司将理赔结果通过本平台向本人展示</p>
+			<button type="button" id="claim-btn">申请理赔</button>
+		</div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode),
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			productID = updateNullString(getURLParameter('productID'), ""),
+			title = updateNullString(getURLParameter('title'), ""),
+			orderID = updateNullString(getURLParameter('orderID'), ""),
+			orderNo = updateNullString(getURLParameter('orderNo'), ""),
+			position_code = updateNullString(getURLParameter('position_code'), ''), //位置编码【首页推荐资源 如果是富文本类型，数据量太大，进到这个页面在请求一下数据，url传递长度会受限】
+			adsense_id = updateNullString(getURLParameter('adsense_id'),''),//选中的富文本广告推荐
+			claimsHotline = updateNullString(getURLParameter('claimsHotline'), ""), //理赔电话
+			realTitleCode = "";
+		if (title.length > 0) {
+			if (title == "理赔流程") {
+				realTitleCode = "claim_detail"
+				$('#telphone').text(claimsHotline)
+			} else if (title == "投保须知") {
+				realTitleCode = "insurance_note"
+			} else if (title == "保险条款") {
+				realTitleCode = "insurance_clauses"
+			} else if (title == "健康告知书") {
+				realTitleCode = "health_notification"
+			}
+			$("title").html(title);
+			$("header h1").html(title);
+			showClaimProcess()
+			requestRichTextFromServer()
+		}
+		else{
+			if(adsense_id.length > 0){
+				requestBannerDataFromServer()
+			}
+		}
+
+	
+
+		//理赔电话拨打
+		$('#telphone').click(function() {
+			var that = $(this),
+				phone = that.text();
+			that.attr('href', 'tel:' + phone)
+		})
+		$('#claim-btn').click(function() {
+			CodeSTD.form({
+				url: "../claim_app/claim_step1.html",
+				params: {
+					"usercode": usercode,
+					"token": token,
+					"productID": productID,
+					"orderId": orderID,
+					"orderNo": orderNo
+
+				},
+			});
+		})
+
+		/** 获取富文本
+		 * */
+		function requestRichTextFromServer() {
+			// request
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"code": realTitleCode,
+				"product_id": productID
+			};
+			var url = system.jias + "/v1/product/richtext/get";
+			mui.showLoading();
+			jQuery_Request_Post(url, paramDic, "json", false, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					var dataJson = responseData['data'];
+					if (dataJson == null || dataJson == undefined || dataJson.length == 0) {
+						if (title != "理赔流程") {
+							showRequestErrorEmpty("暂无相关数据", false, false);
+						}
+
+					} else {
+						var content = dataJson['content'];
+						if (content == null || content == undefined) {
+							if (title != "理赔流程") {
+								showRequestErrorEmpty("暂无相关数据", false, false);
+							}
+
+						} else {
+							$('.details').html(content)
+						}
+					}
+				} else {
+					showRequestErrorEmpty(updateNullString(responseData["err_msg"], "暂无相关数据"), false, false);
+				}
+			}, function(error) {
+				mui.hideLoading();
+				showRequestErrorEmpty("数据加载时出了问题", false, true);
+			});
+		}
+
+		function requestBannerDataFromServer() {
+			var paramDic = {
+				"usercode": usercode,
+				"position_code": "adsense_position_baoxian",
+				"token": token
+			};
+			var urlString = system.jias + "/v1/adsense/list";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					var result = object["ret"];
+					if (result) {
+						var dataList = object["data"];
+						if (dataList.length > 0) {
+							for(var i = 0;i<dataList.length;i++){
+								var json = dataList[i],
+									adID = json['adsense_id'],
+									adData = json['adsense_data'];
+								if(adsense_id == adID){
+									$('.details').html(adData)
+								}
+							}
+						} else {
+						showRequestErrorEmpty("暂无相关数据", false, false);
+						}
+
+					} else {
+						showRequestErrorEmpty("暂无相关数据", false, false);
+					}
+				},
+				function(error) {
+					showRequestErrorEmpty("数据加载时出了问题", false, true);
+				})
+		}
+
+		function showClaimProcess() {
+			if (title == "理赔流程") {
+				$(".cell-top").show()
+				if (!isEmpty(orderID)) {
+					$(".remark").show()
+					$("#claim-btn").show()
+				} else {
+					$(".remark").hide()
+					$("#claim-btn").hide()
+				}
+			}
+
+		}
+
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".details"
+			}, function() {
+				//重新刷新数据
+				requestRichTextFromServer()
+			});
+		}
+	</script>
+
+
+</html>

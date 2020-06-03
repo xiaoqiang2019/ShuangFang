@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>在线申请理赔</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			/* 顶部进度 */
+			/* 顶部进度 */
+			.claim-process {
+				position: relative;
+				height: 110px;
+				border-bottom: 1px solid rgb(222, 222, 222);
+			}
+
+			.horizontal-line1,
+			.horizontal-line2 {
+				top: 22px;
+				left: 20px;
+				width: calc(50% - 20px);
+				height: 3px;
+				background-color: rgb(59, 162, 255);
+				position: absolute;
+			}
+
+			.horizontal-line2 {
+				width: calc(50% - 20px);
+				left: 50%;
+				position: absolute;
+			}
+
+			.claim-process #step1,
+			#step2 {
+				background-color: rgb(59, 162, 255);
+				width: 24px;
+				height: 24px;
+				border-radius: 12px;
+				color: white;
+				font-size: 16px;
+				text-align: center;
+				position: absolute;
+				top: 12px;
+			}
+
+			.claim-process #step1 {
+				left: calc(25% - 2px);
+			}
+
+			.claim-process #step2 {
+				right: calc(25% - 2px);
+			}
+
+			.claim-process #note {
+				position: absolute;
+				text-align: center;
+				font-size: 16px;
+				font-weight: 500;
+				color: rgb(17, 17, 17);
+				left: 0px;
+				right: 0px;
+				top: 52px;
+			}
+
+			.claim-process span {
+				position: absolute;
+				left: 0px;
+				right: 0px;
+				width: 100%;
+				font-size: 13px;
+				padding: 5px 5px;
+				text-align: center;
+				color: rgb(102, 102, 102);
+				bottom: 7px;
+			}
+
+			/* cell样式 */
+			.data-cell {
+				border-bottom: 1px solid rgb(222, 222, 222);
+				padding: 10px 15px;
+			}
+
+			.data-cell label {
+				display: inline-block;
+				width: 75%;
+				float: left;
+				font-size: 15px;
+				color: rgb(17, 17, 17);
+				background-color: transparent;
+			}
+
+			.data-cell .right-eg {
+				float: right;
+				margin-top: 5px;
+				font-size: 13px;
+				color: rgb(59, 162, 255);
+				text-align: right;
+				background-color: transparent;
+				width: 50px;
+				height: 13px;
+			}
+
+			.data-cell .note {
+				font-size: 12px;
+				color: rgb(153, 153, 153);
+			}
+
+			.data-cell .append-info {
+				display: block;
+				margin-top: 10px;
+				font-size: 13px;
+				color: rgb(153, 153, 153);
+			}
+
+			.clear {
+				clear: both;
+			}
+
+			/* 图片组 */
+			.data-cell .photo-group {
+				margin: 10px 0px;
+				background-color: transparent;
+
+			}
+
+			.uploadFile {
+				width: 50px;
+				height: 50px;
+				margin: 5px 10px 0px 0px;
+				float: left;
+				position: relative;
+			}
+
+			.uploadFile img {
+				width: 50px;
+				height: 50px;
+			}
+
+			.uploadFile i {
+				position: absolute;
+				right: -5px;
+				top: -5px;
+				width: 15px;
+				height: 15px;
+				background: url(../../common/app/images/apply_ic_delete.png) no-repeat center;
+				background-size: 100%;
+			}
+
+			.fxbtn {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>在线申请理赔</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<!-- 头部信息 -->
+			<div class="claim-process">
+				<div class="horizontal-line1"></div>
+				<div class="horizontal-line2"></div>
+				<i id="step1">1</i>
+				<i id="step2">2</i>
+				<div id="note">请上传以下材料信息</div>
+				<span>为了更快完成申请，请确保材料拍摄清晰、完整</span>
+			</div>
+			<div class="upload-data">
+			</div>
+		</div>
+		<div class="fxbtn">
+			<a href="javascript:;" class="flex_center">提交</a>
+		</div>
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/extend/jquery/jquery.uploadifive-1.2.2.js"></script>
+	<script src="../../common/extend/mui/css/mui.zoom.js"></script>
+	<script src="../../common/extend/mui/js/mui.previewimage.js"></script>
+	<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+	<script src="../../common/app/script/showLoading.js"></script>
+	<script src="../../common/extend/julong/aes.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode),
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			orderId = updateNullString(getURLParameter('orderId'), ""),
+			claimId = updateNullString(getURLParameter('claimId'), ""),
+			productId = updateNullString(getURLParameter('productID'), ""),
+			applyUser = updateNullString(getURLParameter('applyUser'), ""),
+			applyUserName = updateNullString(getURLParameter('applyUserName'), ""),
+			applyUserPhone = updateNullString(getURLParameter('applyUserPhone'), ""),
+			insuredJsonString = updateNullString(getURLParameter('insuredJson'), ''), //被保人信息[松花粉粉证件号+时间戳]
+			caseClassify = updateNullString(getURLParameter('caseClassify'), ""),
+			caseType = updateNullString(getURLParameter('caseType'), ""),
+			caseTime = updateNullString(getURLParameter('caseTime'), ""),
+			casePlace = updateNullString(getURLParameter('casePlace'), ""),
+			casePlaceName = updateNullString(getURLParameter('casePlaceName'), ""),
+			hospitalTime = updateNullString(getURLParameter('hospitalTime'), ""),
+			hospital = updateNullString(getURLParameter('hospital'), ""),
+			caseHistory = updateNullString(getURLParameter('caseHistory'), ""),
+			payeeName = updateNullString(getURLParameter('payeeName'), ""),
+			payeeBankNo = updateNullString(getURLParameter('payeeBankNo'), ""),
+			payeeBank = updateNullString(getURLParameter('payeeBank'), ""), //暂时未空，不传
+			payeeOpenBank = updateNullString(getURLParameter('payeeOpenBank'), ""), //暂时未空，不传
+			forms = updateNullString(getURLParameter('forms'), ""),
+			dispositionList = []; //全局公用的数据，接口返回的数据全局变量
+		var insuredJson = JSON.parse(insuredJsonString),
+			valueJson = JSON.parse(insuredJson.value),
+			insuredUsername = updateNullString(insuredJson.text, ""),
+			insuredIdcard = updateNullString(valueJson['insured_idcard'], ""),
+			insuredTimestamp = valueJson['timestamp'];
+		var claimForms = {}
+		if (forms != null && forms != undefined && forms.length > 0) {
+			claimForms = JSON.parse(forms)
+		}
+		mui.init()
+		mui.previewImage()
+
+		resizeContentLayout()
+		requestClaimisposition();
+		//创造图片上传
+		$('.fxbtn .flex_center').click(function() {
+			//提交理赔数据
+			requestClaimContent();
+		})
+
+		function requestClaimisposition() {
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"product_id": productId
+			};
+			var urlString = system.jias + "/v1/claim/form/list";
+			mui.showLoading()
+			jQuery_Request_Post(urlString, paramDic, "json", false, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					dispositionList = responseData["data"];
+					if (dispositionList.length > 0) {
+						var html = [];
+						html.push('<ul>')
+						for (var i = 0; i < dispositionList.length; i++) {
+							var json = dispositionList[i],
+								field_label = updateNullString(json['field_label'], ''),
+								field_describe = updateNullString(json['field_describe'], ''),
+								maxImageNum = json['max_length'],
+								preImgUrl = updateNullString(json['example_url'], '');
+							html.push('<li class="data-cell"')
+							html.push('<label class="field-label">' + (i + 1) + ". " + field_label + '</label>')
+							//查看示例在平台不是必填项，如果没有就不显示
+							if (preImgUrl.length > 0) {
+								var imgUrl = '../../common/app/images/apply_ic_example.png'
+								// html.push('<a href="#" class="right-eg">查看示例<img data-preview-src="'+imgUrl+'" src="'+imgUrl+'/"></a>')
+								html.push('<img class="right-eg" data-preview-group="11111" data-preview-src="' + preImgUrl + '"src="' +
+									imgUrl + '"/>')
+
+							}
+							html.push('<span class="append-info">' + field_describe + '</span>')
+							html.push('<div id="picshow" class="photo-group">')
+							html.push('<div class="uploadFile" id="picfirst"><a href="#" onclick="showPic(' + (i + 1) + ',' + maxImageNum +
+								')"><img src="../../common/app/images/main_img_default.png" /></a></div>')
+							html.push('<div class="clear"></div>')
+							html.push('</div>')
+							html.push('<div class="note">已上传<span id="upload-pic-count" max-img-count="' + maxImageNum +
+								'">0</span>张图片，最多上传' + maxImageNum + '张</div>')
+							html.push('</li>')
+						}
+						html.push('</ul>')
+						$('.upload-data').html(html.join(''))
+						$('.fxbtn').show()
+						if ($.isArray(claimForms) && claimForms.length > 0) {
+
+							for (var i = 0; i < dispositionList.length; i++) {
+								var json = dispositionList[i],
+									field_label = updateNullString(json['field_label'], ''),
+									field_describe = updateNullString(json['field_describe'], ''),
+									maxImageNum = json['max_length'],
+									preImgUrl = json['example_url'];
+								for (var j = 0; j < claimForms.length; j++) {
+									var formJson = claimForms[j],
+										fieldLabel = updateNullString(formJson['field_label'], ''),
+										fieldDescribe = updateNullString(formJson['field_describe'], ''),
+										fieldValue = updateNullString(formJson['field_value'], '');
+									if (field_label == fieldLabel) {
+										var taregtObj = $('.data-cell:nth-child(' + i + ')');
+										taregtObj.find('field-label').text(fieldLabel);
+										taregtObj.find('append-info').text(fieldDescribe);
+										if (fieldValue.length > 0) {
+											var imgArray = fieldValue.split(',')
+											taregtObj.find('upload-pic-count').text(imgArray.length);
+										}
+										getImageUrl(1, fieldValue, (i + 1), maxImageNum);
+									}
+								}
+							}
+
+						}
+
+					} else {
+						//没有数据
+						showRequestErrorEmpty("暂无相关数据", false, true);
+					}
+				} else {
+					showRequestErrorEmpty(updateNullString(responseData["err_msg"], "暂无相关数据"), false, true);
+
+				}
+			}, function(error) {
+				mui.hideLoading();
+				showRequestErrorEmpty("数据加载时出了问题", true, true);
+			});
+
+
+		}
+
+		//提交数据
+		function requestClaimContent() {
+			var upImageLenth = $('.upload-data').find('[id^="uppic_"]').length;
+			var fromjson = {};
+			if (upImageLenth > 0) {
+				var dataCell = $('.upload-data').find('.data-cell');
+				for (var i = 0; i < dispositionList.length; i++) {
+					var json = dispositionList[i],
+						images = $(dataCell[i]).find('[id^="uppic_"] img');
+					if (1 == dispositionList[i]['if_required']) {
+						//如果是必填项，但是未上传图片
+						if (images.length == 0) {
+							mui.alert(dispositionList[i]['field_label'] + "为必选项");
+							return;
+						}
+					}
+					var key = json['field_name'];
+					if (images.length == 1) {
+						//图片只有一张直接拼接json
+						var imagpath = $(images[0]).attr('src');
+						fromjson[key] = imagpath;
+					} else if (images.length > 1) {
+						//图片多张逗号隔开
+						var imagUrls = [];
+						for (var j = 0; j < images.length; j++) {
+							var imgObj = images[j]
+							imagUrls.push($(images[j]).attr('src'))
+						}
+						fromjson[key] = imagUrls.join(',');
+					}
+				}
+			} else {
+				mui.alert("请上传材料所需的图片")
+				return;
+			}
+			var secret = getSecretKey(),
+				timestamp = moment().valueOf();
+			var realInsuredIDC = aesDecrypt(insuredIdcard, insuredTimestamp);
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"claim_id": claimId,
+				"order_id": orderId,
+				"apply_user": applyUser,
+				"apply_user_phone": applyUserPhone,
+				"insured_username": insuredUsername,
+				"insured_idcard": aesEncrypt(realInsuredIDC, timestamp),
+				"case_classify": caseClassify,
+				"case_type": caseType,
+				"case_time": caseTime,
+				"case_place": casePlace,
+				"case_place_name": casePlaceName,
+				"hospital_time": hospitalTime,
+				"hospital": hospital,
+				"case_history": caseHistory,
+				"payee_name": payeeName,
+				"payee_bank_no": payeeBankNo,
+				"payee_bank": payeeBank,
+				"payee_open_bank": payeeOpenBank,
+				"forms": JSON.stringify(fromjson),
+				"secret": secret,
+				"timestamp": timestamp
+			};
+			var urlString = system.jias + "/v1/claim/save";
+			mui.showLoading()
+			jQuery_Request_Post(urlString, paramDic, "json", false, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					mui.toast("提交成功");
+					history.go(-3)
+				} else {
+					mui.alert(updateNullString(responseData["err_msg"], "提交失败"), true, false);
+				}
+			}, function(error) {
+				mui.hideLoading();
+				mui.alert("提交失败");
+			});
+
+
+
+		}
+
+		function deletepic(obj) {
+			var btnArray = ["取消", "确定"];
+			mui.confirm('确认删除吗？', '删除图片', btnArray, function(e) {
+				if (e.index == 1) {
+					var dataCell = $(obj).parents('.data-cell');
+					$(obj).parents('.uploadFile').remove();
+					updateUploadPicCount(dataCell)
+					var maxImgCount = dataCell.find('#upload-pic-count').attr('max-img-count')
+					calculatePhotoCount(dataCell, maxImgCount)
+				}
+			})
+		}
+
+		//传入参数是picfirst的上级
+		function updateUploadPicCount(val) {
+			var count = $(val).find('div[id^="uppic_"]').length;
+			$(val).find('#upload-pic-count').text(count)
+		}
+
+		//计算页面图片个数，判断是否隐藏选择图片入口
+		function calculatePhotoCount(val, maxCount) {
+			var picfirst = $(val).find('#picfirst');
+			var count = $(val).find('div[id^="uppic_"]').length;
+			//隐藏picfirst
+			if (count >= maxCount) {
+				$(picfirst).hide()
+			}
+			//不隐藏picfirst
+			else {
+				$(picfirst).show()
+			}
+		}
+
+		function showPic(index, maxCount) {
+			var count = $('.data-cell:nth-child(' + index + ')').find('[id^="uppic_"]').length;
+			// alert('最多还可以上传'+(maxCount - count)+'张')
+			var param = '{"type":"picture","number":"' + (maxCount - count) + '"}'
+			if (typeof(xa) != "undefined") {
+				xa.uploadImage(param, function(url) {
+					getImageUrl(1, url, index, maxCount);
+				});
+			}
+		}
+
+		function getImageUrl(uuid, url, index, maxCount) {
+			//多张图片
+			if (url.indexOf("#") > 0 || url.indexOf(",") > 0) {
+				var splitIcon = "#";
+
+				if (url.indexOf("#") > 0) {
+					splitIcon = "#";
+				} else if (url.indexOf(",") > 0) {
+					splitIcon = ",";
+				}
+				var urls = url.split(splitIcon);
+				for (var i = 0; i < urls.length; i++) {
+					//alert(urls[i]);
+					var count = $('.data-cell:nth-child(' + index + ')').find('[id^="uppic_"]').length;
+					var con = '<div class="uploadFile" id="uppic_' + (count + 1) + '"><img data-preview-src="' + url[i] +
+						'" data-preview-group="' + index + '" src="' + urls[i] +
+						'"/><i onclick="deletepic(this)"></i></div>';
+					//alert(con)
+					$('.data-cell:nth-child(' + index + ') #picfirst').before(con);
+				}
+			}
+			//单张图片
+			else {
+				var count = $('.data-cell:nth-child(' + index + ')').find('[id^="uppic_"]').length;
+				var con = '<div class="uploadFile" id="uppic_' + (count + 1) + '"><img data-preview-src="' + url +
+					'" data-preview-group="' + index + '" src="' + url +
+					'"/><i onclick="deletepic(this)"></i></div>';
+				$('.data-cell:nth-child(' + index + ') #picfirst').before(con);
+			}
+			updateUploadPicCount($('.data-cell:nth-child(' + index + ')')[0])
+			calculatePhotoCount($('.data-cell:nth-child(' + index + ')')[0], maxCount);
+		}
+
+		function resizeContentLayout() {
+			//可滑动区域计算
+			var contentHeight = $('.content').height();
+			var footerHeight = $('.fxbtn').height();
+			var realHeight = contentHeight - footerHeight;
+			$('.content').css({
+				height: realHeight + 'px'
+			});
+		}
+
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			$('.fxbtn').hide()
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".upload-data"
+			}, function() {
+				pulldownRefresh()
+			});
+		}
+	</script>
+
+	<script>
+		var xa_s_tag = document.createElement('script');
+		xa_s_tag.type = 'text/javascript';
+		xa_s_tag.async = true;
+		xa_s_tag.charset = 'utf-8';
+		xa_s_tag.crossDomain = true;
+		xa_s_tag.src = system.h5app + '/h5/jsapi?upload=1&_v=' + new Date().getTime();
+		var root_s = document.getElementsByTagName('script')[0];
+		root_s.parentNode.insertBefore(xa_s_tag, root_s);
+	</script>
+</html>

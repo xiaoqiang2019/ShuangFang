@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="msapplication-tap-highlight" content="no">
+
+		<title>腾讯播放器</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 平台李鹏使用的px和rem转换 46.875 -->
+		<script src="../../common/extend/script/hotcss.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<!-- 本页面css -->
+		<link href="css/videoplayer.css" rel="stylesheet" />
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<!-- 空页面 -->
+		<script src="../../common/app/script/empty.js"></script>
+
+		<!-- 时间相关 -->
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+
+		<script src="https://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.3.2.js"></script>
+		<!-- 引入播放器 css 文件 -->
+		<link href="http:imgcache.qq.com/open/qcloud/video/tcplayer/tcplayer.min.css" rel="stylesheet">
+
+		<!-- 本库为腾讯云直播的web播放器sdk镜像 的修改版。 增加了移动端的分辨率切换和安卓4.X版本webView内视频不能播放的问题 -->
+		<!-- <script src="http://imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer.js"></script> -->
+		<!-- 上传图片 -->
+		<script src="../../common/extend/julong/uploadHelper.js"></script>
+
+		<script src="http://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
+	</head>
+	<body>
+		<header>
+			<h1>腾讯播放器</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+
+		<canvas style="display: none;"></canvas>
+		<div id="my-video" class="video-wrapper" style="background-color: black;">
+		</div>
+		
+		
+		<div class="content-wapper">
+			<!-- 顶部操作按钮【截图显示，编辑按钮】 -->
+			<!-- <div class="top-edit-wapper">
+				<p class="top-screenshot">截图</p>
+				<input type="button" value="编辑" style="display: none;">
+			</div> -->
+
+			<!-- 抓图显示区域 -->
+			<!-- <div class="center-grid-wapper" id="edit-grid-wapper">
+
+				<ul class="mui-table-view mui-grid-view mui-grid-9">
+				</ul>
+			</div> -->
+
+			<!-- 底部操作按钮【抓图、广播喊话、应急预案等等】 -->
+			<!-- <div class="bottom-wapper footbtn" id="default-bottom-wapper">
+				<a class="text_blue flex_center" id="footer_snapshot">抓图</a>
+			</div>
+
+			<div class="bottom-wapper footbtn flex_center" id="edit-bottom-wapper" style="display: none;">
+				<a href="javascript:;" class="flex_center text_blue" id="footer_select">全选</a>
+				<a href="javascript:;" class="flex_center text_blue" id="footer_delete">删除</a>
+				<a href="javascript:;" class="flex_center text_blue" id="footer_send">发送</a>
+			</div>
+ -->
+
+			<!-- <div id="hint" class="mui-popover mui-popover-bottom mui-popover-action" hidden=""> -->
+				<!-- 选择菜单 -->
+				<!-- <ul class="mui-table-view">
+					<li class="mui-table-view-cell">
+						<a href="#">上报隐患</a>
+					</li>
+				</ul> -->
+
+				<!-- 取消菜单 -->
+				<!-- <ul class="mui-table-view">
+					<li class="mui-table-view-cell"> -->
+						<!-- 连接写的是这个操作表div的id，锚点的形式去隐藏操作表 -->
+						<!-- <a href="#">取消</a>
+					</li>
+				</ul>
+			</div>
+		</div> -->
+		
+	</body>
+
+
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script>
+		// https://www.jianshu.com/p/63c37b4b9abe
+		// var test = "http://hls01open.ys7.com/openlive/7dfc188c1cc34830b702f3c15dd86abd.m3u8"; //xiaoge测试地址
+		// var test = "http://222.187.45.121:8098/cam_remote/0281843fc070_cca668f12c.m3u8";//9300测试地址
+		// var test = "http://192.168.1.229/cam_remote/aaabbb.m3u8";
+		//var test = "http://192.168.1.229:8099/hls/live/aaaa.m3u8";//韩征测试地址
+		// var test = "http://60.205.114.34:1935/cam_remote/0281843fc070_cca668f12c.m3u8";
+
+		var usercode = updateNullString(getURLParameter('usercode'), "");
+		var orgid = updateNullString(getURLParameter('orgid'), "");
+		var token = updateNullString(getURLParameter('token'), "");
+		var basetoken = updateNullString(getURLParameter('basetoken'), "");
+
+		//摄像头信息
+		var cam_online = updateNullString(getURLParameter('cam_online'), ""); //摄像头状态【(1，正常，2摄像头存在，但是连接不成功,3摄像头ID不存在，4摄像头流地址错误) 20190718新增】		
+		var cam_name = updateNullString(getURLParameter('cam_name'), ""); //摄像头名称			
+		var cam_id = updateNullString(getURLParameter('cam_id'), ""); //摄像头ID 					
+		var imgurl = updateNullString(getURLParameter('imgurl'), ""); //摄像头默认显示图片	
+		var resolution = updateNullString(getURLParameter('resolution'), "0.75"); //摄像头画面分辨率	
+
+		$('title').text(updateNullString(cam_name, "播放详情"));
+		// alert("获取数据  "+orgid+ usercode +token +basetoken + cam_id + cam_name + imgurl + resolution);
+
+		var getVideoWidth = $(document.body).width();
+		var getVideoHeight = $(document.body).width() * setFrameByResolution(resolution);
+		$("#my-video").css("width", $(document.body).width());
+		$("#my-video").css("height", getVideoHeight);
+		// $(".center-grid-wapper").css("top", $(".top-edit-wapper").offset().top + 40);
+		dLog(cam_id);
+
+		getPlayUrlAddressData();
+
+		var hls_address = "";
+		//获取hls视频流地址
+		function getPlayUrlAddressData() {
+			// mui.showLoading();
+			//无网络加载
+			// if (navigator.onLine == false) {
+			// 	mui.hideLoading();
+			// 	alert("网络似乎有点问题");
+			// 	return;
+			// }
+			var isRequest = true;
+			if (isRequest) {
+				// 获取播放地址列表
+				var paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"basetoken": basetoken,
+					"camera_id": cam_id,
+					"enbol": false,
+					"playback_mode": "2"
+				};
+				var url = system.usercenter + "/interface/getCameraPath.action";
+				mui.showLoading();
+				jQuery_Request_Post(url, paramDic, "json",true,function(responseData) {
+					mui.hideLoading();
+					var ret = responseData["ret"];
+					if (ret) {
+						var dataDic = JSON.parse(responseData["data"]); //字符串转json
+						hls_address = updateNullString(dataDic["h264path"], "");
+						if (hls_address.length > 0) {
+							loadPlayer();
+						} else {
+							alert("播放地址为空");
+						}
+					} else {
+						alert(updateNullString(responseData["msg"], "获取播放地址失败"));
+					}
+				}, function(error) {
+					mui.hideLoading();
+					alert("获取播放地址失败");
+				});
+			} else {
+				mui.hideLoading();
+				hls_address = test;
+				loadPlayer();
+			}
+		}
+
+		function loadPlayer() {
+			mui.hideLoading();
+			// alert("播放地址为" + hls_address);
+			// alert(hls_address);
+			/**
+			 *  属性说明：               
+			 *  coverpic  {Object|String} src:图片地址，style：default 居中1:1显示 stretch 拉伸铺满，图片可能会变形 cover 等比横向铺满，图片某些部分可能无法显示在区域内      
+			 *  封面在 ios10 暂时无法生效。 
+			 *  https://cloud.tencent.com/developer/article/1399098(H5案例分享：微信视频播放全屏问题)
+			 * 
+			 *  属性配置参考资料：https://cloud.tencent.com/document/product/881/20207
+			 */
+			var options = {
+				// m3u8:hls_address,
+				// m3u8: "http://hls01open.ys7.com/openlive/7dfc188c1cc34830b702f3c15dd86abd.m3u8",
+				m3u8_hd: hls_address,
+				// m3u8_sd: hls_address,
+				// clarity: 'od',
+				// clarityLabel: {
+				// 	od: '原画',
+				// 	hd: '高清',
+				// 	sd: '标清'
+				// },
+				autoplay: true, //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+				live: true,
+				// width: getVideoWidth || '100%', //视频的显示宽度，请尽量使用视频分辨率宽度
+				// height: getVideoHeight || '100%', //视频的显示高度，请尽量使用视频分辨率高度
+				width:  '100%', //视频的显示宽度，请尽量使用视频分辨率宽度
+				height:  '100%', //视频的显示高度，请尽量使用视频分辨率高度
+				poster: updateNullString(imgurl, ""), //预览封面，可以传入一个图片地址或者一个包含图片地址 src 和显示样式 style 的对象
+				x5_player: false,
+				x5_type: "h5", //通过 video 属性 “x5-video-player-type” 声明启用同层 H5 播放器，支持的值：H5 (该属性为 TBS 内核实验性属性，非 TBS 内核不支持)，
+				x5_fullscreen: true,
+				x5_orientation: 1, //可选值：0（landscape 横屏），1：（portraint竖屏），2：（landscape | portrait 跟随手机自动旋转）(该属性为 TBS 内核实验性属性，非 TBS 内核不支持) [v2.2.0+]。 
+				proload: "auto",
+				wording: {
+					2032: '请求视频失败，请检查网络',
+					2048: '请求m3u8文件失败，可能是网络错误或者跨域问题'
+				},
+				listener: function(msg) {
+					if (msg.type == 'fullscreen') {
+						var detail = msg.detail;
+						if (detail["isFullscreen"] == true) {
+							dLog("进入大屏");
+							$(".vcp-fullscreen-toggle").css("background-image", 'url("' +
+								"image/monitor_playview_resize_small.png" + '")');
+							plus.screen.lockOrientation("landscape-primary")
+						} else {
+							dLog("退出大屏");
+							$(".vcp-fullscreen-toggle").css("background-image", 'url("' +
+								"image/monitor_playview_resize_full.png" + '")');
+							plus.screen.lockOrientation("portrait-primary");
+						}
+
+					}
+
+				}
+			};
+			new TcPlayer('my-video', options);
+
+	
+			// 设置播放器在页面内播放
+			var video = document.querySelectorAll('video')[0];
+			$(video).attr("x5-playsinline", "");
+			$(video).attr("webkit-playsinline", "");
+			$(video).attr("x-webkit-airplay", "allow");
+			$(video).attr("playsinline", "");
+			$(video).css("object-fit", "fill");
+
+			//隐藏声音
+			$(".vcp-volume-icon").hide();
+
+			//切换大图
+			$(".vcp-fullscreen-toggle").css("background-image", 'url("' + "image/monitor_playview_resize_full.png" +
+				'")');
+
+			$(".vcp-controls-panel.show").css("background-color", "rgba(0,0,0,0.78)");
+			$(".vcp-panel-bg").css("background-color", "rgba(0,0,0,0.78)");
+			$(".vcp-fullscreen-toggle").css("background-size", "cover");
+		}
+		
+		/**
+		
+		
+		// 上传多文件
+		// 参考资料：https://blog.csdn.net/feinifi/article/details/86481380
+		function uploadMutipleFile() {
+			var selectPic = getSelectSnapshot();
+			if (selectPic.length > 0) {
+				return selectPic.reduce(function(prev, next, index) {
+					return prev.then(function() {
+						var dtd = $.Deferred();
+						dLog("d：->开始上传文件" + index)
+						// setTimeout(function() {
+						// 	dLog("d：->结束上传文件");
+						// 	dtd.resolve();
+						// }, 1000);
+						var base64Data = $(next).find("img").attr("src");
+						if (base64Data.indexOf("http") >= 0) {
+							dLog("本身就是网络图片不需要上传");
+							dtd.resolve();
+						} else {
+							$.uploadHelper.uploadBase64Img({
+								"base64Data": base64Data,
+							}, function(imgUrl) {
+								dLog("d：->结束上传文件" + imgUrl);
+								$(next).find("img").attr("src", imgUrl);
+								dtd.resolve();
+							}, function(error) {
+								mui.hideLoading();
+								alert(error);
+								dtd.resolve();
+							});
+						}
+
+						return dtd.promise();
+					});
+				}, $.Deferred().resolve());
+			}
+		}
+
+		// 点击发送按钮后的actionsheet弹框
+		$("#hint").on("click", "li a", function() {
+			var text = $(this).text();
+			if (text == "上报隐患") {
+				dLog("all:->start");
+				mui.showLoading();
+				$.when(uploadMutipleFile()).done(function() {
+					dLog("all:->end");
+					mui.hideLoading();
+					var imgUrl = [];
+					var selectPic = getSelectSnapshot();
+					if (selectPic.length > 0) {
+						$(selectPic).each(function(index, element) {
+							var url = $(element).find("img").attr("src");
+							imgUrl.push(url);
+						})
+						dLog("需要上报的隐患的图片为：" + imgUrl);
+					}
+					//回归原态，模拟触发点击事件
+					$('.top-edit-wapper input').trigger("click");
+					$(".top-edit-wapper input").hide();
+					//页面跳转到隐患发现
+					CodeSTD.form({
+						url: "http://192.168.1.32" + '/safecheck/web/weixinSaveRisksPage.action',
+						params: {
+							usercode: usercode,
+							imgurl: encodeURIComponent(imgUrl),
+							token: localToken,
+						},
+					});
+				});
+				mui("#hint").popover("hide")
+			}
+			if (text == "取消") {
+				mui("#hint").popover("hide")
+			}
+			$.when()
+		});
+
+		//编辑按钮点击
+		$(".top-edit-wapper input").click(function() {
+			this.checked = !this.checked;
+			$(this).val(this.checked ? "取消" : "编辑");
+			if (this.checked) {
+				$(".center-grid-wapper i").show();
+				$('#edit-bottom-wapper').show();
+				$('#default-bottom-wapper').hide();
+			} else {
+				$(".center-grid-wapper i").hide();
+				$('#edit-bottom-wapper').hide();
+				$('#default-bottom-wapper').show();
+			}
+
+		});
+
+		//全选和反选
+		$("#footer_select").click(function() {
+			this.select = !this.select;
+			$(this).text(this.select ? "全不选" : "全选");
+			var i_list = $('.center-grid-wapper i');
+			if (this.select) {
+				if (i_list.length > 0) {
+					$(i_list).each(function(index, element) {
+						element.select = true;
+						updateSnapshotSelectStyle(element);
+
+					})
+				}
+			} else {
+				if (i_list.length > 0) {
+					$(i_list).each(function(index, element) {
+						element.select = false;
+						updateSnapshotSelectStyle(element);
+					})
+				}
+			}
+		});
+
+		//删除图片
+		$("#footer_delete").click(function() {
+			var list = $('.center-grid-wapper i');
+			if (list.length > 0) {
+				var selectPic = getSelectSnapshot();
+				if (selectPic.length == 0) {
+					mui.toast("请选择要删除的图片");
+				} else {
+					$(selectPic).each(function(index, element) {
+						$(element).remove();
+						//都删除没了，回归原态，模拟触发点击事件
+						var liList = $('.center-grid-wapper li');
+						if (liList.length == 0) {
+							$('.top-edit-wapper input').trigger("click");
+							$(".top-edit-wapper input").hide();
+						}
+					})
+				}
+			}
+		});
+
+		//发送图片
+		$("#footer_send").click(function() {
+			var selectPic = getSelectSnapshot();
+			if (selectPic.length == 0) {
+				mui.toast("请选择要发送的图片");
+				return;
+			}
+			if (selectPic.length > 4) {
+				mui.toast("最多选择4张图片");
+				return;
+			}
+			mui("#hint").popover("toggle");
+		});
+		//选中图片点击
+		$(".center-grid-wapper").on("click", "i", function() {
+			this.select = !this.select;
+			updateSnapshotSelectStyle(this);
+			var allList = $('.center-grid-wapper i');
+			var selectPic = getSelectSnapshot();
+			var selectall = $('#footer_select');
+			selectall.checked = (allList.length == selectPic.length) ? true : false;
+			$(selectall).text(selectall.checked ? "全不选" : "全选");
+		});
+
+		// 抓图
+		$(".bottom-wapper #footer_snapshot").click(function() {
+			var video = document.querySelectorAll('video')[0];
+			var canvas = document.querySelectorAll("canvas")[0];
+			canvas.width = $("#my-video").width();
+			canvas.height = $("#my-video").height();
+			var ctx = canvas.getContext('2d');
+			ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+			var url = canvas.toDataURL('image/png');
+			var html = [];
+			html.push('<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><a href="#">');
+			html.push('<img id="snapshotIma" crossorigin="anonymous" src="' + url + '" data-preview-src=""/>'); //
+			html.push('<i id="snapshot_i" select ="false" style="display:none"></i>');
+			html.push('<span>' + new moment().format('MM-DD hh:mm:ss') + '</span>');
+			html.push('</a></div>');
+			$(".center-grid-wapper ul").append(html.join(""));
+			$(".top-edit-wapper input").show(); //编辑按钮要显示出来
+
+			//android PC有效 iOS无效
+			// setTimeout(function() {
+			// 	var ctx = canvas.getContext('2d');
+			// 	ctx.drawImage(video,0,0, canvas.width, canvas.height);
+			// 	var url = canvas.toDataURL('image/png');
+			// 	dLog(url)
+			// 	$("img[id=snapshotIma]:last").attr("src", url);
+			// });
+
+			// android PC iOS无效 白图		
+			// setTimeout(function() {
+			// 	domtoimage.toPng(video)
+			// 		.then(function(dataUrl) {
+			// 			dLog(dataUrl)
+			// 			$("img[id=snapshotIma]:last").attr("src", dataUrl);
+			// 			$("canvas").remove();
+			// 		})
+			// 		.catch(function(error) {
+			// 			console.error('oops, something went wrong!', error);
+			// 			$("canvas").remove();
+			// 		});
+			// });
+
+
+			// //android 白图
+			// setTimeout(function() {
+			// 	var opts = {
+			// 		canvas: canvas, //自定义 canvas
+			// 		logging: false, //日志开关，便于查看html2canvas的内部执行流程
+			// 		width: canvas.width, //dom 原始宽度
+			// 		height: canvas.height,
+			// 		useCORS: true // 【重要】开启跨域配置
+			// 	};
+			// 	html2canvas(video, opts).then(function(e) {
+			// 		var url = e.toDataURL('image/png');
+			// 		dLog(url)
+			// 		$("img[id=snapshotIma]:last").attr("src", url);
+			// 	})
+			// }, 3000);
+
+			//默认滚动到最底部
+			$(".center-grid-wapper").animate({
+				scrollTop: $(".center-grid-wapper")[0].scrollHeight
+			}, '1');
+
+		})
+*/
+
+		/******************辅助方法*************************************************************************/
+		
+		/**
+		//更新选择截图的样式
+		function updateSnapshotSelectStyle(e) {
+			var imgPath = e.select ? "../../common/app/images/main_blue_white_check.png" :
+				"../../common/app/images/main_blue_white_uncheck.png";
+			$(e).css("background-image", 'url("' + imgPath + '")');
+		}
+
+		//获取选中的截图
+		function getSelectSnapshot() {
+			var list = $('.center-grid-wapper i');
+			var deletePic = [];
+			if (list.length > 0) {
+				$(list).each(function(index, element) {
+					if (element.select) {
+						deletePic.push(element.parentNode.parentNode);
+					}
+				})
+			}
+			return deletePic;
+		}
+		*/
+		
+		//根据下发的分辨率确定视频分辨率
+		function setFrameByResolution(resolutionStr) {
+			var useValue = 0.75;
+			if (resolutionStr.length > 0) {
+				if (resolutionStr.indexOf("X") > 0 || resolutionStr.indexOf("*") > 0) {
+					var resolutionString = "*";
+					if (resolutionStr.indexOf("X") >= 0) {
+						resolutionString = "X";
+					}
+					var strArray = resolutionStr.split(resolutionString);
+					var leftString = "";
+					var rightString = "";
+					if (strArray.length > 0) {
+						leftString = strArray[0];
+						rightString = strArray[1];
+
+						useValue = rightString / leftString;
+					}
+				}
+			}
+			return useValue;
+		}
+	</script>
+
+</html>

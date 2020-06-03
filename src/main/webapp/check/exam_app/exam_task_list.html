@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>检查任务</title>
+
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<script src="../../common/extend/vue/vue.min.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+
+		<style>
+			[v-cloak] {
+				display: none;
+			}
+
+			.top-des {
+				padding-top: 8px;
+				padding-bottom: 8px;
+				border-bottom: 1px solid #DEDEDE;
+				text-align: center;
+				color: #999999;
+				font-size: 14px;
+			}
+
+			.mui-table-view {
+				padding: 13px 14px 0px 14px
+			}
+
+			.sub-org {
+				width: 100%;
+				height: 50px;
+				line-height: 50px;
+				font-size: 16px;
+				padding: 0px 13px;
+				border-bottom: 1px solid #DEDEDE;
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: row;
+				justify-content: space-between;
+				-webkit-justify-content: space-between;
+			}
+
+			.item_content {
+				display: flex;
+				display: -webkit-flex;
+				-webkit-flex-direction: column;
+				flex-direction: column;
+				-webkit-flex-direction: column;
+				margin-top: 10px;
+			}
+
+			.item-top {
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: row;
+				-webkit-flex-direction: row;
+				justify-content: space-between;
+				-webkit-justify-content: space-between;
+			}
+
+			.item-school-name {
+				display: inline-block;
+				font-size: 17px;
+				color: #111111;
+				margin-right: 10px;
+			}
+
+			.item-status {
+				display: inline-block;
+				width: 74px;
+				text-align: right;
+			}
+
+			.item-left {
+				width: calc(100% - 74px);
+				margin-top: 6px;
+			}
+
+			.item-img-left {
+				width: 20px;
+				height: 20px;
+				margin-right: 10px;
+				vertical-align: top;
+				display: inline-block;
+			}
+
+			.item-text {
+				font-size: 14px;
+				line-height: 14px;
+				width: calc(100% - 30px - 10px);
+				display: inline-block;
+				vertical-align: baseline;
+			}
+
+			.item-img-time {
+				width: 20px;
+				height: 20px;
+				margin-right: 10px;
+				vertical-align: middle;
+				display: inline-block;
+			}
+
+			.item-time-text {
+				font-size: 14px;
+				line-height: 14px;
+				vertical-align: middle;
+				display: inline-block;
+			}
+
+			.item-more {
+				vertical-align: middle;
+			}
+
+			.item-img-verify {
+				height: 40px;
+				margin-right: 20px;
+				padding: 0;
+				border: 0;
+				vertical-align: bottom;
+			}
+
+			.group-content {
+				height: 40px;
+				display: flex;
+				display: -webkit-flex;
+				flex-direction: row;
+				-webkit-flex-direction: row;
+				background-color: white;
+				align-items: center;
+				-webkit-align-items: center;
+			}
+
+			.group-flag {
+				width: 3px;
+				height: 24px;
+				background-color: #3BA2FF;
+			}
+
+			.group-title {
+				width: calc(100% - 80px - 13px);
+				font-size: 15px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				padding-left: 10px;
+				display: inline-block;
+				height: 20px;
+				border-left: 3px solid #3BA2FF;
+			}
+
+			.group-allocate {
+				width: 80px;
+				font-size: 15px;
+				line-height: 40px;
+			}
+
+			.group-empty {
+				height: 90px;
+				line-height: 90px;
+				font-size: 14px;
+				border-top: 1px solid #DEDEDE;
+				border-bottom: 1px solid #DEDEDE;
+				vertical-align: middle;
+				text-align: center;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header>
+			<h1>检查任务</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div id="app" v-cloak>
+			<div class="top-des">以下是你可以看到的检查对象 <span class="app-blue-color" @click="tipDesClicked">有疑问?<span></div>
+
+			<div id="pullrefresh" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div class="sub-org app-black-color" v-if="eduList.length > 0" @click="subOrgClicked()">
+						下属单位<div class="mui-icon mui-icon-arrowright mui-right" style="line-height: 50px;"></div>
+					</div>
+					<div v-if="groupType == 1">
+						<div v-for="(group,index) in groupList" :key="group.groupid">
+							<div class="group-content">
+								<span class="group-title app-black-color">{{group.groupname}}</span>
+								<div class="group-allocate app-blue-color mui-icon mui-icon-arrowright mui-right" v-if="canAssignTask(index)">任务分配</div>
+							</div>
+							<div class="group-empty app-light-gray-color" v-if="group.groupschoollist.length == 0">该分组暂无检查对象</div>
+							<ul v-else>
+								<task-item v-for="(item,position) in group.groupschoollist" :item="item" :key="item.checkschoolid"></task-item>
+							</ul>
+						</div>
+					</div>
+					<ul v-else>
+						<task-item v-for="(item,index) in list" :item="item" :key="item.checkschoolid"></task-item>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		</div>
+
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<!-- 日期插件 -->
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<script>
+		//由于分组时也要使用，使用了组件
+		Vue.component('task-item', {
+			props: ['item'],
+			template: `<li class="mui-table-view">
+							<a>
+								<div class="item-top">
+									<span class="item-school-name" v-text="getShowSchoolName(item.schoolname,item.schoolcode)"></span>
+									<div v-if="(item.finish == 1 || item.finish==4)" class="item-status app-green-color">{{item.score}}</div>
+									<div v-else-if="item.finish == 0" class="item-status app-red-color">待检查</div>
+									<div v-else class="item-status app-orange-color">检查中</div>
+								</div>
+								<div v-if="!isNull(item.schooleduname)" class="item-left">
+									<img class="item-img-left" src="../../common/app/images/apply_ic_delete.png" />
+									<span class="app-dark-gray-color item-text">{{item.schooleduname}}</span>
+								</div>
+								<div class="item-left">
+									<img class="item-img-left" src="../../common/app/images/apply_ic_delete.png" />
+									<span class="app-dark-gray-color item-text" v-text="getShowCheckName(item.checkperson,item.checkpersoncode)"></span>
+								</div>
+								<div style="margin-top: 6px;">
+									<div class="item-top">
+										<div style="margin-bottom: 14px;">
+											<img v-if="item.finish == 0" class="item-img-time" src="../../common/app/images/apply_ic_delete.png" />
+											<img v-else class="item-img-time" src="../../common/app/images/main_book.png" />
+											<span class="app-dark-gray-color item-time-text" v-text="getShowTime(item.checktime)"></span>
+										</div>
+										<div>
+											<img v-show="item.finish==4" class="item-img-verify" src="../../common/app/images/detaile_img_usable.png" />
+											<div style="margin-bottom: 14px;" class="item-more mui-icon mui-icon-more" @tap="itemMoreClicked(item)"></div>
+										</div>
+									</div>
+								</div>
+							</a>
+						</li>`,
+			methods: {
+				/**
+				 * 判断空
+				 */
+				isNull: function(obj) {
+					if (typeof obj == "undefined" || obj == null || obj == "") {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				/**
+				 * 获得展示的学校名字
+				 */
+				getShowSchoolName: function(name, code) {
+					if (this.isNull(name) || this.isNull(code)) {
+						return "未知";
+					}
+					return name;
+				},
+				/**
+				 * 获得展示的检查人员名字
+				 */
+				getShowCheckName: function(name, code) {
+					if (this.isNull(name) || this.isNull(code)) {
+						return "未设置";
+					}
+					return name.replace(/,/g, " ");
+				},
+				/**
+				 * 获得展示的时间
+				 */
+				getShowTime: function(time) {
+					if (time == 0) {
+						return "暂无检查时间";
+					}
+					return moment(time).format('YYYY-MM-DD');
+				},
+				/**
+				 * 点击更多
+				 */
+				itemMoreClicked: function(item) {
+					console.log(item)
+				}
+			}
+		});
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				groupType: "1",
+				list: [{
+					"checkschoolid": "8a9eb567653d974001653ddce6cc05be",
+					"managename": "检查标题",
+					"schoolcode": "6666666666",
+					"schoolname": "深圳市巨龙科教网络有限公司",
+					"finish": 0,
+					"checkperson": "史明修(总负责人),范玉静,岳玉林,吴宛茹",
+					"checkpersoncode": "1990537,fanyujing,1069037,wwr",
+					"checktime": 1576831761000,
+					"score": 34.0,
+					"totalscore": 9999.9,
+					"passscore": 0.0,
+					"checktype": 20,
+					"checkpersonschoolname": "深圳市巨龙科教网络有限公司,深圳市巨龙科教网络有限公司,深圳市巨龙科教网络有限公司,深圳市巨龙科教网络有限公司",
+					"checkpersoneduname": "学安教育局,学安教育局,学安教育局,学安教育局",
+					"chargeusername": "史明修",
+					"schooleduname": "学安教育局",
+					"auditauthority": "0",
+				}],
+				groupList: [{
+					"groupid": "8a9eb7066579e7d401657a64f4ed09d0",
+					"groupname": "分组2",
+					"groupschooltotalnum": 10,
+					"groupschoolchecknum": 6,
+					"groupchargeusercode": "2102067",
+					"groupchargeusername": "普-技测4",
+					"groupschoollist": [{
+						"checkschoolid": "8a9eb7066579e7d401657a64f50a09db",
+						"managename": "827大检查测试1",
+						"schoolcode": "4411441236",
+						"schoolname": "经三路一小",
+						"finish": 1,
+						"checkperson": "岳玉林",
+						"checkpersoncode": "1069037",
+						"checktime": 1535381130000,
+						"score": 195.8275,
+						"totalscore": 9999.9,
+						"passscore": 0.0,
+						"checktype": 10,
+						"checkpersonschoolname": "深圳市巨龙科教网络有限公司",
+						"checkpersoneduname": "学安教育局",
+						"chargeusername": "普-技测4",
+						"schooleduname": "学安教育局",
+						"auditauthority": "0"
+					}]
+				}],
+				eduList: []
+			},
+			methods: {
+				/**
+				 * 点击有疑问
+				 */
+				tipDesClicked: function() {
+					mui.alert("管理员及总负责人可查看全部检查对象，分组带队领导可查看所在分组下检查对象，检查人可查看负责的检查对象");
+				},
+				/**
+				 * 点击下属单位
+				 */
+				subOrgClicked: function() {
+					dLog(this.eduList)
+				},
+				/**
+				 * 能否进行任务分配
+				 * 暂时
+				 */
+				canAssignTask: function(index) {
+					var group = this.groupList[index];
+					if (group.groupschoollist.length == 0) {
+						return false;
+					}
+					var allStarted = true;
+					for (item in group.groupschoollist) {
+						if (item.finish == 0) {
+							allStarted = false;
+						}
+					}
+					if (allStarted) {
+						return false;
+					}
+
+					if (!isEmpty(group.groupchargeusercode)) {
+
+					}
+					return false;
+				}
+			}
+		});
+		var Y = $('.top-des').offset().top
+		var height = $('.top-des').outerHeight()
+		$("#pullrefresh").css({
+			'top': Y + height + 'px'
+		})
+		dLog(Y + height)
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					style: 'circle',
+					offset: '0px',
+					auto: true,
+					callback: pulldownRefresh
+				},
+				// up: {
+				// 	contentrefresh: '加载中...',
+				// 	callback: pullupRefresh
+				// }
+			}
+		});
+		/**
+		 *  下拉刷新获取最新列表 
+		 */
+		function pulldownRefresh() {
+			console.log("pulldownRefresh")
+			requestDataFromServer()
+		}
+		// 下拉刷新
+		function requestDataFromServer() {
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
+				mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+
+			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+			var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+			//1--我的；0--全部
+			var type = updateNullString(getURLParameter('type'), "0");
+			var manageId = updateNullString(getURLParameter('manageid'), "");
+			//0--不分组；1--分组
+			var groupType = updateNullString(getURLParameter('grouptype'), "1");
+			vm.groupType = groupType;
+			//测试使用
+			// if(manageId.length == 0){
+			// 	if(groupType == "0"){
+			// 		manageId = "4028818e6fb1ea9d016fb2aef8340001";
+			// 	}else{
+			// 		manageId = "4028818e6f8d2df1016f8d5d6ab2054b";
+			// 	}
+			// }
+			if (manageId.length == 0) {
+				mui.hideLoading();
+				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
+				mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+				return;
+			}
+			// var paramDic = {
+			// 	"usercode": usercode,
+			// 	"token": token,
+			// 	"type": type,
+			// 	"manageid": manageId
+			// };
+			//测试使用
+			var paramDic = {
+				"usercode": "1400002412",
+				"token": "julongabcd",
+				"type": "1",
+				"manageid": manageId
+			};
+			dLog(paramDic)
+			// var url = getCurrentSubSystemBaseUrl();
+			//测试使用
+			var url = "https://14.ss360.org/safecheck/"
+			var urlString = url + "getSpecialExaminationItem.action";
+			if (groupType == "1") {
+				urlString = url + "getSpecialExaminationGroupItem.action";
+			}
+			jQuery_Request_Post(urlString, paramDic, 'json', true, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+					var dataList = object["list"];
+					/*loadmore的需要判断分页的数据是否有值，有值了数据源加上去
+						没有值 判断原数据源是否有值，没有值，空页面显示；
+					 有值了，页面依然显示原数据源，然后toast提示用户，暂无更多数据【表明用户下拉加载的无数据】；*/
+					if (result) {
+						//pull to refrsh
+						if (dataList.length > 0) {
+							if (groupType == "1") {
+								vm.groupList = object["list"]
+							} else {
+								vm.list = object["list"]
+							}
+							vm.eduList = object["edulist"]
+							dLog(vm.list)
+						} else {
+							showRequestErrorEmpty("暂无相关数据", true, true);
+						}
+					} else {
+						showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), true, false);
+					}
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+				},
+				function(error) {
+					mui.hideLoading();
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(false);
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh(false);
+					showRequestErrorEmpty("数据加载时出了问题", true, true);
+				})
+		}
+		//请求返回数据为空或失败显示的空页面
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": "#pullrefresh"
+			}, function() {
+				//重新刷新数据
+				requestDataFromServer()
+			});
+		}
+	</script>
+
+
+</html>

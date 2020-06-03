@@ -1,0 +1,720 @@
+/* 导航栏相关 */
+header {
+	height: 44px;
+	position: relative;
+	border-bottom: 1px solid #eee;
+}
+
+header .left {
+	position: relative;
+	width: 30px;
+	height: 30px;
+	padding-left: 14px;
+	padding-top: 18px;
+}
+
+header h1 {
+	width: 100%;
+	font-weight: 500;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.7659574468085106rem;
+	display: block;
+	position: absolute;
+	height: 44px;
+	line-height: 44px;
+	font-size: 18px;
+	text-align: center;
+	left: 0;
+	top: 0;
+}
+
+
+/*标题*/
+.mui-bar .mui-title {
+	font-weight: 400;
+	color: #111111;
+}
+
+/*导航栏底部阴影*/
+.mui-bar-nav {
+	box-shadow: 0px 1px 0px 0px #eee;
+}
+
+/*导航栏背景颜色*/
+header.mui-bar {
+	background-color: white;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-overflow-scrolling: touch;
+}
+
+i {
+	font-style: normal;
+}
+
+html {
+	color: #000;
+	background: #fff;
+	overflow-y: scroll;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%
+}
+
+html * {
+	outline: 0;
+	-webkit-text-size-adjust: none;
+	-webkit-tap-highlight-color: transparent
+}
+
+html,
+body {
+	height: 100%;
+	background-color: white;
+	overflow: hidden;
+}
+
+article,
+aside,
+blockquote,
+body,
+button,
+code,
+dd,
+details,
+div,
+dl,
+dt,
+fieldset,
+figcaption,
+figure,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+hr,
+input,
+legend,
+menu,
+nav,
+p,
+pre,
+section,
+textarea {
+	margin: 0;
+	padding: 0
+}
+
+input,
+select,
+textarea {
+	font-size: 100%
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+fieldset,
+img {
+	border: 0
+}
+
+abbr,
+acronym {
+	border: 0;
+	font-variant: normal
+}
+
+del {
+	text-decoration: line-through
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+th,
+var {
+	font-style: normal;
+	font-weight: 500
+}
+
+caption,
+th {
+	text-align: left
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 100%;
+	font-weight: 500
+}
+
+q:after,
+q:before {
+	content: ''
+}
+
+sub,
+sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline
+}
+
+a:hover {
+	text-decoration: underline
+}
+
+a,
+ins {
+	text-decoration: none
+}
+
+body {
+	/* 默认字体颜色为黑色 */
+	background-color: white;
+}
+
+a,
+a:focus,
+a:active,
+a:hover {
+	color: #333333;
+	text-decoration: none;
+}
+
+input::-webkit-input-placeholder {
+	color: #BBBBBB;
+	font-size: 16px;
+}
+
+input::-moz-input-placeholder {
+	color: #BBBBBB;
+	font-size: 16px;
+}
+
+input::-ms-input-placeholder {
+	color: #BBBBBB;
+	font-size: 16px;
+}
+
+textarea::-webkit-input-placeholder {
+	color: #BBBBBB;
+	font-size: 16px;
+}
+
+textarea::-moz-input-placeholder {
+	color: #BBBBBB;
+	font-size: 16px;
+}
+
+textarea::-ms-input-placeholder {
+	color: #BBBBBB;
+	font-size: 16px;
+}
+
+/**选择框架重新定义样式**/
+.mbsc-ios.mbsc-fr-bottom .mbsc-sc-whl-l,
+.mbsc-ios.mbsc-fr-top .mbsc-sc-whl-l {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	margin-top: -16px !important;
+}
+
+.mbsc-ios .mbsc-sc-itm {
+	font-size: 16px;
+}
+
+.mbsc-ios .mbsc-sc-whl-gr-3d .mbsc-sc-itm-3d {
+	font-size: 14px;
+}
+
+.mbsc-ios .mbsc-fr-btn {
+	font-size: 0.6808510638297872rem;
+}
+
+.mbsc-fr-btn-cont {
+	border-bottom: 1px solid #ddd !important;
+	border-top: none !important;
+}
+
+.mbsc-no-touch {
+	animation: myfirst .5s forwards;
+}
+
+@keyframes myfirst {
+	from {
+		background: rgba(0, 0, 0, 0);
+		;
+	}
+
+	to {
+		background: rgba(0, 0, 0, 0.5);
+	}
+}
+
+@media screen and (min-width:680px) {
+
+	.mbsc-ios.mbsc-fr-bottom .mbsc-sc-whl-l,
+	.mbsc-ios.mbsc-fr-top .mbsc-sc-whl-l {
+		margin-top: -11px !important;
+	}
+}
+
+@media screen and (max-width:320px) {
+
+	.mbsc-ios.mbsc-fr-bottom .mbsc-sc-whl-l,
+	.mbsc-ios.mbsc-fr-top .mbsc-sc-whl-l {
+		margin-top: -16px !important;
+	}
+}
+
+.app-background-blue-color {
+	background-color: rgb(59, 162, 255) !important;
+}
+
+.app-white-color {
+	color: white !important;
+}
+
+.app-blue-color {
+	color: rgb(59, 162, 255) !important;
+}
+
+.app-orange-color {
+	color: rgb(255, 137, 65) !important;
+}
+
+.app-yellow-color {
+	color: rgb(254, 203, 0) !important;
+}
+
+.app-red-color {
+	color: rgb(239, 48, 48) !important;
+}
+
+.app-green-color {
+	color: rgb(80, 184, 17) !important;
+}
+
+/* 黑色 默认文本颜色 */
+.app-black-color {
+	color: rgb(17, 17, 17) !important;
+}
+
+/* 浅灰色 */
+.app-light-gray-color {
+	color: rgb(187, 187, 187) !important;
+}
+
+/* 灰色 */
+.app-gray-color {
+	color: rgb(153, 153, 153) !important;
+}
+
+/* 深灰色 */
+.app-dark-gray-color {
+	color: rgb(102, 102, 102) !important;
+}
+
+/* 列表线颜色 */
+.app-table-color {
+	color: rgb(222, 222, 222) !important;
+}
+
+/* 下拉刷新相关*/
+/*主体样式,如文字大小颜色*/
+.mui-pull-caption {
+	font-weight: normal;
+	font-size: 16px;
+	color: #666666;
+}
+
+/* 加载中图标大小,只能通过宽高控制 */
+.mui-spinner {
+	width: 20px;
+	height: 20px;
+	-webkit-transform-origin: 50%;
+	transform-origin: 50%;
+	-webkit-animation: spinner-spin 1s step-end infinite;
+	animation: spinner-spin 1s step-end infinite;
+}
+
+/* 上下拉图标 */
+.mui-icon-pulldown {
+	color: #999999;
+}
+
+/* 下拉刷新控制 */
+.mui-content .mui-pull-top-pocket {
+	width: 100%;
+}
+
+/* 上拉加载控制 */
+.mui-content .mui-pull-bottom-pocket {
+	width: 100%;
+}
+
+
+/* 左箭头 下箭头 */
+.arrow_left {
+	width: 0.55rem;
+	height: 0.55rem;
+	border-top: 0.0638rem solid #333;
+	border-left: 0.0638rem solid #333;
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+}
+
+.arrow_down {
+	width: 0.3829rem;
+	height: 0.3829rem;
+	display: inline-block;
+	vertical-align: middle;
+	border-top: 0.0638rem solid #a3a3a3;
+	border-left: 0.0638rem solid #a3a3a3;
+	transform: rotate(-135deg);
+	-webkit-transform: rotate(-135deg);
+	margin-top: -0.2553191489361702rem;
+	margin-left: 0.2553191489361702rem;
+	;
+}
+
+/* 底部按钮基本样式 div>a实现底部按钮 底部按钮又颜色 a是白色*/
+.fxbtn {
+	position: fixed;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+}
+
+.fxbtn a {
+	display: block;
+	background: #3BA2FF;
+	color: white;
+	text-align: center;
+	line-height: 50px;
+}
+
+/* 底部按钮基本样式 div>a实现底部按钮 背景是白色 按钮有颜色*/
+.footbtn {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 50px;
+	border-top: 1px solid #eee;
+	background: #fff;
+}
+
+.footbtn a {
+	height: 50px;
+	line-height: 50px;
+	width: 100%;
+	text-align: center;
+	display: block;
+}
+
+.flex_center {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.text_blue {
+	color: #3BA2FF !important;
+}
+
+.text_red {
+	color: #ef3030 !important;
+}
+
+/* 常瑞设计的左侧带有蓝色标签 + 标题 + 右侧按钮的css样式 */
+.section-title {
+	position: relative;
+	height: 40px;
+	font-size: 16px;
+	padding: 5px 0px;
+	border-bottom: rgb(222, 222, 222) solid 1px;
+}
+
+.section-title i {
+	position: absolute;
+	width: 3px;
+	top: 14%;
+	height: 72%;
+	background-color: rgb(59, 162, 255);
+}
+
+.section-title span {
+	padding-left: 14px;
+	display: inline-block;
+	padding-top: 2px;
+}
+
+/* section-title span 灰色附加信息 */
+.section-title .append-info {
+	margin-left: 5px;
+	padding-left: 0px;
+	color: rgb(153, 153, 153);
+}
+
+/* section-title右侧小按钮 */
+.section-title .section-right-btn {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	border: none;
+	color: rgb(59, 162, 255);
+	font-size: 15px;
+	text-align: right;
+	float: right;
+}
+
+.clear {
+	clear: both;
+}
+
+/* cell中空数据提示 */
+.xa-cell-empty-info {
+	height: 40px !important;
+	line-height: 40px !important;
+	font-size: 16px;
+	color: rgb(153, 153, 153) !important;
+	text-align: center;
+}
+
+.xa-hide-bottom-line {
+	border-bottom: none !important;
+}
+
+/* 日期选择框样式调整 */
+.mui-dtpicker .mui-dtpicker-title {
+	display: none;
+}
+
+.mui-dtpicker .mui-dtpicker-header button {
+	border: none;
+	background-color: transparent;
+	font-size: 16px;
+}
+
+.mui-dtpicker .mui-picker {
+	background-color: white;
+}
+
+.mui-btn-blue {
+	color: rgb(59, 162, 255);
+}
+
+.mui-poppicker .mui-picker {
+	background-color: white;
+}
+
+/* 图片组 */
+.mui-preview-image.mui-fullscreen {
+	position: fixed;
+	z-index: 20;
+	background-color: #000;
+}
+
+.mui-preview-header,
+.mui-preview-footer {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	z-index: 10;
+}
+
+.mui-preview-header {
+	height: 44px;
+	top: 0;
+}
+
+.mui-preview-footer {
+	height: 50px;
+	bottom: 0px;
+}
+
+.mui-preview-header .mui-preview-indicator {
+	display: block;
+	line-height: 25px;
+	color: #fff;
+	text-align: center;
+	margin: 15px auto 4;
+	width: 70px;
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: 12px;
+	font-size: 16px;
+}
+
+.mui-preview-image {
+	display: none;
+	-webkit-animation-duration: 0.5s;
+	animation-duration: 0.5s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+.mui-preview-image.mui-preview-in {
+	-webkit-animation-name: fadeIn;
+	animation-name: fadeIn;
+}
+
+.mui-preview-image.mui-preview-out {
+	background: none;
+	-webkit-animation-name: fadeOut;
+	animation-name: fadeOut;
+}
+
+.mui-preview-image.mui-preview-out .mui-preview-header,
+.mui-preview-image.mui-preview-out .mui-preview-footer {
+	display: none;
+}
+
+.mui-zoom-scroller {
+	position: absolute;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	-webkit-backface-visibility: hidden;
+}
+
+.mui-zoom {
+	-webkit-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+}
+
+.mui-slider .mui-slider-group .mui-slider-item img {
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.mui-android-4-1 .mui-slider .mui-slider-group .mui-slider-item img {
+	width: 100%;
+}
+
+.mui-android-4-1 .mui-slider.mui-preview-image .mui-slider-group .mui-slider-item {
+	display: inline-table;
+}
+
+.mui-android-4-1 .mui-slider.mui-preview-image .mui-zoom-scroller img {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.mui-preview-loading {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	display: none;
+}
+
+.mui-preview-loading.mui-active {
+	display: block;
+}
+
+.mui-preview-loading .mui-spinner-white {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -25px;
+	margin-top: -25px;
+	height: 50px;
+	width: 50px;
+}
+
+.mui-preview-image img.mui-transitioning {
+	-webkit-transition: -webkit-transform 0.5s ease, opacity 0.5s ease;
+	transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+@-webkit-keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+@-webkit-keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}
+
+[v-cloak] {
+	display: none;
+}

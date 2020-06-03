@@ -1,0 +1,783 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>新增/编辑学生信息</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 平台李鹏使用的px和rem转换 46.875 -->
+		<script src="../../common/extend/script/hotcss.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+
+		<script src="../../common/extend/mui/js/mui.picker.min.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.picker.min.css" />
+
+		<script src="../../common/extend/mui/js/mui.poppicker.js"></script>
+		<link href="../../common/extend/mui/css/mui.poppicker.css" rel="stylesheet" />
+
+		<!--  xuean 自定义js文件 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+
+		<!-- 日期插件 -->
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<!-- 班级选择 -->
+		<link href="../../common/app/css/commonClass.css" rel="stylesheet">
+		<script src="../../common/app/script/student.js"></script>
+
+		<!-- 头像放大弹出框css -->
+		<link href="../../common/app/css/imgDialog.css" rel="stylesheet">
+		<!-- 本页面css -->
+		<link href="css/stu_edit.css" rel="stylesheet">
+		<style>
+			.input-no-border{
+		border:none !important;
+		background-color: white !important;
+		color: rgb(17,17,17)!important;
+	}
+	
+</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>学生信息</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+
+		<div class="listinput">
+			<ul>
+				<li>
+					<label><i>*</i>姓名 </label>
+					<div class="labelnav">
+						<input type="text" id="stu_name" class="inputxt" placeholder="请输入">
+					</div>
+				</li>
+
+				<li>
+					<label><i>*</i>性别 </label>
+					<div class="labelnav">
+						<button type="button" id="stu_gender" class="mui-btn mui-icon mui-icon-arrowright mui-right">
+							请选择
+						</button>
+					</div>
+				</li>
+
+				<li>
+					<label>人脸照片</label>
+					<div class="labelnav" id="picshow">
+						<div class="uploadFile" id="uppic_first" style="display: none;">
+							<a href="javascript:void(0);">
+								<img src="../../common/app/images/main_img_default.png" />
+								<i></i>
+							</a>
+						</div>
+						<div class="uploadFile" id="picfirst">
+							<a href="javascript:void(0);" style="background: none" onclick="showPic('');">
+								<img src="../../common/app/images/main_img_default.png">
+							</a>
+						</div>
+
+						<button type="button" id="stuimg_detail" class="mui-btn mui-icon mui-icon-arrowright mui-right" onclick="stuImgDetailAction()">
+							查看标准
+						</button>
+					</div>
+				</li>
+
+				<li>
+					<label>手机号</label>
+					<div class="labelnav">
+						<input type="text" id="stu_phone" class="inputxt" placeholder="请输入">
+					</div>
+				</li>
+
+				<li>
+					<label><i>*</i>所属班级</label>
+					<div class="labelnav">
+						<button type="button" id="stu_grade" class="mui-btn mui-icon mui-icon-arrowright mui-right">
+							请选择
+						</button>
+					</div>
+				</li>
+
+				<li>
+					<label><i>*</i>住校类型</label>
+					<div class="labelnav">
+						<button type="button" id="stu_attendtype" class="mui-btn mui-icon mui-icon-arrowright mui-right">请选择
+						</button>
+					</div>
+				</li>
+				<li>
+					<label><i></i>返校日期</label>
+					<div class="labelnav">
+						<button type="button" id="stu_backschooldate" data-options='' class="mui-btn mui-icon mui-icon-arrowright mui-right">
+							请选择
+						</button>
+					</div>
+				</li>
+				<li>
+					<label>备注</label>
+					<div class="labelnav">
+						<textarea id="stu_note" placeholder="请输入">
+						</textarea>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<!--头像弹出层开始-->
+		<div class="dialog_box" id="dialog_test">
+			<a class="close_btn_b"></a>
+			<div class="dialog_header"><span id="curName"></span></div>
+			<ul class="photo_con" id="curPic">
+				<img id="dialog_img" />
+				<span class="tips_red"></span>
+			</ul>
+			<input type="hidden" id="curCode" />
+			<div class="dialog_footer">
+				<a class="btn-default" href="javascript:;" onclick="hide_ImgDialog();">关闭</a>
+				<a class="btn-primary" href="####" onclick="showPic('')">更新照片</a>
+			</div>
+		</div>
+		<div class="mask"></div>
+		<!-- 人脸头像规则 -->
+		<div class="face_dialog">
+			<p class="face_title">拍照要求：</p>
+			<p class="face_content">1、手机离拍摄人保持一尺到一尺半距离，就是大概40cm左右。</br>
+				2、拍摄人需要纯色背景，最好是白色或者浅蓝上背景。</br>
+				3、拍摄后看效果人脸要完整，不能抬头，低头，头不完整（比如削顶的）都需要重新拍摄。</br>
+				4、拍摄区域内不能有另外的人头出现。</br>
+				5、如果设备在线，拍摄后大概30秒左右会显示同步结果，如果显示红色叹号的，表明学生人脸图像有问题，请重新拍摄。</p>
+			<div class="face_footer">
+				<a href="javascript:;" onclick="hide_FaceDialog();">确定</a>
+			</div>
+		</div>
+		<div class="face_mask"></div>
+
+		<!-- 提交按钮 -->
+		<div class="fxbtn"><a href="#" onclick="commitAction()">提交</a></div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script>
+		mui.init({
+			beforeback: function() {
+				var list = plus.webview.currentWebview().opener();
+				mui.fire(list, 'refresh');
+				return true;
+			}
+		});
+	</script>
+	<script type="text/javascript">
+		//编辑学生平台需要用的唯一值（该值不是学生code，不要混淆，eg：402881a065a3f5140165a771c1ce0585）
+		var stu_userId = updateNullString(getURLParameter('userid'), ""); //唯一值 平台利用此值进行增删改查
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode); //客户端登录的用户code
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var basetoken = updateNullString(getURLParameter('basetoken'), ""); //页面加载完毕后才会与客户端交互获取basetoken，此处需要在上个页面交互获取后参数传递
+		var classname = updateNullString(getURLParameter('classname'), "请选择"); //该生目前所在班级 url参数传递
+		var classcode = updateNullString(getURLParameter('classcode'), ""); //列表页选中的班级
+		var gradecode = updateNullString(getURLParameter('gradecode'), ""); //列表页面选中的年级
+		var fromtype = updateNullString(getURLParameter('fromtype'), ""); //来源 1上报考勤编辑 其他原学生管理
+		var localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+		if (localOrgId.length == 0) {
+			getUserInfoRequest(system.usercenter, usercode, token, function() {
+				localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+			})
+		}
+		var orgId = updateNullString(getURLParameter('orgid'), localOrgId); //该用户所在机构ID
+		var studentcode = updateNullString(getURLParameter('studentcode'), "");
+		var defaultImg = "../../common/app/images/main_img_default.png";
+
+		//临时测试 需删除
+		// usercode = "1400002410";
+		// studentcode = "1400002422";
+		// stu_userId = "4028818e70c7562f0170c7948c220029";
+		// fromtype = "1";
+
+
+		//需要提交的学生信息
+		var stu_genderID; //学生性别 Y男N女
+		var stu_headUrl; //学生人脸头像上传成功后的网络地址
+		var stu_classcode = classcode; //学生所属班级code
+		var stu_classname = classname; //学生所属班级code
+		var stu_attendcode; //学生考勤信息code
+		$("#stu_grade").text(stu_classname);
+		updateCurrentDefaultBtnColor();
+
+
+		var faceErrorReason = ""; //学生人脸错误信息
+		var originHeadimgUrl = "";
+
+		if (fromtype == "1") {
+			$("#stu_grade").attr("class", "mui-btn");
+			$("#stu_grade").removeAttr("onlick");
+			$("#stu_name").attr("class", "inputxt input-no-border");
+			$("#stu_name").attr("readonly", "readonly");
+			$("#stu_name").focus(function() {
+				this.blur();
+			});
+
+		} else {
+			$("#stu_grade").attr("class", "mui-btn mui-icon mui-icon-arrowright mui-right");
+			$("#stu_name").attr("class", "inputxt");
+		}
+
+
+
+		//添加
+		if (stu_userId == "") {
+			$("#stu_note").val("");
+			$("title").html("新增学生信息");
+			$("header h1").html("新增学生信息");
+		}
+		//编辑【存在学生信息】
+		else {
+			$("title").html("编辑学生信息");
+			$("header h1").html("编辑学生信息");
+			//--------------------------------------获取学生信息-request
+			var paramDic = {
+				"usercode": usercode,
+				"studentform.id": stu_userId,
+				"token": token,
+				"basetoken": basetoken,
+			};
+			var url = system.usercenter + "/manage/getInformationOfStudent.action";
+
+			jQuery_Request_Post(url, paramDic, "json", true, function(data) {
+				var json = JSON.stringify(data);
+				var result = data["ret"];
+				if (result) {
+
+					var info = data["data"];
+					var headImgUrl = updateNullString(info["faceimg"], defaultImg);
+					var name = updateNullString(info["username"], "");
+					var phoneString = updateNullString(info["phone"], "");
+					var gender = getGenderString(updateNullString(info["sex"], "未知"));
+					stu_classcode = updateNullString(info["classcode"], classcode);
+					stu_classname = updateNullString(info["classname"], classname);
+					stu_attendtype = updateNullString(info["residentname"], "");
+					stu_attendcode = updateNullString(info["residenttype"], "");
+					stu_genderID = updateNullString(info["sex"], "未知");
+					var note = updateNullString(info["remark"], "");
+					//学生人脸失败原因
+					var failReason = updateNullString(info["reason"], "");
+					//有人脸信息，但是不符合规则
+					if (failReason != "") {
+						faceErrorReason = updateNullString(failReason, "人脸信息不符合规则，请重新拍摄上传！");
+					}
+					if (headImgUrl.length > 0 && headImgUrl != defaultImg) {
+						getImageUrl(studentcode, headImgUrl, 1);
+					}
+					var stu_backschooldate = updateNullString(info["returndate"], "");
+					$("#stu_name").val(name);
+					$("#stu_gender").text(gender);
+					$("#stu_phone").val(phoneString);
+					$("#stu_grade").text(stu_classname);
+					$("#stu_attendtype").text(stu_attendtype);
+					$("#stu_backschooldate").text(stu_backschooldate);
+					$("#stu_note").val(note);
+					updateCurrentDefaultBtnColor();
+					updateDefaultBtnColor($("#stu_backschooldate")[0]);
+				} else {
+					mui.toast("获取学生信息错误")
+				}
+			}, function(error) {
+				mui.toast("获取学生信息失败")
+			});
+
+		}
+
+
+		var selectGradeCode, selectGradeName, selectClassCode, selectClassName;
+		var currentGradeCode, currentClassCode, currentClassName;
+		if (fromtype != "1") {
+			//传入参数，初始化学生列表 获取默认值
+			$.student.initStudent({
+				"usercode": usercode,
+				"orgid": orgId,
+				"includedelay": "0",
+				"token": token,
+				"selectGradeCode": gradecode,
+				"selectClassCode": classcode,
+				"limit": "1",
+			}, function(e) {});
+			//--------------------------------------班级选择
+			$("#stu_grade").click(function() {
+				$.student.show(function(e) {
+					selectGradeCode = e["gradecode"];
+					selectGradeName = e["gradename"];
+					selectClassCode = e["classcode"];
+					selectClassName = e["classname"];
+
+					$("#stu_grade").text(selectClassName);
+					stu_classcode = selectClassCode;
+					updateCurrentDefaultBtnColor();
+				})
+			});
+		}
+
+
+
+		//--------------------------------------性别选择
+		var genderPicker = new mui.PopPicker();
+		genderPicker.setData([{
+			value: 'Y',
+			text: '男'
+		}, {
+			value: 'N',
+			text: '女'
+		}, {
+			value: '未知',
+			text: '未知'
+		}]);
+		$("#stu_gender").click(function() {
+			genderPicker.show(function(items) {
+				var item = items[0];
+				var gender = item["text"];
+				var value = item["value"];
+				stu_genderID = value;
+				$("#stu_gender").text(gender);
+				updateCurrentDefaultBtnColor();
+			});
+		});
+		//--------------------------------------返校日期
+		$("#stu_backschooldate").click(function() {
+			var _self = this;
+			if (_self.picker) {
+				_self.picker.show(function(rs) {
+					dLog('选择结果: ' + rs.text)
+					_self.picker.dispose();
+					_self.picker = null;
+				});
+			} else {
+				var currentYear = moment().year();
+				var currentMonth = moment().format('MM');
+				var currentDay = moment().format('DD');
+				var currentValue = moment().format('YYYY-MM-DD');;
+				var options = {
+					'type': 'date',
+					'value': currentValue,
+					'beginYear': currentYear,
+					'beginMonth': parseInt(currentMonth),
+					'beginDay': parseInt(currentDay),
+				}
+				var optionsJson = JSON.stringify(options)
+				$(this).attr('data-options', optionsJson)
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				_self.picker = new mui.DtPicker(options);
+				_self.picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					dLog('选择结果: ' + rs.text)
+
+					$(_self).text(rs.text)
+					updateDefaultBtnColor(_self)
+
+					/* 
+					 * 返回 false 可以阻止选择框的关闭
+					 * return false;
+					 */
+					/*
+					 * 释放组件资源，释放后将将不能再操作组件
+					 * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+					 * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+					 * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+					 */
+					_self.picker.dispose();
+					_self.picker = null;
+				});
+			}
+		});
+		//考勤信息获取
+		var pickerData = [];
+		var attendTypePicker = new mui.PopPicker();
+		// 获取考勤信息-request
+		var paramDic = {
+			"usercode": usercode,
+			"token": token,
+			"basetoken": basetoken,
+		};
+		var url = system.usercenter + "/manage/getResidenttypeOfStudent.action";
+
+		jQuery_Request_Post(url, paramDic, "json", true, function(data) {
+			var json = JSON.stringify(data);
+			var result = data["ret"];
+			if (result) {
+				var jsonArray = data["data"];
+				if (jsonArray.length > 0) {
+					for (var i = 0; i < jsonArray.length; i++) {
+						var item = jsonArray[i];
+						var code = item["code"];
+						var name = item["name"];
+						pickerData.push({
+							"value": code,
+							"text": name
+						});
+					}
+
+					attendTypePicker.setData(pickerData);
+				} else {
+					mui.toast(updateNullString(data["msg"]), "获取考勤信息失败")
+				}
+			} else {
+				mui.toast("获取考勤信息错误")
+			}
+		}, function(error) {
+			mui.toast("获取考勤信息错误")
+		});
+
+
+
+		//--------------------------------------考勤信息
+		$("#stu_attendtype").click(function() {
+			attendTypePicker.show(function(items) {
+				var item = items[0];
+				var attentType = item["text"];
+				var attentCode = item["value"];
+				stu_attendcode = attentCode;
+				$("#stu_attendtype").text(attentType);
+			});
+		});
+
+		//--------------------------------------头像选择
+
+		function showPic(code) {
+			var userid = "";
+			if (code) {
+				userid = code;
+			} else {
+				userid = $("#curCode").val();
+			}
+			var dataDic = '{"uuid":"' + studentcode + '","type":"picture_face","number":"1"}';
+			if (typeof(xa) != "undefined") {
+				xa.uploadImage(dataDic, function(imgUrl) {
+					getImageUrl(studentcode, imgUrl, 1);
+				});
+			} else {
+				alert("经过客户端选择图片上传")
+				//经过客户端选择图片上传
+				window.location.href = "http://localhost/mp?user=coder&filetype=uploadfile&data=" + encodeURIComponent(data);
+			}
+		};
+		//	方法名字不能换，参数也不能动。是客户端js回调的方法名称，预上面showpic配合使用，可配合查看客户端网页处理代码
+		function getImageUrl(uuid, url, type) {
+			//20200203 跟一贺沟通过，一切都在点击保存的时候由平台做处理，无论是编辑还是添加
+			// if (studentcode.length > 0) {
+			// 	var paramDic = {
+			// 		"user.usercode": studentcode,
+			// 		"user.headphoto": url,
+			// 		"token": token,
+			// 	};
+			// 	xa.loading(true);
+			// 	jQuery_Request_Post(system.usercenter + "/admin/updateStudentFaceInfoByPhone.action", paramDic, "json", true, function(
+			// 		jsback) {
+			// 		xa.loading(false);
+			// 		if (jsback.ret) {
+			// 			hide_ImgDialog();
+			// 			updateUIAfterUploadImg(url);
+			// 		} else {
+			// 			mui.toast(updateNullString(jsback.msg, "人脸图片更新失败"));
+			// 		}
+			// 	}, function(error) {
+			// 		xa.loading(false);
+			// 		alert("人脸信息更新失败！");
+			// 	});
+
+			// } else {
+			// 	updateUIAfterUploadImg();
+			// }
+			updateUIAfterUploadImg(url);
+		}
+
+		function updateUIAfterUploadImg(url) {
+			var studentname = updateNullString($("#stu_name").val(), "");
+			$("#uppic_first").show();
+			$("#picfirst").hide();
+			var imgObj = $("#uppic_first").find("img");
+			$(imgObj).attr("src", url);
+			//有错误了，i错误图标要展示出来
+			if (faceErrorReason.length > 0) {
+				$("#uppic_first i").css("display", "block");
+			} else {
+				$("#uppic_first i").css("display", "none");
+			}
+			//弹出框也需要更新图片
+			$("#dialog_img").attr("src", url);
+			var aObj = $("#uppic_first").find("a");
+			$(aObj).attr("onclick", "show_dialog(1,'" + studentcode + "','" + url + "');");
+		}
+
+		//弹出层
+		function show_dialog(num, code, pic) {
+			if (num == 1) {
+				var studentname = updateNullString($('#stu_name').val(), "");
+				$("#curName").text(studentname);
+				$("#curCode").val(code);
+				$(".tips_red").text(faceErrorReason);
+				$("#dialog_img").attr("src", pic);
+				$("#dialog_test").fadeIn(200);
+			}
+			$(".mask").show();
+		}
+
+		function hide_ImgDialog(num) {
+			if (num) {
+				$("#dialog_test").fadeOut(num);
+			} else {
+				$("#dialog_test").hide();
+			}
+			$(".mask").hide();
+		}
+
+		$(".mask").click(function() {
+			hide_ImgDialog();
+		})
+		//学生头像查看标准
+		function stuImgDetailAction() {
+			$(".face_dialog").fadeIn(200);
+			$(".face_mask").show();
+		}
+
+		function hide_FaceDialog() {
+			$(".face_dialog").fadeOut(1);
+			$(".face_mask").hide()
+		}
+
+		$(".face_mask").click(function() {
+			hide_FaceDialog();
+		})
+
+		//提交
+		function commitAction() {
+			var name = $('#stu_name').val().replace(/\s+/g, "");
+			var phone = $('#stu_phone').val().replace(/\s+/g, "");
+
+			if (name.length <= 0) {
+				alert("请输入姓名")
+				return;
+			}
+			if (updateNullString(stu_genderID, "").length <= 0) {
+				alert("请选择性别")
+				return;
+			}
+
+			if (phone.length > 0) {
+				if (isPhoneNo(phone) == false) {
+					alert("请输入正确的手机号")
+					return;
+				}
+			}
+			if (updateNullString(stu_classcode, "").length <= 0) {
+				alert("请选择班级")
+				return;
+			}
+			if (updateNullString(stu_attendcode, "").length <= 0) {
+				alert("请选择住校类型")
+				return;
+			}
+
+			var picpath = "";
+			if ($("#picshow").find("img").length > 0) {
+				if ($("#picshow").find("img").length > 2) {
+					dLog('图片最多只能上传1张!');
+				} else {
+					$("#picshow").find("img").each(function(i) {
+						var str = $(this).attr("src");
+						if (str != "" && str.indexOf(defaultImg) == -1) {
+							if (picpath == "") {
+								picpath = str;
+							} else {
+								picpath = picpath + "," + $(this).attr("src");
+							}
+						}
+					});
+				}
+			}
+			//返校日期
+			var backSchoolDateText = $('#stu_backschooldate').text();
+			var backSchoolDate = "";
+			if (backSchoolDateText.search("请选择") == -1) {
+				backSchoolDate = moment(backSchoolDateText).format("YYYY-MM-DD");
+			}
+			// if (updateNullString(backSchoolTimestamp, "").length <= 0||backSchoolDateText=="请选择") {
+			// 	alert("请选择返校日期")
+			// 	return;
+			// }
+			//数据提交
+			var sexValue = updateNullString(stu_genderID, "") == '未知' ? '' : updateNullString(stu_genderID, "");
+			var paramDic = {
+				"usercode": usercode,
+				"studentform.id": stu_userId,
+				"studentform.usercode": updateNullString(studentcode, ""),
+				"studentform.username": updateNullString($("#stu_name").val(), ""),
+				"studentform.phone": updateNullString($("#stu_phone").val(), ""),
+				"studentform.faceimg": updateNullString(picpath, ""),
+				"studentform.classcode": updateNullString(stu_classcode, ""),
+				"studentform.classname": updateNullString($("#stu_grade").text(), ""),
+				"studentform.sex": sexValue,
+				"studentform.residenttype": updateNullString(stu_attendcode, ""),
+				"studentform.remark": updateNullString($("#stu_note").val(), ""),
+				"studentform.returndate": updateNullString(backSchoolDate, ""),
+				"token": token,
+			};
+
+			mui.showLoading(stu_userId.length > 0 ? "保存中..." : "提交中...", "div");
+			//验证学生名称重复
+			//            $.post("<%=path%>/admin/classMembernameCheck.action",{'sclass.code':classcode,'username':username,'id':userid,'currenttime':(new Date()).valueOf(),'scope':'session'},rend);
+
+			var dataDic = {
+				'sclass.code': updateNullString(stu_classcode, ""),
+				'username': updateNullString($("#stu_name").val(), ""),
+				'id': stu_userId,
+				'currenttime': (new Date()).valueOf(),
+				"token": token
+			};
+			var url = system.usercenter + "/admin/classMembernameCheck.action";
+			jQuery_Request_Post(url, dataDic, "json", false, function(data) {
+				var value = JSON.stringify(data);
+				if (value == "true") {
+					mui.hideLoading();
+					alert("学生姓名班级内不允许重复!")
+				} else {
+					updateStudentInfo(paramDic);
+				}
+			}, function(error) {
+				mui.hideLoading();
+				alert("操作失败!")
+			});
+		}
+
+		function updateStudentInfo(paramDic) {
+			var url = system.usercenter + "/manage/saveOrUpdateStudentInformation.action";
+			jQuery_Request_Post(url, paramDic, "json", true, function(data) {
+					mui.hideLoading();
+					var json = JSON.stringify(data);
+					var result = data["ret"];
+					if (result) {
+						mui.toast(stu_userId.length > 0 ? "编辑成功" : "保存成功");
+						if (fromtype == "1") {
+							updateNativeAction(studentcode);
+						} else {
+							history.go(-2);
+						}
+
+						// if (mui.os.ios) {
+						// 	history.go(-2);
+						// } else {
+						// 	if (stu_userId.length > 0) {
+						// 		history.go(-2);
+						// 	} else {
+						// 		history.go(-1);
+						// 	}
+						// }
+
+
+
+					} else {
+						if (stu_userId.length > 0) {
+							mui.toast(updateNullString(data["msg"], "编辑学生信息失败"));
+						} else {
+							mui.toast(updateNullString(data["msg"], "保存学生信息失败"));
+						}
+
+					}
+				},
+				function(error) {
+					mui.hideLoading();
+					if (stu_userId.length > 0) {
+						mui.toast("编辑学生信息失败");
+					} else {
+						mui.toast("保存学生信息失败");
+					}
+				});
+		}
+
+		//通知原生界面 学生信息编辑成功
+		function updateNativeAction(studentcode) {
+			//返校日期
+			var backSchoolDateText = $('#stu_backschooldate').text();
+			var backSchoolDate = "";
+			var backSchoolTimestamp = "";
+			if (backSchoolDateText.search("请选择") == -1) {
+				backSchoolDate = moment(backSchoolDateText).format("YYYY-MM-DD");
+				backSchoolTimestamp = moment(backSchoolDate).format("x");
+			}
+			setupWebViewJavascriptBridge(function(bridge) {
+				bridge.callHandler('jsUpdateNativeAction', {
+					"studentcode": studentcode,
+					"backSchoollDate": backSchoolTimestamp,
+					"type": "update"
+				}, function(responseData) {
+					dLog(responseData)
+					history.go(-1);
+					func();
+				});
+			});
+		}
+
+
+		function updateCurrentDefaultBtnColor() {
+			var genderStr = $("#stu_gender").text().replace(/\s+/g, "");
+			var classStr = $("#stu_grade").text().replace(/\s+/g, "");
+			var attendStr = $("#stu_attendtype").text().replace(/\s+/g, "");
+			var defaultStr = "请选择";
+			if (genderStr == defaultStr) {
+				$("#stu_gender").css("color", "#bbbbbb");
+			} else {
+				$("#stu_gender").css("color", "#666666");
+			}
+
+			if (classStr == defaultStr) {
+				$("#stu_grade").css("color", "#bbbbbb");
+			} else {
+				$("#stu_grade").css("color", "#666666");
+			}
+
+			if (classStr == attendStr) {
+				$("#stu_attendtype").css("color", "#bbbbbb");
+			} else {
+				$("#stu_attendtype").css("color", "#666666");
+			}
+		}
+	</script>
+	<script>
+		var xa_s_tag = document.createElement('script');
+		xa_s_tag.type = 'text/javascript';
+		xa_s_tag.async = true;
+		xa_s_tag.charset = 'utf-8';
+		xa_s_tag.crossDomain = true;
+		xa_s_tag.src = system.usercenter + '/webh5/h5/jsapi?upload=1&_v=' + new Date().getTime();
+		var root_s = document.getElementsByTagName('script')[0];
+		root_s.parentNode.insertBefore(xa_s_tag, root_s);
+	</script>
+
+</html>

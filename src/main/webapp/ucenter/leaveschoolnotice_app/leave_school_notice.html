@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>放学出校通知</title>
+		<!-- 此处路径需使用相对路径 平台及本地都可使用 若不加前缀，平台导入时无法正常获取引用文件 -->
+		<!-- mui引入 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/extend/julong/base_time_js.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<!-- 本页面css -->
+		<link href="css/leave_school_notice.css" rel="stylesheet" />
+		<link href="css/select_class.css" rel="stylesheet" />
+
+	</head>
+
+	<body>
+		<!-- 		
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">放学出校通知</h1>
+		</header> -->
+		<div class="mui-content">
+			<!-- 时间 开始-->
+			<div id="today-time" style="line-height: 40px;"></div>
+			<!-- 时间  结束-->
+
+			<!-- 年级选择+显示延时学生 开始-->
+			<div id="class-div">
+				<button onclick="selectClassAction()" id="grade-button" type="button" class="mui-btn mui-button-diy" value="">
+				</button>
+				<div id="delay-bg-div">
+					<label id="delay-label">显示延时学生</label>
+					<div id="delay-switch" class="mui-switch mui-switch-mini mui-active ">
+						<div id="delay-switch-handle" class="mui-switch-handle"></div>
+					</div>
+				</div>
+
+			</div>
+			<!-- 年级选择+显示延时学生  结束-->
+
+			<!-- 班级数量显示+全选/反选  开始-->
+			<div id="class-nubmer-bg-div">
+				<label id="class-number-label">&nbsp;共显示0个学生</label>
+				<input id="select-all-button" onclick="selectAllAction()" type="button" value="全不选" checked />
+			</div>
+			<!-- 班级数量显示+全选/反选 结束-->
+
+
+			<!-- 可以滚动的列表样式 开始-->
+			<div class="mui-scroll-wrapper" id="stuListView">
+				<div class="mui-scroll" id="delay">
+					<ul id="late-list" class="mui-table-view mui-table-view-chevron"></ul>
+				</div>
+			</div>
+			<!-- 可以滚动的列表样式 结束 -->
+
+			<!--首页空白页 开始-->
+			<div id="stuNullview" class="img-box" style="display:none">
+				<p><img src="../../common/app/images/nopage/img_noList.png"><br><span>暂无相关数据</span></p>
+			</div>
+			<!-- 首页空白页 结束 -->
+
+			<!--发送放学出校通知 需要固定在底部，所以需要用到绝对定位，另外，由于MUI本身的组件的z-index要高于我们自己的div，所以，这里需要自定义z-index，一般10就足够。-->
+			<button onclick="sendNotifyAction()" id="notify-button" type="button" class="mui-btn mui-button-diy">
+				发送放学通知
+			</button>
+
+			<!-- 班级选择弹出框 开始-->
+			<!-- box mui-popover mui-poppicker mui-popover-action mui-popover-bottom -->
+			<div id="popover" class="mui-content box mui-popover mui-poppicker mui-popover-action mui-popover-bottom">
+				<div class="mui-row mui-fullscreen">
+					<!-- 左侧选项卡列表 -->
+					<div class="mui-col-xs-3">
+						<div id="segmentedControls" class="mui-segmented-control mui-segmented-control-inverted mui-segmented-control-vertical">
+						</div>
+					</div>
+					<!-- 右侧内容列表 -->
+					<div id="segmentedControlContents" class="mui-col-xs-9">
+					</div>
+					<!-- </div> -->
+				</div>
+				<div id="bottom-div">
+					<button onclick="cancelAction()" id="cancel-button" type="button" class="mui-btn mui-button-diy">
+						取消
+					</button>
+					<button onclick="confirmAction()" id="confirm-button" type="button" class="mui-btn mui-button-diy">
+						确定
+					</button>
+				</div>
+
+			</div>
+			<!-- 班级选择弹出框 结束-->
+		</div>
+		<script>
+			mui.init();
+			mui('.mui-scroll-wrapper').scroll({
+				indicators: true, //是否显示滚动条,默认是true
+			});
+			mui('mui-fullscreen').scroll({
+				indicators: false //是否显示滚动条
+			});
+			/*这里写你的逻辑部分*/
+			document.getElementById("today-time").innerHTML = new moment().format('YYYY-MM-DD dddd');
+
+			/******************************获取链接后续参数****************************************/
+			// 本地测试使用，发布至平台需删除
+			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+			var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+			var localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+			if (localOrgId.length == 0) {
+				getUserInfoRequest(system.usercenter, usercode, token, function() {
+					localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+				})
+			}
+			var orgid = updateNullString(getURLParameter('orgid'), localOrgId);
+			var h5Basetoken = updateNullString(getURLParameter('basetoken'), ""); //链接后追加的basetoken
+			/******************************页面最底部定时显示样式 暂时隐藏****************************************/
+			// window.onbeforeunload = function(e) {
+			// 	dLog("本页面关闭，停止计时器");
+			// 	clearInterval();
+			// };
+
+			/******************************班级选择相关****************************************/
+			var selectGradeCode, selectClassCode, selectClassName;
+			var currentGradeCode, currentClassCode, currentClassName;
+
+			//班级选择相关
+			var controls = document.getElementById("segmentedControls");
+			var contents = document.getElementById("segmentedControlContents");
+
+			/* 首先获取学安App网页内部js返回basetoken，若app无返回值使用链接后追加basetoken */
+			function getBaseTokenValue() {
+				var xueanBaseToken = getBaseTokenString();
+				return updateNullString(xueanBaseToken, h5Basetoken);
+			}
+
+			var allist = [];
+			var paramDic = {
+				usercode: usercode,
+				includedelay: '1',
+				token: token,
+				basetoken: getBaseTokenValue(),
+				orgid: orgid
+			};
+			var url = system.usercenter + "/delayedclass/getAllGradeAndClass.action";
+			jQuery_Request_Post(url, paramDic,
+				"json", true,
+				function(responseData) {
+					var ret = responseData["ret"];
+					if (ret) {
+						allist = responseData['data'];
+						var selectClass = document.getElementById("grade-button");
+						if (allist.length > 0) {
+							selectClass.style.display = 'block';
+							createLeftItem(allist);
+							createRightContent(0);
+							changeLiActive(0);
+							getSelectClassStudent();
+						} else {
+							selectClass.style.display = 'hidden';
+						}
+					} else {
+						var msg = updateNullString(responseData["msg"], "获取班级失败!")
+						mui.toast(msg);
+					}
+
+				},
+				function(error) {
+					var msg = updateNullString(error, "请求失败!")
+					mui.toast(msg);
+				});
+
+			/* 获取选中班级下的学生 */
+			function getSelectClassStudent() {
+				currentGradeCode = selectGradeCode;
+				currentClassCode = selectClassCode;
+				currentClassName = selectClassName;
+				var html = [];
+				if (selectGradeCode.length > 0 && selectClassCode.length > 0) {
+					var selectClass = document.getElementById("grade-button");
+					removeAllChildNode(selectClass);
+					html.push(selectClassName +
+						'&nbsp;&nbsp<img class="arrow-down-id" src="../../common/app/images/main_arrow_down.png">');
+					selectClass.innerHTML = html.join('');
+					initMainData();
+				}
+			}
+
+			//左侧数据源
+			function createLeftItem(allist) {
+				var html = [];
+				for (var i = 0; i < allist.length; i++) {
+					var jsonData = allist[i];
+					var classname = jsonData['gradename'];
+					var classcode = jsonData['gradecode'];
+					selectGradeCode = (i == 0) ? classcode : '';
+					html.push('<div class="mui-control-item" data-index="' + i + '">' +
+						'<div id="left-icon" style="display:none;"> </div>' + classname + '</div>');
+				}
+				controls.innerHTML = html.join('');
+				controls.querySelector('.mui-control-item').classList.add('mui-active');
+				//保留第一个item左侧的选中标识
+				var divElemList = controls.querySelectorAll('#left-icon');
+				if (divElemList.length > 0) {
+					for (i = 0; i < divElemList.length; i++) {
+						divElemList[i].style.display = (i == 0) ? "block" : "none";
+					}
+				}
+			}
+			//动态创建右侧内容 index 左侧item的index 
+			function createRightContent(index) {
+				var gradeJson = allist[index];
+				var gradename = gradeJson['gradename'];
+				var gradecode = gradeJson['gradecode'];
+				var classlist = gradeJson['classlist'];
+				if (classlist.length <= 0) {
+					mui.toast(first_classname + '下无班级！');
+					return;
+				}
+				var html = [];
+				html.push(
+					'<ul id="ul-class" class="mui-table-view mui-class" style="background-color:white;padding-bottom:50px;">');
+				for (var j = 0; j < classlist.length; j++) {
+					var classJson = classlist[j];
+					var classname = classJson['classname'];
+					var classcode = classJson['classcode'];
+					html.push('<li id="li-class" class="mui-table-view-cell"' + 'gradecode="' + gradecode + '" gradename="' +
+						gradename +
+						'" classcode="' +
+						classcode + '" classname="' + classname + '" data-index="' + j + '">' + classname + '</li>');
+				}
+				html.push('</ul>');
+				contents.innerHTML = html.join('');
+				for (var j = 0; j < classlist.length; j++) {
+					var classJson = classlist[j];
+					var classcode = classJson['classcode'];
+					var classname = classJson['classname'];
+					if (selectClassCode) {
+						if (selectClassCode == classcode) {
+							changeLiActive(j);
+						}
+					}
+					//没有选中的班级,默认第一个年级的第一个班级
+					else {
+						if (index == 0) {
+							selectGradeCode = (j == 0) ? gradecode : '';
+							selectClassCode = (j == 0) ? classcode : '';
+							selectClassName = (j == 0) ? classname : '';
+							dLog('当前选中：' + index + '班级为：' + selectClassName);
+						}
+					}
+				}
+			}
+
+			function cancelAction() {
+				mui("#popover").JLPopover('hide');
+			}
+
+			function confirmAction() {
+				mui("#popover").JLPopover('hide');
+				getSelectClassStudent();
+			}
+
+			//左侧item点击
+			mui(controls).on('tap', '.mui-control-item', function(e) {
+				//getAttribute() 方法返回指定属性名的属性值。
+				//dLog("当前点击的左侧 data-index：" + this.getAttribute('data-index'));
+				var lastActiveElem = controls.querySelector('.mui-active');
+				var last_index = lastActiveElem.getAttribute('data-index');
+				var lastIconLabel = lastActiveElem.childNodes[0];
+				lastIconLabel.style.display = "none";
+				var index = this.getAttribute('data-index');
+				//点击的是同一个,不需要做改动
+				if (last_index == index) {
+
+				}
+				//删除上个选项下的右侧内容
+				else {
+					lastActiveElem.classList.remove('mui-active');
+					// var leftItemList =controls.querySelector('.mui-control-item:nth-child()');
+					var realIndex = parseInt(index) + 1;
+					var currentElem = controls.querySelector('.mui-control-item:nth-child(' + realIndex + ')');
+					currentElem.classList.add('mui-active');
+					var curIconLabel = currentElem.childNodes[0];
+					curIconLabel.style.display = 'block';
+					removeAllChildNode(contents);
+					createRightContent(index);
+				}
+				return false;
+			});
+			//右侧content点击
+			mui(contents).on('tap', '.mui-table-view-cell', function(e) {
+				var gradename = this.getAttribute('gradename');
+				var gradecode = this.getAttribute('gradecode');
+				var classname = this.getAttribute('classname');
+				var classcode = this.getAttribute('classcode');
+				var curIndex = this.getAttribute('data-index');
+				changeLiActive(curIndex);
+				selectGradeCode = gradecode;
+				selectClassCode = classcode;
+				selectClassName = classname;
+				dLog(gradename + gradecode + classname + classcode);
+				return false;
+			});
+
+			/* 更改选终不改li的样式 curIndex：选中的li的index*/
+			function changeLiActive(curIndex) {
+				var liList = document.getElementById("ul-class").childNodes;
+				if (liList.length > 0) {
+					for (i = 0; i < liList.length; i++) {
+						var val = liList[i];
+						if (val.tagName === "LI") {
+							var index = val.getAttribute('data-index');
+							if (index != curIndex) {
+								val.style.color = 'rgb(51,51,51)';
+							} else {
+								val.style.color = 'rgb(59,162,255)';
+							}
+						}
+					}
+				}
+			}
+			/* 移除元素下所有节点 */
+			function removeAllChildNode(val) {
+				var fc = val.firstChild;
+				while (fc) {
+					val.removeChild(fc);
+					fc = val.firstChild;
+				}
+			}
+
+			/*********************** 首页相关  ******************************/
+			//list列表数据填充
+			var delaySwitch = document.getElementById("delay-switch");
+			var delaySwitchHandle = document.getElementById("delay-switch-handle");
+			var listBox = document.getElementById("late-list");
+			var btn = document.getElementById(("select-all-button"));
+			var classNumberLabel = document.getElementById(("class-number-label"));
+			var requestStudentList = []; //请求回来的班级数据源
+			var showArray = []; //显示的班级数据源
+
+			function initMainData() {
+				//初始化首页面的数据 获取该用户名下班级学生
+				var paramDic = {
+					usercode: usercode,
+					token: token,
+					basetoken: getBaseTokenValue(),
+					orgid: orgid,
+					gradecode: selectGradeCode, //年级ID
+					classcode: selectClassCode
+				};
+				var url = system.usercenter + "/delayedclass/getStudentListOfClass.action";
+				//dLog(url + paramDic);
+				jQuery_Request_Post(url, paramDic, "json", true, function(responseData) {
+					var ret = responseData["ret"];
+					if (ret) {
+						var jsonData = responseData['data'];
+						requestStudentList = jsonData['studentlist'];
+						//requestStudentList = []; //测试空页面使用
+						//默认打开显示延时班学生开关
+						delaySwitch.classList.add('mui-active');
+						delaySwitchHandle.style.webkitTransform = "translate(17px, 0px)";
+						showArray = getShowArray(requestStudentList); //需要显示数据源
+						refreshListData(showArray);
+					} else {
+						var msg = updateNullString(data["msg"], "获取学生数据失败!")
+						mui.toast(msg);
+						showArray = [];
+						refreshListData(showArray);
+					}
+				}, function(error) {
+					var msg = updateNullString(error, "请求获取学生数据失败!")
+					mui.toast(msg);
+					showArray = [];
+					refreshListData(showArray);
+				});
+			}
+
+			function refreshListData(studentList) {
+				if (showArray.length > 0) {
+					document.getElementById("stuNullview").style.display = 'none';
+					document.getElementById("stuListView").style.display = 'block';
+					document.getElementById("class-nubmer-bg-div").style.display = 'block';
+					document.getElementById("notify-button").style.display = 'block';
+					//先移除 在添加节点
+					removeAllChildNode(listBox);
+					//重新定位起始位置
+					mui('.mui-scroll-wrapper').scroll().scrollTo(0, 0, 0);
+					listBox.appendChild(createFragment(showArray));
+				} else {
+					document.getElementById("stuNullview").style.display = 'block';
+					document.getElementById("stuListView").style.display = 'none';
+					document.getElementById("class-nubmer-bg-div").style.display = 'none';
+					document.getElementById("notify-button").style.display = 'none';
+				}
+			}
+
+			// 给返回的数组排序 将带有延时班属性的学生先显示
+			function getShowArray(testarray) {
+				var delayArray = new Array();
+				var normalArray = new Array();
+				var showArray = new Array();
+				if (testarray.length > 0) {
+					for (var i = 0; i < testarray.length; i++) {
+						var obj = testarray[i];
+						if (obj['indelayedclass'] == "yes") {
+							delayArray.push(obj);
+						} else {
+							normalArray.push(obj);
+						}
+					}
+				}
+				//var isActive = delaySwitch.classList.contains("mui-active");
+				if (delayArray.length > 0) {
+					//有延时班学生 
+					showArray = delayArray.concat(normalArray);
+				} else {
+					//没有延时班学生，隐藏 包含延时班学生控件
+					showArray = normalArray;
+				}
+				var classNumberString = "共显示" + showArray.length + "个" + "学生";
+				dLog(classNumberString);
+				classNumberLabel.innerText = classNumberString;
+				return showArray;
+			}
+
+			delaySwitch.addEventListener('toggle', function(event) {
+				//event.detail.isActive 可直接获取当前状态
+				var obj = document.getElementById("select-late-checkbox");
+				var showStudentNumber = 0;
+				for (i = 0; i < listBox.childNodes.length; i++) {
+					var val = listBox.childNodes[i];
+					if (val.tagName === "LI") {
+						var jsonData = val.testmodel;
+						if (event.detail.isActive) {
+							if (jsonData['indelayedclass'] == 'yes') {
+								val.style.display = "block";
+								dLog("开关打开 显示延时学生，ID：" + jsonData.usercode);
+							}
+						} else {
+							if (jsonData['indelayedclass'] == 'yes') {
+								val.style.display = "none";
+								dLog("开关隐藏 隐藏延时学生，ID：" + jsonData.usercode);
+							}
+						}
+					}
+					if (val.style.display != "none") {
+						showStudentNumber++;
+					}
+					var classNumberString = "共显示" + showStudentNumber + "个" + "学生";
+					dLog(classNumberString);
+					classNumberLabel.innerText = classNumberString;
+				}
+			});
+
+			function createFragment(testarray) {
+				//createDocumentFragment：用来创建一个虚拟的节点对象
+				var fragment = document.createDocumentFragment();
+				var li;
+				for (var i = 0; i < testarray.length; i++) {
+					var obj = testarray[i];
+					li = document.createElement('li');
+					li.className = 'mui-table-view-cell mui-checkbox mui-left';
+					// var result = Math.floor(Math.random() * (100 + 1 - 5) + 5);
+					li.id = obj['studentcode'];
+					li.testmodel = obj;
+					li.textContent = updateNullString(obj['studentname'], obj['studentcode']);
+					// li.innerHTML =
+					// 	'<input name="subcheckbox" type="checkbox" checked=true style="width:100%;height:100%;top:0px;line-height:66px;"> <img class="mui-media-object mui-pull-left" src="../../common/app/images/main_avatar.png" style="width:40px;height:40px;margin-top:11px;">'+username;
+					var input = createInputFragment();
+					var img = createImgFragment(obj);
+					var label = createDelayInfoFragment();
+					input.appendChild(img);
+					if (obj['indelayedclass'] == "yes") {
+						input.appendChild(label);
+					}
+					li.appendChild(input);
+					fragment.appendChild(li);
+				}
+				return fragment;
+			};
+
+			function createInputFragment() {
+				var fragment = document.createDocumentFragment();
+				var obj = document.createElement('input');
+				obj.name = 'subcheckbox';
+				obj.checked = true;
+				obj.id = "list-cell-input";
+				obj.type = "checkbox";
+				fragment.appendChild(obj);
+				return fragment;
+			}
+
+			function createImgFragment(val) {
+				var fragment = document.createDocumentFragment();
+				var obj = document.createElement('img');
+				obj.className = 'mui-media-object mui-pull-left';
+				obj.src = updateNullString(val['headphoto'], "../../common/app/images/main_avatar.png");
+				obj.id = "list-cell-img";
+				fragment.appendChild(obj);
+				return fragment;
+			}
+
+			function createDelayInfoFragment() {
+				var fragment = document.createDocumentFragment();
+				var element = document.createElement("input");
+				element.id = "delay-info-class";
+				element.type = 'button';
+				element.value = " [延时]";
+				fragment.appendChild(element);
+				return fragment;
+			}
+
+			//统计选中的人ID
+			function counts() {
+				var orderid = []; //数组存ID
+				if (showArray.length > 0) {
+					var list = listBox.querySelectorAll('input[type="checkbox"]');
+					var ret = 0;
+					for (k = 0; k < list.length; k++) {
+						if (list[k].checked) {
+							if (listBox.childNodes[k].style.display != 'none') {
+								orderid.push(listBox.childNodes[k].id);
+							}
+						}
+					}
+				}
+				return orderid;
+			}
+			// #prama mark - 按钮点击响应
+			//单选 倒退 全返和反选
+			listBox.addEventListener("click", function() {
+				var list = listBox.querySelectorAll('input[type="checkbox"]:checked');
+				btn.checked = list.length == listBox.childNodes.length ? true : false;
+				btn.value = btn.checked ? "全不选" : "全选";
+			});
+
+			//全选和反选,默认是选中状态
+			function selectAllAction() {
+				btn.checked = !btn.checked;
+				btn.value = btn.checked ? "全不选" : "全选";
+				var list = listBox.querySelectorAll('input[type="checkbox"]');
+				if (btn.checked) {
+					for (i = 0; i < list.length; i++) {
+						list[i].checked = true;
+					}
+				} else {
+					for (i = 0; i < list.length; i++) {
+						list[i].checked = false;
+					}
+				}
+				counts();
+			}
+			//班级选择
+			function selectClassAction() {
+				mui("#popover").JLPopover('show');
+			}
+			//发送离校通知
+			function sendNotifyAction() {
+				var orderids = counts();
+				if (orderids.length <= 0) {
+					mui.toast('请选择学生！');
+					return;
+				}
+				var message = currentClassName;
+				//判断班级名称最后一个字符是否包含‘班’字
+				if (selectClassName.search('班') != -1) { //包含班字
+					message = currentClassName + "学生已经放学，正在出校";
+				} else {
+					message = currentClassName + "班学生已经放学，正在出校";
+				}
+				var allCode = orderids.join(',');
+				var infoString = "当前共选择 " + orderids.length + " 个学生";
+				mui.JLPrompt(infoString, message, '放学出校通知', new Array('取消', '确定发送'), function(e) {
+					if (e.index == 1) {
+						//var content = document.getElementById("notifyText").textContent;
+						var content = document.querySelector('.mui-popup-input textarea').value;
+						//var content = e.value;
+						dLog('notifyText = ' + content);
+						if (!updateNullString(content)) {
+							mui.toast("请输入通知内容");
+							return;
+						}
+						var paramDic = {
+							usercode: usercode,
+							token: token,
+							basetoken: getBaseTokenValue(),
+							orgid: orgid,
+							content: content,
+							studentcodes: allCode,
+							classcode: selectClassCode
+						};
+						var url = system.usercenter + "/delayedclass/sendMessageToParents.action";
+						jQuery_Request_Post(url, paramDic, "json", true, function(responseData) {
+							var ret = responseData["ret"];
+							if (ret) {
+								mui.toast("发送通知成功！");
+							} else {
+								var msg = updateNullString(data["msg"], "发送通知失败!")
+								mui.toast(msg);
+							}
+						}, function(error) {
+							var msg = updateNullString(error, "请求发送通知失败!")
+							mui.toast(msg);
+						});
+					}
+				}, 'div');
+				document.querySelector('.mui-popup-input textarea').value = message;
+
+				// var lasttime = MyLocalStorage24.Cache.get('lastNotifyTime');
+				// var val = document.getElementById("bottom-notify-div");
+				// if (lasttime) {
+				// 	val.textContent = timeFormat(lasttime) + "已发送过离校通知";
+				// } else {
+				// 	val.textContent = timeFormat(new Date()) + "已发送过离校通知";
+				// }
+				// val.style.display = 'block';
+				// MyLocalStorage24.Cache.put('lastNotifyTime', new Date());
+				// dLog("选中的学生ID：" + counts());
+			}
+		</script>
+	</body>
+
+
+</html>

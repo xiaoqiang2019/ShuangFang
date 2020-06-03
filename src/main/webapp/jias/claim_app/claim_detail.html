@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>理赔详情</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<style>
+			/* 统一样式 */
+			.content-cell {
+				overflow: hidden;
+				background-color: transparent;
+				font-size: 15px;
+				margin: 5px 0px;
+				width: 100%;
+			}
+
+			.content-cell label {
+				width: 25%;
+				color: rgb(153, 153, 153);
+				background-color: transparent;
+			}
+
+			.content-cell .right-text {
+				float: right;
+				top: 0px;
+				background-color: transparent;
+				text-align: left;
+				left: 25%;
+				width: 75%;
+				height: auto;
+				color: rgb(17, 17, 17);
+			}
+
+			/* 基本信息 */
+			.baseinfo-content {
+				background-color: transparent;
+				padding: 11px 15px;
+				position: relative;
+			}
+			.baseinfo-content .claim-status{
+				position: absolute;
+				right: 15px;
+				font-size: 15px;
+				display: none;
+			}
+		
+			/* 审核被拒，图片样式 */
+			.baseinfo-content .claim-status-refuse{
+				position: absolute;
+				top: 10px;
+				right: 0px;
+				width: 84px;
+				height: auto;
+				overflow: hidden;
+				display: none;
+			}
+			/* 已超期样式 */
+			.baseinfo-content .audit-overdue{
+				position: absolute;
+				font-size: 12px;
+				right: 15px;
+				top: 35px;
+				color: rgb(232,79,79);
+				border: 0.5px solid rgb(232,79,79);
+				border-radius: 3px;
+				padding: 0px 3px;
+				display: none;
+			}
+			.content-cell .right-text .ele-order-btn{
+				float: right;
+				border: 1px solid  rgb(59,162,255);
+				padding: 2px 8px;
+				margin-left: 5px;
+				border-radius: 10px;
+				color: rgb(59,162,255);
+				font-size: 13px;
+			}
+			/* 案件经过 */
+			.case-detail .content-cell .right-text{
+				/* display: block; */
+			}
+			/* 理赔材料 */
+			/* cell样式 */
+			.data-cell {
+				border-bottom: 1px solid rgb(222, 222, 222);
+				padding: 10px 15px;
+			}
+			
+			.data-cell label {
+				display: inline-block;
+				width: 75%;
+				float: left;
+				font-size: 15px;
+				color: rgb(17,17,17);
+				background-color: transparent;
+			}
+			
+			.data-cell .append-info {
+				display: block;
+				margin-top: 10px;
+				font-size: 13px;
+				color: rgb(153, 153, 153);
+			}
+			
+			.clear {
+				clear: both;
+			}
+			
+			/* 图片组 */
+			.data-cell .photo-group {
+				margin: 10px 0px;
+				background-color: transparent;
+			
+			}
+			.uploadFile{
+				width: 50px;
+				height: 50px;
+				margin: 5px 10px 0px 0px; 
+				float: left;
+			}
+			.uploadFile img{
+				width: 50px;
+				height: 50px;
+			}
+			/* 理赔进展 */
+			.claim-process{
+				margin-top: 10px;
+				margin-bottom: 20px;
+			}
+			.process-cell{
+				/* margin: 20px 0px; */
+				background-color: transparent;
+				overflow: hidden;
+			}
+			
+			.process-cell .cell-left{
+				
+				margin-left: 15px;
+				margin-top: 10px;
+				background-color: transparent;
+				position: relative;
+			}
+
+			.process-cell .cell-right{
+				background-color: transparent;
+				overflow: hidden;
+				margin-left: 40px;
+				margin-right: 15px;
+				margin-top: 10px;
+			}
+			.process-cell .cell-dot{
+				position: absolute;
+				margin-top: 5px;
+				width: 12px;
+				height: 12px;
+				border-radius: 6px;
+				background-color: rgb(59,162,255);
+				z-index: 2;
+			}
+			.process-cell .cell-line{
+				position: absolute;
+				top: -10px;
+				width: 1px;
+				margin-left: 6px;
+				background-color: rgb(222,222,222);
+				z-index: 1;
+			}
+			
+			.process-cell .cell-title{
+				background-color: transparent;
+				font-weight: 500;
+				font-size: 16px;
+				color: rgb(17,17,17);
+			}
+			.process-cell .cell-note{
+				font-size: 13px;
+				color: rgb(102,102,102);
+			}
+		
+			.process-cell .cell-content,.cell-time{
+				font-size: 13px;
+				color: rgb(102,102,102);
+			}
+			.footbtn a{
+				color: rgb(59,162,255);
+			}
+			/* .footbtn a:last-child{
+				background-color: rgb(59,162,255);
+				color: white;
+			} */
+			.section-title{
+				border-top: 5px solid rgb(239,239,244);
+			}
+			.section-title:first-child{
+				border-top:none;
+			}
+				.flex_center,
+				.claim-edit,
+				.claim-apply,
+				.claim-attended,
+				.claim-closed{
+					display: none;
+				}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>理赔详情</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<!-- 基础信息 -->
+			<div class="section-title"><i></i><span>基础信息</span></div>
+			<div class="baseinfo-content">
+				<img class="claim-status-refuse" src="../../common/app/images/apply_img_rejected.png" />
+				<span class="claim-status"></span>
+				<span class="audit-overdue app-red-color"></span>
+				<ul>
+					<li class="content-cell">
+						<label>申请人</label>
+						<div class="right-text"><span id="apply-person"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>申请时间</label>
+						<div class="right-text"><span id="apply-time"></span></div>
+					</li>
+
+					<li class="content-cell">
+						<label>保单号</label>
+						<div class="right-text">
+							<span id="order-no"></span>
+							<button type="button" class="ele-order-btn mui-btn operation-btn" onclick="">
+								电子保单
+							</button>
+
+						</div>
+					</li>
+					<li class="content-cell">
+						<label>为谁申请</label>
+						<div class="right-text"><span id="apply-for-who"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>所属学校</label>
+						<div class="right-text"><span id="apply-orgname"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>案件分类</label>
+						<div class="right-text"><span id="case-classify-name"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>事故类型</label>
+						<div class="right-text"><span id="case-type-name"></span></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 案件详情 -->
+			<div class="section-title"><i></i><span>案件详情</span></div>
+			<div class="baseinfo-content case-detail">
+				<ul>
+					<li class="content-cell">
+						<label>发生时间</label>
+						<div class="right-text"><span id="case-time"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>发生地点</label>
+						<div class="right-text"><span id="case-place"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>就诊时间</label>
+						<div class="right-text"><span id="hospital-time"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>就诊医院</label>
+						<div class="right-text"><span id="hospital-name"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>案件经过</label>
+						<div class="right-text"><span id="case-history"></span></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 理赔收款信息 -->
+			<div class="section-title"><i></i><span>理赔收款信息</span></div>
+			<div class="baseinfo-content claim-account-info">
+				<ul>
+					<li class="content-cell">
+						<label>收款账号</label>
+						<div class="right-text"><span id="pyee-bank-no"></span></div>
+					</li>
+					<li class="content-cell">
+						<label>户名</label>
+						<div class="right-text"><span id="pyee-name"></span></div>
+					</li>
+				</ul>
+			</div>
+			<!-- 理赔材料 -->
+			<div class="section-title"><i></i><span>理赔材料</span></div>
+			<div class="upload-data">
+			</div>
+			<!-- 理赔进展 -->
+			<div class="section-title"><i></i><span>理赔进展</span></div>
+			<div class="claim-process">
+				<ul>
+					<li class="process-cell process-step1">
+						<div class="cell-left">
+							<div class="cell-line"></div>
+							<div class="cell-dot"></div>
+						</div>
+						<div class="cell-right">
+							<div class="cell-title">案件提交</div>
+							<div class="cell-real-content">
+								<div class="cell-note">【<span id="apply-user"></span>,<span class="app-blue-color" id="apply-phone"></span>】提交了理赔申请</div>
+								<div class="cell-time"></div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</li>
+					<li class="process-cell process-step2">
+						<div class="cell-left">
+							<div class="cell-line"></div>
+							<div class="cell-dot"></div>
+						</div>
+						<div class="cell-right">
+
+							<div class="cell-title">案件受理</div>
+							<div class="cell-real-content">
+								<div class="cell-note">【<span id="audit-user"></span>,<span class="app-blue-color" id="audit-phone"></span>】<span
+									 id="audit-status-des">受理</span>了案件</div>
+								<div class="cell-content"></div>
+
+								<div class="cell-time"></div>
+								<div class="clear"></div>
+							</div>
+
+						</div>
+					</li>
+					<li class="process-cell process-step3">
+						<div class="cell-left">
+							<div class="cell-line"></div>
+							<div class="cell-dot"></div>
+						</div>
+						<div class="cell-right">
+							<div class="cell-title">案件结束</div>
+							<div class="cell-real-content">
+								<div class="cell-note">【<span id="end-user"></span>,<span class="app-blue-color" id="end-phone"></span>】结束了案件</div>
+								<div class="cell-content"></div>
+								<div class="cell-time"></div>
+								<div class="clear"></div>
+							</div>
+
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>	<div class="footbtn flex_center">
+			<a href="javascript:;" class="flex_center claim-edit">编辑</a>
+			<a href="javascript:;" class="flex_center claim-attended app-background-blue-color app-white-color">受理案件</a>
+			<a href="javascript:;" class="flex_center claim-closed app-background-blue-color app-white-color">结案</a>
+			<a href="javascript:;" class="flex_center claim-apply">再次申请理赔</a>
+	
+		</div>
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/extend/mui/css/mui.zoom.js"></script>
+	<script src="../../common/extend/mui/js/mui.previewimage.js"></script>
+	<script src="../../common/extend/julong/aes.js"></script>
+	<script>
+		mui.init()
+		mui.previewImage()
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode),
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			claimId = updateNullString(getURLParameter('claimId'), ""), //理赔单ID
+			claimNo = updateNullString(getURLParameter('claimNo'), ""), //理赔单no
+			orderId = updateNullString(getURLParameter('orderID'), ""),
+			orderNumber = updateNullString(getURLParameter('orderNo'), "");
+		resizeContentLayout()
+		updateLeftDotLine()
+		requestClaimDetailFromServer()
+
+		/** 电子保单点击
+		 * */
+		$('.content-cell .right-text .ele-order-btn').click(function() {
+			alert('电子保单点击')
+		})
+		/** 编辑点击
+		 * */
+		$('.footbtn .claim-edit').click(function() {
+			CodeSTD.form({
+				url: "claim_step1.html",
+				params: {
+					"usercode": usercode,
+					"token": token,
+					"claimId": claimId,
+					"orderId": orderId,
+					"orderNo": orderNumber
+				},
+			});
+		})
+		/** 再次申请理赔点击
+		 * */
+		$('.footbtn .claim-apply').click(function() {
+			CodeSTD.form({
+				url: "claim_step1.html",
+				params: {
+					"usercode": usercode,
+					"token": token,
+					"claimId": claimId,
+					"orderId": orderId,
+					"orderNo": orderNumber
+				},
+			});
+		})
+		/** 受理点击
+		 * */
+		$('.footbtn .claim-attended').click(function() {
+			CodeSTD.form({
+				url: "claim_attended.html",
+				params: {
+					"usercode": usercode,
+					"token": token,
+					"orderId": orderId,
+					"claimId": claimId
+				},
+			});
+		})
+		/** 结案点击
+		 * */
+		$('.footbtn .claim-closed').click(function() {
+			CodeSTD.form({
+				url: "claim_closed.html",
+				params: {
+					"usercode": usercode,
+					"token": token,
+					"orderId": orderId,
+					"claimId": claimId
+				},
+			});
+		})
+		/** 处理该理赔状态
+		 * */
+		function dealClaimStatusUI(dataJson) {
+			var audit_status = dataJson["audit_status"], //申请状态	0 待受理 1 已受理 2 驳回 3 结案
+				if_overdue = dataJson["if_overdue"]; //是否受理超期	0 未超期 1 已超期
+			//0 待受理
+			if (audit_status == 0) {
+				$('.claim-status').show()
+				$('.claim-status').text('待受理')
+				$('.claim-status').addClass('app-orange-color')
+			}
+			//1 已受理
+			else if (audit_status == 1) {
+				$('.claim-status').show()
+				$('.claim-status').text('受理中')
+				$('.claim-status').addClass('app-yellow-color')
+				if (if_overdue == 1) {
+					$('.audit-overdue').show()
+					$('.audit-overdue').text('已超期')
+					$('.audit-overdue').addClass('app-red-color')
+
+				}
+			}
+			//2 驳回
+			else if (audit_status == 2) {
+				$('.claim-status-refuse').show()
+			}
+			//3 结案
+			else if (audit_status == 3) {
+				$('.claim-status').show()
+				$('.claim-status').text('已结案')
+				$('.claim-status').addClass('app-green-color')
+			}
+			//全部隐藏，一般不会有这种情况
+			else {
+				$('.claim-status').show()
+				$('.audit-overdue').hide()
+				$('.claim-status-refuse').hide()
+			}
+		}
+		/** 处理底部操作UI
+		 * */
+		function dealBottomOperationUI(dataJson) {
+			var audit_status = dataJson["audit_status"], //申请状态	0 待受理 1 已受理 2 驳回 3 结案
+				if_overdue = dataJson["if_overdue"]; //是否受理超期	0 未超期 1 已超期
+			var isHaveApplyLimit = (dataJson["if_audit_role"] == 1) ? true : false //是否有受理，结案权限
+			var isHaveEditLimit = (dataJson["if_edit_role"] == 1) ? true : false //是否编辑权限
+
+			/**audit_status 申请状态	0 待受理 1 已受理 2 驳回 3 结案
+			 *if_overdue 是否受理超期	  0 未超期 【结案】 【无】			
+			 * */
+			//默认全部隐藏
+			$('.footbtn').hide()
+			$('.claim-edit').hide() //编辑隐藏
+			$('.claim-apply').hide() //再次申请理赔 隐藏
+			$('.claim-closed').hide() //结案 隐藏
+			$('.claim-attended').hide() //受理隐藏
+			/**
+			 * flex布局 和jquery的show hide 冲突，会破坏flex的机制，显示出来后不具有弹性盒的功能
+			 * 解决方法：隐藏元素后，直接使用flex代替block让元素显示，因为flex元素默认就是block元素。
+			 * */
+			//未受理【编辑 + 受理】
+			if (audit_status == 0) {
+				if (isHaveEditLimit) {
+					$('.footbtn').css('display','flex')
+					$('.claim-edit').css('display','flex') //编辑显示
+					
+					$('.footbtn').css('display','-webkit-flex')
+					$('.claim-edit').css('display','-webkit-flex') //编辑显示
+				}
+				//受理根据权限是否显示
+				if (isHaveApplyLimit) {
+					$('.footbtn').css('display','flex')
+					$('.claim-attended').css('display','flex') //受理显示
+					
+					$('.footbtn').css('display','-webkit-flex')
+					$('.claim-attended').css('display','-webkit-flex') //受理显示
+				}
+			}
+			//已受理
+			else if (audit_status == 1) {
+
+				if (isHaveEditLimit) {
+					$('.footbtn').css('display','flex')
+					$('.claim-edit').css('display','flex') //编辑显示
+					
+					$('.footbtn').css('display','-webkit-flex')
+					$('.claim-edit').css('display','-webkit-flex') //编辑显示
+				}
+				// 0 未超期 【编辑 + 结案】
+				if (if_overdue == 0) {
+					if (isHaveApplyLimit) {
+						$('.footbtn').css('display','flex')
+						$('.claim-closed').css('display','flex')
+						
+						$('.footbtn').css('display','-webkit-flex')
+						$('.claim-closed').css('display','-webkit-flex')
+					}
+				}
+				// 已超期 【编辑 + 再次申请理赔】
+				else {
+					if (isHaveEditLimit) {
+						$('.footbtn').css('display','flex')
+						$('.claim-apply').css('display','flex') //再次申请理赔显示
+						
+						$('.footbtn').css('display','-webkit-flex')
+						$('.claim-apply').css('display','-webkit-flex') //再次申请理赔显示
+					}
+				}
+			}
+			//驳回 【编辑 + 再次申请理赔】
+			else if (audit_status == 2) {
+				$('#audit-status-des').text('驳回')
+				if (isHaveEditLimit) {
+					$('.footbtn').css('display','flex')
+					$('.claim-edit').css('display','flex') //编辑显示
+					$('.claim-apply').css('display','flex')//再次申请理赔显示
+					
+					$('.footbtn').css('display','-webkit-flex')
+					$('.claim-edit').css('display','-webkit-flex') //编辑显示
+					$('.claim-apply').css('display','-webkit-flex')//再次申请理赔显示
+				}
+			}
+			//结案
+			else if (audit_status == 3) {
+				$('.footbtn').hide()
+			}
+		}
+		/** 获取理赔详情
+		 * */
+		function requestClaimDetailFromServer() {
+			var secret = getSecretKey(),
+				timestamp = moment().valueOf();
+			var paramDic = {
+				"claim_id": claimId,
+				"usercode": usercode,
+				"token": token,
+				"secret": secret,
+				"timestamp": timestamp
+			};
+			var urlString = system.jias + "/v1/claim/get";
+			mui.showLoading();
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading()
+					var result = object["ret"];
+					if (result) {
+						var dataJson = object["data"],
+							claim_id = updateNullString(dataJson["claim_id"], ''), //理赔流水id 
+							claim_no = updateNullString(dataJson["claim_no"], ''), //理赔流水号
+							insure_order_id = updateNullString(dataJson["insure_order_id"], ''), //保单ID
+							insure_order_no = updateNullString(dataJson["insure_order_no"], ''), //保单编号
+							relOrderNumber = updateNullString(dataJson["rel_order_no"], ""), //保险公司保单编号
+							insure_order_name = updateNullString(dataJson["insure_order_name"], ''), //保单名称
+							apply_user = updateNullString(dataJson["apply_user"], ''), //申请人账号
+							apply_user_name = updateNullString(dataJson["apply_user_name"], ''), //申请人名称
+							apply_phone = updateNullString(dataJson["apply_phone"], ''), //申请人联系电话
+							apply_org_id = updateNullString(dataJson["apply_org_id"], ''), //申请人所属机构ID
+							apply_org_name = updateNullString(dataJson["apply_org_name"], ''), //申请人机构名称
+							insured_username = updateNullString(dataJson["insured_username"], ''), //为谁申请人名称
+							insured_idcard = updateNullString(dataJson["insured_idcard"], ''), //为谁申请人身份证号
+							case_classify = updateNullString(dataJson["case_classify"], ''), //案件分类
+							case_classify_name = updateNullString(dataJson["case_classify_name"], ''), //案件分类名称
+							case_type = updateNullString(dataJson["case_type"], ''), //事故分类
+							case_type_name = updateNullString(dataJson["case_type_name"], ''), //事故类型名称
+							create_time = dataJson["create_time"], //申请时间
+							audit_status = dataJson["audit_status"], //申请状态	0 待受理 1 已受理 2 驳回 3 结案
+							if_overdue = dataJson["if_overdue"], //是否受理超期	0 未超期 1 已超期
+							case_time = dataJson["case_time"], //发生时间
+							case_place = updateNullString(dataJson["case_place"], ''), //事故发生地点
+							case_place_name = updateNullString(dataJson["case_place_name"], ''), //事故发生地点
+							hospital_time = dataJson["hospital_time"], //就诊时间
+							hospital = updateNullString(dataJson["hospital"], ''), //就诊医院
+							case_history = updateNullString(dataJson["case_history"], ''), //案件经过
+							payee_name = updateNullString(dataJson["payee_name"], ''), //收款人姓名
+							payee_bank_no = updateNullString(dataJson["payee_bank_no"], ''), //银行账号
+							payee_bank = updateNullString(dataJson["payee_bank"], ''), //收款银行
+							payee_open_bank = updateNullString(dataJson["payee_open_bank"], ''), //开户行
+
+							audit_time = dataJson["audit_time"], //受理时间
+							audit_user = updateNullString(dataJson["audit_user"], ''), //受理用户账号
+							audit_user_name = updateNullString(dataJson["audit_user_name"], ''), //受理用户姓名
+							audit_user_phone = updateNullString(dataJson["audit_user_phone"], ''), //受理用户联系方式
+							audit_note = updateNullString(dataJson["audit_note"], ''), //受理备注
+							closed_time = dataJson["closed_time"], //结案时间
+							closed_user = updateNullString(dataJson["closed_user"], ''), //结案用户账号
+							closed_user_name = updateNullString(dataJson["closed_user_name"], ''), //结案用户姓名
+							closed_user_phone = updateNullString(dataJson["closed_user_phone"], ''), //结案用户联系方式
+							closed_note = updateNullString(dataJson["closed_note"], ''), //结案备注
+							cost = updateNullString(dataJson["cost"], ''), //赔付金额
+							forms = dataJson["forms"]; //理赔表单 数据
+						claimId = claim_id;
+						orderNumber = insure_order_no;
+						//当前没有对接第三方保险平台，或者保单未生效，电子保单隐藏
+						if (relOrderNumber.length <= 0) {
+							$('.ele-order-btn').hide()
+						} else {
+							$('.ele-order-btn').show()
+						}
+						//基础信息
+						$('#apply-person').text(apply_user_name)
+						$('#apply-time').text(moment(create_time).format('YYYY-MM-DD'))
+						$('#apply-orgname').text(apply_org_name)
+						$('#order-no').text(insure_order_no)
+						$('#apply-for-who').text(insured_username)
+						$('#case-classify-name').text(case_classify_name)
+						$('#case-type-name').text(case_type_name)
+						//案件详情
+						$('#case-time').text(moment(case_time).format('YYYY-MM-DD'))
+						$('#case-place').text(case_place_name)
+						$('#hospital-time').text(moment(hospital_time).format('YYYY-MM-DD'))
+						$('#hospital-name').text(hospital)
+						$('#case-history').text(case_history)
+						$('#pyee-bank-no').text(payee_bank_no)
+						$('#pyee-name').text(payee_name)
+						createClaimData(forms)
+						dealClaimStatusUI(dataJson)
+						dealBottomOperationUI(dataJson)
+						resizeContentLayout()
+
+						//理赔材料
+						$('#apply-user').text(apply_user_name)
+						$('#apply-phone').text(apply_phone)
+						$('.process-step1 .cell-time').text(moment(create_time).format('YYYY-MM-DD HH:MM'))
+
+						if (audit_user.length > 0) {
+							$('.process-step2 .cell-real-content').show()
+							$('#audit-user').text(audit_user_name)
+							$('#audit-phone').text(audit_user_phone)
+							$('.process-step2 .cell-time').text(moment(audit_time).format('YYYY-MM-DD HH:MM'))
+							if (audit_note.length > 0) {
+								$('.process-step2 .cell-content').text(audit_note)
+							}
+							//受理了 一定有受理人 和受理时间
+							if (closed_user.length > 0 && audit_status != 2) {
+								$('.process-step3 .cell-real-content').show()
+								$('#end-user').text(closed_user_name)
+								$('#end-phone').text(closed_user_phone)
+								$('#cost-money').text(cost)
+								if (closed_note.length > 0) {
+									$('.process-step3 .cell-content').text(closed_note)
+								}
+								$('.process-step3 .cell-time').text(moment(closed_time).format('YYYY-MM-DD HH:MM'))
+							} else {
+								$('.process-step3 .cell-real-content').hide()
+								$('.process-step3 .cell-dot').css('background-color', "rgb(153,153,153)")
+							}
+						}
+						//案件未受理，一定未结案
+						else {
+							$('.process-step2 .cell-real-content').hide()
+							$('.process-step2 .cell-dot').css('background-color', "rgb(153,153,153)")
+							$('.process-step3 .cell-real-content').hide()
+							$('.process-step3 .cell-dot').css('background-color', "rgb(153,153,153)")
+						}
+						updateLeftDotLine()
+					} else {
+						mui.toast(updateNullString(object['msg'], "获取理赔详情失败"))
+					}
+				},
+				function(error) {
+					mui.hideLoading()
+					mui.toast("获取理赔详情失败")
+				})
+		}
+
+		//理赔材料
+		function createClaimData(array) {
+			var html = [];
+			html.push('<ul>')
+			if ($.isArray(array) && array.length > 0) {
+				for (var i = 0; i < array.length; i++) {
+					var json = array[i],
+						fieldName = updateNullString(json['field_name'], ''),
+						fieldLabel = updateNullString(json['field_label'], ''),
+						fieldType = updateNullString(json['field_type'], ''),
+						fieldValue = updateNullString(json['field_value'], '');
+
+					html.push('<li class="data-cell"')
+					html.push('<label>' + (i + 1) + "." + fieldLabel + '</label>')
+					html.push('<span class="append-info">' + "" + '</span>')
+					html.push('<div id="picshow" class="photo-group">')
+					if (fieldValue.length > 0) {
+						var imgArray = fieldValue.split(',')
+						if (imgArray.length > 0) {
+							for (var j = 0; j < imgArray.length; j++) {
+								html.push('<div class="uploadFile" id="picfirst">')
+								var imgUrl = imgArray[j];
+								html.push('<img data-preview-src="' + imgUrl + '" data-preview-group="' + i + '" src="' + imgUrl + '"/>');
+								html.push('</div>')
+							}
+						}
+					}
+
+					html.push('</div>')
+					html.push('<div class="clear"></div>')
+					html.push('</li>')
+				}
+			} else {
+				html.push('<li class="xa-cell-empty-info">暂无理赔材料</li>')
+			}
+			html.push('</ul>')
+			$('.upload-data').append(html.join(''))
+		}
+
+		function updateLeftDotLine() {
+			var length = $('.process-cell').length
+			for (var i = 0; i < length; i++) {
+				// $('.process-cell:nth-child('+(i+1)+')').css({"background-color":'rgb('+randomRange(81,200)+','+randomRange(120,255)+','+(i+3)*23+')'})
+				var cellHeight = $('.process-cell:nth-child(' + (i + 1) + ')').height();
+				dLog(cellHeight)
+
+				$('.process-cell:nth-child(' + (i + 1) + ') .cell-line').css({
+					height: cellHeight + 'px'
+				});
+				// 第一个小圆点
+				if (i == 0) {
+					$('.process-cell:nth-child(' + (i + 1) + ') .cell-line').css({
+						"top": "10px"
+					});
+				}
+				//最后一个小圆点
+				else if (i == (length - 1)) {
+					$('.process-cell:nth-child(' + (i + 1) + ') .cell-line').css({
+						height: '20px'
+					});
+
+				}
+			}
+		}
+
+		function resizeContentLayout() {
+			var contentHeight = $('.content').height();
+			var footerHeight = 0;
+			var footterObj = $('.footbtn')
+			if (footterObj.is(':hidden')) {
+				footerHeight = 0
+			} else {
+				footerHeight = footterObj.height()
+
+			}
+			var realHeight = contentHeight - footerHeight;
+			$('.content').css({
+				height: realHeight + 'px'
+			});
+		}
+	</script>
+</html>

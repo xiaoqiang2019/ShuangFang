@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>理赔记录</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<style>
+			.top-wapper{
+				height: 50px;
+				position: relative;
+			}
+			.filter-area-btn,.filter-status-btn {
+				position: absolute;
+				color: rgb(17,17,17);
+				height: 50px;
+				border: none;
+				font-size: 15px;
+				/* font-weight: 400; */
+				/* background-color: red; */
+			}
+			.filter-area-btn{
+				left: calc(25% - 48.4px);
+				max-width: 120px;
+				 white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+				 word-wrap: break-word !important;
+				 word-break: break-all !important;
+				 white-space: normal !important;
+				/* padding-left: 0px; */
+			}
+
+			.filter-status-btn{
+				/* right: calc(25% - 48.4px); */
+				/* background-color: green; */
+			}
+			.filter-status-btn.active{
+				color:rgb(58,162,255);
+			}
+			.claim-statistics{
+				font-size: 13px;
+				background-color: rgb(239, 239, 239);
+				padding: 5px 15px;
+				color: rgb(153,153,153);
+			}
+		
+			.list-cell{
+				position: relative;
+				padding: 15px;
+				border-bottom: 1px solid rgb(222,222,222);
+				font-size: 14px;
+				color: rgb(102,102,102);
+			}
+			
+			.cell-title{
+				font-size: 16px;
+				font-weight: 500;
+				color: rgb(17,17,17);
+			}
+			/* 标题右侧险种类别 */
+			.cell-type{
+				font-size: 14px;
+				color: rgb(102,102,102);
+			}
+			
+			.claim-status{
+				position: absolute;
+				right: 15px;
+				font-size: 15px;
+			}
+			/* 审核被拒，图片样式 */
+			.claim-status-refuse{
+				position: absolute;
+				top: 10px;
+				right: 0px;
+				width: 84px;
+				height: auto;
+				overflow: hidden;
+			}
+			/* 已超期样式 */
+			.audit-overdue{
+				position: absolute;
+				font-size: 12px;
+				right: 15px;
+				top: 40px;
+				color: rgb(232,79,79);
+				border: 0.5px solid rgb(232,79,79);
+				border-radius: 3px;
+				padding: 0px 3px;
+			}
+			.cell-detail{
+				display: block;
+				/* background-color: oldlace; */
+				margin-top: 5px;
+			}
+			
+			.cell-detail label{
+				display: inline-block;
+				font-size: 14px;
+				/* background-color: palegreen; */
+				width: 85px;
+			}
+			
+			.cell-detail .right-area{
+				font-size: 14px;
+				color: rgb(102,102,102);
+				display: inline-block;
+				/* background-color: deeppink; */
+			}
+			/* 弹出层 */
+			#topPopover{
+				display: none;
+				position: absolute;
+				background-color: white;
+				z-index: 2;
+				width: 100%;
+				overflow-y: scroll;
+				border-top: 1px solid rgb(222,222,222);
+			}		
+			
+			.status-list li{
+				height: 50px;
+				line-height: 50px;
+				background-color: white;
+				text-align: left;
+				padding-left: 15px;
+				font-size: 15px;
+				border-bottom: 1px solid rgb(222,222,222);
+			}
+			
+			.status-list li.active{
+				background: url(../../common/app/images/main_ic_selected.png) no-repeat right center;
+				background-size: 17px 12px;
+				margin-right: 15px;
+			}
+			
+			
+	
+			.mask{
+				display: none;
+				position: absolute;
+				width: 100%;
+				background-color: rgb(0,0,0,0.3);
+				z-index: 1;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>理赔记录</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="top-wapper">
+			<button type="button" class="filter-area-btn mui-btn mui-icon mui-icon-arrowdown mui-right">
+				选择区域
+			</button>
+			<button type="button" class="filter-status-btn mui-btn mui-icon mui-icon-arrowdown mui-right">
+				全部理赔
+			</button>
+		</div>
+
+		<div class="claim-statistics">当前共0个理赔案件，其中0个待处理，0个受理中</div>
+		<div class="mui-scroll-wrapper">
+			<div class="claim-list mui-scroll">
+
+			</div>
+		</div>
+
+		<div class="flex_center footbtn">
+			<a href="javascript:;" class="footbtn app-blue-color" id="footer-btn">申请理赔</a>
+		</div>
+		<!-- 弹出层 -->
+		<div id="topPopover">
+			<ul class="status-list">
+			</ul>
+		</div>
+		<div class="mask"></div>
+
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script>
+		//1我申请的 0 机构所有 3 局端查看下属所有 4查询班级 默认 1
+		var range = updateNullString(getURLParameter('range'), '1');
+		$(function() {
+			function pushHistory() {
+				var state = {
+					title: "title",
+					url: "#"
+				};
+				window.history.pushState(state, "title", "#");
+			}
+			pushHistory();
+			if (1 != range) {
+				window.addEventListener("popstate", function(e) {
+					// alert("我监听到了浏览器的返回按钮事件啦");
+					// 根据自己的需求实现自己的功能
+					var count = history.length;
+					// alert(count)
+					history.go(-count + 2)
+				}, false);
+			}
+		});
+
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token);
+		var currentOrgID = updateNullString(localStorage.getItem("orgid"), ""),
+			currentOrgName = updateNullString(localStorage.getItem("orgname"), "");
+		if (currentOrgID.length == 0) {
+			getUserInfoRequest(system.usercenter, usercode, token, function() {
+				currentOrgID = updateNullString(localStorage.getItem("orgid"), "");
+				currentOrgName = updateNullString(localStorage.getItem("orgname"), "");
+			})
+		}
+		var dataSource = [], //数据源
+			start = 0, //接口使用
+			realAuditStatus = ""; //接口使用 理赔审核状态	0 待受理 1 已受理 2 驳回 3 结案，状态筛选
+		var areaid = updateNullString(getURLParameter('areaid'), ''),
+			classid = updateNullString(getURLParameter('classid'), ''),
+			product_classify = updateNullString(getURLParameter('product_classify'), ''),
+			time_range = updateNullString(getURLParameter('time_range'), ''),
+			usertype = updateNullString(getURLParameter('usertype'), '');
+
+		//若是教育局用，需要展示区域筛选，其他用户只展示状态筛选即可【当前版本全部隐藏，暂不开放区域选择功能】
+		// var usertype = localStorage.getItem('usertype')
+		// var isEdu = (usertype == '30') ? true : false;
+		var isEdu = false;
+		if (isEdu) {
+			$('.filter-area-btn').show()
+			$('.filter-area-btn').text(updateNullString(currentOrgName, '选择区域'))
+			$('.filter-status-btn').css('right', '25%').css('right', '-=48.4px');
+		} else {
+			$('.filter-area-btn').hide()
+			$('.filter-status-btn').css('left', '50%').css('left', '-=48.4px');
+			// $('.filter-status-btn').css('right', 'calc(50% - 48.4)') 
+		}
+
+		(function($) {
+			resizeContentLayout()
+			//创建状态列表
+			createStatusList()
+			//阻尼系数  
+			var deceleration = mui.os.ios ? 0.003 : 0.0009;
+			$('.mui-scroll-wrapper').scroll({
+				bounce: false,
+				indicators: false, //是否显示滚动条  
+				deceleration: deceleration
+			});
+			mui(".mui-scroll-wrapper").on('tap', 'li', function(event) {
+				this.click();
+			});
+			mui.init({
+				pullRefresh: {
+					container: '.mui-scroll-wrapper',
+					down: {
+						style: 'circle',
+						offset: '0px',
+						auto: true,
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '加载中...',
+						callback: pullupRefresh
+					}
+				}
+			});
+		})(mui);
+		//解决iOS返回没有刷新问题
+		var isPageHide = false;
+		window.addEventListener('pageshow', function() {
+			if (isPageHide) {
+				pulldownRefresh()
+			}
+		});
+
+		window.addEventListener('pagehide', function() {
+			isPageHide = true;
+		});
+		//筛选->状态按钮点击
+		$('.filter-status-btn').click(function() {
+			if ($(this).hasClass('active')) {
+				$('.mask').trigger('click')
+			} else {
+				$("#topPopover").fadeIn();
+				$('.mask').show()
+				$(this).addClass('active')
+			}
+		})
+		//筛选->区域按钮点击
+		$('.filter-area-btn').click(function() {
+			CodeSTD.form({
+				url: "claim_schoollist.html",
+				params: {
+					"usercode": usercode,
+					"token": token
+				},
+			});
+		})
+		//筛选按钮后出现的蒙版点击
+		$('.mask').click(function() {
+			$('.filter-status-btn').removeClass('active')
+			$("#topPopover").fadeOut(1);
+			$('.mask').hide()
+		})
+
+		//状态选中后操作
+		$('.status-list').on('click', 'li', function() {
+			var thisObj = $(this)
+			$('.filter-status-btn').text(thisObj.text())
+			thisObj.addClass("text_blue").siblings().removeClass("text_blue");
+			thisObj.addClass("active").siblings().removeClass("active");
+			$('.mask').trigger('click')
+			var realCode = thisObj.attr('data-code')
+			//全部理赔
+			if (realCode == "-1") {
+				realCode = ""
+			}
+			realAuditStatus = realCode
+			pulldownRefresh()
+		})
+
+		//选中cell进入详情
+		$('.claim-list').on('click', '.list-cell', function() {
+			var that = $(this),
+				claimId = that.attr('claim-id'),
+				claimNo = that.attr('claim-no'),
+				orderId = that.attr('insure-order-id'),
+				orderNo = that.attr('insure-order-no');
+			CodeSTD.form({
+				url: "claim_detail.html",
+				params: {
+					"usercode": usercode,
+					"token": token,
+					"claimId": claimId.toString(),
+					"claimNo": claimNo.toString(),
+					"orderID": orderId.toString(),
+					"orderNo": orderNo.toString()
+				},
+			});
+		})
+
+		//申请理赔 点击
+		$('#footer-btn').click(function() {
+			var apply_claim = $(this).attr('apply_claim')
+			//点击输入保单号
+			if (apply_claim == 1) {
+				mui.prompt("", "", '请输入保单号', new Array('取消', '确定'), function(e) {
+					if (e.index == 1) {
+						//var content = document.getElementById("notifyText").textContent;
+						var content = e.value;
+						if (!updateNullString(content)) {
+							mui.toast("请输入保单号");
+							return;
+						}
+						CodeSTD.form({
+							url: "claim_step1.html",
+							params: {
+								"usercode": usercode,
+								"token": token,
+								"orderNo": content
+							},
+						});
+					}
+				}, 'div');
+
+
+			}
+			//进入我的保单列表
+			else {
+				CodeSTD.form({
+					url: "../insurance_app/insurance_mylist.html",
+					params: {
+						"usercode": usercode,
+						"token": token
+					},
+				});
+			}
+
+		})
+
+		function createListUI(array, pulltofresh) {
+			var html = [];
+			html.push('<ul>')
+			var pendingArray = [], //待处理
+				acceptanceArray = []; //受理中
+			for (var i = 0; i < array.length; i++) {
+				var json = array[i],
+					claimId = updateNullString(json['claim_id'], ''), //理赔id 
+					claimNo = updateNullString(json['claim_no'], ''), //理赔流水号
+					insureOrderId = updateNullString(json['insure_order_id'], ''), //保单编号id 
+					insureOrderNo = updateNullString(json['insure_order_no'], ''), //保单编号
+					insureOrderName = updateNullString(json['insure_order_name'], ''), //保单名称
+					caseClassifyId = updateNullString(json['case_classify'], ''), //案件分类ID
+					caseClassifyName = updateNullString(json['case_classify_name'], ''), //案件分类名称
+					caseTypeId = updateNullString(json['case_type'], ''), //事故类型ID
+					caseTypeName = updateNullString(json['case_type_name'], ''), //事故类型名称
+					applyUserCode = updateNullString(json['apply_user'], ''), //申请人账号
+					applyUserName = updateNullString(json['apply_user_name'], ''), //申请人名称
+					applyOrgId = updateNullString(json['apply_org_id'], ''), //所属机构id 
+					applyOrgName = updateNullString(json['apply_org_name'], ''), //所属机构名称
+					auditStatus = json['audit_status'], //申请状态0 待受理 1 已受理 2 驳回 3 结案
+					ifOverdue = json['if_overdue'], //是否超期 0 未超期 1 已超期
+					createTime = json['create_time']; //申请时间
+
+				html.push('<li class="list-cell" claim-no="' + claimNo + '" claim-id="' + claimId + '" insure-order-id="' +
+					insureOrderId + '" insure-order-no="' + insureOrderNo + '">')
+				html.push('<span class="cell-title" case-classify="' + caseClassifyId + '">' + insureOrderName + '</span>')
+				html.push('<span class="cell-title cell-type">' + '【' + caseClassifyName + '】' + '</span>')
+				//0 待受理【橙色文本】 1 已受理【黄色？文本】 2 驳回【一张图片】 3 结案【绿色文本】
+				if (auditStatus == 0) {
+					pendingArray.push(claimNo)
+					html.push('<span class="claim-status app-orange-color">' + '待受理' + '</span>')
+				} else if (auditStatus == 1) {
+					acceptanceArray.push(claimNo)
+					html.push('<span class="claim-status app-yellow-color">' + '受理中' + '</span>')
+					if (ifOverdue == 1) {
+						html.push('<span class="audit-overdue app-red-color">' + '已超期' + '</span>')
+					}
+				} else if (auditStatus == 2) {
+					html.push('<img class="claim-status-refuse" src="../../common/app/images/apply_img_rejected.png">')
+				} else if (auditStatus == 3) {
+					html.push('<span class="claim-status app-green-color">' + '已结案' + '</span>')
+				}
+				html.push('<div class="cell-detail"><label>申请人</label><div class="right-area cell-applicant" apply-usercode="' +
+					applyUserCode + '">' + applyUserName +
+					'</div></div>')
+				var timeString = createTime;
+				html.push('<div class="cell-detail"><label>申请时间</label><div class="right-area cell-apply-time">' + timeString +
+					'</div></div>')
+				html.push('<div class="cell-detail"><label>所属机构</label><div class="right-area cell-school" apply-orgid="' +
+					applyOrgId + '">' + applyOrgName +
+					'</div></div>')
+				html.push('<div class="cell-detail"><label>事故类型</label><div class="right-area cell-accident-type" case-type-code="' +
+					caseTypeId + '">' + caseTypeName +
+					'</div></div>')
+				html.push('</li>')
+			}
+			html.push('</ul>')
+			if (pulltofresh) {
+				$('.claim-list').html(html.join(''))
+			} else {
+				$('.claim-list').append(html.join(''))
+			}
+
+			$('.claim-statistics').text('当前共' + dataSource.length + '个理赔案件，其中' + pendingArray.length + '个待处理，' + acceptanceArray
+				.length + '个处理中')
+		}
+		/**
+		 *  下拉刷新获取最新列表 
+		 */
+		function pulldownRefresh() {
+			console.log("pulldownRefresh")
+			requestDataFromServer(true)
+		}
+		/**
+		 * 上拉加载拉取历史列表 
+		 */
+		function pullupRefresh() {
+			console.log("pullupRefresh")
+			requestDataFromServer(false)
+		}
+		// 下拉刷新
+		function requestDataFromServer(pulltofresh) {
+			/*加载更多的时候是否需要page++；
+			eg：page=1的时候有值，pages++ 请求page=2的时候没有数据，
+			那么下次在loadmore，应该还是加载page=2的数据，而不是page++ 请求page=3的数据*/
+			var needPageAddWhenLoadmore = true;
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				//jquery dom操作的时候，需要延迟 取消刷新，不然会一直执行up两次
+				setTimeout(function() {
+					if (pulltofresh) {
+						mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh(false);
+					} else {
+						mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+					}
+				}, 2000)
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+			if (pulltofresh) {
+				start = 0;
+			} else {
+				if (needPageAddWhenLoadmore) {
+					start = dataSource.length;
+				}
+			}
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"audit_status": realAuditStatus, //理赔审核状态	0 待受理 1 已受理 2 驳回 3 结案
+				"range": range,
+				"start": start,
+				"limit": "10"
+			};
+			if (1 != range) {
+				if (0 == range) {
+					paramDic['orgid'] = currentOrgID;
+				} else if (3 == range) {
+					paramDic['areaid'] = areaid;
+				} else if (4 == range) {
+					paramDic['classid'] = classid;
+				}
+				paramDic['time_range'] = time_range;
+				paramDic['product_classify'] = product_classify;
+				paramDic['user_type'] = usertype;
+			}
+
+			var urlString = system.jias + "/v1/claim/list";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+					/*loadmore的需要判断分页的数据是否有值，有值了数据源加上去
+						没有值 判断原数据源是否有值，没有值，空页面显示；
+					 有值了，页面依然显示原数据源，然后toast提示用户，暂无更多数据【表明用户下拉加载的无数据】；*/
+					if (result) {
+						var dataJson = object["data"],
+							itemArray = dataJson["items"],
+							applyClaim = dataJson['apply_claim']; //是否有申请理赔的权限	0否1有【保险经纪人、保险人有权限】
+						if (applyClaim == 0 || applyClaim == undefined || applyClaim == null || applyClaim.length <= 0) {
+							applyClaim = 0;
+							$('#footer-btn').text('选择保单理赔')
+							$('#footer-btn').attr('apply_claim', applyClaim)
+						} else {
+							$('#footer-btn').text('申请理赔')
+							$('#footer-btn').attr('apply_claim', applyClaim)
+						}
+						if (range != 1) {
+							$('.footbtn').hide()
+						}
+						//pull to refrsh
+						if (start == 0) {
+							if (itemArray.length > 0) {
+								dataSource = itemArray
+								createListUI(dataSource, pulltofresh)
+							} else {
+								showRequestErrorEmpty("暂无相关数据", true, true, function() {
+									pulldownRefresh(true)
+								});
+							}
+						}
+						//load more
+						else {
+							if (itemArray.length > 0) {
+								dataSource = dataSource.concat(itemArray)
+								createListUI(itemArray, pulltofresh)
+							} else {
+								needPageAddWhenLoadmore = false; //请求下来的数据列表为0，用户在loadmore的时候page还是原来的哪个page，而不是page++
+								if (dataSource.length == 0) {
+									showRequestErrorEmpty("暂无相关数据", true, true, function() {
+										pulldownRefresh(true)
+									});
+								} else {
+									mui.toast("暂无更多数据")
+								}
+							}
+						}
+					} else {
+						showRequestErrorEmpty(updateNullString(object["msg"], "暂无相关数据"), true, false);
+					}
+					//jquery dom操作的时候，需要延迟 取消刷新，不然会一直执行up两次
+					setTimeout(function() {
+						if (pulltofresh) {
+							mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh(false);
+						} else {
+							mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+						}
+					}, 2000)
+				},
+				function(error) {
+					mui.hideLoading();
+					//jquery dom操作的时候，需要延迟 取消刷新，不然会一直执行up两次
+					setTimeout(function() {
+						if (pulltofresh) {
+							mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh(false);
+						} else {
+							mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+						}
+					}, 2000)
+					showRequestErrorEmpty("数据加载时出了问题", true, true, function() {
+						pulldownRefresh(true)
+					});
+				})
+		}
+
+		//请求返回数据为空或失败显示的空页面
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".claim-list"
+			}, function() {
+				pulldownRefresh()
+			});
+		}
+
+		/**创建状态列表*/
+		function createStatusList() {
+			//0 待受理 1 已受理 2 驳回 3 结案
+			var statusArray = ['全部理赔', '待受理', '已受理', '驳回', '结案'];
+			var html = [];
+			for (var i = 0; i < statusArray.length; i++) {
+				html.push('<li class="status-cell" data-code="' + (i - 1) + '">' + statusArray[i] + '</li>')
+			}
+			$('.status-list').html(html.join(''))
+			var popoverHeight = 50 * statusArray.length;
+			if (popoverHeight > 200) {
+				popoverHeight = 200;
+			}
+			$('#topPopover').css({
+				height: popoverHeight + 'px'
+			})
+		}
+
+		function resizeContentLayout() {
+			var topObj = $('.top-wapper'),
+				offsetTop = $('.top-wapper').offset().top,
+				maskY = offsetTop + topObj.height();
+			$('.mask').css('top', maskY + 'px')
+			$('#topPopover').css('top', maskY + 'px')
+			$('.mask').css('height', '100%').css('height', '-=' + maskY + 'px')
+			//计算列表可滑动区域高度,高度自适应，小屏幕上
+			var screenHeight = $(window).height();
+			var statisticsHeight = $('.claim-statistics').height()
+			var footerObj = $('#footer-btn'),
+				footerHeight = footerObj.height();
+			// if (footerObj.is(':visible')) {
+			// 	footerHeight = 0;
+			// }
+			$('.claim-statistics').css({
+				"line-height": statisticsHeight + 'px'
+			})
+			var realHeight = screenHeight - 50 - statisticsHeight - footerHeight;
+			$('.mui-scroll-wrapper').css('height', realHeight + 'px');
+			$('.mui-scroll-wrapper').css('top', maskY + statisticsHeight + 'px')
+			if (isAPPHeaderShow) {
+				$('.mui-scroll-wrapper').css('height', realHeight + 'px').css('height', '-=44px');
+			} else {
+				$('.mui-scroll-wrapper').css('height', realHeight + 'px').css('height', '-=0px');
+			}
+		}
+	</script>
+</html>

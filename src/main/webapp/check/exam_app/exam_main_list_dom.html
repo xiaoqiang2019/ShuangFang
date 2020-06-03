@@ -1,0 +1,225 @@
+<!-- 以下代码可以直接全部copy到新建的html中 基础引用 不可缺少 有自定义的在单个html中实现-->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>专项检查</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			.mui-popover.mui-popover-action .mui-table-view {
+				color: rgb(17, 17, 17);
+			}
+
+
+			/* 顶部操作区域css样式 */
+			.top-container {
+				width: 100%;
+				height: 40px;
+				border-bottom: solid rgb(222, 222, 222) 1px;
+			}
+
+			.top-container div {
+				height: 40px;
+				line-height: 40px;
+				font-size: 16px;
+				color: rgb(17, 17, 17);
+				margin-left: 15px;
+				float: left;
+				position: relative;
+			}
+
+			.top-center-line {
+				height: 80% !important;
+				top: 10%;
+				width: 1px;
+				background-color: rgb(222, 222, 222);
+			}
+
+			.top-container div i {
+				position: absolute;
+				left: 0px;
+				bottom: 0px;
+				height: 1px;
+				right: 0px;
+				background-color: rgb(59, 162, 255);
+				display: none;
+			}
+
+			.top-container div.active i {
+				background-color: rgb(59, 162, 255);
+				display: block;
+			}
+
+			.top-container div.active {
+				color: rgb(59, 162, 255);
+			}
+
+			.top-filter-btn {
+				float: right !important;
+				font-weight: 450;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>专项检查</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<div class="top-container">
+				<div class="top-mine-btn active">我的<i class="active"></i></div>
+				<div class="top-center-line"></div>
+				<div class="top-all-btn">全部<i></i></div>
+				<div class="top-filter-btn mui-icon mui-icon-arrowdown mui-right">所有时间</div>
+			</div>
+		</div>
+		<!-- picker - 所有时间 -->
+		<div id="picker-filter-time" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul id="picker-first-item" class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">所有时间</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">取消</a>
+				</li>
+			</ul>
+		</div>
+		<!-- picker - cell中的更多操作 -->
+		<div id="picker-more-operation" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul id="picker-more-item" class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">查看详情（检查标准、分组</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">取消</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<!-- 日期插件 -->
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+
+	<script>
+		mui.init()
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+		createFilterTimePicker()
+
+		$('.top-container').on('click', 'div', function() {
+			dLog($(this).index())
+			var index = $(this).index();
+			var selectText = $(this).text()
+			if (selectText == '我的' || selectText == '全部') {
+				$(this).addClass("active").siblings().removeClass("active");
+			}
+			switch (selectText) {
+				case "我的":
+					//代码块
+					break;
+				case "全部":
+					//代码块
+					break;
+				case "所有时间":
+					//代码
+					mui("#picker-filter-time").popover('show');
+					break;
+				default:
+					//
+			}
+		})
+
+		function createFilterTimePicker() {
+			var currentYear = moment().year(),
+				minYear = parseInt(currentYear) - 2,
+				maxYear = parseInt(currentYear) + 2,
+				html = [];
+			for (var i = minYear; i <= maxYear; i++) {
+				html.push('<li class="mui-table-view-cell"><a href="#">' + i + '年')
+				html.push('</a></li>')
+			}
+			$('#picker-first-item').append(html.join(''))
+		}
+
+		mui('body').on('tap', '.mui-popover-action li>a', function() {
+			var a = this,
+				parent;
+			//根据点击按钮，反推当前是哪个actionsheet
+			for (parent = a.parentNode; parent != document.body; parent = parent.parentNode) {
+				if (parent.classList.contains('mui-popover-action')) {
+					break;
+				}
+			}
+			dLog('#' + parent.id)
+			if (parent.id == 'picker-filter-time') {
+				if (a.innerHTML != '取消') {
+					requestFromServer()
+				}
+			} else if (parent.id == 'picker-more-operation') {
+
+			}
+			//关闭actionsheet
+			mui('#' + parent.id).popover('toggle');
+
+		})
+
+
+
+		function requestFromServer() {
+			// request
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+			};
+			var url = system.usercenter + "/manage/getInformationOfStudent.action";
+			mui.showLoading();
+			jQuery_Request_Post(url, paramDic, "json", true, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					// JSON.stringify(json);//json转字符串
+					//JSON.parse(responseData["data"]);//字符串转json
+				} else {
+					mui.toast(updateNullString(responseData["msg"], "获取单位列表失败"));
+				}
+			}, function(error) {
+				mui.hideLoading();
+				var msg = updateNullString(error, "请求失败!")
+				mui.toast(msg);
+			});
+		}
+	</script>
+
+
+</html>

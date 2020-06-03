@@ -1,0 +1,457 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>云眼</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 平台李鹏使用的px和rem转换 46.875 -->
+		<script src="../../common/extend/script/hotcss.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<!-- 本页面css -->
+		<link href="css/monitor_list.css" rel="stylesheet" />
+		<!-- 空页面 -->
+		<script src="../../common/app/script/empty.js"></script>
+	</head>
+
+	<body>
+		<!-- 导航栏 -->
+
+		<header>
+			<h1>云眼监控列表</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<!-- 页面元素开始 -->
+		<div class="container"></div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script>
+		// mui的折叠面板 accordion 默认展开收缩逻辑是，展开其中一个的同时收缩起同级已经展开的元素。 实际需求：展开其中一个不必收缩同级元素。
+		/**
+		方法一： 注释如下代码
+
+		//              if (collapse) {
+		//                  collapse.classList.remove(CLASS_ACTIVE);
+		//              }
+		方法二： 关键在 ruturn false;
+		这句可以取消mui.js库默认绑定的事件， 这样就能达到重写。
+
+		//自定义展开后不需要讲同级元素折叠
+		mui('body').on('tap', '.mui-collapse', function(e) {
+
+			this.classList.toggle('mui-active');
+			return false; //可以取消继续执行默认绑定事件
+		})
+		方法三： 阻止事件冒泡
+
+		复制代码
+		//自定义展开后不需要讲同级元素折叠
+		mui('body').on('tap', '.mui-collapse', function(e) {
+			//阻止事件冒泡
+			e.stopPropagation();
+
+			this.classList.toggle('mui-active');
+		})
+		*/
+		mui('body').on('tap', '.mui-collapse', function(e) {
+			//阻止事件冒泡
+			e.stopPropagation();
+			this.classList.toggle('mui-active');
+		});
+	</script>
+	<script>
+		var str = $("form").serialize();
+		var serializeArray = $("form").serializeArray();
+		if (serializeArray.length > 0) {
+			$.each(serializeArray, function(i, obj) {
+				dLog(obj.name + obj.value);
+			})
+		}
+
+		// system.usercenter = "http://www.ss360.com"; //当前登录用户的环境
+		// localUserCode = "4101001324";
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var basetoken = updateNullString(getURLParameter('basetoken'), "");
+
+		var localOrgId = updateNullString(localStorage.getItem("orgid"), ""),
+			localOrgName = updateNullString(localStorage.getItem("orgname"), "");
+		if (localOrgId.length == 0) {
+			getUserInfoRequest(system.usercenter, usercode, token, function() {
+				localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+				localOrgName = updateNullString(localStorage.getItem("orgname"), "");
+			})
+		}
+	
+		var schoolcode = updateNullString(getURLParameter('orgid'), localOrgId); //当前选中的机构id
+		var schoolname = updateNullString(getURLParameter('orgname'), localOrgName);
+		var videodeviceid = updateNullString(getURLParameter('videodeviceid'), ""); //设备唯一值
+		var groupcode = updateNullString(getURLParameter('groupcode'), ""); //设备摄像头分组code
+		var groupname = updateNullString(getURLParameter('groupname'), ""); //设备摄像头分组code
+
+		// $("title").html(title);
+		// $("header h1").html(title);
+
+		var dataSource; //从url获取的数据，全局使用
+		var isContainGroup = false; //全局使用
+
+		//mui初始化，配置下拉刷新
+		mui.init({
+			pullRefresh: {
+				container: '.container', //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				down: {
+					offset: '0px', //可选 默认0px,下拉刷新控件的起始位置
+					callback: getMonitorData
+				}
+			}
+		});
+
+		getMonitorData(); //首次加载
+
+		function getMonitorData() {
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+
+			var isRequest = true;
+			if (isRequest) {
+				// 获取监控设备列表
+				var paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"basetoken": basetoken,
+					"schoolcode": schoolcode,
+					"platmodel": "300",
+					"enbol": false
+				};
+				if (videodeviceid.length > 0) {
+					paramDic["videodeviceid"] = videodeviceid;
+				}
+				if (groupcode.length > 0) {
+					paramDic["groupcode"] = groupcode;
+				}
+				var url = system.usercenter + "/monitorSchoolVideoList.action";
+				mui.showLoading();
+				jQuery_Request_Post(url, paramDic, "json", true, function(responseData) {
+					mui.hideLoading();
+					var ret = responseData["ret"];
+					var msg = responseData["msg"];
+					if (ret) {
+						var jsonList = JSON.parse(responseData["data"]); //字符串转json
+						getRequestData(jsonList);
+					} else {
+						mui.toast(updateNullString(msg, "获取监控设备及摄像头列表失败!"));
+						showRequestErrorEmpty("数据加载时出了问题", true, true);
+					}
+				}, function(error) {
+					mui.hideLoading();
+					var msg = updateNullString(error, "请求获取监控设备及摄像头列表失败!")
+					mui.toast(msg);
+					showRequestErrorEmpty("数据加载时出了问题", true, true);
+				});
+
+			} else {
+				$.getJSON("monitorlist.json", "", function(data) {
+					mui.hideLoading();
+					var dataJson = data;
+					getRequestData();
+				});
+			}
+		}
+
+		//解析请求成功返回的数据
+		function getRequestData(dataJson) {
+			if (dataJson.length > 0) {
+				//无分组 是最终数据列表
+				dataSource = dataJson;
+				if (dataJson.length == 1) {
+					var videoListInfo = dataJson[0];
+					var videoGroups = videoListInfo["videogroups"]; //设备下的分组
+					if (videoGroups.length == 0) {
+						isContainGroup = true;
+					}
+				}
+				//单独列表样式样式
+				if (isContainGroup == true) {
+					var obj = dataJson[0];
+					createNoGroupList(obj);
+				}
+				//带分组列表样式
+				else {
+					createGroupList(dataJson);
+					$('.container #parent_li').eq(0).addClass('mui-active').siblings().removeClass('active');
+					$(".container #parent_a img").eq(0).attr("src", "image/monitor_new_open_expand.png");
+					$(".container #parent_a").eq(0).css("border-top", "none");
+				}
+
+			} else {
+				showRequestErrorEmpty("暂无相关数据", true, false);
+			}
+			mui('.content-wapper').pullRefresh().endPulldownToRefresh(false);
+		}
+
+		//请求返回数据为空或失败显示的空页面
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".container"
+			}, function() {
+				getMonitorData();
+			});
+			mui('.content-wapper').pullRefresh().endPulldownToRefresh(false);
+		}
+
+
+		// 创建子列表【直接展示 不用折叠】
+		function createNoGroupList(obj) {
+			$(".container ul").remove();
+			var videoDevciceName = updateNullString(obj["videodevcicename"], ""); //设备名称
+			var devicesType = updateNullString(obj["devicestype"], ""); //设备类型0:HLS直播方式 1:大华直连 2:海康直连 3:柯达 100:海康平台 200:大华平台 300:巨龙统一平台 400:阿百讯 500:视可讯							
+			var videoChanels = obj["videoChanels"]; //设备下摄像头列表
+			var html = [];
+			if (videoChanels.length <= 0) {
+				//空页面【无摄像头不可刷新】
+				showRequestErrorEmpty("暂无相关数据", true, false);
+			} else {
+				html.push('<ul id="camera_ul" class="mui-table-view">');
+				for (var i = 0; i < videoChanels.length; i++) {
+					var obj = videoChanels[i];
+					var cam_online = updateNullString(obj["cam_online"], ""); //摄像头状态【(1，正常，2摄像头存在，但是连接不成功,3摄像头ID不存在，4摄像头流地址错误) 20190718新增】
+					var cam_name = updateNullString(obj["name"], ""); //摄像头名称
+					html.push('<li id="camera_li" class="mui-table-view-cell mui-collapse"><a id="camera_a">');
+					//9300在线 离线
+					var imgPath = (cam_online == "4" && devicesType == "300") ? "image/monitor_campus_camera_gray.png" :
+						"image/monitor_campus_camera.png";
+					html.push('<img src="' + imgPath + '"/>');
+					html.push('<span>' + cam_name + '</span>');
+					html.push('</li>');
+				}
+				html.push('</ul>');
+			}
+			$(".container").append(html.join(""));
+		}
+		// 创建分组列表【可折叠】
+		function createGroupList(array) {
+
+			$(".container ul").remove();
+			var html = [];
+			html.push('<ul id="parent_ul" class="mui-table-view">');
+			for (var i = 0; i < array.length; i++) {
+				var obj = array[i];
+				var videoDevciceName = updateNullString(obj["videodevcicename"], ""); //设备名称
+				var devicesType = updateNullString(obj["devicestype"], ""); //设备类型0:HLS直播方式 1:大华直连 2:海康直连 3:柯达 100:海康平台 200:大华平台 300:巨龙统一平台 400:阿百讯 500:视可讯							
+
+				var videoChanels = obj["videoChanels"]; //设备下摄像头列表
+				var videoGroups = obj["videogroups"]; //设备下分组情况
+				html.push(
+					'<li id="parent_li" class="mui-table-view-cell mui-collapse"><a id="parent_a"><img id="parent_img" src="image/monitor_new_close_expand.png"/><span id="parent_span" >' +
+					videoDevciceName + '</span></a>')
+				//videoGroups 和 videoChanels 不共存
+				//li展示的分组信息
+				// videoGroups = [];
+
+				if (videoGroups.length > 0) {
+					html.push('<ul class="mui-table-view">');
+					for (var j = 0; j < videoGroups.length; j++) {
+						var groupObj = videoGroups[j];
+						var groupName = updateNullString(groupObj["groupname"], "");
+						html.push(
+							'<li id="group_li" class="mui-table-view-cell"><a id="group_a"><img src="image/monitor_group_camera.png"/><span id="group_span" >' +
+							groupName + '</span></a></li>')
+					}
+					html.push("</ul>")
+
+				}
+				// // 空数据
+				// else if (videoGroups.length == 0) {
+				// 	html.push('<ul class="mui-table-view"><a>');
+				// 	html.push('<li id="no-data" class="mui-table-view-cell">------当前无数据------</li>');
+				// 	html.push("</a></ul>")
+				// }
+
+				//li展示的是摄像头信息
+				if (videoChanels.length > 0) {
+					html.push('<ul class="mui-table-view mui-table-view-chevron">');
+					for (var j = 0; j < videoChanels.length; j++) {
+						var obj = videoChanels[j];
+						var cam_online = updateNullString(obj["cam_online"], ""); //摄像头状态【(1，正常，2摄像头存在，但是连接不成功,3摄像头ID不存在，4摄像头流地址错误) 20190718新增】
+						var cam_name = updateNullString(obj["name"], ""); //摄像头名称
+						html.push('<li id="camera_li" class="mui-table-view-cell mui-collapse"><a id="camera_a">')
+						//9300在线 离线
+						var imgPath = (cam_online == "4" && devicesType == "300") ? "image/monitor_campus_camera_gray.png" :
+							"image/monitor_campus_camera.png";
+						html.push('<img src="' + imgPath + '"/>');
+						html.push('<span id="camera_span" >' + cam_name + '</span></a></li>');
+					}
+					html.push("</ul>");
+				}
+				// //空数据
+				// else if (videoGroups.length == 0 ) {
+				// 	html.push('<ul class="mui-table-view"><a>');
+				// 	html.push('<li id="no-data" class="mui-table-view-cell">------当前无数据------</li>');
+				// 	html.push("</a></ul>")
+				// }
+				html.push("</li>");
+			}
+			html.push("</ul>");
+			$(".container").append(html.join(""));
+		}
+
+		$(".container").on("tap", ".mui-table-view-cell a", function(e) {
+
+			var pa = this.parentNode;
+			var index = $(pa).index();
+			var currentDom = $(this).attr("id");
+			//点击的是header li
+			if (currentDom == "parent_a") {
+				//click 当前是展开点击折叠
+				if ($(this).hasClass('mui-active')) {
+					var imgObj = $(this).find("#parent_img");
+					$(imgObj).attr("src", "image/monitor_new_close_expand.png")
+				}
+				//click 当前是折叠点击展开
+				else {
+					if (index == 0) {
+						var aObj = $(this).find("#parent_a");
+						$(aObj).css("border-top", "none");
+					}
+					var imgObj = $(this).find("#parent_img");
+					$(imgObj).attr("src", "image/monitor_new_open_expand.png")
+					//以下注释代码是存在一个展开项，当前需求是可以同时存在多个
+					// var imgArray = $(".container #parent_li #parent_a img");
+					// if (imgArray.length > 0) {
+					// 	for (var i = 0; i < imgArray.length; i++) {
+					// 		var imgObj = imgArray[i];
+					// 		if (i == $(this).index()) {
+					// 			$(imgObj).attr("src", "image/monitor_new_open_expand.png")
+					// 		} 
+					// 		else {
+					// 			$(imgObj).attr("src", "image/monitor_new_close_expand.png")
+					// 		}
+					// 	}
+					// }
+				}
+			}
+			//点击是是分组 li
+			else if (currentDom == "group_a") {
+				e.stopPropagation()
+				var sectionLiObj = $(this).parents("#parent_li");
+				var section_index = $(sectionLiObj).index();
+				var section_obj = dataSource[section_index]; //分组cell所在section
+				var videoGroups = section_obj["videogroups"];
+				var obj = videoGroups[index]; //点击的具体cell
+				//设备信息
+				var videoDevciceName = updateNullString(section_obj["videodevcicename"], ""); //设备名称
+				var videoDeviceId = updateNullString(section_obj["videodeviceid"], ""); //设备id 
+				var videoDeviceType = updateNullString(section_obj["videodevicetype"], ""); //设备型号 DVR/NVR
+				var videoDeviceIP = updateNullString(section_obj["ip"], ""); //设备IP
+				var videoDeviceMac = updateNullString(section_obj["mac"], ""); //设备Mac地址
+				var videoStream = updateNullString(section_obj["stream"], ""); //视频流码流类型 主码流还是辅码流
+				var videoDeviceUsername = updateNullString(section_obj["username"], ""); //登录设备帐号
+				var videoDevicePassword = updateNullString(section_obj["password"], ""); //登录设备密码
+				var devicesType = updateNullString(section_obj["devicestype"], ""); //设备类型0:HLS直播方式 1:大华直连 2:海康直连 3:柯达 100:海康平台 200:大华平台 300:巨龙统一平台 400:阿百讯 500:视可讯							 
+				//摄像头分组信息
+				var groupcode = updateNullString(obj["groupcode"], "");
+				var groupname = updateNullString(obj["groupname"], "");
+
+				dLog("click  " + videoDevciceName + "  " + groupname + '  ' + groupcode);
+
+				CodeSTD.form({
+					url: '../monitor_app/monitor_list.html',
+					params: {
+						usercode: usercode,
+						token: token,
+						orgid: schoolcode,
+						orgname: schoolname,
+						videodeviceid: videoDeviceId,
+						groupcode: groupcode,
+						groupname: groupname
+					},
+				});
+			}
+			//点击的是摄像头 li
+			else if (currentDom == "camera_a") {
+				e.stopPropagation()
+				var section_obj;
+				if (isContainGroup) {
+					section_obj = dataSource[0];
+				} else {
+					var sectionLiObj = $(this).parents("#parent_li");
+					var section_index = $(sectionLiObj).index();
+					section_obj = dataSource[section_index]; //分组cell所在section
+				}
+
+				var videoChanels = section_obj["videoChanels"];
+				var obj = videoChanels[index]; ////点击的具体cell
+
+				//设备信息
+				var videoDevciceName = updateNullString(section_obj["videodevcicename"], ""); //设备名称
+				var videoDeviceId = updateNullString(section_obj["videodeviceid"], ""); //设备id 
+				var videoDeviceType = updateNullString(section_obj["videodevicetype"], ""); //设备型号 DVR/NVR
+				var videoDeviceIP = updateNullString(section_obj["ip"], ""); //设备IP
+				var videoDeviceMac = updateNullString(section_obj["mac"], ""); //设备Mac地址
+				var devicesType = updateNullString(section_obj["devicestype"], ""); //设备类型0:HLS直播方式 1:大华直连 2:海康直连 3:柯达 100:海康平台 200:大华平台 300:巨龙统一平台 400:阿百讯 500:视可讯							 
+
+				//摄像头信息
+				var cam_online = updateNullString(obj["cam_online"], ""); //摄像头状态【(1，正常，2摄像头存在，但是连接不成功,3摄像头ID不存在，4摄像头流地址错误) 20190718新增】		
+				var cam_name = updateNullString(obj["name"], ""); //摄像头名称			
+				var cam_id = updateNullString(obj["cameraid"], ""); //摄像头ID 					
+				var imgurl = updateNullString(obj["imgurl"], ""); //摄像头默认显示图片	
+				var resolution = updateNullString(obj["resolution"], ""); //摄像头画面分辨率  
+
+				CodeSTD.form({
+					url: '../monitor_app/videoplayer_tengxun.html',
+					params: {
+						orgid: schoolcode,
+						usercode: usercode,
+						cam_online: cam_online,
+						cam_name: cam_name,
+						cam_id: cam_id,
+						imgurl: imgurl,
+						resolution: resolution,
+						token: token,
+					},
+				});
+			}
+		});
+	</script>
+
+
+
+</html>

@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>应用首页</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<script src="../../common/extend/jquery/jquery.min.js"></script>
+	<script src="../../common/extend/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../../common/extend/bootstrap/css/bootstrap.min.css">
+	<script src="js/showtime.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="../../common/extend/vue/vue.min.js"></script>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<!-- 引入组件库 -->
+	<script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+<body>
+	<header>
+		<a href="#" class="logo"><img src="images/logo.png"></a>
+		<h1>校园安全智慧屏</h1>
+		<div class="time" id="showTime">2020.009.16:45:28</div>
+	</header>
+	<div class="navbox" id="navboxApp" v-cloak>
+		<div class="topbar box">
+			<p><img src="images/bud.png">郑州铁路职业技术学院-机电工程学院</p>
+			<p><img src="images/user.png">责任人：魏保立、戴明宏</p>
+			<p><img src="images/notice.png"><a href="#">关于“五一”期间加强疫情防控和落实中央八项规定精神的通知</a><span>16:24</span></p>
+		</div>
+
+
+		<div class="nav01 box">
+			<div class="boxtit">隐患排查治理</div>
+
+			<ul class="tabs" style="padding-top: 0" role="tablist">
+				<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+						data-toggle="tab">总览</a></li>
+				<li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+						data-toggle="tab">任务排查统计</a></li>
+				<li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
+						data-toggle="tab">人员排查统计</a></li>
+				<!----	<li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">隐患治理统计</a></li>-->
+			</ul>
+
+
+			<div class="boxnav tab-content" style="height: calc(100% - 130px)">
+				<div role="tabpanel" class="tab-pane active" id="home">
+					<div style="padding: 0 20px 20px 0px;">
+						<form class="form-inline">
+							<div class="form-group">
+								<label for="exampleInputName2">风险单元类型：</label>
+								<div class="selbox">
+									<input type="text" class="form-control" placeholder="请选择" readonly>
+									<ul style="z-index: 2;">
+										<li class="active"><a href="#">全部</a></li>
+										<li><a href="#">体系文件</a></li>
+										<li><a href="#">空间场所</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputEmail2">风险单元：</label>
+								<div class="selbox">
+									<input type="text" class="form-control" placeholder="请选择" readonly>
+									<ul style="z-index: 2;">
+										<li class="active"><a href="#">全部</a></li>
+										<li><a href="#">管理制度</a></li>
+										<li><a href="#">匠心楼1层</a></li>
+										<li><a href="#">匠心楼2层</a></li>
+										<li><a href="#">匠心楼5层</a></li>
+										<li><a href="#">毓秀楼1层</a></li>
+										<li><a href="#">毓秀楼2层</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputEmail2">日期：</label>
+								<div class="selbox">
+									<input type="text" class="form-control" placeholder="请选择" readonly>
+									<ul style="z-index: 2;">
+										<li class="active"><a href="#">全部</a></li>
+										<li><a href="#">2020年1月</a></li>
+										<li><a href="#">2020年2月</a></li>
+										<li><a href="#">2020年3月</a></li>
+										<li><a href="#">2020年4月</a></li>
+										<li><a href="#">2020年5月</a></li>
+									</ul>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
+						</form>
+					</div>
+					<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+						<el-table-column type="index" width="65" label="序号" align="center"></el-table-column>
+						<el-table-column prop="checkName" label="风险单元类型" align="center" width="149"></el-table-column>
+						<el-table-column prop="checkName" label="风险单元" align="center" width="120"></el-table-column>
+						<el-table-column prop="hiddenDenger" label="管控人" width="176" align="center"></el-table-column>
+						<el-table-column prop="type" label="风险点" align="center" width="86"></el-table-column>
+						<el-table-column prop="type" label="负责人" align="center" width="212"></el-table-column>
+						<el-table-column prop="type" label="巡查点" align="center" width="86"></el-table-column>
+						<el-table-column prop="type" label="巡查情况" align="center" wdith="108"></el-table-column>
+						<el-table-column prop="type" label="隐患发现" align="center" width="157">
+							<template slot-scope="scope">
+								<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+							</template>
+						</el-table-column>
+						<el-table-column prop="type" label="隐患处理" align="center" width="157">
+							<template slot-scope="scope">
+								<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+								<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+								<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+							</template>
+						</el-table-column>
+					</el-table> -->
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>风险单元类型</th>
+								<th>风险单元</th>
+								<th>管控人</th>
+								<th>风险点</th>
+								<th>负责人</th>
+								<th>巡检点</th>
+								<th>巡查情况</th>
+								<th>隐患发现</th>
+								<th>隐患处理</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>体系文件</td>
+								<td>管理制度</td>
+								<td>戴院长 一级网格</td>
+								<td>24</td>
+								<td>魏保立</td>
+								<td></td>
+								<td>100%</td>
+								<td>
+
+									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+
+								</td>
+								<td>
+									<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+								</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>空间场所</td>
+								<td>匠心楼1层</td>
+								<td>吕主任 三级网格</td>
+								<td>23</td>
+								<td>魏保立</td>
+								<td>4</td>
+								<td>100%</td>
+
+								<td data-toggle="modal" data-target="#myModal4" data-index="0" class="yhfx">
+									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">3</span></p>
+									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">待确认：</i><span class="label label-primary">3</span></p>
+								</td>
+								<td data-toggle="modal" data-target="#myModal4" data-index="1" class="yhfx">
+									<p><i class="label_txt">待治理：</i><span class="label label-warning">1</span></p>
+									<p><i class="label_txt">已治理：</i><span class="label label-danger">1</span></p>
+									<p><i class="label_txt">超期：</i><span class="label label-primary">1</span></p>
+								</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>空间场所</td>
+								<td>匠心楼2层</td>
+								<td>吕主任 三级网格</td>
+								<td>5</td>
+								<td>戴明宏，魏保立</td>
+								<td>2</td>
+								<td>100%</td>
+								<td>
+									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+								</td>
+								<td>
+									<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+								</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>空间场所</td>
+								<td>匠心楼5层</td>
+								<td>吕主任 三级网格</td>
+								<td>76</td>
+								<td>楚钊，柳科技，吕蒙</td>
+								<td>38</td>
+								<td>100%</td>
+								<td>
+									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">待确认：</i><span class="label label-primary">6</span></p>
+								</td>
+								<td>
+									<p><i class="label_txt">待治理：</i><span class="label label-warning">6</span></p>
+									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+								</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>空间场所</td>
+								<td>毓秀楼1层</td>
+								<td>吕主任 三级网格</td>
+								<td>5</td>
+								<td>魏保立</td>
+								<td>2</td>
+								<td>100%</td>
+								<td>
+									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+								</td>
+								<td>
+									<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+								</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>空间场所</td>
+								<td>毓秀楼2层</td>
+								<td>吕主任 三级网格</td>
+								<td>2</td>
+								<td>魏保立</td>
+								<td>2</td>
+								<td>100%</td>
+								<td>
+									<p><i class="label_txt">一般隐患：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">重大隐患：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">待确认：</i><span class="label label-primary">0</span></p>
+								</td>
+								<td>
+									<p><i class="label_txt">待治理：</i><span class="label label-warning">0</span></p>
+									<p><i class="label_txt">已治理：</i><span class="label label-danger">0</span></p>
+									<p><i class="label_txt">超期：</i><span class="label label-primary">0</span></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="profile">
+					<div style="padding: 0 20px 20px 0px;">
+						<form class="form-inline">
+							<div class="form-group">
+								<label for="exampleInputEmail2">巡检类型：</label>
+								<div class="selbox">
+									<input type="text" class="form-control" placeholder="请选择" readonly>
+									<ul style="z-index:2">
+										<li class="active"><a href="#">全部</a></li>
+										<li><a href="#">已达标</a></li>
+										<li><a href="#">未达标</a></li>
+										<li><a href="#">问题</a></li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="exampleInputName2">巡检周期：</label>
+								<div class="selbox">
+									<input type="text" class="form-control" placeholder="请选择" readonly>
+									<ul style="z-index:2">
+										<li class="active"><a href="#">全部</a></li>
+										<li><a href="#">日检</a></li>
+										<li><a href="#">周检</a></li>
+										<li><a href="#">月检</a></li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="exampleInputEmail2">日期：</label>
+								<div class="selbox">
+									<input type="text" class="form-control" placeholder="请选择" readonly>
+									<ul style="z-index:2">
+										<li class="active"><a href="#">全部</a></li>
+										<li><a href="#">2020年1月</a></li>
+										<li><a href="#">2020年2月</a></li>
+										<li><a href="#">2020年3月</a></li>
+										<li><a href="#">2020年4月</a></li>
+										<li><a href="#">2020年5月</a></li>
+									</ul>
+								</div>
+							</div>
+
+
+							<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
+						</form>
+					</div>
+					<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+						<el-table-column type="index" width="93" label="序号" align="center"></el-table-column>
+						<el-table-column prop="checkName" label="检查点" align="center" width="287"></el-table-column>
+						<el-table-column prop="checkName" label="风险级别" align="center" width="152"></el-table-column>
+						<el-table-column prop="hiddenDenger" label="当前状况" width="152" align="center"></el-table-column>
+						<el-table-column prop="type" label="负责人" align="center" width="122"></el-table-column>
+						<el-table-column prop="type" label="检查人" align="center" width="122"></el-table-column>
+						<el-table-column prop="type" label="状态" align="center" width="128">
+							<template slot-scope="scope">
+								<span class="label label-danger" data-toggle="modal" data-target="#myModal2" data-index="0">未达标</span>
+							</template>
+						</el-table-column>
+						<el-table-column prop="type" label="任务数" align="center" wdith="108"></el-table-column>
+						<el-table-column prop="type" label="未完成数" align="center" width="157"></el-table-column>
+					</el-table> -->
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>检查点</th>
+								<th>风险级别</th>
+								<th>当前状况</th>
+								<th>负责人</th>
+								<th>检查人</th>
+								<th>状态</th>
+								<th>任务数</th>
+								<th>未完成数</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>捣固车驾驶及 作..</td>
+								<td>IV级</td>
+								<td>正常</td>
+								<td>戴明宏</td>
+								<td>刘博</td>
+								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+										data-index="0">未达标</span></td>
+								<td>5</td>
+								<td>5</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>机电工程学院1-..</td>
+								<td>IV级</td>
+								<td>正常</td>
+								<td>魏保立</td>
+								<td>刘华洲</td>
+								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+										data-index="1">未达标</span></td>
+								<td>4</td>
+								<td>4</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>工程机械底盘实训..</td>
+								<td>IV级</td>
+								<td>正常</td>
+								<td>晋兵营</td>
+								<td>索小娟</td>
+								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+										data-index="2">未达标</span></td>
+								<td>5</td>
+								<td>5</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>机电工程学院6-..</td>
+								<td></td>
+								<td>正常</td>
+								<td>楚钊</td>
+								<td>楚钊</td>
+								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+										data-index="3">未达标</span></td>
+								<td>48</td>
+								<td>48</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>B523机电创新..</td>
+								<td></td>
+								<td>正常</td>
+								<td>吕蒙</td>
+								<td>吕蒙</td>
+								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+										data-index="4">未达标</span></td>
+								<td>13</td>
+								<td>13</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>捣固车驾驶及 作..</td>
+								<td>IV级</td>
+								<td>正常</td>
+								<td>戴明宏</td>
+								<td>刘博</td>
+								<td><span class="label label-danger" data-toggle="modal" data-target="#myModal2"
+										data-index="5">未达标</span></td>
+								<td>6</td>
+								<td>6</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>机电工程学院6-..</td>
+								<td>IV级</td>
+								<td>正常</td>
+								<td>柳科技</td>
+								<td>张学成</td>
+								<td><span class="label label-danger">未达标</span></td>
+								<td>12</td>
+								<td>12</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>机床电气实训室</td>
+								<td>IV级</td>
+								<td>正常</td>
+								<td>戴明宏</td>
+								<td>李春亚</td>
+								<td><span class="label label-danger">未达标</span></td>
+								<td>12</td>
+								<td>12</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>西门子PLC实训..</td>
+								<td>IV级</td>
+								<td>正常</td>
+								<td>戴明宏</td>
+								<td>杨辰飞</td>
+								<td><span class="label label-danger">未达标</span></td>
+								<td>12</td>
+								<td>12</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>书记办公室</td>
+								<td></td>
+								<td>正常</td>
+								<td>魏保立</td>
+								<td>魏保立</td>
+								<td><span class="label label-danger">未达标</span></td>
+								<td>13</td>
+								<td>13</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="messages">
+					<div style="padding: 0 20px 20px 0px;">
+						<form class="form-inline">
+							<div class="form-group">
+								<label for="exampleInputName2">姓名：</label>
+								<input type="text" class="form-control" placeholder="请输入">
+							</div>
+
+							<div class="form-group">
+								<label for="exampleInputName2">巡检周期：</label>
+								<div class="selbox">
+									<input type="text" class="form-control" placeholder="请选择" readonly>
+									<ul style="z-index: 2;">
+										<li class="active"><a href="#">全部</a></li>
+										<li><a href="#">日检</a></li>
+										<li><a href="#">周检</a></li>
+										<li><a href="#">月检</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputEmail2">日期：</label>
+								<div class="selbox">
+									<input type="text" class="form-control" placeholder="请选择" readonly>
+									<ul style="z-index: 2;">
+										<li class="active"><a href="#">全部</a></li>
+										<li><a href="#">2020年1月</a></li>
+										<li><a href="#">2020年2月</a></li>
+										<li><a href="#">2020年3月</a></li>
+										<li><a href="#">2020年4月</a></li>
+										<li><a href="#">2020年5月</a></li>
+									</ul>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
+						</form>
+					</div>
+					<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+						<el-table-column type="index" width="114" label="序号" align="center"></el-table-column>
+						<el-table-column prop="checkName" label="账号" align="center" width="264"></el-table-column>
+						<el-table-column prop="checkName" label="名称" align="center" width="150"></el-table-column>
+						<el-table-column prop="hiddenDenger" label="电话" width="264" align="center"></el-table-column>
+						<el-table-column prop="type" label="任务总数" align="center" width="186">
+							<template slot-scope="scope">
+								<a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="0">41</a>
+							</template>
+						</el-table-column>
+						<el-table-column prop="type" label="未完成数" align="center" width="186">
+							<template slot-scope="scope">
+								<a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="0">41</a>
+							</template>
+						</el-table-column>
+						<el-table-column prop="hiddenDenger" label="完成率" align="center"></el-table-column>
+					</el-table> -->
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>账号</th>
+								<th>名称</th>
+								<th>电话</th>
+								<th>任务总数</th>
+								<th>未完成数</th>
+								<th>完成率</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>47600339369</td>
+								<td>张帆</td>
+								<td>13643869968</td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="0">41</a></td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="0">41</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>47600339221</td>
+								<td>吕蒙</td>
+								<td>18530970010</td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="1">56</a></td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="1">56</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>47600347640</td>
+								<td>邵华</td>
+								<td>13623859836</td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="2">47</a></td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="2">47</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>47600339358</td>
+								<td>刘艳宾</td>
+								<td>17637100638</td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="3">182</a></td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="3">182</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>47600339381</td>
+								<td>刘博</td>
+								<td>15690856090</td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="4">65</a></td>
+								<td><a href="#" class="modal3" data-toggle="modal" data-target="#myModal3"
+										data-index="4">65</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>6</td>
+								<td>47600339379</td>
+								<td>索小娟</td>
+								<td>15093125193</td>
+								<td><a href="#">75</a></td>
+								<td><a href="#">75</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>7</td>
+								<td>47600339351</td>
+								<td>王文超</td>
+								<td>17637100601</td>
+								<td><a href="#">41</a></td>
+								<td><a href="#">41</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>8</td>
+								<td>47600339360</td>
+								<td>王丽平</td>
+								<td>13838109287</td>
+								<td><a href="#">51</a></td>
+								<td><a href="#">51</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>47600339362</td>
+								<td>杨辰飞</td>
+								<td>15037199278</td>
+								<td><a href="#">49</a></td>
+								<td><a href="#">49</a></td>
+								<td>0%</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>47600339359</td>
+								<td>齐晓华</td>
+								<td>17637100619</td>
+								<td><a href="#">61</a></td>
+								<td><a href="#">61</a></td>
+								<td>0%</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="settings">...</div>
+
+			</div>
+		</div>
+		<div class="foot">
+			<ul>
+				<li><a href="#" data-toggle="modal" data-target="#myModal"><i
+							class="label_txt"></i><span>双防大数据</span></a></li>
+				<li><a href="fourcolorimg.html"><i class="label_txt"></i><span>风险四色图</span></a></li>
+				<li><a href="risk_level.html"><i class="label_txt"></i><span>风险分级管控</span></a></li>
+				<li class="active"><a href="danger_gover.html"><i class="label_txt"></i><span>隐患排查治理</span></a></li>
+				<li><a href="knowledge.html"><i class="label_txt"></i><span>双防知识库</span></a></li>
+				<li><a href="website.html"><i class="label_txt"></i><span>微官网</span></a></li>
+				<li><a href="exit.html"><i class="label_txt"></i><span>系统桌面</span></a></li>
+			</ul>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog fordatamodal" role="document">
+				<div class="back" data-dismiss="modal" aria-label="Close"><span>返回</span></div>
+				<iframe src="data/index.html" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document" style="width: 1100px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">状态详情</h4>
+					</div>
+					<div class="modal-body">
+						<div class="tablebox tablebox03">
+							<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+								<el-table-column type="index" width="70" label="序号" align="center"></el-table-column>
+								<el-table-column prop="checkName" label="检查内容" align="center"></el-table-column>
+							</el-table> -->
+							<div>
+								<table class="table">
+									<thead>
+
+										<tr>
+											<th>序号</th>
+											<th>检查内容</th>
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr>
+											<td title="1">1</td>
+											<td title="捣固车仿真实训网络教室使用后是否切断电源(周检1次)未检查">捣固车仿真实训网络教室使用后是否切断电源(周检1次) 未检查
+											</td>
+										</tr>
+										<tr>
+											<td title="2">2</td>
+											<td title="捣固车仿真实训网络教室是否有排插串联现象(周检1次)未检查">捣固车仿真实训网络教室是否有排插串联现象(周检1次) 未检查
+											</td>
+										</tr>
+										<tr>
+											<td title="3">3</td>
+											<td title="捣固车仿真实训网络教室桌椅是否存在破损、不牢固现象(周检1次)未检查">
+												捣固车仿真实训网络教室桌椅是否存在破损、不牢固现象(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="4">4</td>
+											<td title="捣固车仿真实训网络教室电源总开关是否加装漏电保护装置(周检1次)未检查">
+												捣固车仿真实训网络教室电源总开关是否加装漏电保护装置(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="5">5</td>
+											<td title="捣固车仿真实训网络教室内风扇、灯具、黑板、投影仪等设备设施安装是否牢固(周检1次)未检查">
+												捣固车仿真实训网络教室内风扇、灯具、黑板、投影仪等设备设施安装是否牢固(周检1次) 未检查</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+
+									<thead>
+										<tr>
+											<th>序号</th>
+											<th>检查内容</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td title="1">1</td>
+											<td title="是否存在私拉乱接电源线，电源线破损现象(日检1次)未检查">是否存在私拉乱接电源线，电源线破损现象(日检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="2">2</td>
+											<td title="电气设施电源是否加装漏电及过负载保护装置(日检1次)未检查">电气设施电源是否加装漏电及过负载保护装置(日检1次) 未检查
+											</td>
+										</tr>
+										<tr>
+											<td title="3">3</td>
+											<td title="教室桌椅、设备、设施固定是否牢固(日检1次)未检查">教室桌椅、设备、设施固定是否牢固(日检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="4">4</td>
+											<td title="计算机教室是否存在使用可燃物做装饰(日检1次)未检查">计算机教室是否存在使用可燃物做装饰(日检1次) 未检查</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>序号</th>
+											<th>检查内容</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td title="1">1</td>
+											<td title="挖掘机模拟驾驶器是否做保护接地(周检1次)未检查">挖掘机模拟驾驶器是否做保护接地(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="2">2</td>
+											<td title="挖掘机模拟驾驶器电源是否带有漏电保护装置(周检1次)未检查">挖掘机模拟驾驶器电源是否带有漏电保护装置(周检1次) 未检查
+											</td>
+										</tr>
+										<tr>
+											<td title="3">3</td>
+											<td title="挖掘机模拟驾驶器电气元件是否有损坏现象(周检1次)未检查">挖掘机模拟驾驶器电气元件是否有损坏现象(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="4">4</td>
+											<td title="挖掘机模拟驾驶器周围是否存放杂物(周检1次)未检查">挖掘机模拟驾驶器周围是否存放杂物(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="5">5</td>
+											<td title="挖掘机模拟驾驶器是否定期进行维护、保养(周检1次)未检查">挖掘机模拟驾驶器是否定期进行维护、保养(周检1次) 未检查</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>序号</th>
+											<th>检查内容</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td title="1">1</td>
+											<td title="1室内消火栓配置是否符合国家标准要求(月检1次)未检查">1室内消火栓配置是否符合国家标准要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="2">2</td>
+											<td title="1室内消火栓应是否张贴使用提示(月检1次)未检查">1室内消火栓应是否张贴使用提示(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="3">3</td>
+											<td title="1消火栓应是否定期进行点检(月检1次)未检查">1消火栓应是否定期进行点检(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="4">4</td>
+											<td title="1检查消火栓末端压力表压力是否符合要求(月检1次)未检查">1检查消火栓末端压力表压力是否符合要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="5">5</td>
+											<td title="1是否定期对消火栓末端试水进行测试(月检1次)未检查">1是否定期对消火栓末端试水进行测试(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="6">6</td>
+											<td title="1消火栓配件是否有缺失、损坏现象(月检1次)未检查">1消火栓配件是否有缺失、损坏现象(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="7">7</td>
+											<td title="1消防水带是否有老化破损现象(月检1次)未检查">1消防水带是否有老化破损现象(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="8">8</td>
+											<td title="1灭火器瓶体外观(月检1次)未检查">1灭火器瓶体外观(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="9">9</td>
+											<td title="1灭火器压力表(月检1次)未检查">1灭火器压力表(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="10">10</td>
+											<td title="2室内消火栓配置是否符合国家标准要求(月检1次)未检查">2室内消火栓配置是否符合国家标准要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="11">11</td>
+											<td title="2室内消火栓应是否张贴使用提示(月检1次)未检查">2室内消火栓应是否张贴使用提示(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="12">12</td>
+											<td title="2消火栓应是否定期进行点检(月检1次)未检查">2消火栓应是否定期进行点检(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="13">13</td>
+											<td title="2检查消火栓末端压力表压力是否符合要求(月检1次)未检查">2检查消火栓末端压力表压力是否符合要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="14">14</td>
+											<td title="2是否定期对消火栓末端试水进行测试(月检1次)未检查">2是否定期对消火栓末端试水进行测试(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="15">15</td>
+											<td title="2消火栓配件是否有缺失、损坏现象(月检1次)未检查">2消火栓配件是否有缺失、损坏现象(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="16">16</td>
+											<td title="2消防水带是否有老化破损现象(月检1次)未检查">2消防水带是否有老化破损现象(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="17">17</td>
+											<td title="2灭火器瓶体外观(月检1次)未检查">2灭火器瓶体外观(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="18">18</td>
+											<td title="2灭火器压力表(月检1次)未检查">2灭火器压力表(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="19">19</td>
+											<td title="3室内消火栓配置是否符合国家标准要求(月检1次)未检查">3室内消火栓配置是否符合国家标准要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="20">20</td>
+											<td title="3室内消火栓应是否张贴使用提示(月检1次)未检查">3室内消火栓应是否张贴使用提示(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="21">21</td>
+											<td title="3消火栓应是否定期进行点检(月检1次)未检查">3消火栓应是否定期进行点检(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="22">22</td>
+											<td title="3检查消火栓末端压力表压力是否符合要求(月检1次)未检查">3检查消火栓末端压力表压力是否符合要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="23">23</td>
+											<td title="3是否定期对消火栓末端试水进行测试(月检1次)未检查">3是否定期对消火栓末端试水进行测试(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="24">24</td>
+											<td title="3消火栓配件是否有缺失、损坏现象(月检1次)未检查">3消火栓配件是否有缺失、损坏现象(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="25">25</td>
+											<td title="3消防水带是否有老化破损现象(月检1次)未检查">3消防水带是否有老化破损现象(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="26">26</td>
+											<td title="3灭火器瓶体外观(月检1次)未检查">3灭火器瓶体外观(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="27">27</td>
+											<td title="3灭火器压力表(月检1次)未检查">3灭火器压力表(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="28">28</td>
+											<td title="4室内消火栓配置是否符合国家标准要求(月检1次)未检查">4室内消火栓配置是否符合国家标准要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="29">29</td>
+											<td title="4室内消火栓应是否张贴使用提示(月检1次)未检查">4室内消火栓应是否张贴使用提示(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>30</td>
+											<td>4消火栓应是否定期进行点检(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>31</td>
+											<td>4检查消火栓末端压力表压力是否符合要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>32</td>
+											<td>4是否定期对消火栓末端试水进行测试(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>33</td>
+											<td>4灭火器瓶体外观(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>34</td>
+											<td>4灭火器压力表(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>35</td>
+											<td>5室内消火栓配置是否符合国家标准要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>36</td>
+											<td>5室内消火栓应是否张贴使用提示(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="37">37</td>
+											<td title="5消火栓应是否定期进行点检(月检1次)未检查">5消火栓应是否定期进行点检(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>38</td>
+											<td>5检查消火栓末端压力表压力是否符合要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>39</td>
+											<td>5是否定期对消火栓末端试水进行测试(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>40</td>
+											<td>5灭火器瓶体外观(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="41">41</td>
+											<td title="5灭火器压力表(月检1次)未检查">5灭火器压力表(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>42</td>
+											<td>6室内消火栓配置是否符合国家标准要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>43</td>
+											<td>6室内消火栓应是否张贴使用提示(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="44">44</td>
+											<td>6消火栓应是否定期进行点检(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>45</td>
+											<td>6检查消火栓末端压力表压力是否符合要求(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="46">46</td>
+											<td title="5是否定期对消火栓末端试水进行测试(月检1次)未检查">5是否定期对消火栓末端试水进行测试(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>47</td>
+											<td>6灭火器瓶体外观(月检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>48</td>
+											<td>6灭火器压力表(月检1次) 未检查</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>序号</th>
+											<th>检查内容</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td title="1">1</td>
+											<td title="下班后是否有未关闭电器电源现象(周检1次)未检查">下班后是否有未关闭电器电源现象(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="2">2</td>
+											<td title="办公室是否存在电脑多、插排多、线路乱现象(周检1次)未检查">办公室是否存在电脑多、插排多、线路乱现象(周检1次) 未检查
+											</td>
+										</tr>
+										<tr>
+											<td title="3">3</td>
+											<td title="是否张贴办公室管理规定(周检1次)未检查">是否张贴办公室管理规定(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="4">4</td>
+											<td title="办公室内电气线路是否存在破损现象(周检1次)未检查">办公室内电气线路是否存在破损现象(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="5">5</td>
+											<td title="消火栓、灭火器是否存在被埋压、圈占现象(周检1次)未检查">消火栓、灭火器是否存在被埋压、圈占现象(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="6">6</td>
+											<td title="应急照明灯、安全出口指示灯是否存在故障、破损现象(周检1次)未检查">应急照明灯、安全出口指示灯是否存在故障、破损现象(周检1次)
+												未检查</td>
+										</tr>
+										<tr>
+											<td title="7">7</td>
+											<td title="安全出口、疏散通道是否存在被占用、封堵现象(周检1次)未检查">安全出口、疏散通道是否存在被占用、封堵现象(周检1次) 未检查
+											</td>
+										</tr>
+										<tr>
+											<td title="8">8</td>
+											<td title="门窗、玻璃是否存在松动现象(周检1次)未检查">门窗、玻璃是否存在松动现象(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="9">9</td>
+											<td title="办公室内是否存在排插串联现象(日检1次)未检查">办公室内是否存在排插串联现象(日检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="10">10</td>
+											<td title="办公室内是否存在使用大功率电气现象（热得快、热水壶）(日检1次)未检查">
+												办公室内是否存在使用大功率电气现象（热得快、热水壶）(日检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="11">11</td>
+											<td title="办公室内是否存在存放危险化学品现象（酒精、油漆）(日检1次)未检查">办公室内是否存在存放危险化学品现象（酒精、油漆）(日检1次)
+												未检查</td>
+										</tr>
+										<tr>
+											<td title="12">12</td>
+											<td title="桌椅是否存在破损、不牢固现象(日检1次)未检查">桌椅是否存在破损、不牢固现象(日检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="13">13</td>
+											<td title="办公室是否存在不及时锁门现象(日检1次)未检查">办公室是否存在不及时锁门现象(日检1次) 未检查</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>序号</th>
+											<th>检查内容</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td title="1">1</td>
+											<td title="清筛机仿真实训平台是否做保护接地(周检1次)未检查">清筛机仿真实训平台是否做保护接地(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td title="2">2</td>
+											<td title="清筛机仿真实训平台电源是否带有漏电保护装置(周检1次)未检查">清筛机仿真实训平台电源是否带有漏电保护装置(周检1次) 未检查
+											</td>
+										</tr>
+										<tr>
+											<td title="3">3</td>
+											<td>清筛机仿真实训平台电气元件是否有损坏现象(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>td title="清筛机仿真实训平台内线路敷设上是否规范(周检1次)未检查">清筛机仿真实训平台内线路敷设上是否规范(周检1次) 未检查
+											</td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>清筛机仿真实训平台周围是否存放可燃物(周检1次) 未检查</td>
+										</tr>
+										<tr>
+											<td>6</td>
+											<td>清筛机仿真实训平台是否定期进行维护、保养(周检1次) 未检查</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document" style="width: 1100px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">任务详情</h4>
+					</div>
+					<div class="modal-body">
+						<div class="tablebox tablebox04">
+							<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+								<el-table-column type="index" width="355" label="检查点" align="center"></el-table-column>
+								<el-table-column prop="checkName" label="检查项目" align="center" width="522"></el-table-column>
+								<el-table-column prop="checkName" label="检查结果" align="center" width="92"></el-table-column>
+								<el-table-column prop="hiddenDenger" label="检查时间" align="center"></el-table-column>
+							</el-table> -->
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>检查点</th>
+											<th>检查项目</th>
+											<th>检查结果</th>
+											<th>检查时间</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="13" title="机电工程学院6-5层-办公室1(风险级别：IV级)">机电工程学院6-5层-办公室1(风险级别：IV级)
+											</td>
+											<td title="下班后是否有未关闭电器电源现象(日检1次)">下班后是否有未关闭电器电源现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在电脑多、插排多、线路乱现象(日检1次)">办公室是否存在电脑多、插排多、线路乱现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否张贴办公室管理规定(日检1次)">是否张贴办公室管理规定 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内电气线路是否存在破损现象(日检1次)">办公室内电气线路是否存在破损现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否存在被埋压、圈占现象(日检1次)">消火栓、灭火器是否存在被埋压、圈占现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否存在故障、破损现象(日检1次)">应急照明灯、安全出口指示灯是否存在故障、破损现象 (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否存在被占用、封堵现象(日检1次)">安全出口、疏散通道是否存在被占用、封堵现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、玻璃是否存在松动现象(日检1次)">门窗、玻璃是否存在松动现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在排插串联现象(日检1次)">办公室内是否存在排插串联现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在使用大功率电气现象（热得快、热水壶）(日检1次)">办公室内是否存在使用大功率电气现象（热得快、热水壶）
+												(日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在存放危险化学品现象（酒精、油漆）(日检1次)">办公室内是否存在存放危险化学品现象（酒精、油漆） (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(日检1次)">桌椅是否存在破损、不牢固现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在不及时锁门现象(日检1次)">办公室是否存在不及时锁门现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td rowspan="10" title="机电工程学院6-5层-会议室(风险级别：IV级)">机电工程学院6-5层-会议室(风险级别：IV级)
+											</td>
+											<td title="是否张贴会议室管理规定(周检1次)">是否张贴会议室管理规定 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="会议室内电气线路是否有破损现象(周检1次)">会议室内电气线路是否有破损现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="会议室是否张贴使用记录(周检1次)">会议室是否张贴使用记录 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否被埋压、圈占(周检1次)">消火栓、灭火器是否被埋压、圈占 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否有故障、破损现象(周检1次)">应急照明灯、安全出口指示灯是否有故障、破损现象 (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否被占用、封堵(周检1次)">安全出口、疏散通道是否被占用、封堵 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="会议室使用完成后是否进行断电(周检1次)">会议室使用完成后是否进行断电 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(周检1次)">桌椅是否存在破损、不牢固现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、风扇、灯具、投影仪等设备设施安装是否牢固(周检1次)">门窗、风扇、灯具、投影仪等设备设施安装是否牢固 (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="会议室使用后是否及时锁门(周检1次)">会议室使用后是否及时锁门 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td rowspan="10" title="机电工程学院6-5层-活动中心(风险级别：IV级)">机电工程学院6-5层-活动中心(风险级别：IV级)
+											</td>
+											<td title="是否张贴会议室管理规定(周检1次)">是否张贴会议室管理规定 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="会议室内电气线路是否有破损现象(周检1次)">会议室内电气线路是否有破损现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="会议室是否张贴使用记录(周检1次)">会议室是否张贴使用记录 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否被埋压、圈占(周检1次)">消火栓、灭火器是否被埋压、圈占 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否有故障、破损现象(周检1次)">应急照明灯、安全出口指示灯是否有故障、破损现象 (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否被占用、封堵(周检1次)">安全出口、疏散通道是否被占用、封堵 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="会议室使用完成后是否进行断电(周检1次)">会议室使用完成后是否进行断电 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(周检1次)">桌椅是否存在破损、不牢固现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、风扇、灯具、投影仪等设备设施安装是否牢固(周检1次)">门窗、风扇、灯具、投影仪等设备设施安装是否牢固 (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="会议室使用后是否及时锁门(周检1次)">会议室使用后是否及时锁门 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td rowspan="13" title="B523机电创新活动中心">B523机电创新活动中心</td>
+											<td title="办公室内是否存在排插串联现象(日检1次)">办公室内是否存在排插串联现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在使用大功率电气现象（热得快、热水壶）(日检1次)">办公室内是否存在使用大功率电气现象（热得快、热水壶）
+												(日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在存放危险化学品现象（酒精、油漆）(日检1次)">办公室内是否存在存放危险化学品现象（酒精、油漆） (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(日检1次)">桌椅是否存在破损、不牢固现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在不及时锁门现象(日检1次)">办公室是否存在不及时锁门现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="下班后是否有未关闭电器电源现象(周检1次)">下班后是否有未关闭电器电源现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在电脑多、插排多、线路乱现象(周检1次)">办公室是否存在电脑多、插排多、线路乱现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否张贴办公室管理规定(周检1次)">是否张贴办公室管理规定 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内电气线路是否存在破损现象(周检1次)">办公室内电气线路是否存在破损现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否存在被埋压、圈占现象(周检1次)">消火栓、灭火器是否存在被埋压、圈占现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否存在故障、破损现象(周检1次)">应急照明灯、安全出口指示灯是否存在故障、破损现象 (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否存在被占用、封堵现象(周检1次)">安全出口、疏散通道是否存在被占用、封堵现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、玻璃是否存在松动现象(周检1次)">门窗、玻璃是否存在松动现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td rowspan="10" title="党员活动室">党员活动室</td>
+											<td title="是否张贴活动室管理规定(周检1次)">是否张贴活动室管理规定 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="活动室内电气线路是否有破损现象(周检1次)">活动室内电气线路是否有破损现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="活动室是否张贴使用记录(周检1次)">活动室是否张贴使用记录 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否被埋压、圈占(周检1次)">消火栓、灭火器是否被埋压、圈占 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否有故障、破损现象(周检1次)">应急照明灯、安全出口指示灯是否有故障、破损现象 (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否被占用、封堵(周检1次)">安全出口、疏散通道是否被占用、封堵 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="活动室使用完成后是否进行断电(周检1次)">活动室使用完成后是否进行断电 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(周检1次)">桌椅是否存在破损、不牢固现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、风扇、灯具、投影仪等设备设施安装是否牢固(周检1次)">门窗、风扇、灯具、投影仪等设备设施安装是否牢固 (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="活动室使用后是否及时锁门(周检1次)">活动室使用后是否及时锁门 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>检查点</th>
+											<th>检查项目</th>
+											<th>检查结果</th>
+											<th>检查时间</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="13" title="数控教研室(风险级别：IV级)">数控教研室(风险级别：IV级)</td>
+											<td title="下班后是否有未关闭电器电源现象(日检1次)">下班后是否有未关闭电器电源现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在电脑多、插排多、线路乱现象(日检1次)">办公室是否存在电脑多、插排多、线路乱现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否张贴办公室管理规定(日检1次)">是否张贴办公室管理规定 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内电气线路是否存在破损现象(日检1次)">办公室内电气线路是否存在破损现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否存在被埋压、圈占现象(日检1次)">消火栓、灭火器是否存在被埋压、圈占现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否存在故障、破损现象(日检1次)">应急照明灯、安全出口指示灯是否存在故障、破损现象 (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否存在被占用、封堵现象(日检1次)">安全出口、疏散通道是否存在被占用、封堵现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、玻璃是否存在松动现象(日检1次)">门窗、玻璃是否存在松动现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在排插串联现象(日检1次)">办公室内是否存在排插串联现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在使用大功率电气现象（热得快、热水壶）(日检1次)">办公室内是否存在使用大功率电气现象（热得快、热水壶）
+												(日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在存放危险化学品现象（酒精、油漆）(日检1次)">办公室内是否存在存放危险化学品现象（酒精、油漆） (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(日检1次)">桌椅是否存在破损、不牢固现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在不及时锁门现象(日检1次)">办公室是否存在不及时锁门现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>检查点</th>
+											<th>检查项目</th>
+											<th>检查结果</th>
+											<th>检查时间</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="13" title="数控教研室(风险级别：IV级)">数控教研室(风险级别：IV级)</td>
+											<td title="下班后是否有未关闭电器电源现象(日检1次)">下班后是否有未关闭电器电源现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在电脑多、插排多、线路乱现象(日检1次)">办公室是否存在电脑多、插排多、线路乱现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否张贴办公室管理规定(日检1次)">是否张贴办公室管理规定 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内电气线路是否存在破损现象(日检1次)">办公室内电气线路是否存在破损现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否存在被埋压、圈占现象(日检1次)">消火栓、灭火器是否存在被埋压、圈占现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否存在故障、破损现象(日检1次)">应急照明灯、安全出口指示灯是否存在故障、破损现象 (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否存在被占用、封堵现象(日检1次)">安全出口、疏散通道是否存在被占用、封堵现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、玻璃是否存在松动现象(日检1次)">门窗、玻璃是否存在松动现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在排插串联现象(日检1次)">办公室内是否存在排插串联现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在使用大功率电气现象（热得快、热水壶）(日检1次)">办公室内是否存在使用大功率电气现象（热得快、热水壶）
+												(日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在存放危险化学品现象（酒精、油漆）(日检1次)">办公室内是否存在存放危险化学品现象（酒精、油漆） (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(日检1次)">桌椅是否存在破损、不牢固现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在不及时锁门现象(日检1次)">办公室是否存在不及时锁门现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td rowspan="12" title="气动实训室(风险级别：IV级)">气动实训室(风险级别：IV级)</td>
+											<td title="实训室内门窗、教学设备是否完好（课前）(周检1次)">实训室内门窗、教学设备是否完好（课前） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否对学生进行安全教育（课前）(周检1次)">是否对学生进行安全教育（课前） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="设备设施安全装置是否有效（课前）(周检1次)">设备设施安全装置是否有效（课前） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否张贴警示标识（课前）(周检1次)">是否张贴警示标识（课前） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否张贴安全操作规程（课前）(周检1次)">是否张贴安全操作规程（课前） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否有油污、积水现象（课前）(周检1次)">是否有油污、积水现象（课前） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="实训老师是否在岗（课中）(周检1次)">实训老师是否在岗（课中） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="学生是否配带实训防护用品（课中）(周检1次)">学生是否配带实训防护用品（课中） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否对设备设施进行归位（课后）(周检1次)">是否对设备设施进行归位（课后） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否对实训室进行清洁整理（课后）(周检1次)">是否对实训室进行清洁整理（课后） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否关闭水、电、气总阀门（课后）(周检1次)">是否关闭水、电、气总阀门（课后） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否上锁管控（课后）(周检1次)">是否上锁管控（课后） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td rowspan="8" title="气动实训室（智能化机电液综合实训台）(风险级别：IV级)">气动实训室
+												（智能化机电液综合实训台）(风险级别：IV级)</td>
+											<td title="智能化机电液综合实训台是否做保护接地(周检1次)">智能化机电液综合实训台是否做保护接地 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="智能化机电液综合实训台电源是否带有漏电保护装置(周检1次)">智能化机电液综合实训台电源是否带有漏电保护装置 (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="智能化机电液综合实训台电气元件是否有损坏现象(周检1次)">智能化机电液综合实训台电气元件是否有损坏现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="智能化机电液综合实训台气压是否符合要求(周检1次)">智能化机电液综合实训台气压是否符合要求 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="智能化机电液综合实训台周围是否存放可燃物(周检1次)">智能化机电液综合实训台周围是否存放可燃物 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="智能化机电液综合实训台安全装置是否有效（急停开关、压力表）(周检1次)">
+												智能化机电液综合实训台安全装置是否有效（急停开关、压力表） (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="智能化机电液综合实训台气压输送管道有漏气现象(周检1次)">智能化机电液综合实训台气压输送管道有漏气现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="智能化机电液综合实训台是否定期进行维护、保养(周检1次)">智能化机电液综合实训台是否定期进行维护、保养 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td rowspan="8" title="液压实训室（液压实训台）(风险级别：IV级)">液压实训室 （液压实训台）(风险级别：IV级)</td>
+											<td title="液压实训台是否做保护接地(周检1次)">液压实训台是否做保护接地 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="液压实训台电源是否带有漏电保护装置(周检1次)">液压实训台电源是否带有漏电保护装置 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="液压实训台电气元件是否有损坏现象(周检1次)">液压实训台电气元件是否有损坏现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="液压实训台液压输油管道是否有漏油现象(周检1次)">液压实训台液压输油管道是否有漏油现象 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="液压实训台液压油是否充足(周检1次)">液压实训台液压油是否充足 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="液压实训台周围是否存放可燃物(周检1次)">液压实训台周围是否存放可燃物 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="液压实训台安全装置是否有效（急停开关、压力表）(周检1次)">液压实训台安全装置是否有效（急停开关、压力表） (周检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="机床电气培训考核装置是否定期进行维护、保养(周检1次)">机床电气培训考核装置是否定期进行维护、保养 (周检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>检查点</th>
+											<th>检查项目</th>
+											<th>检查结果</th>
+											<th>检查时间</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="13" title="数控教研室(风险级别：IV级)">数控教研室(风险级别：IV级)</td>
+											<td title="下班后是否有未关闭电器电源现象(日检1次)">下班后是否有未关闭电器电源现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在电脑多、插排多、线路乱现象(日检1次)">办公室是否存在电脑多、插排多、线路乱现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否张贴办公室管理规定(日检1次)">是否张贴办公室管理规定 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内电气线路是否存在破损现象(日检1次)">办公室内电气线路是否存在破损现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否存在被埋压、圈占现象(日检1次)">消火栓、灭火器是否存在被埋压、圈占现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否存在故障、破损现象(日检1次)">应急照明灯、安全出口指示灯是否存在故障、破损现象 (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否存在被占用、封堵现象(日检1次)">安全出口、疏散通道是否存在被占用、封堵现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、玻璃是否存在松动现象(日检1次)">门窗、玻璃是否存在松动现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在排插串联现象(日检1次)">办公室内是否存在排插串联现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在使用大功率电气现象（热得快、热水壶）(日检1次)">办公室内是否存在使用大功率电气现象（热得快、热水壶）
+												(日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在存放危险化学品现象（酒精、油漆）(日检1次)">办公室内是否存在存放危险化学品现象（酒精、油漆） (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(日检1次)">桌椅是否存在破损、不牢固现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在不及时锁门现象(日检1次)">办公室是否存在不及时锁门现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>检查点</th>
+											<th>检查项目</th>
+											<th>检查结果</th>
+											<th>检查时间</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td rowspan="13" title="数控教研室(风险级别：IV级)">数控教研室(风险级别：IV级)</td>
+											<td title="下班后是否有未关闭电器电源现象(日检1次)">下班后是否有未关闭电器电源现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在电脑多、插排多、线路乱现象(日检1次)">办公室是否存在电脑多、插排多、线路乱现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="是否张贴办公室管理规定(日检1次)">是否张贴办公室管理规定 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内电气线路是否存在破损现象(日检1次)">办公室内电气线路是否存在破损现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="消火栓、灭火器是否存在被埋压、圈占现象(日检1次)">消火栓、灭火器是否存在被埋压、圈占现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="应急照明灯、安全出口指示灯是否存在故障、破损现象(日检1次)">应急照明灯、安全出口指示灯是否存在故障、破损现象 (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="安全出口、疏散通道是否存在被占用、封堵现象(日检1次)">安全出口、疏散通道是否存在被占用、封堵现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="门窗、玻璃是否存在松动现象(日检1次)">门窗、玻璃是否存在松动现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在排插串联现象(日检1次)">办公室内是否存在排插串联现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在使用大功率电气现象（热得快、热水壶）(日检1次)">办公室内是否存在使用大功率电气现象（热得快、热水壶）
+												(日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室内是否存在存放危险化学品现象（酒精、油漆）(日检1次)">办公室内是否存在存放危险化学品现象（酒精、油漆） (日检1次)
+											</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="桌椅是否存在破损、不牢固现象(日检1次)">桌椅是否存在破损、不牢固现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+										<tr>
+											<td title="办公室是否存在不及时锁门现象(日检1次)">办公室是否存在不及时锁门现象 (日检1次)</td>
+											<td title="未检查">未检查</td>
+											<td title=""></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Modal -->
+		<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document" style="width: 1100px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+								aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+					</div>
+					<div class="modal-body">
+						<div class="tablebox tablebox05">
+							<div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>待确认（3）</th>
+											<th>一般隐患（3）</th>
+											<th>重大隐患（0）</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>火灾自动报警装置（烟感）巡检灯未进行闪亮（火灾自动报警系统处于瘫痪状态）</td>
+											<td>叉车不使用或无人操作的情况下，未取下叉车钥匙</td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>安全出口指示灯、应急照明灯、疏散指示灯故障灯亮，需统一进行排查更换 </td>
+											<td>行车不使用的时候，行车主功能部件未进行归位（设置专用停靠区） </td>
+											<td></td>
+										</tr>
+										<tr>
+											<td>消火栓、灭火器均未张贴使用提示 </td>
+											<td>所有设备设施、特种设备（数控机床、加工中心、叉车、行车等）未制定SOP（安全操作规程）</td>
+											<td></td>
+										</tr>
+
+									</tbody>
+								</table>
+
+							</div>
+
+							<div>
+								<table class="table">
+									<tbody>
+										<tr>
+										</tr>
+										<tr>
+											<th>&nbsp;</th>
+											<th width="120">图像</th>
+											<th>项目</th>
+											<th>隐患级别</th>
+											<th>上报人</th>
+											<th>时间</th>
+											<th>隐患位置</th>
+											<th>处理人</th>
+											<th>处理时间</th>
+											<th>处理结果</th>
+										</tr>
+										<tr>
+											<td>1</td>
+											<td><img src="images/img1.png" style="width: 72px; height:72px;"></td>
+											<td>叉车不使用或无人操作的情况下，未取下叉车钥匙</td>
+											<td>一般隐患</td>
+											<td>孙成成</td>
+											<td>2020-04-03</td>
+											<td>现代工业技术实训中心</td>
+											<td>韩建</td>
+											<td>2020-04-03</td>
+											<td>已开会强调</td>
+										</tr>
+
+										<tr>
+											<td>2</td>
+											<td><img src="images/img2.png" style="width: 72px; height:72px;"></td>
+											<td>行车不使用的时候，行车主功能部件未进行归位（设置专用停靠区） </td>
+											<td>一般隐患</td>
+											<td>孙成成</td>
+											<td>2020-04-03</td>
+											<td>现代工业技术实训中心</td>
+											<td>韩建</td>
+											<td>2020-04-03</td>
+											<td>无</td>
+										</tr>
+
+										<tr>
+											<td>3</td>
+											<td><img src="images/img3.png" style="width: 72px; height:72px;"></td>
+											<td>叉车不使用或无人操作的情况下，未取下叉车钥匙</td>
+											<td>一般隐患</td>
+											<td>孙成成</td>
+											<td>2020-04-03</td>
+											<td>现代工业技术实训中心</td>
+											<td>韩建</td>
+											<td>2020-04-03</td>
+											<td>无</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		new Vue({
+			el: "#navboxApp",
+			data: {
+				list: [
+					{
+						proName: "机械实训课",
+						checkName: "机电实训课",
+						hiddenDenger: "实验完成后设备配件未及时归位",
+						type: "其他伤害"
+					}
+				],
+			},
+			mounted() {
+				
+			},
+			methods: {
+
+			}
+		})
+	</script>
+	<script>
+		$(".selbox input").focus(function () {
+			console.log($(".selbox input"))
+			$(this).next("ul").fadeIn()
+		})
+		$(".selbox input").focusout(function () {
+			$(this).next("ul").fadeOut()
+		})
+		$(".selbox ul li").click(function () {
+			var txt = $(this).children("a").text()
+			$(this).parent("ul").prev("input").val(txt)
+			$(this).addClass("active").siblings().removeClass("active")
+		})
+
+		$('#myModal').on('show.bs.modal', function (e) {
+			$("#iframe1").attr("src", "")
+		})
+		$('#myModal').on('shown.bs.modal', function (e) {
+			$("#iframe1").attr("src", "../double_bigscreen/index.html")
+		})
+	</script>
+	<script>
+		$(".label-danger").click(function () {
+			var index = $(this).attr('data-index')
+			$(".tablebox03>div").eq(index).show().siblings().hide()
+		})
+
+		$(".myModal3").click(function () {
+			var index = $(this).attr('data-index')
+			$(".tablebox04>div").eq(index).show().siblings().hide()
+
+		})
+
+		$(".yhfx").click(function () {
+			var index = $(this).attr('data-index')
+			if (index == 0) {
+				$(".modal-title").text("隐患发现")
+			} else {
+				$(".modal-title").text("隐患处理")
+			}
+			$(".tablebox05>div").eq(index).show().siblings().hide()
+		})
+	</script>
+</body>
+
+</html>

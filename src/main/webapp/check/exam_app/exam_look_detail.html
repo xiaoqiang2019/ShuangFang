@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<!-- 专项检查列表页-更多-查看详情（检查标准、分组） -->
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>查看详情</title>
+
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+
+		<style type="text/css">
+			.connet div {
+				font-size: 0;
+				line-height: 40px;
+				min-height: 40px;
+			}
+
+			.left-title {
+				text-align: left;
+				font-size: 16px;
+				color: rgb(153, 153, 153);
+				width: 94px;
+				padding-left: 14px;
+				display: inline-block;
+			}
+
+			.right-title {
+				text-align: left;
+				font-size: 16px;
+				color: rgb(17, 17, 17);
+				margin-right: 14px;
+				width: calc(100% - 108px);
+				display: inline-block;
+			}
+
+			.top-title {
+				vertical-align: top;
+				min-height: 20px;
+				line-height: 20px;
+			}
+
+			.right-a {
+				color: rgb(59, 162, 255);
+				background: #fff;
+				display: inline-block;
+				width: calc(100% - 20px);
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				vertical-align: middle;
+			}
+
+			.right-a:hover {
+				color: rgb(59, 162, 255);
+			}
+
+			.right-img {
+				width: 15px;
+				height: 15px;
+				display: inline-block;
+				vertical-align: middle;
+			}
+		</style>
+
+	</head>
+	<body>
+		<header>
+			<h1>查看详情</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div id="app">
+
+			<div class="connet">
+				<div>
+					<span class="left-title">检查方式</span>
+					<span class="right-title">{{object.checktypename}}</span>
+				</div>
+				<div>
+					<span class="left-title">创建单位</span>
+					<span class="right-title">{{object.department}}</span>
+				</div>
+				<div>
+					<span class="left-title">检查内容</span>
+					<span class="right-title">
+						<!-- <a :href="detail_url" class="right-a">{{object.checkname}}</a> -->
+						<a class="right-a" @click="gotoExamContentMethod(object.checkid, object.checkname)">{{object.checkname}}</a>
+						<img src="../../common/app/images/main_table_arrow.png" class="right-img">
+					</span>
+				</div>
+				<div>
+					<span class="left-title">开始时间</span>
+					<span class="right-title">{{convertDateFormat(object.planstarttime)}}</span>
+				</div>
+				<div>
+					<span class="left-title">结束时间</span>
+					<span class="right-title">{{convertDateFormat(object.planendtime)}}</span>
+				</div>
+				<div>
+					<span class="left-title top-title">总负责人 </span>
+					<span class="right-title top-title">{{object.chargeusername}}</span>
+				</div>
+				<div>
+					<span class="left-title">检查对象</span>
+					<span class="right-title">{{parseInt(object.groupnum)>0? ("共"+object.totalschoolnum+"所，分"+object.groupnum+"组") :("共"+object.totalschoolnum+"所")}}</span>
+				</div>
+				<div>
+					<span class="left-title">备注</span>
+					<span class="right-title">{{object.remark}}</span>
+				</div>
+			</div>
+		</div>
+
+		<script src="../../common/extend/vue/vue.min.js"></script>
+		<script src="../../common/app/script/navConfig.js"></script>
+		<script>
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					"detail_url": "",
+					"object": {
+						"checktypename": "",
+						"department": "",
+						"checkid": "",
+						"checkname": "",
+						"planstarttime": "",
+						"planendtime": "",
+						"chargeusername": "",
+						"groupnum": 0,
+						"totalschoolnum": 0,
+						"remark": ""
+					},
+				},
+				mounted: function mounted() {
+					this.GetDetailDataR_Request();
+				},
+				methods: {
+					//获取详情数据
+					GetDetailDataR_Request() {
+						var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+						var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+						// var paramDic = {
+						// 	"usercode": usercode,
+						// 	"token": token,
+						// 	"pageIndex": "1",
+						// 	"pageSize": "10",
+						// 	"searchyear": "",
+						// 	"type": "1"
+						// };
+						// var url = system.usercenter + "/getSpecialExaminationList.action";
+
+						// 测试用的参数
+						var paramDic = {
+							"usercode": "1400002413",
+							"pageIndex": "1",
+							"pageSize": "10",
+							"searchyear": "",
+							"type": "0",
+							"language_type": "1",
+							"token": "julongabcd"
+						};
+						var url = "https://14.ss360.org/safecheck/getSpecialExaminationList.action";
+
+						mui.showLoading();
+						jQuery_Request_Post(url, paramDic, "json", true, function(responseData){
+							mui.hideLoading();
+							var ret = responseData["ret"];
+							if (ret) {
+								this.object = responseData["list"][0];
+								//跳转下级界面url并传值
+								this.detail_url = 'exam_content_detail.html?checkid=' + this.object.checkid + '&title=' + this.object.checkname;
+							} else {
+								mui.toast(updateNullString(responseData["msg"], "获取单位列表失败"));
+							}
+						}, function(error) {
+							mui.hideLoading();
+							var msg = updateNullString(error, "请求失败!")
+							mui.toast(msg);
+						});
+					},
+					//转化时间格式- 时间戳转string
+					convertDateFormat(timeInteger) {
+						var string = new Date(timeInteger);
+						//substr(0, 0) 年月日； substr(0, 5) 年月日时分； substr(0, 8) 年月日时分秒
+						return string.toLocaleDateString().replace(/\//g, "-") + " " + string.toTimeString().substr(0, 0);
+					},
+					//跳转到详情页面
+					gotoExamContentMethod(checkid, title) {
+						CodeSTD.form({
+							url: "exam_content_detail.html",
+							params: {
+								"checkid": checkid,
+								"title": title
+							},
+						});
+					}
+				}
+			})
+		</script>
+
+
+	</body>
+</html>

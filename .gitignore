@@ -1,0 +1,11 @@
+/target
+/.idea
+/out
+web_h5.iml
+/classes
+/.settings
+/.classpath
+/.project
+/bin
+/web/WEB-INF/classes
+/web/WEB-INF/lib

@@ -1,0 +1,1 @@
+1、存放涉及平台的公共的css，images,script

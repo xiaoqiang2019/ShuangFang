@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>专项检查</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<script src="../../common/extend/vue/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			[v-cloak] {
+			    display: none;
+			}
+			
+			.mui-input-row{
+					margin: 13px 14px;
+					border: #DEDEDE solid 1px;
+					padding: 5px;
+					
+				}
+				#msg-title{
+					font-size: 15px;
+					line-height: 15px;
+					height: 50px;
+					border: none;
+					
+				}
+				.msg-number{
+					float: right;
+					
+				}
+				#save-btn {
+					position: absolute;
+					bottom: 0;
+					color: white;
+					width: 100%;
+					border: none;
+					font-size: 16px;
+					height: 50px;
+					background-color: #3ba2ff;
+				}
+				
+			</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>填写检查标题</h1>
+			<a onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+
+		</header>
+		<div class="content">
+			<div v-cloak class="mui-input-row">
+				<textarea id="msg-title" rows="5" placeholder="请输入" maxlength="20" v-model="msg_content" v-on:input="getMsglenth"></textarea>
+				<div class="msg-number"><span class="count-change" v-cloak>{{msg_lenth}}</span>/{{msg_maxnum}}</div>
+			</div>
+			<button type="button" id="save-btn" @click="saveContent">保存</button>
+		</div>
+
+	</body>
+	<script>
+		new Vue({
+			el: '.content',
+			data: {
+				exam_title: "填写检查项目",
+				msg_content: "",
+				msg_maxnum: 20,
+				msg_lenth: 0
+
+			},
+			methods: {
+				getMsglenth: function() {
+					this.msg_lenth = this.msg_content.length;
+				},
+				saveContent: function() {
+					localStorage.setItem('title', this.msg_content);
+					mui.back()
+				}
+
+			},
+			created() {
+				this.msg_content = localStorage.getItem('title');
+				this.msg_lenth = this.msg_content.length;
+			}
+
+
+
+
+		});
+	</script>
+
+
+	<script>
+
+	</script>
+
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- 专项检查列表页 -> 更多 -> 查看详情（检查标准、分组）-> 检查内容 -> 详情页 -->
+
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>{{title_string}}</title>
+
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+
+		<style type="text/css">
+			.top-header-view {
+				height: 40px;
+				border-bottom: rgb(222, 222, 222) solid 0.5px;
+			}
+
+			.top-header-view span {
+				margin-top: 10px;
+				color: rgb(51, 51, 51);
+				font-size: 16px;
+				border-left: rgb(59, 162, 255) solid 4px;
+				padding-left: 10px;
+				display: inline-block;
+				width: calc(100% - 14px);
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.cell-swipe-view {
+				border-bottom: rgb(222, 222, 222) solid 0.5px;
+				padding: 0 14px;
+			}
+
+			.cell-swipe-view span {
+				display: block;
+				color: rgb(51, 51, 51);
+				font-size: 16px;
+				padding-top: 6px;
+			}
+
+			.cell-swipe-view label {
+				display: block;
+				color: rgb(153, 153, 153);
+				font-size: 14px;
+				margin: 8px 0;
+			}
+		</style>
+
+	</head>
+	<body>
+		<header>
+			<h1>检查内容详情</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+
+		<div id="app" class="content">
+			<div v-for="item in datasource">
+				<div class="top-header-view">
+					<span>{{item.sortname}}</span>
+				</div>
+				<div v-for="(model, index) in item.contentlist" class="cell-swipe-view">
+					<span>{{index+1}}.{{model.content}}({{model.score}}分)</span>
+					<label>{{model.standard}}</label>
+				</div>
+			</div>
+		</div>
+
+		<script src="../../common/extend/vue/vue.min.js"></script>
+		<script src="../../common/app/script/navConfig.js"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: "#app",
+				data: {
+					"datasource": [{
+						"sortid": "",
+						"sortname": "",
+						"contentlist": [{
+							"content": "",
+							"contentid": "",
+							"score": 0,
+							"standard": ""
+						}]
+					}]
+				},
+				mounted: function mounted() {
+					this.GetCurrentData_Request();
+				},
+				methods: {
+					//获取当前界面的数据
+					GetCurrentData_Request() {
+						var title_string = updateNullString(getURLParameter('title'), "检查内容详情");
+						$("title").html(title_string);
+						$("header h1").html(title_string);
+
+						var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+						var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+						var checkid = updateNullString(getURLParameter('checkid'), "");
+						console.log('checkid ------ ' + checkid);
+						// var paramDic = {
+						// 	"usercode": usercode,
+						// 	"checkid": checkid,
+						// 	"token": token
+						// }
+						// var url = system.usercenter + "/safecheck/getSafetyCheckInfo.action";
+
+						// 测试用的参数
+						var paramDic = {
+							"usercode": "1400002413",
+							"checkid": checkid,
+							"token": "julongabcd"
+						};
+						var url = "https://14.ss360.org/safecheck/getSafetyCheckInfo.action";
+
+						mui.showLoading();
+						jQuery_Request_Post(url, paramDic, "json", true, function(responseData){
+							mui.hideLoading();
+							var ret = responseData["ret"];
+							if (ret) {
+								this.datasource = responseData["data"]["sortlist"];
+							} else {
+								mui.toast(updateNullString(responseData["msg"], "获取数据失败"));
+							}
+						}, function(error) {
+							mui.hideLoading();
+							var msg = updateNullString(error, "请求失败!")
+							mui.toast(msg);
+						});
+
+					}
+				}
+			});
+		</script>
+
+	</body>
+</html>

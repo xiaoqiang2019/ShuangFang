@@ -1,0 +1,617 @@
+<!-- 以下代码可以直接全部copy到新建的html中 基础引用 不可缺少 有自定义的在单个html中实现-->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>单位人员列表</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			.search-container {
+				height: 40px;
+				background-color: rgb(239, 239, 244);
+				display: flex;
+				display: -webkit-flex;
+				align-items: center;
+				-webkit-align-items: center;
+				padding: 0px 14px;
+				font-size: 16px;
+			}
+
+			.search-container span {
+				margin-right: 10px;
+			}
+
+			.section-group-title {
+				display: flex;
+				display: -webkit-flex;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+				align-items: center;
+				-webkit-align-items: center;
+				padding: 0px 14px;
+				border-bottom: 1px solid rgb(239, 239, 244);
+				font-size: 16px;
+				height: 40px;
+			}
+
+			.select-all-btn {
+				font-size: 15px;
+			}
+
+			/* guroup 展开折叠图标 */
+			.arrow-icon {
+				background: url(../../common/app/images/main_table_arrow.png) no-repeat center;
+				width: 20px;
+				height: 20px;
+				background-size: 100% 100%;
+			}
+
+			.arrow-icon.active {
+				background: url(../../common/app/images/main_arrow_down.png) no-repeat center;
+				width: 20px;
+				height: 20px;
+				background-size: 100% 100%;
+			}
+
+			.cell-group-right,
+			.cell-item-right {
+				display: block;
+				background: url(../../common/app/images/main_blue_white_uncheck.png) no-repeat center;
+				width: 21px;
+				height: 21px;
+				background-size: 100% 100%;
+			}
+
+			.cell-group-right.active,
+			.cell-item-right.active {
+				background: url(../../common/app/images/main_blue_white_check.png) no-repeat center;
+				width: 21px;
+				height: 21px;
+				background-size: 100% 100%;
+			}
+
+			/* 组名和cell名称 */
+			.cell-group-name,
+			.cell-name {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			/* 组名 section && 展开列表中的cell 是两端对齐 */
+			.cell-group,
+			.cell-item {
+				display: flex;
+				display: -webkit-flex;
+				-webkit-justify-content: space-between;
+				justify-content: space-between;
+			}
+
+			/* 组名 中的左半部分内部元素是flex-start布局 */
+			.cell-group-left {
+				display: flex;
+				display: -webkit-flex;
+				-webkit-justify-content: flex-start;
+				justify-content: flex-start;
+			}
+
+			.footer-wapper {
+				border-top: 1px solid rgb();
+			}
+
+			.footer-wapper a:active,
+			.footer-wapper a:hover,
+			.footer-wapper a:link,
+			.footer-wapper a:visited {
+				color: rgb(59, 162, 255);
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>单位人员列表</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div id="app">
+			<div v-if="false" class="search-container">
+				<span class="mui-icon mui-icon-search"></span>
+				<div class="app-gray-color" @tap="serachClicked()">搜索本单位人员</div>
+			</div>
+			<div class="section-group-title">
+				<div>本单位</div>
+				<div class="select-all-btn app-blue-color" v-if="selected == true" @tap="selectClicked($event)">全不选</div>
+				<div v-show="single" class="select-all-btn app-blue-color" v-else-if="selected == false" @tap="selectClicked($event)">全选</div>
+
+			</div>
+
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-collapse" v-for="(groupItem,index) in groupList" :key="groupItem.deptid">
+							<a>
+								<div class="cell-group">
+									<div class="cell-group-left">
+										<i class="arrow-icon"></i>
+										<span class="cell-group-name app-gray-color">{{groupItem.deptname}}</span>
+									</div>
+									<i v-show="single" class="cell-group-right" @tap="groupSelectClicked($event,index)" v-bind:class="{'active':groupItem.groupSelect}"></i>
+								</div>
+							</a>
+							<ul class="mui-table-view mui-table-view-chevron">
+								<li class="mui-table-view-cell" v-for="(item,itemIndex) in groupItem.userlist" :key="item.jid" @tap="itemSelectClicked($event,index,itemIndex)">
+									<div class="cell-item">
+										<span>{{item.nickname}}</span>
+										<i class="cell-item-right" :data-usercode="item.jid" v-bind:class="{'active':item.itemSelected}"></i>
+									</div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="footer-wapper footbtn flex_center">
+				<a href="javascript:;" class="flex_center app-blue-color" @tap="selectPersonClicked()">{{"查看已选"+(selelctPersonCount)}}</a>
+				<a href="javascript:;" class="flex_center app-blue-color" @tap="doneClicked()">完成</a>
+			</div>
+		</div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/extend/vue/vue.min.js"></script>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<script>
+		$(function() {
+			var Y = $('.section-group-title').offset().top,
+				height = $('.section-group-title').height();
+			$(".mui-scroll-wrapper").css({
+				'top': Y + 1 + height + 'px'
+			})
+			var contentHeight = $(window).height(),
+				footerHeight = $('.footer-wapper').height(),
+				topContainerHeight = $('#app').height(),
+				realHeight = contentHeight - topContainerHeight - footerHeight;
+			if (isAPPHeaderShow) {
+				$('.mui-scroll-wrapper').css('height', realHeight + 'px').css('height', '-=44px');
+			} else {
+				$('.mui-scroll-wrapper').css('height', realHeight + 'px').css('height', '-=0px');
+			}
+			mui('body').on('tap', '.mui-collapse', function(e) {
+				//阻止事件冒泡
+				e.stopPropagation();
+				this.classList.toggle('mui-active');
+			});
+			//阻尼系数
+			var deceleration = mui.os.ios ? 0.003 : 0.0009;
+			mui('.mui-scroll-wrapper').scroll({
+				bounce: false,
+				indicators: true, //是否显示滚动条  
+				deceleration: deceleration
+			});
+			mui(".mui-scroll-wrapper").on('tap', 'li', function(event) {
+				this.click();
+			});
+			mui.ready(function() {
+				mui.init({
+					pullRefresh: {
+						container: '.mui-scroll-wrapper',
+						down: {
+							style: 'circle',
+							offset: '0px',
+							auto: true,
+							callback: pulldownRefresh
+						}
+					}
+				});
+			});
+
+			// function pushHistory() {
+			// 	var state = {
+			// 		title: "title",
+			// 		url: "#"
+			// 	};
+			// 	window.history.pushState(state, "title", "#");
+			// }
+			// pushHistory();
+			// window.addEventListener("popstate", function(e) {
+			// 	// alert("我监听到了浏览器的返回按钮事件啦");
+			// 	// 根据自己的需求实现自己的功能
+			// 	var count = history.length;
+			// 	// alert(count)
+			// 	history.go(-count + 2)
+			// }, false);
+		})
+
+		var vm = new Vue({
+			el: "#app",
+			data: {
+				selected: false, //默认全选 状态为false
+				groupList: [],
+				single: true,
+				selelctPersonCount: "0",
+				selectPeopleList: [], //存储选中的用户code的数组【页面来回传值使用】
+				timestamp: ""
+			},
+			mounted: function mounted() {
+				this.timestamp = moment().valueOf().toString();
+				var isSingleStr = updateNullString(getURLParameter('isSingle'), "true"),
+					isSingle = isSingleStr == 'true' ? true : false;
+				this.single = isSingle
+				var people = localStorage.getItem("selfDepSelectPeople"),
+					that = this;
+				if(isSingle){
+					var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+					localStorage.removeItem(usercode + "insuredPerson") //清除缓存的学生选中人员
+					localStorage.removeItem("selfDepSelectPeople") //清除缓存的老师选中人员
+				}
+				that.selectPeopleList = JSON.parse(people);
+				if (that.selectPeopleList != null && that.selectPeopleList.length > 0) {
+					that.selelctPersonCount = that.selectPeopleList.length
+				}
+			},
+			methods: {
+
+				/** 搜索人员点击，跳转到另外一个页面
+				 */
+				serachClicked: function() {
+					var that = this,
+						usercode = updateNullString(getURLParameter('usercode'), localUserCode),
+						token = updateNullString(getURLParameter('token'), localToken),
+						realSelectPeople = JSON.stringify(that.selectPeopleList),
+						realAllPeople = JSON.stringify(that.groupList);;
+					localStorage.setItem("selfDepSelectPeople", realSelectPeople)
+					localStorage.setItem("selfDepAllPeople", realAllPeople)
+					CodeSTD.form({
+						url: "search_person.html",
+						params: {
+							"usercode": usercode,
+							"token": token,
+						},
+					});
+				},
+				/** 全选 or 全不选
+				 */
+				selectClicked: function(e) {
+					var that = this;
+					if (this.single) {
+						alert("只允许一个人投保")
+						return
+					}
+					that.selected = !that.selected;
+					//全选
+					if (that.selected) {
+						that.groupList.map(function(a) {
+							return a.groupSelect = true
+						})
+						that.groupList.map(function(a) {
+							return a.userlist.map(function(b) {
+								return b.itemSelected = true;
+							});
+						});
+					}
+					//取消全选
+					else {
+						that.groupList.map(function(a) {
+							return a.groupSelect = false;
+						});
+						that.groupList.map(function(a) {
+							return a.userlist.map(function(b) {
+								return b.itemSelected = false;
+							});
+						});
+					}
+					that.xa_caculateAllSelectPerson()
+				},
+
+				/** 点击分组上的小圈圈 表示这一组内的项全选
+				 */
+				groupSelectClicked: function(e, index) {
+					e.stopPropagation()
+					if (this.single) {
+						alert("只允许一个人投保")
+						return
+					}
+					var that = this,
+						groupJson = that.groupList[index],
+						userJsonList = groupJson['userlist'];
+					groupJson.groupSelect = !groupJson.groupSelect;
+					if (groupJson.groupSelect) {
+						userJsonList.map(function(a) {
+							return a.itemSelected = true;
+						});
+						that.xa_judgeSelectOrUnSelect()
+					} else {
+						userJsonList.map(function(a) {
+							return a.itemSelected = false;
+						});
+						that.selected = false
+					}
+					that.xa_caculateAllSelectPerson()
+
+				},
+				/** 点击分组下级的小圈圈 表示这一项选中
+				 */
+				itemSelectClicked: function(e, groupIndex, itemIndex) {
+					e.stopPropagation()
+					if (!this.single) {
+						var that = this,
+							groupJson = that.groupList[groupIndex],
+							userJsonList = groupJson['userlist'],
+							userJson = userJsonList[itemIndex];
+						userJson.itemSelected = !userJson.itemSelected;
+						if (userJson.itemSelected) {
+
+							var selectItemCount = userJsonList.filter(function(a) {
+								return a.itemSelected;
+							}).length;
+							if (selectItemCount == userJsonList.length) {
+								groupJson.groupSelect = true;
+							} else {
+								groupJson.groupSelect = false
+							}
+							that.xa_judgeSelectOrUnSelect()
+						} else {
+							groupJson.groupSelect = false;
+							that.selected = false;
+						}
+						that.xa_caculateAllSelectPerson()
+
+					} else {
+						var that = this;
+						that.groupList.map(function(a) {
+							return a.groupSelect = false;
+						});
+						that.groupList.map(function(a) {
+							return a.userlist.map(function(b) {
+								return b.itemSelected = false;
+							});
+						});
+						that.xa_caculateAllSelectPerson()
+						var groupJson = that.groupList[groupIndex],
+							userJsonList = groupJson['userlist'],
+							userJson = userJsonList[itemIndex];
+						userJson.itemSelected = !userJson.itemSelected;
+						that.xa_caculateAllSelectPerson()
+					}
+
+				},
+				/** 点击查看已选人员
+				 */
+				selectPersonClicked: function() {
+					var that = this,
+						usercode = updateNullString(getURLParameter('usercode'), localUserCode),
+						token = updateNullString(getURLParameter('token'), localToken);
+
+					if (that.selelctPersonCount == 0) {
+						mui.alert('当前未选择人员！')
+					} else {
+						var realSelectPeople = JSON.stringify(this.selectPeopleList);
+						localStorage.setItem("selfDepSelectPeople", realSelectPeople)
+						CodeSTD.form({
+							url: "edit_person.html",
+							params: {
+								"usercode": usercode,
+								"token": token,
+							},
+						});
+					}
+				},
+				/** 点击完成，回到根目录
+				 */
+				doneClicked: function() {
+					for (var i = 0; i < this.selectPeopleList.length; i++) {
+						var item = this.selectPeopleList[i];
+						item['timestamp'] = this.timestamp.toString();
+					}
+					realSelectPeople = JSON.stringify(this.selectPeopleList);
+					localStorage.setItem("selfDepSelectPeople", realSelectPeople)
+					history.go(-1)
+				},
+				/**判断是全选还是全不选
+				 */
+				xa_judgeSelectOrUnSelect: function() {
+					var that = this,
+						allGroupCount = that.groupList.length,
+						selectGroupCount = that.groupList.filter(function(a) {
+							return a.groupSelect;
+						}).length;
+					if (allGroupCount == selectGroupCount) {
+						that.selected = true
+					} else {
+						that.selected = false
+					}
+				},
+				/** 选择的人员列表
+				 */
+				xa_caculateAllSelectPerson: function() {
+					var that = this,
+						selectItemCount = 0,
+						array = [];
+					that.groupList.map(function(a) {
+						return a.userlist.map(function(b) {
+							if (b.itemSelected) {
+								selectItemCount++;
+								array.push(b);
+							}
+						});
+					});
+					//上面的代码可以这么理解
+					//  that.groupList.filter(function(a){
+					// 	a['userlist'].filter(function(b){
+					// 		if(b.itemSelected) selectItemCount++;
+					// 	});
+					// })
+					that.selelctPersonCount = selectItemCount
+					that.selectPeopleList = array
+				},
+				/** 给出jid 判断用户是否存在在json数组中
+				 */
+				xa_containCurrentUser: function(jid, array) {
+					var result = false;
+					if (array == null) {
+						return result;
+					}
+					for (var i = 0; i < array.length; i++) {
+						var userJson = array[i],
+							userJid = userJson['jid'];
+						if (userJid == jid) {
+							result = true;
+							break;
+						}
+					}
+					return result;
+				},
+				xa_groupList: function() {
+					var that = this,
+						i = 0,
+						j = 0;
+					if (that.groupList.length > 0) {
+						for (i = 0; i < that.groupList.length; i++) {
+							var groupJson = that.groupList[i],
+								userJsonList = groupJson['userlist'],
+								userSelectCount = 0;
+							if (userJsonList.length > 0) {
+								for (j = 0; j < userJsonList.length; j++) {
+									var userJson = userJsonList[j],
+										userJid = userJson['jid'],
+										result = that.xa_containCurrentUser(userJid, that.selectPeopleList);
+									if (result) {
+										userSelectCount++;
+										userJson.itemSelected = true;
+									} else {
+										userJson.itemSelected = false;
+									}
+								}
+								if (userSelectCount == userJsonList.length) {
+									groupJson.groupSelect = true
+								} else {
+									groupJson.groupSelect = false
+								}
+							}
+						}
+					}
+
+					that.xa_judgeSelectOrUnSelect()
+				}
+
+			}
+		})
+		/**
+		 *  下拉刷新获取最新列表 
+		 */
+		function pulldownRefresh() {
+			requestDataFromServer()
+		}
+
+		// 下拉刷新
+		function requestDataFromServer() {
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh(false);
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+			var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+			var localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+			var secret = getSecretKey()
+			var paramDic;
+			if (localOrgId.length == 0) {
+				getUserInfoRequest(system.usercenter, usercode, token, function() {
+					localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+					var paramDic = {
+						"usercode": usercode,
+						"token": token,
+						"orgid": localOrgId,
+						"isneeduser": "1",
+						"secret": secret,
+						"timestamp": vm.timestamp
+					};
+				})
+				realRequestFromServer(paramDic)
+			} else {
+				var paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"orgid": localOrgId,
+					"isneeduser": "1",
+					"secret": secret,
+					"timestamp": vm.timestamp
+				};
+				realRequestFromServer(paramDic)
+			}
+		}
+
+		function realRequestFromServer(paramDic) {
+			var urlString = system.usercenter + "getDepartmentOfOrg.action";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(responseData) {
+					mui.hideLoading();
+					var result = responseData["ret"],
+						dataList = responseData["data"];
+					if (result) {
+						if (dataList.length > 0) {
+							vm.groupList = dataList
+							vm.xa_groupList()
+						} else {
+							showRequestErrorEmpty("暂无相关数据", true, true);
+						}
+					} else {
+						showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), true, false);
+					}
+					mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh(false);
+				},
+				function(error) {
+					mui.hideLoading();
+					mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh(false);
+					showRequestErrorEmpty("数据加载时出了问题", true, true);
+				})
+		}
+		//请求返回数据为空或失败显示的空页面
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".mui-scroll-wrapper"
+			}, function() {
+				//重新刷新数据
+				pulldownRefresh()
+			});
+		}
+	</script>
+</html>

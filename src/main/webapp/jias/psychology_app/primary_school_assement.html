@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>小学生心理健康综合测评</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<script src="../../common/extend/echarts/echarts.min.js"></script>
+
+		<script src="../../common/extend/swiper/js/swiper.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.popup.js"></script>
+		<script src="../../common/extend/script/hotcss.js"></script>
+
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+		<script src="../../common/extend/julong/julong.js?ver=3"></script>
+		<link rel="stylesheet" href="../../common/extend/swiper/css/swiper.min.css">
+		<link rel="stylesheet" href="css/css.css?ver=3">
+		
+		<script src="../../common/app/script/empty.js"></script>
+		<script src="../../common/extend/julong/aes.js"></script>
+		
+	</head>
+	<body>
+		<header class="bar bar-nav">
+			<div class="pull-left"><a href="javascript:history.back(-1)">
+					<div class="arrow_left"></div>
+				</a></div>
+			<div class="title">小学生心理健康综合测评</div>
+			<div class="pull-right"></div>
+		</header>
+		<div class="empty-content"></div>
+		<div class="main-content">
+			<div class="boxmain">
+				<div class="swiper-container  swiper-no-swiping">
+					<div class="flex topbar">
+						<div class="page01"></div>
+						<div class="stepbar"><span></span></div>
+						<div class="startime" id="usetime">00:00:00</div>
+					</div>
+
+					<div class="swiper-wrapper  answer">
+						<div class="swiper-slide">
+							<ul class="list form-list">
+								<!-- <li class="list-item">
+								<div class="list-item-inner">
+									<div class="list-item-label">任务取向：</div>
+									<div class="list-item-input">
+										<input type="text" placeholder="5分" class="n1" value="">
+									</div>
+								</div>
+							</li>
+							<li class="list-item">
+								<div class="list-item-inner">
+									<div class="list-item-label">趋向取向：</div>
+									<div class="list-item-input">
+										<input type="text" placeholder="5分" class="n2" value="">
+									</div>
+								</div>
+							</li>
+							<li class="list-item">
+								<div class="list-item-inner">
+									<div class="list-item-label">逃避取向：</div>
+									<div class="list-item-input">
+										<input type="text" placeholder="5分" class="n3" value="">
+									</div>
+								</div>
+							</li>
+							<li class="list-item">
+								<div class="list-item-inner">
+									<div class="list-item-label">负面情绪：</div>
+									<div class="list-item-input">
+										<input type="text" placeholder="5分" class="n4" value="">
+									</div>
+								</div>
+							</li>
+							<li class="list-item">
+								<div class="list-item-inner">
+									<div class="list-item-label">逃避社交：</div>
+									<div class="list-item-input">
+										<input type="text" placeholder="5分" class="n5" value="">
+									</div>
+								</div>
+							</li>
+							<li class="list-item">
+								<div class="list-item-inner">
+									<div class="list-item-label">获得关注：</div>
+									<div class="list-item-input">
+										<input type="text" placeholder="5分" class="n6" value="">
+									</div>
+								</div>
+							</li>
+							<li class="list-item">
+								<div class="list-item-inner">
+									<div class="list-item-label">获得利益：</div>
+									<div class="list-item-input">
+										<input type="text" placeholder="5分" class="n7" value="">
+									</div>
+								</div>
+							</li>
+
+							<br>
+							<p class="text-gray">以上是测试专用填写数据</p>
+							<br>
+							<br> -->
+
+
+								<li class="list-item">
+									<div class="list-item-inner">
+										<div class="list-item-label">姓名</div>
+										<div class="list-item-input">
+											<input type="text" placeholder="请输入姓名" id="username" value="">
+										</div>
+									</div>
+								</li>
+								<li class="list-item">
+									<div class="list-item-inner">
+										<div class="list-item-label">年龄</div>
+										<div class="list-item-input">
+											<input type="text" placeholder="请输入年龄" oninput="value=value.replace(/[^\d]/g,'')" id="age" value="" maxlength="2">
+										</div>
+									</div>
+								</li>
+
+
+								<li class="list-item">
+									<div class="list-item-inner">
+										<div class="list-item-label">身份证 </div>
+										<div class="list-item-input">
+											<input type="text" placeholder="请输入身份证号" id="id_card" value="">
+										</div>
+									</div>
+								</li>
+								<li class="list-item">
+									<div class="list-item-inner">
+										<div class="list-item-label">性别 </div>
+										<div class="list-item-input">
+											<label><input class="radio" type="radio" name="sex" checked="" value="1"> 男 </label>
+											<label><input class="radio" type="radio" name="sex" value="2"> 女</label>
+										</div>
+									</div>
+								</li>
+
+								<li class="list-item">
+									<div class="list-item-inner">
+										<div class="list-item-label">学校 </div>
+										<div class="list-item-input">
+											<input type="text" placeholder="请输入学校" id="orgname" value="">
+										</div>
+									</div>
+								</li>
+								<li class="list-item">
+									<div class="list-item-inner">
+										<div class="list-item-label">班级</div>
+										<div class="list-item-input">
+											<input type="text" placeholder="请输入班级" id="class_name" value="">
+										</div>
+									</div>
+								</li>
+								<li class="list-item">
+									<div class="list-item-inner">
+										<div class="list-item-label">手机</div>
+										<div class="list-item-input">
+											<input type="text" placeholder="请输入11位手机号" id="phone" value="">
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当我产生新想法，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>你是否会因为害怕学校相关的事情（如：考试、乘坐校车、老师、体育课、发言、表演节目……）而经常对上学产生不好的情绪？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当我的表现比别人好，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>你是否会因为在学校很难和其他学生交流而经常旷课？</p>
+							<ul class="ans"></ul>
+						</div>
+
+						<div class="swiper-slide">
+							<p>你是否经常觉得宁愿和父母待在一起也不愿去上学？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当老师没有提问我不会的问题，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>当你一周时间（周一到周五）都不上学时，你是否经常会离开家去做一些有趣的事情？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当我学到有趣的东西，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>如果你去上学，你是否会因为感到难过或抑郁而经常旷课？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当我的表现比我的朋友好，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>你是否因为在学校其他人面前感到尴尬而经常旷课？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>在学校上学的时候，你是否常常会想起你的父母或家人？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当我没有在全班同学面前显得很愚蠢，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>当你一周时间（周一到周五）都不上学时，你是否经常会和其他人交谈或去见其他人（不包括你的家人）？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当我看到我所做的东西是有意义的，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>相比于在家和朋友们相处的感觉而言，你在学校是否经常会感到更糟糕（如：恐惧、紧张或悲伤）？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p> 我在学习时感到最成功的时候是：当我明显地有过人的能力，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>你是否会因为在学校没有什么朋友而经常旷课？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>你有多强烈的愿望宁肯和家人待在一起也不愿上学？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当大家没有认为我很笨，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>当你一周时间（周一到周五）都不上学时，你在多大程度上会享受于做一些不同的事情（如：和朋友们待在一起、去某些地方）？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p> 我在学习时感到最成功的时候是：当我尽心尽力地学习，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>当你在周六和周日想起学校时：你是否经常会对学校产生不好的情绪（如恐惧、紧张或悲伤）？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当别人公认我在学习方面特别出色，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>你是否经常会回避学校的某个特定地方（如：走廊、某些人常出现的地方），因为在那儿你不得不和某人说话？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>你有多强烈的愿望宁愿在家接受父母的教育也不愿上学接受老师的教育？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当测验很容易，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>你是否经常因为想在学校外玩而拒绝上学？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>如果你对学校的情绪没那么糟糕（如：恐惧、紧张或悲伤），去上学对你来说会不会更容易一些？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>如果交新朋友对你来说自如一点，是不是去上学会更容易一些？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>如果父母和你一起去上学，是不是去上学会更容易一些？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当考试时，老师没有出我不会的问题，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>如果在放学后的时间里能做更多喜欢的事情，是不是去上学对你来说会更容易一些？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>相比于同龄孩子而言，你对学校的不好的情绪（如：恐惧、紧张、或悲伤）会多多少？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>相比于同龄孩子而言，你在学校会有多少时间一个人待着？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>相比于同龄孩子而言，你更愿意和父母待在家里吗？</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>我在学习时感到最成功的时候是：当我通过了考试，我感到最成功。</p>
+							<ul class="ans"></ul>
+						</div>
+						<div class="swiper-slide">
+							<p>相比于大多数同龄孩子而言，你是否更愿意在校外找些有趣的事情来做？</p>
+							<ul class="ans"></ul>
+						</div>
+
+					</div>
+
+					<span class="time2"></span>
+
+				</div>
+				<div class="footbtn footbtn2">
+					<div class="btn-next btn-success btn-block">下一题</div>
+					<div class="btn-sub  btn-info btn-block"  onclick=" saveAnswers();" style="display: none;">提交测评</div>
+					<!--data-toggle="modal" data-target="#myModal2"-->
+				</div>
+			</div>
+
+			<!-- Modal -->
+
+			<div class="baogao_01" style=" height:0 ; overflow: hidden">
+				<div class="p57" style="margin: 0">
+
+					<p class="pchead">小学生综合心理素质测评量表，能基本检测两周内小学生学习动力不足、个人取向方向等问题。</p>
+				</div>
+				<div class="box1">
+					<h3 class="tit01">个人信息</h3>
+					<div class="reportxx">
+						<p>
+							<label>姓名：</label>
+							<span class="name">undefined</span></p>
+						<p>
+							<label>身份证：</label>
+							<span class="idcard">undefined</span></p>
+						<p>
+							<label>性别：</label>
+							<span class="sex">undefined</span></p>
+						<p>
+							<label>电话：</label>
+							<span class="tel">undefined</span></p>
+						<p>
+							<label>学校：</label>
+							<span class="school">undefined</span></p>
+						<p>
+							<label>班级：</label>
+							<span class="class">undefined</span></p>
+						<p>
+							<label>测评时间：</label>
+							<span class="timed">undefined</span></p>
+						<p>
+							<label>用时：</label>
+							<span class="usetime">undefined</span></p>
+
+					</div>
+				</div>
+				<div class="box1">
+					<h3 class="tit01">维度解释</h3>
+					<strong>本测评从以下2个方面对孩子进行评估：</strong>
+					<h3 class="tit02">个人目标取向</h3>
+					<ul class="reason">
+						<p>了解孩子对学习成功看法，从而评价孩子的学习动机，给家长提供针对性的教养建议； </p>
+						<li><strong>任务型取向的孩子</strong> 成功感来源于学习过程本身</li>
+						<li><strong>趋向型自我取向的孩子</strong> 成功感来源于比其他学生更出色</li>
+						<li><strong>逃避型自我取向的孩子</strong> 成功感来自于没有在老师同学面前暴露自己能力上的不足</li>
+					</ul>
+
+
+					<h3 class="tit02">拒绝上学行为及原因</h3>
+					<ul class="reason">
+						<p>通过询问孩子拒绝上学的行为频率等，分析孩子拒绝上学的内在原因，从而为孩子提供解决方案；</p>
+						<li><strong>因为负面情绪而拒绝上学</strong> 学生因为学校相关事物引发的负面情绪而拒绝上学</li>
+						<li><strong>逃避社交／评价情境而拒绝上学</strong> 学生因为和他人交往困难或在他人面前表演困难而拒绝上学</li>
+						<li><strong>为获得他人关注而拒绝上学</strong> 学生为了和父母待在一起而拒绝上学</li>
+						<li><strong>为了获得实质利益而拒绝上学</strong> 学生为了获得校外更多的娱乐而拒绝上学</li>
+					</ul>
+
+				</div>
+
+
+
+				<div class="box1">
+					<h3 class="tit0"><span>专业咨询师分析及教养建议</span></h3>
+					<div class="doctor " style="display: block;">
+						<ul>
+							<li>
+								<div class="imgbox" style="width: 5rem;"> <img src="images/teacher01.png" width="100%"> </div>
+								<div class="listnav" style="width: 100%;">
+									<p>家长您好，我是莫子，是完形教育关系训练师及美国《正面管教》认证讲师。2008年，因为自己的孩子开始关注教育，希望能帮助和引领父母的成长。
+									</p>
+									<p>今天，很荣幸跟您沟通孩子的测评情况，分析孩子行为背后的原因，共同探究引导孩子的方法。</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+
+					<h3 class="tit02">个人目标取向</h3>
+					<div class="echartbox1" id="echart1"> </div>
+					<p class="text-danger text-center" id="result">result</p>
+					<div class="reportxt">
+						<p id="evaluate"></p>
+					</div>
+
+					<div class="addvx flex" data-toggle="modal" data-target="#myModal">
+						<i><img src="images/wechat.png"></i>
+						<p style="padding-right: 1rem: ">如有您无法判定？可以添加客服微信，<br>进行进一步的测评目标解读</p> <a href="javascript:;" class="btn btn-success btn-outlined">添加</a>
+					</div>
+
+					<div class="rmd rmd01">
+						<h3 class="tit03"><span>基于你的测评数据为你推荐</span></h3>
+						<ul>
+							<li><a href="https://ucenter.ss360.org/rms//resplay/rmsPlay.do?data={'rcode':'20200521175859125481360441066','type':'2','bodyId':''}&viewEval=0">
+									<!---<p>如何培养内心强大的孩子</p>
+							<span>1245人参与</span>-->
+									<img src="images/cover09.jpg" width="100%">
+								</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="doctor doc01">
+						<h3 class="tit03"><span>基于测评建议您与专业咨询师面对面沟通</span></h3>
+						<ul>
+						</ul>
+					</div>
+
+
+					<h3 class="tit02">拒绝上学原因</h3>
+					<div class="echartbox2" id="echart2"></div>
+
+					<p class="text-danger text-center" id="result2"></p>
+
+					<div class="reportxt">
+						<p id="evaluate2"></p>
+
+					</div>
+					<div class="addvx flex" data-toggle="modal" data-target="#myModal">
+						<i><img src="images/wechat.png"></i>
+						<p style="padding-right: 1rem">如有您无法判定？可以添加客服微信，<br>进行进一步的测评目标解读</p> <a href="javascript:;" class="btn btn-success btn-outlined">添加</a>
+					</div>
+
+					<div class="rmd  rmd02">
+						<h3 class="tit03"><span>基于你的测评数据为你推荐</span></h3>
+						<ul>
+							<li><a href="javascript:;">
+									<!--<p>如何培养内心强大的孩子</p>
+							<span>1245人参与</span>-->
+									<img src="images/introduce_default.jpg" width="100%">
+								</a>
+							</li>
+						</ul>
+					</div>
+
+					<div class="doctor  doc02">
+						<h3 class="tit03"><span>基于测评建议您与专业咨询师面对面沟通</span></h3>
+						<ul>
+
+						</ul>
+					</div>
+
+
+				</div>
+
+
+				<div class=" footexplain box1  p7">
+
+					<p>
+						测评说明：亲爱的家长，非常感谢您在百忙之中和孩子一起参与到此次测评之中，特别邀请您和我们一起走在第三代教育模型的推广和践行的道路上，和校方一起承担起教育的重要角色，这不仅关乎孩子目前的学习能力，学习态度和学习方法，更关乎我们是否培养了一个对社会有益的人才，是否引领了一代人走向心智模式的成熟，是否和孩子一起成为身心健康的新一代家长.</p>
+					<p>测评中涉及三项基本人格特征和四项行为特征。人格特征部分，在测评过程中有可能显示多种人格特征，需要家长和老师深入了解孩子的主要人格特征和间歇性人格特征（即非主要人格特征）之间的联系；行为特征部分则显示近期行为特点，有一定时效性，不代表孩子一直的状态，必要时可在特定成长时段定期测评。</p>
+					<p>
+						如果您阅读完报告后觉得与您的个人感觉不是很符合，可能存在以下状况：<br>
+						（1）回答问题的时候倾向于自己想要的，而不是否根据自己真实的行为表现判断；<br>
+						（2）回答问题时受到某些事情的影响；<br>
+						（3）处于趋中分数段，倾向并不是特别明显，从而导致报告的描述会有一些出入。<br>
+					</p>
+				</div>
+
+				<div style="margin-top: .5rem;"><img src="images/ad.jpg"></div>
+			</div>
+
+			<div class="loading">
+				<div class="loadtxt">
+					<img src="images/loading2.gif">
+					<p>请稍后...</p>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="flex3" style="padding: 1rem 0">
+							<svg t="1587455555256" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+							 p-id="5076" style="width: 2rem; height: 2rem;">
+								<path d="M1018.553191 518.252936C1018.553191 232.230128 791.769872 5.446809 505.747064 5.446809 232.230128 5.446809 5.446809 232.230128 5.446809 518.252936 5.446809 791.769872 232.230128 1018.553191 505.747064 1018.553191 791.769872 1018.553191 1018.553191 791.769872 1018.553191 518.252936z"
+								 fill="#09BB07" p-id="5077"></path>
+								<path d="M264.388085 549.310638c-4.183149-4.324766-4.651574-11.808681-1.067574-16.689021l16.296851-22.179404a10.653957 10.653957 0 0 1 15.098553-2.254979l127.139404 97.443404c4.749617 3.638468 12.396936 3.420596 16.972255-0.381276L760.701277 337.092085a12.244426 12.244426 0 0 1 16.068085 0.63183l13.911149 13.736851a10.610383 10.610383 0 0 1-0.065362 15.251064l-352.408511 346.809191a10.708426 10.708426 0 0 1-15.338212-0.185191L264.388085 549.310638z"
+								 fill="#FFFFFF" p-id="5078"></path>
+							</svg>
+							<div style="padding-left:.7rem ">
+								<h3>已提交 你已完成本次测评！</h3>
+								<p>请父母查看测评报告</p>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<!-- <a href="javascript:window.opener=null;window.open('','_self');window.close();" class="modalclose" data-dismiss="modal">完成测评</a> -->
+						<a href="#" class="modalclose test" data-dismiss="modal">我是父母</a>
+					</div>
+				</div>
+			</div>
+		</div>
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-body">
+							<img src="images/qrcode.jpg" style="margin:  0 auto">
+						</div>
+						<div class="modal-footer"> <a href="#" class="modalclose" data-dismiss="modal">好的</a> </div>
+					</div>
+				</div>
+			</div>
+		<script src="../../common/extend/script/chatjs.js"></script>
+		<script src="../../common/app/script/navConfig.js"></script>
+		<script>
+			var htmlinput =
+				"<li><label>从不                   <input type='radio' name='q1'   data-score='0'> </label></li>" +
+				" <li><label>几乎不              <input type='radio' name='q1'  data-score='1'> </label></li>" +
+				"<li><label>有时                    <input type='radio' name='q1'   data-score='2'> </label></li>" +
+				"<li><label>一半时间           <input type='radio' name='q1'   data-score='3'> </label></li>" +
+				"<li><label>经常几乎总是  <input type='radio' name='q1'   data-score='4'> </label></li>" +
+				"<li><label>总是                    <input type='radio' name='q1'   data-score='5'> </label></li>";
+			$(".ans").append(htmlinput)
+		</script>
+		
+
+		<script>
+			//独生子女
+			$('input:radio[name="demo2"]').click(function() {
+				if ($(".seln0only").prop("checked")) {
+					$(".n0only").show()
+				} else {
+					$(".n0only").hide()
+				}
+			})
+
+			//初始化
+			var swiper = new Swiper('.swiper-container', {
+				autoHeight: true,
+				on:{
+				transitionStart: function(){//下一页时回到顶部
+				$(".swiper-container").animate({scrollTop:0}, 0);
+			}},
+				pagination: {
+					el: '.page01',
+					type: 'fraction',
+				},
+			});
+			mui.init();
+			
+			var url_token = updateNullString(getURLParameter('token'), "");
+			var token = updateNullString($.cookie('token'), url_token);
+			var usercode = updateNullString(getURLParameter("usercode"), "");
+			var from_bid = updateNullString(getURLParameter("from_bid"), "");
+			var type = "psychology";
+			var paper_id = "psychology_primary_school";
+			var secret = getSecretKey();
+			var timestamp = moment().valueOf();
+			$(".boxmain").hide();
+			if(isEmpty(from_bid)){
+				commonShowRequestErrorEmpty(".empty-content", "缺少参数", true, false);
+			}else{
+				getResult();
+			}
+			
+			document.body.addEventListener('focusout', () => {
+			            //软键盘收起的事件处理
+			            setTimeout(() => {
+			                const scrollHeight =
+			                    document.documentElement.scrollTop || document.body.scrollTop || 0;
+			                window.scrollTo(0, Math.max(scrollHeight - 1, 0));
+			            }, 100);
+			        });
+			
+			function getResult() {
+				var paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"paper_id": paper_id,
+					"from": type,
+					"from_bid": from_bid,
+					"k": secret,
+					"t": timestamp
+				};
+				var urlString = system.qbms + "/api/paper/psychology/answerList.action";
+				mui.showLoading();
+				jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+						mui.hideLoading();
+						var result = object["ret"];
+						if (result) {
+							var dataList = object["data"];
+							if (dataList != null || dataList != undefined) {
+								parseResult(dataList);
+							} else {
+								showEmpty("数据加载时出了些问题");
+							}
+						} else {
+							showEmpty(updateNullString(object["err_msg"], "数据加载时出了些问题"));
+						}
+					},
+					function(error) {
+						mui.hideLoading();
+						showEmpty("数据加载时出了些问题");
+					})
+			};
+			
+			function showEmpty(msg){
+				$(".empty-content").show();
+				$(".main-content").hide();
+				commonShowRequestErrorEmpty(".empty-content", msg, true, true, function() {
+					getResult();
+				});
+			}
+			
+			var result;
+			
+			function parseResult(dataList) {
+				if (dataList.length > 0) {
+					result = dataList[0];
+					var info = aesDecrypt(result["answers"][0]["answer"],timestamp);
+					if(isEmpty(info)){
+						info = result["answers"][0]["answer"];
+					}
+					resultInfo = eval("(" + info + ")");
+					resultInfo.start_time = result["start_time"];
+					resultInfo.use_time = result["use_time"];
+					if(timer != null && timeer != undefined){
+						clearInterval(timer);
+					}
+					initScoreAndIndex();
+					$(".empty-content").hide();
+					$(".main-content").show();
+					$('#myModal2').modal('show');
+				} else {
+					//未作答过
+					setSecretKey();
+					getUserInfoRequest(system.usercenter, usercode, token, function() {
+						mui.hideLoading();
+						var usertype = localStorage.getItem("usertype");
+						var grade = localStorage.getItem("grade");
+						if (usertype != "70") {
+							commonShowRequestErrorEmpty(".empty-content", "当前用户不是学生", true, false);
+							return;
+						}
+						$(".boxmain").show();
+						setInputShow();
+						startAnswer();
+					});
+				}
+			}
+			
+			function setInputShow() {
+				$(".empty-content").hide();
+				$(".main-content").show();
+				$("#username").val(getLocal("username"));
+				setInputDisabled("#username");
+				var idcard = getLocal("useridc");
+				if(!isEmpty(idcard)){
+					idcard = aesDecrypt(idcard, getLocal("idctimestamp"));
+				}
+				$("#id_card").val(idcard);
+				setInputDisabled("#id_card");
+				$("#orgname").val(getLocal("orgname"));
+				setInputDisabled("#orgname");
+				$("#class_name").val(getLocal("classname"));
+				setInputDisabled("#class_name");
+				$("#phone").val(getLocal("phone"));
+				setInputDisabled("#phone");
+				$('input[name="sex"]:checked').val(getLocalSex());
+			}
+			
+			function getLocalSex(){
+				var sex = localStorage.getItem("sex");
+				if(sex == "N"){
+					return "2";
+				}else{
+					return "1";
+				}
+			}
+			
+			function setInputDisabled(key){
+				if(isEmpty($(key).val())){
+					$(key).attr("readOnly",false);
+				}else{
+					$(key).attr("readOnly",true);
+				}
+			}
+			
+			function getLocal(key) {
+				var value = updateNullString(localStorage.getItem(key), "");
+				if (value == "null") {
+					return "";
+				}
+				return value;
+			}
+			
+			function initScoreAndIndex() {
+				var analysis = result["analysis"];
+				var array = analysis["items"];
+				for (var i = 0; i < array.length; i++) {
+					var item = array[i];
+					var key = item["key"];
+					if (key == "target") {
+						var items = item["children"];
+						for (var j = 0; j < items.length; j++) {
+							var children = items[j];
+							if (children["key"] == "emotions") {
+								newArr1[0] =Math.floor(children["score"]*100)/100;
+							} else if (children["key"] == "trend") {
+								newArr1[1] = Math.floor(children["score"]*100)/100;
+							} else if (children["key"] == "escape") {
+								newArr1[2] = Math.floor(children["score"]*100)/100;
+							}
+						}
+					} else if (key == "refuse_school") {
+						var items = item["children"];
+						for (var j = 0; j < items.length; j++) {
+							var children = items[j];
+							if (children["key"] == "emotions") {
+								newArr2[0] = Math.floor(children["score"]*100)/100;
+								average04 = newArr2[0]
+							} else if (children["key"] == "escape") {
+								newArr2[1] = Math.floor(children["score"]*100)/100;
+								average05 = newArr2[1]
+							} else if (children["key"] == "focus") {
+								newArr2[2] = Math.floor(children["score"]*100)/100;
+								average06 = newArr2[2]
+							} else if (children["key"] == "profit") {
+								newArr2[3] = Math.floor(children["score"]*100)/100;
+								average07 = newArr2[3]
+							}
+						}
+					}
+				}
+				computeTargetIndex();
+				computeRefuseIndex();
+			}
+			
+			function setResult() {
+				$(".empty-content").hide();
+				$(".main-content").show();
+				setInfoShow();
+				setTargetShow();
+				setRefuseSchoolShow();
+			}
+			
+			//答题计时
+			var timer;
+			var count = 0;
+			var txt = document.getElementById('usetime');
+			//答题进度条
+			function progress() {
+				var all = $(".swiper-slide").length
+				var current = $(".swiper-slide-active").index() + 1
+				var progrwidth = current / all * 100
+				$(".stepbar span").css({
+					width: progrwidth + '%'
+				})
+			}
+			progress();
+
+			//阅读时间设置 
+			var i = -1
+
+			var interval;
+
+			function time2() {
+				interval = setInterval(function() {
+					i++
+					$(".time2").text("当页答题时间" + i + "s")
+					//$("title").text(i)
+				}, 1000);
+			}
+
+			function getTime(count) {
+				var h = parseInt(count / 60 / 60);
+				var m = parseInt(count / 60) % 60;
+				var s = parseInt(count) % 60;
+				h = h < 10 ? '0' + h : h;
+				m = m < 10 ? '0' + m : m;
+				s = s < 10 ? '0' + s : s;
+				return h + ':' + m + ':' + s;
+			}
+			
+			var dt;
+			function startAnswer(){
+				timer = setInterval(function() {
+					txt.innerHTML = getTime(count);
+					count += 1;
+				}, 1000);
+				time2();
+				dt = new Date();
+			}
+
+
+			//下一题验证 
+			$(".btn-next").click(function() {
+				if ($(".swiper-slide-active").index() == 0) {
+					var username = $("#username").val();
+					if (isEmpty(username)) {
+						mui.toast("请输入姓名");
+						return false;
+					}
+					var age = getInputInt($("#age").val());
+					if (age == 0) {
+						mui.toast("请输入年龄");
+						return false;
+					}
+					if (age < 5 || age > 14) {
+						mui.toast("年龄不能小于5且不能大于14");
+						return false;
+					}
+					var id_card = $("#id_card").val();
+
+					if (isEmpty(id_card)) {
+						mui.toast("请输入身份证号");
+						return false;
+					}
+					if (!isCardNo(id_card)) {
+						mui.toast("身份证号格式不正确");
+						return false;
+					}
+					var sex = $('input[name="sex"]:checked').val();
+					var orgname = $("#orgname").val();
+					if (isEmpty(orgname)) {
+						mui.toast("请输入学校");
+						return false;
+					}
+					var class_name = $("#class_name").val();
+					if (isEmpty(class_name)) {
+						mui.toast("请输入班级");
+						return false;
+					}
+					var phone = $("#phone").val();
+					if (isEmpty(phone) || !isPhoneNo(phone)) {
+						mui.toast("请输入11位手机号");
+						return false;
+					}
+				}
+
+				if (i < 0) {
+					mui.toast("阅读时间不少于18S")
+					return false;
+				} else {
+					//未选择时提示
+					var list = $('.swiper-slide-active input:checked').val();
+					if (list == null) {
+						mui.toast("该题为必填项");
+						return false;
+					} else {
+						//完成后出现提交
+						$(".swiper-container label,.swiper-container input").click(function() {
+							if ($(".swiper-slide").length - 2 < $(".swiper-slide-active").index()) {
+								$(".footbtn2 .btn-next").hide()
+								$(".footbtn2 .btn-sub").show()
+								if(interval != null && interval != undefined){
+									clearInterval(interval);
+								}
+								$(".time2").text("你已完成测评，点击下方按钮提交");
+							}
+						});
+						swiper.slideNext();
+						progress();
+						i = 0;
+					}
+				}
+			})
+
+			//获取题目得分
+			var arrall = []
+			$(".swiper-slide label").click(function() {
+				var this_active = $(".swiper-slide-active").index(); //获取当前题目 
+				var currscore = $(this).children("input").attr("data-score")
+				arrall[this_active] = (currscore)
+				// $("title").text(arrall)
+				//console.log(arrall)
+			});
+
+			function appendZero(obj) {
+				if (obj < 10) return "0" + "" + obj;
+				else return obj;
+			}
+
+			//推荐课程
+			var recom_link = [
+				"https://ucenter.ss360.org/rms//resplay/rmsPlay.do?data={'rcode':'20200521180644819220958998331','type':'2','bodyId':''}&viewEval=0", 
+				"https://ucenter.ss360.org/rms//resplay/rmsPlay.do?data={'rcode':'20200521180312979475923564755','type':'2','bodyId':''}&viewEval=0", 
+				"https://ucenter.ss360.org/rms//resplay/rmsPlay.do?data={'rcode':'20200521181533760289021406576','type':'2','bodyId':''}&viewEval=0",
+				"https://ucenter.ss360.org/rms//resplay/rmsPlay.do?data={'rcode':'20200521181824348185811457749','type':'2','bodyId':''}&viewEval=0", 
+				"https://ucenter.ss360.org/rms//resplay/rmsPlay.do?data={'rcode':'20200521175859125481360441066','type':'2','bodyId':''}&viewEval=0"
+			]
+			//var recom_tit=["《如何协助孩子处理负面情绪》","《如何提升孩子社交能力》","《如何让孩子能够更独立》","《如何唤醒孩子的学习原动力》","《如何培养内心强大的孩子》"]
+			var recom_img = ["images/cover01.jpg", "images/cover10.jpg", "images/cover08.jpg", "images/cover06.jpg",
+				"images/cover09.jpg"
+			]
+			//var recom_pcpe=["51","12","95","105","105"]
+
+			var htmltj01 = "<li>" +
+				"<div class='imgbox'> <img src='images/team.jpg' width='100%'> </div>" +
+				"<div class='listnav'>" +
+				"<div class='flex2 docname'>" +
+				"<h4>权威在线专家团为您解答心理健康相关问题咨询服务</h4>" +
+				"</div>" +
+				"<div class='info'> " +
+				"<span>证认导师组团给您答疑解惑</span>" +
+				"<a href='https://app63hds9o75246.h5.xiaoeknow.com/content_page/eyJ0eXBlIjo1LCJyZXNvdXJjZV90eXBlIjoiIiwicmVzb3VyY2VfaWQiOiIiLCJwcm9kdWN0X2lkIjoicV81YzRmMjFmOGUxNGJlX1U5QmxZS2lDIiwiYXBwX2lkIjoiYXBwNjNoRFM5bzc1MjQ2In0' class='btn btn-success btn-round'>预约</a>" +
+				"</div>" +
+				"</div>" +
+				" </li>";
+
+			var htmltj02 = "<li>" +
+				"<div class='imgbox'> <img src='images/one_on_one.jpg' width='100%'> </div>" +
+				"<div class='listnav'>" +
+				"<div class='flex2 docname'>" +
+				"<h4>完形一对一咨询，助你全面提升孩子心理素质</h4>" +
+				"</div>" +
+				"<div class='info'> " +
+				"<span>助您全面提升孩子心理素质</span> " +
+				"<a href='https://app63hds9o75246.h5.xiaoeknow.com/v1/course/text/i_5ea54f526a0e4_X9jhnYVY?type=2' class='btn btn-success btn-round'>预约</a>" +
+				"</div>" +
+				"</div>" +
+				" </li>";
+
+			//个人取向	
+			var newArr1 = new Array();
+			//拒绝上学
+			var newArr2 = new Array();
+			var average04, average05, average06, average07;
+
+			$(".test").click(function() {
+				//查看结果
+				setResult();
+			})
+
+			//计算个人目标取向的分数
+			function computeTargetScore() {
+				//减掉第一页不计分
+				//任务型取向：1、8、15、22 对应题目和值
+				var newArr01 = [arrall[1], arrall[8], arrall[15], arrall[22], ]
+				//趋向型自我取向：3、10、17、24
+				var newArr02 = [arrall[3], arrall[10], arrall[17], arrall[24], ]
+				//逃避型自我取向：6、13、20、27、32、37
+				var newArr03 = [arrall[6], arrall[13], arrall[20], arrall[27], arrall[32], arrall[37]]
+
+				//3项平均分
+				var bot01 = 0;
+				for (var i = 0; i < newArr01.length; i++) {
+					bot01 = bot01 + Number(newArr01[i]);
+				}
+				var average01 = Math.floor((bot01 / newArr01.length) * 100) / 100
+
+				var bot02 = 0;
+				for (var i = 0; i < newArr02.length; i++) {
+					bot02 = bot02 + Number(newArr02[i]);
+				}
+				var average02 = Math.floor((bot02 / newArr02.length) * 100) / 100
+
+				var bot03 = 0;
+				for (var i = 0; i < newArr03.length; i++) {
+					bot03 = bot03 + Number(newArr03[i]);
+				}
+				var average03 = Math.floor((bot03 / newArr03.length) * 100) / 100
+
+				// /**/
+				// var average01 = $(".n1").val()
+				// var average02 = $(".n2").val()
+				// var average03 = $(".n3").val()
+				newArr1 = [average01, average02, average03]
+			}
+
+			var max_index1, max_index1s;
+			var targetIndex = -1; //用于展示
+			//计算个人目标取向显示索引
+			function computeTargetIndex() {
+				var max, min;
+				if (newArr1[0] < newArr1[1]) {
+					max = newArr1[1];
+					min = newArr1[0];
+				} else {
+					max = newArr1[0];
+					min = newArr1[1];
+				}
+				for (i = 2; i < newArr1.length; i++) {
+					if (newArr1[i] > min) {
+						if (newArr1[i] > max) {
+							min = max;
+							max = newArr1[i];
+						} else {
+							min = newArr1[i];
+						}
+					}
+				}
+				max_index1 = newArr1.indexOf(max);
+				max_index1s = newArr1.indexOf(min); //前两项前位索引
+
+				if(max_index1==max_index1s){
+					for(var i=0; i<newArr1.length; i++){
+						if(i!=max_index1&&newArr1[i]==min){
+							max_index1s=i
+						}
+					}
+				}
+				//个人目标取向条件判断
+				if (newArr1[0] >= 3 && newArr1[1] >= 3 && newArr1[2] >= 3) {
+					max_index1 = 5;
+					targetFlag = 1;
+					targetIndex = 0;
+				} else if ((newArr1[0] >= 3 && newArr1[1] >= 3) || (newArr1[0] >= 3 && newArr1[2] >= 3) || (newArr1[1] >= 3 &&
+						newArr1[2] >= 3)) {
+					targetIndex = 1;
+					targetFlag = 1;
+					if(max_index1==max_index1s){
+					for(var i=0; i<newArr1.length; i++){
+						if(i!=max_index1&&newArr1[i]==min){
+							max_index1s=i
+						}
+					}
+				}
+					
+				} else if (newArr1[0] >= 3 || newArr1[1] >= 3 || newArr1[2] >= 3) {
+					targetIndex = 2;
+					targetFlag = 1;
+					//1个值≥3
+				} else if ((newArr1[0] < 3 && newArr1[1] < 3 && newArr1[1] < 3) && (newArr1[0] > 2 || newArr1[1] > 2 || newArr1[2] >
+						2)) {
+					//3个值全部小于3但部分大于2
+					targetIndex = 3;
+					targetFlag = 2;
+				} else if ((newArr1[0] <= 2 && newArr1[1] <= 2 && newArr1[1] <= 2) && (newArr1[0] > 1 || newArr1[1] > 1 ||
+						newArr1[2] > 1)) {
+					max_index1 = 3;
+					targetIndex = 4;
+					targetFlag = 3;
+				} else if (newArr1[0] <= 1 && newArr1[1] <= 1 && newArr1[2] <= 1) {
+					max_index1 = 4;
+					targetFlag = 4;
+					targetIndex = 5;
+				}
+			}
+
+			var targetFlag = 1;
+			//个人目标取向的分析结果
+			function setTargetShow() {
+				//个人取向结果部分
+				var result1 = [
+					"任务型取向",
+					"趋向型自我取向",
+					"逃避型自我取向",
+					"性格取向不明显",
+					" 性格取向不明显",
+					"十分良好 ",
+				]
+				var evaluate1 = [
+					"<p><strong>任务型：</strong>根据孩子的测评数据推测，孩子对成功的看法比较积极，倾向于任务取向，成功感来自于学习过程本身，对于学习过程中的新想法和新思路感到有成就感，对于自认为有趣的事件，更愿意尽最大努力去完成，并渴望得到老师和家长的认可，这样会让孩子觉得任务完成就是最大的成功。他们的价值感多来自于完成任务后，老师、家长或自身给予的认可。需要注意的是，如果这个孩子过于追逐完成任务的“成就感”、或他人的认可，就有可能出现抗挫力差、对自己要求过高、不能接受不完美或失败等情况。</p><p> 取向背后的主要动力都是为了找到价值感和归属感。当孩子们能够感知世界，做出决定，并且得出了“我必须。。。”想法的时候，性格取向就形成了。这些幼年时的决定，影响着孩子的未来。持有上面想法的孩子，就会采取自己的行为。如果得到了他们想要的结果，那么在以后的生活中，他们就会持续采用这种态度，这也就成为了他们的生存之道，就是他们的基本生活态度。在平时的教养中，我们家长要注意观察孩子，是更享受完成任务本身所带来的喜悦感，还是喜欢完成任务后别人对他的夸奖和认可。如果这个孩子享受的是完成任务本身给自己带来的愉悦感，那么父母只需要适当鼓励孩子，保护孩子本能的好奇心，求知欲即可。如果孩子是更享受完成任务带来的“被认可”，那么父母需要注意反思自己在平时给孩子的“表扬”和“惩罚”是不是过多。因为当一个孩子过度关注外在的时候，说明他的内心并不是真正的自信和强大，很有可能是“伪自信”。这种孩子就会是表面自信，但内在自卑，当遇到挫折时就会暴露问题。此时家长需要学习的是如何减少奖惩教育，而协助孩子更多的看见自己的价值，让他能够自己感觉到“我能行”，而不是“别人认为我能行”。</p><p>如果您想进一步明确孩子的取向倾向，可以通过客服做进一步的测评或沟通。您也可以通过系统课程的学习,更好的理解这种类型的孩子，成为孩子成长路上更好的陪伴者。</p>",
+
+					"<p><strong>趋向型：</strong>根据孩子的测评数据推测，孩子对成功的看法比较积极，倾向于任务取向，成功感来自于学习过程本身，对于学习过程中的新想法和新思路感到有成就感，对于自认为有趣的事件，更愿意尽最大努力去完成，并渴望得到老师和家长的认可，这样会让孩子觉得任务完成就是最大的成功。他们的价值感多来自于完成任务后，老师、家长或自身给予的认可。需要注意的是，如果这个孩子过于追逐完成任务的“成就感”、或他人的认可，就有可能出现抗挫力差、对自己要求过高、不能接受不完美或失败等情况。</p><p>取向背后的主要动力都是为了找到价值感和归属感。当孩子们能够感知世界，做出决定，并且得出了“我必须。。。”想法的时候，性格取向就形成了。这些幼年时的决定，影响着孩子的未来。持有上面想法的孩子，就会采取自己的行为。如果得到了他们想要的结果，那么在以后的生活中，他们就会持续采用这种态度，这也就成为了他们的生存之道，就是他们的基本生活态度。在平时的教养中，我们家长要注意观察孩子，是更享受完成任务本身所带来的喜悦感，还是喜欢完成任务后别人对他的夸奖和认可。如果这个孩子享受的是完成任务本身给自己带来的愉悦感，那么父母只需要适当鼓励孩子，保护孩子本能的好奇心，求知欲即可。如果孩子是更享受完成任务带来的“被认可”，那么父母需要注意反思自己在平时给孩子的“表扬”和“惩罚”是不是过多。因为当一个孩子过度关注外在的时候，说明他的内心并不是真正的自信和强大，很有可能是“伪自信”。这种孩子就会是表面自信，但内在自卑，当遇到挫折时就会暴露问题。此时家长需要学习的是如何减少奖惩教育，而协助孩子更多的看见自己的价值，让他能够自己感觉到“我能行”，而不是“别人认为我能行”。</p><p>如果您想进一步明确孩子的取向倾向，可以通过客服做进一步的测评或沟通。您也可以通过系统课程的学习,更好的理解这种类型的孩子，成为孩子成长路上更好的陪伴者。</p>",
+
+					"<p><strong>逃避型：</strong>根据孩子的测评数据推测，孩子倾向于逃避型自我取向，成功感来自于没有在老师同学面前暴露自己能力上的不足，其特征表现为行为退缩，面对挑战多采取回避态度或无能应付，总希望被他人承认、认可，但又害怕做错事，很容易因他人的批评或不赞同而受到伤害，内心冲突不安；不愿意尝试新鲜事物，或只做自己擅长的。</p><p>作为父母，我们需协助孩子消除自卑感，正确认识自己，提高自我评价。在日常生活中要善于发现孩子的长处，多鼓励肯定；还可以协助孩子建立日常惯例表，设定目标，并将目标分解成细小步骤，协助孩子从做到再到做好；避免包办、代办，教给孩子各种生活技能，同时允许孩子体验自然后果，做到和善与坚定并行。</p><p>如果您想进一步明确孩子的取向倾向，可以通过客服做进一步的测评或沟通。您也可以通过系统课程的学习，更好的理解这种类型的孩子，成为孩子成长路上更好的陪伴者。</p>",
+					"<p> 假设孩子的作答是真实有效的，那么依据测评结果推测，孩子性格取向不明显，且可能呈现出学习、生活等方面的动力不足的问题。长期动力不足，将会导致孩子对学习倦怠，学习成绩下降······，最终影响孩子学习和生活。</p><p>假设孩子在测评过程中受外在因素的影响，作答结果并不完全真实有效，或您希望深层次挖掘孩子取向，找到孩子隐藏需求背后的真实表达，可以联系客服再次测评或寻求专业心理咨询师获得针对性的帮助。</p>",
+
+					"<p> 假设孩子的作答是真实有效的，那么依据测评结果推测，孩子性格取向不明显，且可能呈现出学习、生活等方面的动力不足的问题。长期动力不足，将会导致孩子对学习倦怠，学习成绩下降······，最终影响孩子学习和生活。</p><p>假设孩子在测评过程中受外在因素的影响，作答结果并不完全真实有效，或您希望深层次挖掘孩子取向，找到孩子隐藏需求背后的真实表达，可以联系客服再次测评或寻求专业心理咨询师获得针对性的帮助。</p>",
+
+					"<p>恭喜您，您培养了一个人格健全，身心健康的五好少年。</p><p>目前孩子能根据自身不同阶段的需求合理转化取向特质，内在力量充足。在孩子幼年安全感和价值感的满足阶段，家长一定创造了很好的家庭环境。如何能让孩子把这些优秀的品质保持下去，并不断提升，适应未来的发展，就对家长提出了更高的教育要求。我们家长需要紧跟孩子学习的脚步，不断自我成长和学习， 成为孩子成长路上的领航者或者灯塔，陪伴孩子走向未来美好的前程。</p><p>如有意见或建议可联系客服沟通。</p>",
+				]
+
+				//个人目标取向条件判断
+				if (targetIndex == 0) {
+					resulta();
+				} else if (targetIndex == 1) {
+					$("#result").html(result1[max_index1] + "+" + result1[max_index1s]);
+					$("#evaluate").html(evaluate1[max_index1] + evaluate1[max_index1s]);
+				} else if (targetIndex == 2) {
+					resulta();
+					//1个值≥3
+				} else if (targetIndex == 3) {
+					//3个值全部小于3但部分大于2
+					resulta();
+				} else if (targetIndex == 4) {
+					$(".doc01").show().children("ul").append(htmltj01)
+					$(".rmd01").hide()
+					resulta();
+				} else if (targetIndex == 5) {
+					$(".doc01").show().children("ul").append(htmltj02)
+					resulta();
+					$(".rmd01").hide()
+				}
+
+				function resulta() {
+					$("#result").html(result1[max_index1]);
+					$("#evaluate").html(evaluate1[max_index1]);
+				}
+			}
+
+			//计算拒绝上学的分数
+			function computeRefuseScore() {
+				// 拒绝上学行为
+				//因为负面情绪而拒绝上学	2、9、16、23、29、34
+				var newArr04 = [arrall[2], arrall[9], arrall[16], arrall[23], arrall[29], arrall[34], ];
+				//逃避社交／评价情境而拒绝上学	4、11、18、25、30、35
+				var newArr05 = [arrall[4], arrall[11], arrall[18], arrall[25], arrall[30], arrall[35]];
+				//为获得他人关注而拒绝上学	5、12、19、26、31、36
+				var newArr06 = [arrall[5], arrall[12], arrall[19], arrall[26], arrall[31], arrall[36]];
+				//为了获得实质利益而拒绝上学	7、14、21、28、33、38
+				var newArr07 = [arrall[7], arrall[14], arrall[21], arrall[28], arrall[33], arrall[38]];
+
+				//计划3项平均分
+				var bot04 = 0;
+				for (var i = 0; i < newArr04.length; i++) {
+					bot04 = bot04 + Number(newArr04[i]);
+				};
+				average04 = Math.floor((bot04 / newArr04.length) * 100) / 100;
+
+				var bot05 = 0;
+				for (var i = 0; i < newArr05.length; i++) {
+					bot05 = bot05 + Number(newArr05[i]);
+				};
+				average05 = Math.floor((bot05 / newArr05.length) * 100) / 100;
+
+				var bot06 = 0;
+				for (var i = 0; i < newArr06.length; i++) {
+					bot06 = bot06 + Number(newArr06[i]);
+				};
+				average06 = Math.floor((bot06 / newArr06.length) * 100) / 100;
+
+				var bot07 = 0;
+				for (var i = 0; i < newArr07.length; i++) {
+					bot07 = bot07 + Number(newArr07[i]);
+				};
+				average07 = Math.floor((bot07 / newArr07.length) * 100) / 100;
+
+				// average04 = $(".n4").val()
+				// average05 = $(".n5").val()
+				// average06 = $(".n6").val()
+				// average07 = $(".n7").val()
+				newArr2 = [average04, average05, average06, average07];
+			}
+
+			var first, second;
+			var max_index2, max_index2s;
+			var refuseIndex = -1;
+			//计算拒绝上学显示索引
+			function computeRefuseIndex() {
+				if (newArr2[0] < newArr2[1]) {
+					first = newArr2[1];
+					second = newArr2[0];
+				} else {
+					first = newArr2[0];
+					second = newArr2[1];
+				}
+				for (i = 2; i < newArr2.length; i++) {
+					if (newArr2[i] > second) {
+						if (newArr2[i] > first) {
+							second = first;
+							first = newArr2[i];
+						} else {
+							second = newArr2[i];
+						}
+					}
+				}
+
+				max_index2 = newArr2.indexOf(first)
+				max_index2s = newArr2.indexOf(second) //最高前两位索引
+
+				//前三项
+				function maxarr(newArr2, len) {
+					var max = [];
+					newArr2.sort(function(a, b) {
+						return a - b;
+					});
+					for (var i = 0; i < len; i++) {
+						max.push(newArr2.pop());
+					}
+					return max.reverse();
+				}
+				var max3 = maxarr(newArr2, 3) //前三项最高值
+				newArr2 = [average04, average05, average06, average07]; //数组复原
+				function minarr(newArr2, len) {
+					var min = [];
+					newArr2.sort(function(a, b) {
+						return b - a;
+					});
+					for (var i = 0; i < len; i++) {
+						min.push(newArr2.pop());
+					}
+					return min.reverse();
+				}
+				var min3 = minarr(newArr2, 3) //后三项最高值
+				newArr2 = [average04, average05, average06, average07]; //数组复原
+
+				var Arr2max_a = Math.max.apply(null, max3); //前三项最大
+				var Arr2min_a = Math.min.apply(null, max3); //前三项最小
+				var Arr2max_b = Math.max.apply(null, min3); //后三项最大
+				var Arr2min_b = Math.min.apply(null, min3); //后三项最小
+
+				var Arr2max = Math.max.apply(null, newArr2); //四项中最大
+				var Arr2min = Math.min.apply(null, newArr2); //四项中最小
+
+				x = 0;
+				for (i = 0; i < newArr2.length; i++) {
+					if (newArr2[i] >= 3) {
+						x++
+					}
+				}
+				if ((Arr2max - Arr2min) < 0.25) { //4个值相差小于0.25（最大值—最小值小于0.25）
+					max_index2 = 6
+					rmd = 6;
+					refuseFlag = 0;
+					refuseIndex = 0;
+				} else if (x == 4) { // 4个值大于等 于3
+					rmd = 5;
+					max_index2 = 5;
+					refuseFlag = 4;
+					refuseIndex = 1;
+				} else if (x == 3) { //3个值全部≥3
+					max_index2 = 4;
+					refuseFlag = 3;
+					refuseIndex = 2;
+				} else if ((Arr2max_a - Arr2min_a) < 0.25 || (Arr2max_b - Arr2min_b) < 0.25) { //前三项和后三项
+					max_index2 = 4;
+					refuseFlag = 3;
+					refuseIndex = 3;
+				} else if ((first - second) < 0.25) { //（前两项最高值相差小于0.25）
+					if(max_index2==max_index2s){
+					for(var i=0; i<newArr2.length; i++){
+						if(i!=max_index2&&newArr2[i]==second){
+							max_index2s=i
+						}
+					}
+				}
+					refuseFlag = 2;
+					refuseIndex = 4;
+				} else if (x == 2) { //2个值全部≥3
+					refuseFlag = 1;
+					refuseIndex = 5;
+				} else if (x == 1) { //1个值全部≥3
+					refuseFlag = 1;
+					refuseIndex = 6;
+				} else if (newArr2[0] <= 3 && newArr2[1] <= 3 && newArr2[2] <= 3 && newArr2[3] < 3) { //4个值全部小于3
+					refuseFlag = 1;
+					refuseIndex = 7;
+				}
+			}
+
+			var refuseFlag = 1;
+			//拒绝上学原因的分析结果
+			function setRefuseSchoolShow() {
+				
+				//拒绝上学结果部分
+				var result2 = [
+					"因为负面情绪而拒绝上学",
+					"逃避社交／评价情境而拒绝上学",
+					"为获得他人关注而拒绝上学",
+					"为了获得实质利益而拒绝上学",
+					"中度：测评结果偏差较大",
+					"重度：可能需要专业协助",
+					"无效作答：再次测评"
+				]
+				var evaluate2 = [
+					"<p><strong>因为负面情绪而拒绝上学</strong>根据孩子的测评数据推测，孩子可能存在因为负面情绪而拒绝上学的行为，在拒绝上学过程中被提及因为学校相关事物或人而引发的负面情绪而拒绝上学的频率相对较高。说明孩子在有负面情绪的时候，不知道如何用正确的方式表达，同时也不会缓解和处理自己的负责情绪。且有可能孩子本身被压抑的负面情绪较多，比如害怕、紧张、愤怒、委屈等，所以有一些可能在别人看来没有太大问题的事情，到了自己身上会产生比较大的负面反映。</p><p>作为父母，我们首先要给孩子一个平和有爱的家庭环境 ，那么当孩子在外面受到委屈或者批评的时候，能够敢于在家里安全的表达情绪。此外，父母要降低自己的焦虑，对于有些敏感的孩子，父母的焦虑会加重孩子的负面情绪。再者父母需要自省自己的情绪表达能力，以及情绪处理能力，通常当父母不能很好的情绪管理时，孩子也很难做好情绪管理。最后，父母需要提升倾听孩子的能力，能够协助孩子释放情绪，做孩子的心理疏导师。</p><p>如果您想进一步明确孩子的一些情绪和精神状况，可以通过客服做进一步的测评或沟通。您也可以通过系统课程的学习更好的理解这种类型的孩子，以便于做孩子成长路上更好的陪伴者。<p>",
+
+					"<p><strong>逃避社交／评价情境而拒绝上学</strong>根据孩子的测评数据推测，孩子可能存在因逃避社交/评价情境而拒绝上学的行为，在拒绝上学的过程中被提及因为和他人交往困难或在他人面前表演困难而拒绝上学的频率较高。这说明孩子在人际交往中存在着比较大的问题。比如孩子可能不太适应环境，不知道如何与人相处，或者是缺乏面对冲突，解决冲突的能力。所以“不上学”成了逃避冲突和人际交往的一种方式。此外孩子也过分在意外界对自己的评价，不能承受他人给自己的不好的评价，也是内在力量不足的一种表现。</p><p>作为家长，我们家长需要反思平日的教养过程中，是否对孩子包办过多，造成孩子处理问题的能力不足，或是否批评指责过多，让孩子缺乏自信。我需要给孩子适当的放权，让孩子通过自主决定和体验，来锻炼自己处理问题的能力，以及透过处理问题培养他对自己的良性认知。同时多多鼓励孩子，关注他的细小进步，构建他的信心。同时，对于社交出现的问题，及时与孩子的学校沟通情况，当孩子需要帮助的时候及时给到孩子帮助，不要让他独自面对。协助孩子释放他在学校的紧张感，不要过于逼迫孩子去面对，给孩子时间。最后，我们还需要提升孩子处理冲突的能力，以便于他未来能更好的适应社会。</p><p>如果您想进一步明确孩子的一些情绪和精神状况，可以通过客服做进一步的测评或沟通。您也可以通过系统课程的学习更好的理解这种类型的孩子，以便于做孩子成长路上更好的陪伴者。<p>",
+
+					"<p><strong>为获得他人关注而拒绝上学</strong>根据孩子的测评数据推测，孩子可能存在为了获得他人关注而拒绝上学的行为，在拒绝上学过程中被提及想和父母多在一起，不想离开父母等的频率较高，孩子在日常生活中可能表现出：过度寻求关注，只有在别人关注他的时候，他才有兴趣做事情，做什么都希望有人陪，当不受关注时，会用各种方式吸引别人，让人感觉很粘人；比较乖巧顺从，依赖于全权，不太敢发现自己的意见；独自处理事情的能力比较低，遇到冲突要么退缩，要么以告状的方式；在家里比较强势，但一出去就会变得拘谨胆小；也有的会争强好胜，非常在意外人的评判和表扬；情绪控制能力差，或者不敢表达，压抑自己。这些两个极端的表现，都有可能。</p><p>作为家长，我们需要反思一下日常的教养中，是不是有过度包办、控制的行为，让孩子缺乏安全感或主动性，依赖感比较强；是不是“有条件养育”过多，即当他表现好的时候，他就会得到什么，以致于孩子会为了迎合家长，去表现家长想看到的，当真正遇到问题时，没有处理问题的能力。建议家长多给孩子平时一些主动权，提升陪伴“质量”，“质量”与时间无关，有很多家长虽然陪，但是陪伴缺乏质量，人在心不在，也会造成关注不足。</p><p>如果您想进一步明确孩子的一些情绪和精神状况，可以通过客服做进一步的测评或沟通。您也可以通过系统课程的学习更好的理解这种类型的孩子，以便于做孩子成长路上更好的陪伴者。<p>",
+
+					"<p><strong>为了获得实质利益而拒绝上学</strong>根据孩子的测评数据推测，孩子可能为获得实质利益而拒绝上学，其中较主要表现是为获得校外更多的娱乐而拒绝上学。在日常生活中，孩子可能比较有能力，但是功利心很强，可能并不知道学习是为了什么；也喜欢讨价还价，做事以追求好处利益为主要目标；同时在学习上并无成就感，更多的价值感和归属感是通过社交或刺激获得，但当得到之后，又会出现空虚，可能会追逐更多的刺激和利益。</p><p>因此咱们家长需要反思在日常的教养中，我们是否存在过分“有条件养育”，或强调当孩子成功时会给他以物质奖励等；是否平时较少关心孩子的内心状态，只是付出钱和物质。建议父母多跟孩子互动，走进孩子的情感世界；多用正确的“鼓励”，而非表扬或奖励，来提升他的自我价值感，从内在激发孩子的学习动力，强调孩子在取得成就时内在喜悦感，以及对自身能力的认可；达到即使不给予任何物质奖励，孩子也愿意继续迎接挑战的效果。</p><p>如果您想进一步明确孩子的一些情绪和精神状况，可以通过客服做进一步的测评或沟通。您也可以通过系统课程的学习更好的理解这种类型的孩子，以便于做孩子成长路上更好的陪伴者。</p>",
+					"<p><strong>中度：</strong>假设孩子的作答是真实有效的，那么依据测评结果推测，您的孩子测评结果偏差较大，暂不能分析孩子可能存在的行为及背后的原因。</p><p>假设孩子在测评过程中受外在因素的影响，作答结果并不完全真实有效，或您希望获得更加精准的测评，可以联系客服再次测评或寻求专业心理咨询师获得针对性帮助。</p>",
+					"<p><strong>重度：</strong>假设孩子的作答是真实有效的，那么依据测评结果推测，您的孩子需要您高度关注，暂不能分析孩子可能存在的行为及背后的原因。</p><p>假设孩子在测评过程中受外在因素的影响，作答结果并不完全真实有效，或您希望获得更加精准的测评，可以联系客服再次测评或寻求专业心理咨询师获得针对性帮助。</p>",
+					"<p><strong>无效作答：</strong>假设孩子的作答是真实有效的，那么依据测评结果推测，您的孩子倾向不明显，暂不能分析孩子可能存在的行为及背后的原因。</p><p> 假设孩子在测评过程中受外在因素的影响，作答结果并不完全真实有效，或您希望获得更加精准的测评，可以联系客服再次测评。</p>"
+				]
+				if (refuseIndex == 0) { //4个值相差小于0.25（最大值—最小值小于0.25）
+					$(".doc02").show().children("ul").append(htmltj02);
+					$(".rmd02").hide();
+					$(".doc02").hide();
+					resultb();
+				} else if (refuseIndex == 1) { // 4个值大于等 于3
+					$(".doc02").show().children("ul").append(htmltj02);
+					$(".rmd02").hide();
+					resultb();
+				} else if (refuseIndex == 2) { //3个值全部≥3
+					$(".doc02").show().children("ul").append(htmltj01);
+					$(".rmd02").hide();
+					resultb();
+				} else if (refuseIndex == 3) { //前三项和后三项
+					$(".doc02").show().children("ul").append(htmltj01);
+					$(".rmd02").hide();
+					resultb();
+				} else if (refuseIndex == 4) { //（前两项最高值相差小于0.25）
+					resultb();
+
+					$("#result2").html(result2[max_index2] + "<br>" + result2[max_index2s]);
+					$("#evaluate2").html(evaluate2[max_index2] + evaluate2[max_index2s]);
+				
+					var html5 =
+						'<li><a href="'+recom_link[max_index2s]+'"><img src=' + recom_img[max_index2s] +'></a></li>';
+					$(".rmd02 ul").append(html5)
+					
+					//当前两项结果中包含逃避社交时需多增加一条 ，此时应该是三条推荐
+					if (max_index2 == 1 || max_index2s == 1) {
+						var html3 = '<li><a href="'+recom_link[4]+'"><img src=' + recom_img[4] + '></a></li>';
+						$(".rmd02 ul").append(html3)
+					}
+				} else if (refuseIndex == 5) { //2个值全部≥3
+					resultb();
+				} else if (refuseIndex == 6) { //1个值全部≥3
+					resultb();
+				} else if (refuseIndex == 7) { //4个值全部小于3
+					resultb();
+				}
+
+				function resultb() {
+					$("#result2").append(result2[max_index2]);
+					$("#evaluate2").append(evaluate2[max_index2]);
+
+					$(".rmd02 li a").attr("href", recom_link[max_index2]);
+					$(".rmd02 li img").attr("src", recom_img[max_index2]);
+					//	$(".rmd02 li p").html(recom_tit[max_index2]);
+					//	$(".rmd02 li span").html(recom_pcpe[max_index2] + "人参与");
+
+					//当结果为  逃避社交为最高位时 多增中一条 课程推荐 经时应该 两条推荐
+					if ((first - second) >= 0.25) {
+						if (max_index2 == 1) {
+							var html3 = '<li><a href="'+recom_link[4]+'"><img src=' + recom_img[4] + '></a></li>';
+							$(".rmd02 ul").append(html3)
+						}
+					}
+				}
+			
+				//图表
+				option1.series[0].data = [newArr1];
+				option2.series[0].data = [newArr2];
+
+				myChart1.setOption(option1);
+				myChart2.setOption(option2);
+				
+				$(".baogao_01").height("auto");
+				$(".boxmain").hide();
+
+				// $(".loading").fadeIn()
+				// setTimeout(function() {
+				// 	$(".loading").fadeOut()
+				// }, 1000);
+				// setTimeout(function() {
+				// 	$(".baogao_01").height("auto")
+				// 	$(".boxmain").hide()
+				// }, 1000);
+			}
+
+			var resultInfo;
+			//个人信息的展示
+			function setInfoShow() {
+				if (resultInfo == null) {
+					return;
+				}
+				$("span.name").text(getShowText(resultInfo.username));
+				$("span.age").text(getShowText(resultInfo.age));
+				$("span.idcard").text(getShowText(resultInfo.id_card));
+				if(resultInfo.sex == 2){
+					resultInfo.sex = 0;
+				}
+				$('span.sex').text(getGenderString(resultInfo.sex));
+				$("span.school").text(getShowText(resultInfo.orgname));
+				$("span.class").text(getShowText(resultInfo.class_name));
+				$("span.tel").text(getShowText(resultInfo.phone));
+				$("span.timed").text(getShowText(resultInfo.start_time));
+				$("span.usetime").text(isEmpty(resultInfo.use_time)?"未知":getTime(resultInfo.use_time));
+			}
+			
+			//获得展示的文本
+			function getShowText(text){
+				if(isEmpty(text)){
+					return "未知";
+				}
+				return text;
+			}
+			
+			//保存结果
+			function saveAnswers() {
+				computeTargetScore();
+				computeTargetIndex();
+				computeRefuseScore();
+				computeRefuseIndex();
+				var answers = new Array();
+				if(dt == null || dt == undefined){
+					dt = new Date();
+				}
+				var y = dt.getFullYear();
+				var mt = dt.getMonth() + 1;
+				var day = dt.getDate();
+				var h = dt.getHours();
+				var m = dt.getMinutes();
+				var s = dt.getSeconds();
+				var secret = getSecretKey();
+				timestamp = moment().valueOf();
+				answers.push(getInputAnswer());
+				resultInfo.start_time = y + "-" + appendZero(mt) + "-" + appendZero(day) + " " + appendZero(h) + ":" + appendZero(m) +
+					":" + appendZero(s);
+				resultInfo.use_time = count;
+				getRadioAnswer(answers);
+				var analysis = getAnalysis();
+				var paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"paper_id": paper_id,
+					"from": type,
+					"from_bid": from_bid,
+					"start_time": resultInfo.start_time,
+					"use_time": resultInfo.use_time,
+					"question_count": 39,
+					"score": 0,
+					"answers": JSON.stringify(answers),
+					"analysis": JSON.stringify(analysis),
+					"k": secret,
+					"t": timestamp
+				};
+				var urlString = system.qbms + "/api/paper/psychology/saveAnswers.action";
+				mui.showLoading();
+				jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+						mui.hideLoading();
+						var result = object["ret"];
+						if (result) {
+							$('#myModal2').modal('show');
+							if(timer != null && timer != undefined){
+								clearInterval(timer);
+							}
+						} else {
+							mui.toast(updateNullString(object["err_msg"], "提交失败"));
+						}
+					},
+					function(error) {
+						mui.hideLoading();
+						mui.toast("提交失败");
+					})
+			}
+
+			//获取用户输入的信息
+			function getInputAnswer(timestamp) {
+				var username = $("#username").val();
+				var age = $("#age").val();
+				var id_card = $("#id_card").val();
+				var sex = $('input[name="sex"]:checked').val();
+				var orgname = $("#orgname").val();
+				var class_name = $("#class_name").val();
+				var phone = $("#phone").val();
+				var info = new Object();
+				info.question_id = paper_id + 1;
+				info.question_no = 1;
+				info.base_qtype_id = "input";
+				var inputAnswer = new Object();
+				inputAnswer.username = username;
+				inputAnswer.age = getInputInt(age);
+				inputAnswer.id_card = id_card;
+				inputAnswer.sex = getInputInt(sex);
+				inputAnswer.orgname = orgname;
+				inputAnswer.class_name = class_name;
+				inputAnswer.phone = phone;
+				resultInfo = inputAnswer;
+				info.answer = encryptAnswer(JSON.stringify(inputAnswer));
+				info.score = 0;
+				return info;
+			}
+			
+			function encryptAnswer(answer){
+				return aesEncrypt(answer,timestamp);
+			}
+			
+			//输入文本转int
+			function getInputInt(str) {
+				var value = parseInt(str, 10);
+				if (isNaN(value)) {
+					return 0;
+				}
+				return value;
+			}
+
+			//获得单选作答结果
+			function getRadioAnswer(answers) {
+				for (var i = 1; i < arrall.length; i++) {
+					var content = new Object();
+					content.question_id = paper_id + (i + 1);
+					content.question_no = i + 1;
+					content.base_qtype_id = "radio";
+					content.answer = encryptAnswer(arrall[i] + "");
+					content.score = arrall[i];
+					answers.push(content);
+				}
+			}
+
+			//获得分析结果
+			function getAnalysis() {
+				var analysis = new Object();
+				// 分析结果
+				analysis.evaluate = Math.max(targetFlag, refuseFlag);
+				analysis.items = new Array();
+				analysis.items.push(getTarget());
+				analysis.items.push(getRefuseSchool());
+				return analysis;
+			}
+
+			//获得个人目标取向
+			function getTarget() {
+				var target = new Object();
+				target.key = "target";
+				target.name = "个人目标取向";
+				//得分
+				target.score = Math.max(newArr1[0], newArr1[1], newArr1[2]);
+				target.evaluate = targetFlag;
+				target.children = new Array();
+				//任务型
+				var emotions = new Object();
+				emotions.key = "emotions";
+				emotions.name = "任务型";
+				emotions.score = newArr1[0];
+				target.children.push(emotions);
+				//趋向型
+				var trend = new Object();
+				trend.key = "trend";
+				trend.name = "趋向型";
+				trend.score = newArr1[1];
+				target.children.push(trend);
+				//逃避型
+				var escape = new Object();
+				escape.key = "escape";
+				escape.name = "逃避型";
+				escape.score = newArr1[2];
+				target.children.push(escape);
+				return target;
+			}
+
+			//获得拒绝上学
+			function getRefuseSchool() {
+				var refuse = new Object();
+				refuse.key = "refuse_school";
+				refuse.name = "拒绝上学原因";
+				//得分
+				refuse.score = Math.max(newArr2[0], newArr2[1], newArr2[2], newArr2[3]);
+				refuse.evaluate = refuseFlag;
+				refuse.children = new Array();
+				//负面情绪
+				var emotions = new Object();
+				emotions.key = "emotions";
+				emotions.name = "负面情绪";
+				emotions.score = newArr2[0];
+				refuse.children.push(emotions);
+				//逃避社交
+				var escape = new Object();
+				escape.key = "escape";
+				escape.name = "逃避社交评价";
+				escape.score = newArr2[1];
+				refuse.children.push(escape);
+				//获得他人关注
+				var focus = new Object();
+				focus.key = "focus";
+				focus.name = "获得他人关注";
+				focus.score = newArr2[2];
+				refuse.children.push(focus);
+				//获得实际利益
+				var profit = new Object();
+				profit.key = "profit";
+				profit.name = "获得实际利益";
+				profit.score = newArr2[3];
+				refuse.children.push(profit);
+				return refuse;
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<script src="../../common/extend/jquery/jquery.raty.min.js"></script>
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<title>用户评价</title>
+		<style type="text/css">
+			img {
+				width: 16px;
+				height: 16px;
+			}
+
+			.content-cell  {
+				display: flex;
+				display: -webkit-flex;
+				margin: 20px 15px;
+				flex-direction:row;
+				-webkit-flex-direction: row;
+			}
+			.el_content {
+				display: flex;
+				display: -webkit-flex;
+				margin: 0px 15px;
+				flex-direction:row;
+				-webkit-flex-direction: row;
+			}
+
+			 label {
+				font-size: 16px;
+				color: #111111;
+				margin-right: 13px;
+				flex-shrink:0;
+			}
+			.mui-input-row{
+				width: 100%;
+			}
+			.mui-input-row textarea{
+				padding: 5px;
+				font-size: 14px;
+				border: #dedede solid 1px;
+				background-color: #f5f5f5;
+			}
+			
+			.sub_content{
+				padding-left: 10px;
+				padding-right: 10px;
+				margin-top: 20px;
+				
+			}
+			.submit{
+				width: 100%;
+				height: 40px;
+				border: none;
+				background-color: #3ba2ff;
+				font-size: 16px;
+				border-radius: 5px;
+				color: white;
+			}
+			
+		</style>
+	</head>
+	<body>
+		
+		<header>
+			<h1>用户评价</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<div class="content-cell">
+				<label>评价星级</label>
+				<div id="star"></div>
+				
+			</div>
+			<!-- <div class="content"> -->
+				<div class="el_content">
+					<label>评价内容</label>
+					<div class="mui-input-row" >
+						<textarea id="evaluation-content" rows="5" placeholder="" maxlength="500"></textarea>
+					</div>
+					
+				</div>
+				<div class="sub_content">
+					<button class="submit" > 提交</button>
+				</div>
+				
+			
+			 </div>
+
+            </body> 
+			<script src="../../common/app/script/navConfig.js"></script>
+			<script type="text/javascript">
+				$(function(){
+				$.fn.raty.defaults.path = '../../common/app/images';
+				// $('#default-demo').raty();
+				$('#star').raty({
+				number: 5, //多少个星星设置
+				score: 0, //初始值是设置
+				size:16,
+				targetType: 'number', //类型选择，number是数字值，hint，是设置的数组值
+				path: '../../common/app/images',
+				starOff: 'show_ic_star_off.png',
+				 starOn: 'show_ic_star_on.png',
+				cancel: false,
+				targetKeep: false,
+				precision: false, //是否包含小数
+				});
+				});
+				$('.submit').click(function(){
+					var score = $("#star").raty('score');
+					var content = $('#evaluation-content').val();
+					if(score == 0){
+						mui.toast("请选择评价星级");
+					}else if(isEmpty(content)){
+						mui.toast("请输入评价内容");
+					}else{
+						xa_saveEvaluate(score,content);
+						
+					}
+				});
+					
+			function xa_saveEvaluate(score,content){
+				var url_token = updateNullString(getURLParameter('token'), localToken);
+			    var token = updateNullString($.cookie('token'), url_token);
+				var product_id = updateNullString(getURLParameter('productId'), localUserCode);
+				var comment_user = updateNullString(getURLParameter('usercode'), ""); //url参数传递
+				var paramDic = {
+					"product_id":product_id,
+					"comment_user":comment_user,
+					"comment":content,
+					"usercode":comment_user,
+					"star":score,
+					"token":token
+				}
+				mui.showLoading();
+				var urlString = system.jias+"/v1/comment/save";
+				jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+						mui.hideLoading();
+						var result = object["ret"];
+						if (result) {
+							mui.toast("评价成功");
+							mui.back();
+							} else {
+							mui.toast(updateNullString(object["err_msg"], "评价失败"));	
+							}
+					},
+					function(error) {
+						mui.hideLoading();
+						mui.toast("提交失败");
+					})
+				
+			}	
+					
+				</script>
+</html>

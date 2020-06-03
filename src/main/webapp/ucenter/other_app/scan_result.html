@@ -1,0 +1,333 @@
+<!-- 以下代码可以直接全部copy到新建的html中 基础引用 不可缺少 有自定义的在单个html中实现-->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>扫描结果</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			.content-cell {
+				position: relative;
+				background-color: transparent;
+				font-size: 15px;
+				margin: 11px 15px;
+				width: 100%;
+				height: 30px;
+			}
+
+			.content-cell label {
+				position: absolute;
+				width: 85px;
+				color: rgb(153, 153, 153);
+				background-color: transparent;
+			}
+
+			.content-cell:nth-child(2) {
+				height: 50px;
+			}
+
+			.content-cell:nth-child(2) label {
+				height: 50px;
+				line-height: 50px;
+			}
+
+			.content-cell .right-text {
+				position: absolute;
+				background-color: transparent;
+				text-align: left;
+				left: 85px;
+				width: calc(100% - 85px);
+				color: rgb(17, 17, 17);
+			}
+
+			.obj-face-img {
+				width: 50px;
+				height: 50px;
+			}
+			
+			.content{
+				display: none;
+			}
+			.empty_content{
+				display: none;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				width: 100%;
+				height: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>扫描结果</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<ul>
+				<li class="content-cell">
+					<label class="obj-name-label">学生姓名</label>
+					<div class="right-text">
+						<span class="obj-name">学生姓名</span>
+					</div>
+				</li>
+				<li class="content-cell">
+					<label class="obj-face-img-label">学生头像</label>
+					<div class="right-text">
+						<img class="obj-face-img" src="../../common/app/images/main_avatar.png" data-preview-group="1" data-preview-src="">
+					</div>
+				</li>
+				<li class="content-cell">
+					<label>所在学校</label>
+					<div class="right-text">
+						<span class="obj-orgname">所在学校名称</span>
+					</div>
+				</li>
+				<li class="content-cell">
+					<label>所在班级</label>
+					<div class="right-text">
+						<span class="obj-classname">所在班级名称</span>
+					</div>
+				</li>
+				<li class="content-cell">
+					<label>联系电话</label>
+					<div class="right-text">
+						<a class="text_blue obj-phone">联系电话</a>
+					</div>
+				</li>
+				<li class="content-cell">
+					<label>班主任</label>
+					<div class="right-text">
+						<span class="obj-teacher">班主任姓名</span>
+					</div>
+				</li>
+				<li class="content-cell">
+					<label>班主任电话</label>
+					<div class="right-text">
+						<a class="text_blue obj-teacher-phone">班主任电话</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="empty_content">
+		</div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/extend/mui/css/mui.zoom.js"></script>
+	<script src="../../common/extend/mui/js/mui.previewimage.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<script>
+		mui.init();
+		mui.previewImage();
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var searchcode = updateNullString(getURLParameter('searchcode'), "");
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+
+		requestUserInfoFromServer(usercode, searchcode);
+		
+		function requestUserInfoFromServer(paramUsercode, paramSearchcode) {
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				showRequestErrorEmpty("网络似乎有点问题", false, true);
+				return;
+			}
+			// request
+			var paramDic = {
+				"usercode": paramUsercode,
+				"searchcode": paramSearchcode,
+				"token": token
+			};
+			var url = system.usercenter + "/get_user_information.action";
+
+			jQuery_Request_Post(url, paramDic, "json", true, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					$(".content").show()
+					$(".empty_content").hide()
+					var dataJson = responseData["data"];
+					setUIData(dataJson)
+				} else {
+					showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据") , true, false);
+				}
+			}, function(error) {
+				mui.hideLoading();
+				showRequestErrorEmpty("数据加载时出了问题", true, true);
+			});
+		}
+
+
+		function setUIData(object) {
+			var username = updateNullString(object["username"], "")
+			var faceImgUrl = updateNullString(object["headphoto"], "")
+			var orgname = updateNullString(object["orgname"], "")
+			var orgid = updateNullString(object["orgid"], "")
+			
+			var classname = updateNullString(object["classname"], "")
+			var phone = updateNullString(object["phone"], "")
+			var teacherName = updateNullString(object["teachername"], "")
+			var teacherPhone = updateNullString(object["teacherphone"], "")
+			var parents = object["parents"]
+			//30局用户40 60 教职工 70 学生
+			var userType = object["usertype"]
+			//教职工
+			if (userType != 70) {
+				$(".obj-name-label").text("姓名")
+				$(".obj-face-img-label").text("头像")
+				$(".obj-name").text(username)
+				if (faceImgUrl.length <= 0) {
+					$(".obj-face-img").parents('.content-cell').hide()
+				} else {
+					$(".obj-face-img").parents('.content-cell').show()
+					$(".obj-face-img").attr("src", faceImgUrl)
+					$(".obj-face-img").attr("data-preview-src", faceImgUrl)
+				}
+				if (orgid.length <= 0) {
+					$(".obj-orgname").parents('.content-cell').hide()
+				} else {
+					$(".obj-orgname").parents('.content-cell').show()
+					$(".obj-orgname").text(orgname)
+				}
+
+				if (phone.length <= 0) {
+					$(".obj-phone").parents('.content-cell').hide()
+				} else {
+					$(".obj-phone").parents('.content-cell').show()
+					$(".obj-phone").text(phone)
+				}
+				$(".obj-classname").parents('.content-cell').hide()
+				$(".obj-teacher").parents('.content-cell').hide()
+				$(".obj-teacher-phone").parents('.content-cell').hide()
+				return;
+			}
+
+
+			$(".obj-name").text(username)
+			if (faceImgUrl.length <= 0) {
+				$(".obj-face-img").parents('.content-cell').hide()
+			} else {
+				$(".obj-face-img").parents('.content-cell').show()
+				$(".obj-face-img").attr("src", faceImgUrl)
+				$(".obj-face-img").attr("data-preview-src", faceImgUrl)
+			}
+
+			if (orgname.length <= 0) {
+				$(".obj-orgname").parents('.content-cell').hide()
+			} else {
+				$(".obj-orgname").parents('.content-cell').show()
+				$(".obj-orgname").text(orgname)
+			}
+			if (classname.length <= 0) {
+				$(".obj-classname").parents('.content-cell').hide()
+			} else {
+				$(".obj-classname").parents('.content-cell').show()
+				$(".obj-classname").text(classname)
+			}
+			if (phone.length <= 0) {
+				$(".obj-phone").parents('.content-cell').hide()
+			} else {
+				$(".obj-phone").parents('.content-cell').show()
+				$(".obj-phone").text(phone)
+			}
+
+			if (teacherName.length <= 0) {
+				$(".obj-teacher").parents('.content-cell').hide()
+			} else {
+				$(".obj-teacher").parent('.content-cell').show()
+				$(".obj-teacher").text(teacherName)
+			}
+
+			if (teacherPhone.length <= 0) {
+				$(".obj-teacher-phone").parents('.content-cell').hide()
+			} else {
+				$(".obj-teacher-phone").parents('.content-cell').show()
+				$(".obj-teacher-phone").text(teacherPhone)
+			}
+
+			if (parents.length > 0) {
+				var html = [];
+				for (var i = 0; i < parents.length; i++) {
+					var parentJson = parents[i];
+					var parent_username = updateNullString(parentJson["parentname"], "")
+					var parent_relationship = updateNullString(parentJson["identityname"], "")
+					var parent_phone = updateNullString(parentJson["parentphone"], "")
+
+					if (parent_username.length > 0) {
+						html.push('<li class="content-cell"><label>家长</label><div class="right-text"><span>' + parent_username +
+							'</span></div></li>')
+					}
+					if (parent_relationship.length > 0) {
+						html.push('<li class="content-cell"><label>家长关系</label><div class="right-text"><span>' + parent_relationship +
+							'</span></div></li>')
+					}
+					if (parent_phone.length > 0) {
+						html.push(
+							'<li class="content-cell"><label>家长电话</label><div class="right-text"><a class="text_blue obj-parent-phone">' +
+							parent_phone +
+							'</a></div></li>')
+					}
+				}
+				$(".content ul").append(html.join(''))
+			}
+		}
+		//请求返回数据为空或失败显示的空页面
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			$(".content").hide()
+			$(".empty_content").show()
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".empty_content"
+			}, function() {
+				requestUserInfoFromServer(usercode, searchcode);
+			});
+		}
+		//action 点击事件
+		$(".obj-phone").click(function() {
+			var phone = $(this).text();
+			$(this).attr("href", "tel:" + phone);
+		})
+		$(".obj-teacher-phone").click(function() {
+			var phone = $(this).text();
+			$(this).attr("href", "tel:" + phone);
+		})
+
+		$(".content").on('click', '.obj-parent-phone', function() {
+			var phone = $(this).text();
+			$(this).attr("href", "tel:" + phone);
+		})
+	</script>
+</html>

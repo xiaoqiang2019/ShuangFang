@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>心理测评</title>
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.popup.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<script src="../../common/extend/script/hotcss.js"></script>
+
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<script src="../../common/extend/julong/julong.js?ver=2"></script>
+		<script src="../../common/extend/moment/moment.js"></script>
+		<script src="../../common/extend/moment/zh-cn.js"></script>
+		<link rel="stylesheet" href="css/css.css?ver=1">
+
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/app/script/empty.js"></script>
+
+
+
+	</head>
+	<body>
+		<header class="bar bar-nav">
+			<div class="pull-left"><a href="javascript:history.back(-1)">
+					<div class="arrow_left"></div>
+				</a></div>
+			<div class="title">小学生心理健康综合测评</div>
+			<div class="pull-right"></div>
+		</header>
+		
+		<div class="empty-content"></div>
+
+		<div class="content">
+			<div class="primary">
+				<div class="cpnav">
+					<div class="imgbox"><img src="images/primary_school_cover.jpg" width="100%"></div>
+					<div class="box1" style="margin-top: 0">
+						<h3>小学生综合心理素质测评量表</h3>
+						<p>考量小学生对学习成功的看法，探究孩子不想上学的原因</p>
+						<div class="info">
+							<span><i class="fa fa-users"></i>适用人群：小学生1-6年级</span>
+							<span><i class="fa fa-file-text"></i>问题数量：39道</span>
+							<span><i class="fa fa-clock-o"></i>预计时间：10分钟</span>
+						</div>
+					</div>
+				</div>
+				<div class="box1">
+					<h3 class="tit01">测评介绍</h3>
+					<div class="reportxt">
+						<p>《小学生综合心理素质测评量表》由迪扬心理学研究院和郑大心理学研究院历时两年共同研发、设计、运算及分析。量表的设计及结果涵盖了应用心理学、概率论、管理学、经济学等六大学科；量表范围涉及家庭关系、社交能力、情绪管理能力、厌学归因、焦虑抑郁因子等维度，综合考量小学生学习动力不足、成绩下降迅速、与家长关系紧张等明显状况。</p><p>
+							本量表能对小学生在近期内（一般为2周内）学习动力不足、个人取向方向等情况进行基本的评估，可有效协助家长提前做好因材施教的根本规划。
+						</p>
+					</div>
+				</div>
+				<div class="box1">
+					<h3 class="tit01 text-danger">测评须知</h3>
+					<div class="reportxt">
+						<strong>本测评包含39道习题，大概需要10-30分钟。</strong>
+						<p>1-3年级孩子家长陪同作答，给孩子读题，使得孩子正确理解信息。</p>
+						<p>1、答案无对错之分，只需按照你的实际情况填写或选择。</p>
+						<p>2、请认真作答每道题目（每题作答时长18s），便于获得准确的测评报告。</p>
+						<p>3、除课题研究人员外，其他人无法统计你填写的内容，请放心作答。</p>
+						<p>4、建议在网络较好的环境下测评。</p>
+					</div>
+				</div>
+
+				<div class="footbtn flex">
+					<label class="flex"><input type="checkbox" class="checkbox iagree"> 本人同意参加测评</label>
+					<input type="button" value="开始答题" class="btn-primary btn-block  starpc" onclick="toAnswer()" disabled>
+				</div>
+			</div>
+			<div class="middle">
+				<div class="cpnav">
+					<div class="imgbox"><img src="images/middle_school_cover.jpg" width="100%"></div>
+					<div class="box1" style="margin-top: 0">
+						<h3>中学生综合心理素质测评量表</h3>
+						<p>检测青少年个人取向、社交关系、焦虑因子、及情绪管理状况，提前做好情绪梳理</p>
+						<div class="info">
+							<span><i class="fa fa-users"></i>适用人群：初中、高中学生</span>
+							<span><i class="fa fa-file-text"></i>问题数量：80道</span>
+							<span><i class="fa fa-clock-o"></i>预计时间：30-60分钟</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="box1">
+					<h3 class="tit01">测评介绍</h3>
+					<div class="reportxt">
+						<p>中学生综合心理素质测评量表由迪扬心理学研究院和郑大心理学研究院历时2年共同研发，共同参与量表设计、运算、结果分析等。量表设计及结果涵盖了应用心理学、概率论、管理学、经济学等6大学科，量表范围涉及家庭关系、社交能力、情绪管理能力、厌学归因、焦虑抑郁因子等维度，综合考量中学生学习动力、成绩下降迅速、与家长关系紧张等明显状况，能基本检测两周内青少年焦虑抑郁根源，提前做好情绪梳理规避，降低校园极端事件发生概率。
+						</p>
+					</div>
+
+				</div>
+
+				<div class="box1">
+					<h3 class="tit01 text-danger">测评须知</h3>
+					<div class="reportxt">
+						<strong>本测评包含80道习题，大概需要30-60分钟。</strong>
+						<p>请您独立、认真作答每道题目（每题答题时长15s），才能获得准确的测评报告。</p>
+						<p>1、答案无对错之分，只需按照你的实际情况填写或选择。</p>
+						<p>2、除课题研究人员外，其他人无法统计你填写的内容，请放心作答。</p>
+						<p>3、建议在网络较好的环境下测评。</p>
+						<div style="padding: 15px 0"></div>
+
+					</div>
+				</div>
+
+				<div class="footbtn flex">
+					<label class="flex"><input type="checkbox" class="checkbox iagree"> 本人同意参加测评</label>
+					<input type="button" value="开始答题" class="btn-primary btn-block  starpc" onclick="toAnswer()" disabled>
+				</div>
+			</div>
+			<div style="height: 2rem;"></div>
+		</div>
+		<script src="../../common/app/script/navConfig.js"></script>
+		<script>
+			//同意评测
+			$(".iagree").click(function() {
+				if ($(this).is(":checked")) {
+					$(".starpc").attr("disabled", false)
+				} else {
+					$(".starpc").attr("disabled", true)
+				}
+			});
+			mui.init();
+			var url_token = updateNullString(getURLParameter('token'), "");
+			var token = updateNullString($.cookie('token'), url_token);
+			var usercode = updateNullString(getURLParameter("usercode"), "");
+			var from_bid = updateNullString(getURLParameter("from_bid"), "");
+			var type = "psychology";
+			var paper_id = "";
+			var isPrimary = false;
+			$(".primary").hide();
+			$(".middle").hide();
+			if(isEmpty(from_bid)){
+				commonShowRequestErrorEmpty(".content", "缺少参数", true, false);
+			}else{
+				setSecretKey();
+				getUserInfo();
+			}
+
+			function getUserInfo() {
+				mui.showLoading();
+				getUserInfoRequest(system.usercenter, usercode, token, function() {
+					mui.hideLoading();
+					var usertype = localStorage.getItem("usertype");
+					var grade = localStorage.getItem("grade");
+					if (usertype != "70") {
+						commonShowRequestErrorEmpty(".content", "当前用户不是学生", true, false);
+						return;
+					}
+					if (grade == "1" || grade == "2" || grade == "3" || grade == "4" || grade == "5" || grade == "6") {
+						isPrimary = true;
+						document.title="小学生心理健康综合测评";
+						$(".title").text("小学生心理健康综合测评");
+					} else {
+						isPrimary = false;
+						document.title="中学生综合心理素质测评";
+						$(".title").text("中学生综合心理素质测评");
+					}
+					if (isPrimary) {
+						paper_id = "psychology_primary_school";
+					} else {
+						paper_id = "psychology_middle_school";
+					}
+					isAnswered();
+				})
+			}
+
+			function toAnswer() {
+				var url;
+				if (isPrimary) {
+					url = "primary_school_assement.html";
+				} else {
+					url = "middle_school_assement.html";
+				}
+				window.location.replace(url+"?usercode="+usercode+"&token="+token+"&from_bid="+from_bid);
+				// CodeSTD.form({
+				// 	url: url,
+				// 	params: {
+				// 		"usercode": usercode,
+				// 		"token": token,
+				// 		"from_bid": from_bid
+				// 	},
+				// });
+			}
+
+			function isAnswered() {
+				var paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"paper_id": paper_id,
+					"from": type,
+					"from_bid": from_bid
+				};
+				var urlString = system.qbms + "/api/paper/psychology/answerCount.action";
+				mui.showLoading();
+				jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+						mui.hideLoading();
+						var result = object["ret"];
+						if (result) {
+							var dataJson = object["data"];
+							if (dataJson != null || dataJson != undefined) {
+								var count = dataJson["count"];
+								if (isEmpty(count) || count == "0") {
+									if (isPrimary) {
+										//展示小学
+										$(".primary").show();
+										$(".middle").hide();
+										$(".empty-content").hide();
+										$(".content").show();
+									} else {
+										//展示中学
+										$(".middle").show();
+										$(".primary").hide();
+										$(".empty-content").hide();
+										$(".content").show();
+									}
+								} else {
+									toAnswer();
+								}
+							} else {
+								$(".empty-content").show();
+								$(".content").hide();
+								commonShowRequestErrorEmpty(".empty-content", "数据加载出了些问题", true, true, function() {
+									isAnswered();
+								});
+							}
+						} else {
+							$(".empty-content").show();
+							$(".content").hide();
+							commonShowRequestErrorEmpty(".empty-content", updateNullString(object["err_msg"], "数据加载出了些问题"), true, true, function() {
+								isAnswered();
+							});
+						}
+					},
+					function(error) {
+						mui.hideLoading();
+						$(".empty-content").show();
+						$(".content").hide();
+						commonShowRequestErrorEmpty(".empty-content", "数据加载出了些问题", true, true, function() {
+							isAnswered();
+						});
+					})
+			}
+		</script>
+	</body>
+</html>

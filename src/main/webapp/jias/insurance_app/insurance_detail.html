@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>保单详情</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+		
+		<style>
+			.top-wapper{
+				padding-left: 15px;
+				padding-top: 11px;
+				background-color: transparent;
+				padding-bottom: 10px;
+			}
+			.top-wapper .title{
+				margin-bottom: 5px;
+				font-size: 18px;
+			}
+			
+			.top-wapper .order-no{
+				margin-bottom: 5px;
+				font-size: 12px;
+			}
+			
+			.top-wapper .order-copy {
+				background-image: url(../../common/app/images/meeting_ic_copy.png);
+				background-repeat: no-repeat;
+				background-size: 20px 20px;
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+			}
+			
+			.top-wapper .company-img{
+				display: inline-block;
+				width: 27px;
+				height: 13px;
+				margin-right: 5px;
+			}
+			
+			.top-wapper .order-status{
+				display: none;
+				float: right;
+				width: 67px;
+				height: 56px;
+				margin-right: 15px;
+				margin-top: 10px;
+		
+			}
+			
+			.top-wapper .order-status-title{
+				display: none;
+				float: right;
+				margin-right: 15px;
+				font-size: 14px;
+				}
+			
+			.top-wapper span{
+				display: inline-block;
+				font-size: 12px;
+				color: rgb(153, 153, 153);
+				vertical-align: bottom;
+			}
+			/* 基本信息 */
+		 .baseinfo-content{
+				background-color: transparent;
+				padding: 11px 15px;
+			}
+			
+			 .content-cell{
+				position: relative;
+				background-color: transparent;
+				font-size: 15px;
+				margin: 0px 0px 10px 0px;
+				width: 100%;
+				height: 30px;
+			}
+			.baseinfo-content .content-cell:first-child{
+				height: 50px;
+				margin-bottom: 0px;
+			}
+			.baseinfo-content .content-cell:last-child{
+				height: 20px;
+				margin-bottom: 0px;
+			}
+			.content-cell label{
+				position: absolute;
+				width: 85px;
+				color: rgb(153,153,153);
+				background-color: transparent;
+			}
+			
+			.content-cell .right-text{
+				position: absolute;
+				background-color: transparent;
+				text-align: left;
+				left:85px;
+				width: calc(100% - 85px);
+				color: rgb(17,17,17);
+			}
+			/* 被保人身份证号默认隐藏 */
+			.insured-idc{
+				display: none;
+			}
+			/* 名字下身份证号 */
+			.append-idc{
+				display: block;
+			}
+			.append-cell{
+				height:50px;
+			}
+/* 编辑按钮 */
+	.contact-edit-btn{
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		border: 0.5px solid  rgb(59,162,255);
+		border: 1px solid  rgb(59,162,255);
+		padding: 2px 8px;
+		border-radius: 12px;
+		color: rgb(59,162,255);
+		font-size: 13px;
+	}
+	/* 电子保单 */
+			.ele-order-btn{
+				float: right;
+				border: 1px solid  rgb(59,162,255);
+				padding: 2px 8px;
+				border-radius: 10px;
+				color: rgb(59,162,255);
+				font-size: 13px;
+			}
+			/* 保障内容 */
+			.ensure-content{
+				padding: 11px 15px;
+			}
+			.ensure-content .content-cell{
+				margin-bottom: 5px !important;
+			}
+			.ensure-content .content-cell label{
+				font-size: 14px;
+				color: rgb(153, 153, 153);
+			}
+			
+			.ensure-content .content-cell .right-text{
+				font-size: 15px;
+				color: rgb(17, 17, 17);
+				text-align: right;
+			}
+			.footer-wapper {
+				bottom: 0px;
+				height: 50px;
+				background-color: white;
+				color: rgb(59,162,255);
+				font-size: 17px;
+			}
+			.footer-wapper a:first-child img {
+				width: 85px;
+				height: 36px;
+				margin-top: 7px;
+			}
+			.footer-wapper a:last-child {
+				background-color: rgb(59,162,255);
+				color: white; 
+			}
+			.section-title{
+				border-top: 5px solid rgb(239,239,244);
+			}
+			
+			.ensure-content{
+				padding: 11px 15px;
+			}
+			.ensure-content .sku-title{
+				width: calc(100% - 85px);
+			}
+			.ensure-content .sku-detail{
+				width:85px;
+				right: 0px !important;
+				text-align: right;
+				float: right;
+			}
+			/* 保障内容详情弹出框 */
+			.ensured-detail-dialog{
+				margin: 0 auto;
+				display: none;
+				background: #fff;
+				position: fixed;
+				z-index: 999;
+				top: 20px;
+				bottom: 50px;
+				height: calc(100% - 70px);
+				left: 14px;
+				right: 14px;
+				width: calc(100% - 28px);
+				padding: 10px 10px;
+			}
+			.ensured-detail-mask {
+				width: 100%;
+				height: 100%;
+				position: fixed;
+				background: rgba(0, 0, 0, .5);
+				top: 0;
+				left: 0;
+				z-index: 900;
+				display: none;
+			}
+			.ensured-detail-title{
+				text-align: center;
+				font-size: 16px;
+				margin-bottom: 5px;
+			}
+			.ensured-detail-append{
+				text-align: center;
+				font-size: 14px;
+				margin-bottom: 10px;
+			}
+			
+			.ensured-deatil-close{
+				position: fixed;
+				left: 14px;
+				right: 14px;
+				width: calc(100% - 28px);;
+				height: 30px;
+				bottom: 10px;
+				background: url(../../common/app/images/write_ic_del.png) no-repeat center;
+				background-size: 30px 30px;
+				background-position: center;
+			}
+			
+			.content-detail-top{
+				display: flex;
+				display: -webkit-flex;
+				justify-content: space-between;
+				font-size: 16px;
+			}
+			.content-detail-des{
+				font-size: 14px;
+			}
+			.ensured-detail-close{
+				position: fixed;
+				left: 14px;
+				right: 14px;
+				width: calc(100% - 28px);;
+				height: 30px;
+				bottom: 10px;
+				background: url(../../common/app/images/write_ic_del.png) no-repeat center;
+				background-size: 30px 30px;
+				background-position: center;
+			}
+			#to-pay{
+				color: white;
+				background-color: rgb(59,162,255);
+				display: none;
+			}
+			
+			
+			
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>保单详情</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<div class="top-wapper">
+				<img class="order-status" src="../../common/app/images/mine_img_disabled.png" />
+				<div class="order-status-title"></div>
+				<div class="title">家长责任险</div>
+				<div>
+					<span class="order-no">订单号</span>
+					<input id="copy-code" class="main-code" readonly hidden="" value=""/>
+					<i class="order-copy" data-clipboard-target='#copy-code' data-clipboard-action="copy"></i>
+				</div>
+				<img class="company-img" src="" />
+				<span class="company-name">由中国平安保险郑州分公司承保</span>
+			</div>
+			<div class="section-title"><i></i><span>基本信息</span></div>
+			<div class="baseinfo-content">
+				<ul>
+					<li class="content-cell">
+						<label>投保人</label>
+						<div class="right-text">
+							<span class="policyholder">投保人姓名</span>
+							<span class="policyholder-idc append-idc">投保人身份证号</span>
+						</div>
+					</li>
+					<li class="content-cell">
+						<label>被保人</label>
+						<div class="right-text">
+							<span class="insured-number"></span>
+							<span class="insured-idc append-idc"></span>
+						</div>
+
+					</li>
+					<li class="content-cell">
+
+						<label>保障期限</label>
+						<div class="right-text"><span class="insured-duration">保障时限</span></div>
+
+					</li>
+					<li class="content-cell">
+
+						<label>紧急联系人</label>
+						<div class="right-text"><span class="emergency-contact">紧急联系人姓名</span></div>
+						<button type="button" class="contact-edit-btn mui-btn">
+							编辑
+						</button>
+
+					</li>
+					<li class="content-cell">
+
+						<label>实付保费</label>
+						<div class="right-text"><span class="actual-premium">实付保费金额</span></div>
+
+					</li>
+					<li class="content-cell">
+						<button type="button" class="ele-order-btn mui-btn operation-btn" onclick="">
+							电子保单
+						</button>
+
+					</li>
+				</ul>
+
+			</div>
+			<div class="section-title">
+				<i></i>
+				<span>保障内容</span>
+				<button type="button" class="ensure-detail section-right-btn mui-btn mui-icon mui-icon-arrowright mui-right">
+					详情
+				</button>
+			</div>
+			<div class="ensure-content">
+			</div>
+		</div>
+		<div class="footer-wapper footbtn flex_center">
+			<a href="javascript:;" class="flex_center text_blue"><img src="../../common/app/images/detaile_btn_appraise.png" /></a>
+			<a href="javascript:;" class="flex_center text_blue">电话咨询</a>
+			<a href="javascript:;" class="flex_center">申请理赔</a>
+		</div>
+		<button class=" footbtn" id="to-pay">去支付</button>
+
+		<!-- 保障内容弹出框 -->
+		<div class="ensured-detail-mask"></div>
+		<div class="ensured-detail-dialog">
+			<p class="ensured-detail-title">保障内容详情</p>
+			<p class="ensured-detail-append"></p>
+			<div class="ensured-detail-content"></div>
+			<div class="ensured-detail-close"></div>
+		</div>
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/extend/julong/aes.js"></script>
+	<script src="../../common/app/script/showLoading.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<link href="../../common/app/css/showLoading.css" />
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode), //客户端登录的用户code
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			orderId = updateNullString(getURLParameter('orderid'), ""), //保单ID
+			peoplePultiple = getURLParameter('peoplePultiple'), //0:单人投保 1：多人投保[从我的保单列表页面进来没有这个参数，需要获取接口中拿到]
+			realSkuContent = {}; //保障内容{}
+		orderId = updateNullString(getURLParameter('orderid'), ""); //保单ID
+		realSkuContent = {}, //保障内容{}
+			payWay = []; //支付方式
+		var productId = "",
+			productname = "",
+			holdername = "",
+			ordersum = "";
+			ordersum = "",
+			orderNumber = ""; //订单编号
+		requestOrderDetailFromServer()
+		// //紧急联系人姓名【暂时不要删除，第一版不加紧急联系人的编辑功能，后续再加】
+		// $('.contact-edit-btn').click(function() {
+		// 	var contactName = $('.emergency-contact').text()
+		// 	var contactPhone = $('.emergency-contact').attr('data-phone')
+		// 	CodeSTD.form({
+		// 		url: "insured_edit.html",
+		// 		params: {
+		// 			"usercode": usercode,
+		// 			"token": token,
+		// 			"type": "1",
+		// 			"edit_username": updateNullString(contactName, ''),
+		// 			"edit_userphone": updateNullString(contactPhone, ''),
+		// 			"orderId": orderId
+		// 		},
+		// 	});
+		// })
+		//点击电子保单
+		$('.ele-order-btn').click(function() {
+			alert('电子保单')
+		})
+
+		//复制
+		var copyBtn = new ClipboardJS('.order-copy',{
+			text:function(){
+				var order_no = $('.order-no').text()
+				return order_no
+			}
+		});	
+		copyBtn.on("success",function(element){
+			// 复制成功
+			mui.toast('复制成功')
+			element.clearSelection();
+		});
+		copyBtn.on("error",function(element){
+			//复制失败；
+			mui.toast('复制失败，请手动复制')
+		});
+		
+
+
+		//点击保障内容详情按钮
+		$('.ensure-detail').click(function() {
+			var realSkuContentArray = realSkuContent['items'],
+				realSkuName = realSkuContent['sku_name'];
+			$('.ensured-detail-append').text(realSkuName)
+			if ($.isArray(realSkuContentArray) && realSkuContentArray.length > 0) {
+				$(".ensured-detail-dialog").fadeIn(200);
+				$(".ensured-detail-mask").show();
+			}
+
+		})
+		$(".ensured-detail-mask").click(function() {
+			$(".ensured-detail-dialog").fadeOut(1);
+			$(".ensured-detail-mask").hide()
+		})
+		$(".ensured-detail-close").click(function() {
+			$(".ensured-detail-dialog").fadeOut(1);
+			$(".ensured-detail-mask").hide()
+		})
+		//底部按钮点击
+		$('.footer-wapper').on("click", "a", function() {
+			var index = $(this).index();
+			var thisObj = $(this)
+			var index = thisObj.index();
+			if (index == 0) {
+				CodeSTD.form({
+					url: "insurance_evaluate.html",
+					params: {
+						"usercode": usercode,
+						"token": token,
+						"productId": productId
+					},
+				});
+			} else if (index == 1) {
+				var phone = thisObj.attr('data-hotline');
+				thisObj.attr("href", "tel:" + phone);
+			} else if (index == 2) {
+				CodeSTD.form({
+					url: "../claim_app/claim_step1.html",
+					params: {
+						"usercode": usercode,
+						"token": token,
+						"orderNo": orderNumber,
+						"orderId": orderId,
+						"productID": productId
+					},
+				});
+			}
+
+		});
+		//去支付点击事件
+		$('#to-pay').click(function() {
+			CodeSTD.form({
+				url: "order_confirm.html",
+				params: {
+					"usercode": usercode,
+					"token": token,
+					"orderID": orderId,
+					"productID": productId,
+					"productName": productname,
+					"holderUsername": holdername,
+					"orderNumber": orderId,
+					"payAmount": ordersum,
+					"payWay": JSON.stringify(payWay)
+				},
+			});
+
+		});
+
+		/**
+		 * 获取保单详情
+		 */
+		function requestOrderDetailFromServer() {
+			var timestamp = moment().valueOf();
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"order_id": orderId,
+				"secret": updateNullString(getSecretKey(), ''),
+				"timestamp": timestamp,
+			};
+
+			var urlString = system.jias + "/v1/order/get";
+			mui.showLoading()
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+					if (result) {
+						var orderJson = object["data"];
+						//获取订单信息
+						if (orderJson != null || orderJson != undefined) {
+							var orderid = updateNullString(orderJson["order_id"], ""), //保单编号
+								orderNo = updateNullString(orderJson["order_no"], ""), //保单编号
+								relOrderNumber = updateNullString(orderJson["rel_order_no"], ""), //保险公司保单编号
+								productClassify = updateNullString(orderJson["product_classify"], ""), //产品分类
+								skuId = updateNullString(orderJson["sku_id"], ""), //产品ID【基础班or高贵版】
+								companyId = updateNullString(orderJson["company_id"], ""), //保险公司id
+								companyName = updateNullString(orderJson["company_name"], ""), //保险公司名称
+								companyLogo = updateNullString(orderJson["logo"], ""), //保险公司logo
+								holderUsername = updateNullString(orderJson["holder_username"], ""), //投保人姓名
+								holderIDC = updateNullString(orderJson["holder_idcard"], ""), //投保人身份证号
+								holderPhone = updateNullString(orderJson["holder_phone"], ""), //投保人手机号
+								orderStatus = orderJson["order_status"], //0 待支付 1 已支付 
+								periodStart = updateNullString(orderJson["period_start"], ""), //保障开始日期
+								periodEnd = updateNullString(orderJson["period_end"], ""), //保障结束日期
+								payAmount = updateNullString(orderJson["pay_amount"], ""), //支付金额
+								people_multiple = orderJson["people_multiple"], //是否允许一人购买多人
+								contactName = updateNullString(orderJson["contact_name"], ""), //紧急联系人姓名
+								contactPhone = updateNullString(orderJson["contact_phone"], ""), //紧急联系人手机号
+								xa_param_eleContactpersonName = contactName,
+								xa_param_eleContactpersonPhone = contactPhone,
+								insuredArray = orderJson["insured"], //被保险人数组
+								skuContentArray = orderJson["sku"]["items"]; //保障计划详情
+							orderId = orderNumber;
+							orderId = orderid;
+							orderNumber = orderNo;
+							ordersum = payAmount;
+							payWay = orderJson["support_pay_way"]; //支持的支付方式
+							realSkuContent = orderJson["sku"];
+							productId = updateNullString(orderJson["product_id"], ""); //产品ID
+							holderIDC = aesDecrypt(holderIDC, timestamp);
+							productname = updateNullString(orderJson["product_name"], "");
+							holdername = holderUsername;
+							peoplePultiple = orderJson['people_multiple']//是否允许一人购买多人	0 不允许 1允许
+							var hotline = updateNullString(orderJson['hotline'], '') //咨询热线
+							$('.footer-wapper a:nth-child(2)').attr('data-hotline', hotline)
+							$('.footer-wapper a:first-child').hide() //评价隐藏
+							//当前没有对接第三方保险平台，或者保单未生效，电子保单隐藏
+							if (relOrderNumber.length <= 0) {
+								$('.ele-order-btn').parents('li').hide()
+							} else {
+								$('.ele-order-btn').parents('li').show()
+							}
+							if (contactName.length > 0) {
+								$('.contact-edit-btn').parents('.content-cell').show()
+							} else {
+								$('.contact-edit-btn').parents('.content-cell').hide()
+							}
+							
+							if(peoplePultiple == 1){
+								if($.isArray(insuredArray) && insuredArray.length > 0){
+									$('.insured-number').text("共"+insuredArray.length+"人")
+									$('.insured-idc').hide()
+								}
+							}else{
+								$('.insured-idc').show()
+							}
+
+							//20200513 wwr确认 第一版 紧急联系人暂不支持编辑，后续在加功能
+							$('.contact-edit-btn').hide() //编辑紧急联系人隐藏
+							//0 待支付 1 已支付
+							if (orderStatus == 0) {
+								$('.order-status').hide()
+								$('.order-status-title').show()
+								$('.order-status-title').text('待支付')
+								$('.order-status-title').removeClass('app-orange-color')
+								$('.order-status-title').addClass('app-red-color')
+								$('#to-pay').css('display', 'block');
+								$('.footer-wapper').css('display', 'none');
+								$('#to-pay').show();
+								$('.footer-wapper').hide();
+							} else {
+								$('.footer-wapper').css('display', 'block');
+								$('.footer-wapper').show();
+								var expired = updateNullString(orderJson['expired'], ''); //已支付返回 0 未到起保期 1 保障中 -1已过期
+								//订单状态已支付才会返回这个字段
+								//0 未到起保期1 保障中 -1已过期
+								if (expired == '1') {
+									$('.footer-wapper a:first-child').show()
+									$('.footer-wapper a:last-child').show()
+									$('.order-status').show() //保障中图标显示
+									$('.order-status-title').hide() //文字隐藏
+									// $('.contact-edit-btn').show() //编辑紧急联系人显示
+									$('.footer-wapper a').show() //评价+电话咨询+申请理赔
+									$('.order-status').attr('src', "../../common/app/images/detaile_img_usable.png")
+								} else if (expired == '0') {
+									$('.order-status').hide() //图标隐藏
+									$('.order-status-title').show() //待生效，文字显示
+									$('.order-status-title').text('待生效')
+									$('.order-status-title').removeClass('app-red-color')
+									$('.order-status-title').addClass('app-orange-color')
+									$('.footer-wapper a:first-child').hide()
+									$('.footer-wapper a:last-child').hide()
+									// $('.contact-edit-btn').show() //编辑紧急联系人显示
+									$('.footer-wapper a:first-child').hide() //评价隐藏
+									$('.footer-wapper a:last-child').hide() //申请理赔隐藏，只展示电话咨询
+								} else if (expired == '-1') {
+									$('.footer-wapper a:first-child').hide()
+									$('.footer-wapper a:last-child').hide()
+									$('.order-status').show() //已过期图标显示
+									$('.order-status-title').hide() //待生效，文字隐藏
+									// $('.contact-edit-btn').hide() //编辑紧急联系人隐藏
+									$('.footer-wapper a:first-child').hide() //评价隐藏
+									$('.footer-wapper a:last-child').hide() //申请理赔隐藏，只展示电话咨询
+									$('.order-status').attr('src', "../../common/app/images/mine_img_disabled.png")
+								}
+
+								//全部隐藏，一般不会有这种情况
+								else {
+									$('.order-status').show()
+									$('.order-status').hide()
+									$('.order-status-title').hide()
+									$('.contact-edit-btn').hide()
+									$('.footer-wapper a:first-child').hide()
+									$('.footer-wapper a:last-child').hide()
+								}
+							}
+
+							// //根据订单ID缓存的紧急联系人信息，有的话取缓存,每天零点清除缓存
+							// var cacheKey = orderNumber + '_' + usercode + '_contactInfo',
+							// 	cacheValue = MyLocalStorage24.Cache.get(cacheKey),
+							// 	cacheJson = {};
+
+							// if (cacheValue != null) {
+							// 	cacheJson = JSON.parse(cacheValue);
+							// }
+
+							// if (cacheJson != null && cacheJson != undefined) {
+							// 	var updateContactName = updateNullString(cacheJson['contact_name'], ''),
+							// 		updateContactPhone = updateNullString(cacheJson['contact_phone'], ''),
+							// 		cacheOrderID = updateNullString(cacheJson['order_id'], '');
+							// 	if (cacheOrderID == orderNumber) {
+							// 		xa_param_eleContactpersonName = updateNullString(updateContactName, contactName)
+							// 		xa_param_eleContactpersonPhone = updateNullString(updateContactPhone, contactPhone)
+							// 	}
+							// }
+							if ($.isArray(insuredArray) && insuredArray.length > 0) {
+								//多人投保
+								if (people_multiple == 1) {
+									$('.insured-number').text('共' + insuredArray.length + '人')
+									$('.insured-idc').css('display', 'none');
+									$('.insured-idc').parents('.content-cell').removeClass('append-cell')
+								} else {
+									var json = insuredArray[0],
+										insured_username = updateNullString(json['insured_username'], ""), //被保人名称
+										insured_idcard = updateNullString(json['insured_idcard'], ""), //被保人身份证号
+										insured_phone = updateNullString(json['insured_phone'], ""); //被保人手机
+									insured_idcard = aesDecrypt(insured_idcard, timestamp);
+									$('.insured-number').text(insured_username)
+									$('.insured-idc').css('display', 'block');
+									$('.insured-idc').parents('.content-cell').addClass('append-cell')
+									$('.insured-idc').text(insured_idcard)
+								}
+							}
+
+							if ($.isArray(skuContentArray)) {
+								if (skuContentArray.length > 0) {
+									$('.ensure-detail').show()
+								} else {
+									$('.ensure-detail').hide()
+								}
+								createEnsureContentUI(skuContentArray)
+							}
+							$('.title').text(productname)
+							$('.top-wapper .order-no').text(orderNumber)
+							$('.top-wapper .company-name').text(companyName)
+							$('.top-wapper .company-img').attr("src", companyLogo)
+
+							$('.policyholder').text(holderUsername)
+							$('.policyholder-idc').text(holderIDC)
+							var startTime = moment(periodStart).format("YYYY-MM-DD"),
+								endTime = moment(periodEnd).format("YYYY-MM-DD");
+							$('.insured-duration').text(startTime + '至' + endTime)
+							if (isEmpty(xa_param_eleContactpersonName)) {
+								xa_param_eleContactpersonName = "无";
+							}
+							$('.emergency-contact').text(xa_param_eleContactpersonName)
+							$('.emergency-contact').attr('data-phone', xa_param_eleContactpersonPhone)
+							$('.actual-premium').text('￥' + payAmount)
+						}
+					} else {
+						showRequestErrorEmpty(updateNullString(object["err_msg"], "暂无相关数据"), true, true);
+
+					}
+				},
+				function(error) {
+					mui.hideLoading();
+					showRequestErrorEmpty("数据加载时出了问题", true, true);
+				})
+		}
+
+		/**
+		 * 保障内容UI
+		 */
+		function createEnsureContentUI(skuItemList) {
+			var html = [];
+			var detailHtml = [];
+			if (skuItemList != null || skuItemList != undefined) {
+				if (skuItemList.length == 0) {
+					html.push('<div class="xa-cell-empty-info xa-hide-bottom-line">暂无内容</div>');
+				} else {
+					detailHtml.push('<ul class="mui-table-view">')
+					html.push('<ul>')
+					for (var j = 0; j < skuItemList.length; j++) {
+						var subItem = skuItemList[j],
+							subItemName = updateNullString(subItem['item_name'], ''),
+							subItemPrice = updateNullString(subItem['itemquota'], ''),
+							subItemDetail = updateNullString(subItem['item_detail'], '');
+						html.push('<li class="content-cell">');
+						html.push('<label class="sku-title">' + subItemName + '</label>');
+						html.push('<div class="sku-detail"><span>' + subItemPrice + '</span></div>');
+						html.push('</li>');
+
+						detailHtml.push('<li class="content-detail-cell mui-table-view-cell">');
+						detailHtml.push('<div class = "content-detail-top"><div class = "content-detail-title">' + subItemName + '</div>');
+						detailHtml.push('<div class="content-detail-price">' + subItemPrice + '</div></div>');
+						detailHtml.push('<div class="content-detail-des">' + subItemDetail + '</div></li>');
+					}
+					detailHtml.push('</ul>')
+					html.push('</ul>')
+				}
+
+			} else {
+				html.push('<div class="xa-cell-empty-info xa-hide-bottom-line">暂无内容</div>');
+			}
+			//当前页面的保障内容和弹出框内的保障内容详情都要加上
+			$(".ensured-detail-content").html(detailHtml.join(''));
+			$(".ensure-content").html(html.join(''));
+		}
+
+		function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+			var imgpath = "../../common/app/images/nopage/img_noList.png";
+			if (isNetwork == false) {
+				imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+			}
+			//空页面[接口请求失败]
+			$.Empty.showEmptyView({
+				"imgPath": imgpath,
+				"errorMsg": errorMsg,
+				"isShowMsg": true,
+				"isShowRetry": isShowRetry,
+				"appendDom": ".content"
+			}, function() {
+				//重新刷新数据
+				requestOrderDetailFromServer()
+			});
+		}
+	</script>
+</html>

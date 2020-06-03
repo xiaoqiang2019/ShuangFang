@@ -1,0 +1,206 @@
+/* 设置button右侧的图标 */
+.mui-icon.mui-right:before {
+	padding-left: .1em;
+	font-size: 0.682666rem;
+}
+
+.mui-icon-arrowright:before {
+	color: rgb(151, 151, 151);
+}
+
+/* 选择图片 */
+.uploadFile {
+	display: block;
+	width: 2.133333rem;
+	margin-right: 0.106666rem;
+	position: relative;
+	float: left;
+}
+
+.uploadFile>a {
+	width: 100%;
+	height: 0;
+	text-align: center;
+}
+
+.uploadFile img {
+	width: 2.133333rem;
+	height: 2.133333rem;
+	position: relative;
+	/* width: 100%;
+	height: 100%; */
+}
+
+.uploadFile i {
+	position: absolute;
+	width: 0.746666rem;
+	height: 0.746666rem;
+	right: -0.213333rem;
+	top: -0.213333rem;
+	display: none;
+	background: url(../../../common/app/images/ic_caution.png) no-repeat;
+	background-size: 100%;
+}
+
+/* ul li */
+.listinput {
+	padding: 0.3191489361702128rem 0.6382978723404256rem;
+	padding-bottom: 2.0851063829787235rem;
+	background-color: white;
+	height: 100%;
+	overflow: hidden;
+}
+
+.listinput li {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	min-height: 1.446808510638298rem;
+	margin: 0.48936170212765956rem 0;
+}
+
+.listinput li label {
+	width: 3.5106382978723403rem;
+	line-height: 1.446808510638298rem;
+	color: #111;
+	padding-left: 0.2978723404255319rem;
+	position: relative;
+	background-color: transparent;
+	font-size: 0.682666rem;
+}
+
+
+.listinput li label i {
+	position: absolute;
+	left: -0.1rem;
+	color: #ff0000;
+}
+
+.listinput li .labelnav {
+	width: calc(100% - 3.5106382978723403rem);
+	line-height: 1.446808510638298rem;
+	height: 1.446808510638298rem;
+	background-color: transparent;
+}
+
+.listinput li:nth-child(3),
+.listinput li:nth-child(3) .labelnav,
+.listinput li:nth-child(3) label {
+	height: 2.133333rem;
+	line-height: 2.133333rem;
+	background-color: transparent;
+}
+
+.listinput li .inputxt {
+	height: 1.446808510638298rem;
+	width: 100%;
+	border: 1px solid #ddd;
+	background: #fcfcfc;
+	font-size: 0.6808510638297872rem;
+	color: #666666;
+	padding: 0rem;
+	text-align: left;
+}
+
+.listinput li textarea {
+	border: 1px solid #ddd;
+	background: #fcfcfc;
+	width: 100%;
+	min-height: 4.266666rem;
+	padding: 0.3191489361702128rem 0 0.3191489361702128rem 0;
+	/* font-family: 微软雅黑; */
+	font-size: 0.682666rem;
+	color: #666666
+}
+
+.labelnav .mui-btn {
+	border: none;
+	color: #aaa;
+	font-size: 0.682666rem;
+	top: 0rem;
+	bottom: 0rem;
+	padding: 0rem;
+	line-height: 100%;
+	height: 100%;
+	max-width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: 500;
+}
+
+#stuimg_detail {
+	color: #3BA2FF;
+	position: relative;
+	left: 0.106666rem;
+	top: 0rem;
+	padding: 0rem;
+	margin: 0rem;
+	height: 100%;
+	font-size: 0.554666rem;
+	background-color: transparent;
+}
+
+.face_mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(0, 0, 0, .5);
+	top: 0;
+	left: 0;
+	z-index: 900;
+	display: none;
+}
+
+.face_dialog{
+	width: 72%;
+	margin: 0 auto;
+	display: none;
+	background: #fff;
+	position: fixed;
+	z-index: 999;
+	top: 20%;
+	left: 14%;
+	border-radius: 0.554666rem;
+}
+
+.face_footer {
+	padding-bottom: 0rem;
+	margin-bottom: 0rem;
+	height: 1.834666rem;
+	line-height: 1.834666rem;
+	font-size: 0.72rem;
+	border-top: 1px solid #ddd;
+	border-radius: 0 0 0.554666rem 0.554666rem;
+	overflow: hidden;
+}
+
+.face_footer a {
+	width: 100%;
+	height: 100%;
+	left: 0rem;
+	padding: 0rem;
+	margin: 0rem;
+	display: block;
+	float: left;
+	text-align: center;
+	background-color: white;
+	color: #3BA2FF;
+	font-size: 0.725333rem;
+}
+.face_dialog p{
+	margin: 0rem;
+}
+.face_dialog p:nth-child(1) {
+	text-align: left;
+	color: #333333;
+	font-size: 0.682666rem;
+	padding: 0.810666rem 0rem 0rem 0.810666rem;
+}
+
+.face_dialog p:nth-child(2) {
+	text-align: left;color:#333333;font-size:0.597333rem;margin-top:0.469333rem;
+	padding: 0rem 0.810666rem 0.810666rem 0.810666rem;
+}

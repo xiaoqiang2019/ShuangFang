@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>新建检查</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 basetoken获取 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="../../common/extend/mui/css/mui.picker.min.css" />
+		<script src="../../common/extend/vue/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../common/extend/mui/js/mui.picker.min.js"></script>
+		<style>
+
+			[v-cloak] {
+			    display: none;
+			}
+
+			.listinput li {
+				display: -webkit-flex;
+				display: flex;
+				justify-content: space-between;
+				-webkit-justify-content: space-between;
+				flex-direction: row;
+				-webkit-flex-direction: row;
+				border-bottom: #dedede solid 1px;
+				padding-right: 15px;
+				padding-left: 6px;
+				padding-top: 15px;
+				padding-bottom: 15px;
+				font-size: 16px;
+				line-height: 16px;
+				height: 50px;
+				
+			}
+			.listinput li label {
+				color: #111;
+			}
+			.listinput li input {
+				border: none;
+				height: 16px;
+				line-height: 16px;
+				margin: 0;
+				padding: 0;
+				text-align: right;
+				line-height: 16px;
+				
+			}
+			.item-ringht{
+				width: 60%;
+				display: -webkit-flex;
+				display: flex;
+				flex-direction: row;
+				-webkit-flex-direction: row;
+				align-items: center;
+				-webkit-align-items: center;
+			}
+			.item-ringht img{
+				width: 20px;
+				height: 20px;
+			
+				
+			}
+			.listinput li label i {
+				color: #ff0000;
+				margin-right: 5px;
+				align-items: baseline;
+				
+			}
+			.item-left{
+				margin-left: 12px;
+			}
+			
+		</style>
+
+
+	</head>
+
+	<body>
+		<header>
+			<h1>新建检查</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div v-cloak class="content">
+			<ul class="listinput">
+				<li>
+					<label><i>*</i>检查方式</label>
+					<span> {{review_mode}} </span>
+				</li>
+				<li>
+					<label><i>*</i>标题</label>
+					<div class="item-ringht" @tap="toTitle">
+						<input type="text" v-model="review_title" readonly="readonly" placeholder="请填写" />
+						<img src="../../common/app/images/main_table_arrow.png">
+					</div>
+
+				</li>
+				<li>
+					<label><i>*</i>检查内容</label>
+					<div class="item-ringht">
+						<input type="text" v-model="review_content" placeholder="请选择" readonly="readonly" />
+						<img src="../../common/app/images/main_table_arrow.png">
+					</div>
+
+				</li>
+				<li>
+					<label><i>*</i>开始时间</label>
+					<div class="item-ringht" @click="selectStartDate">
+						<input type="text" v-model="start_time" placeholder="请选择" readonly="readonly" />
+						<img src="../../common/app/images/main_table_arrow.png">
+					</div>
+
+				</li>
+				<li>
+					<label><i>*</i>结束时间</label>
+					<div class="item-ringht" @click="selectEnddate">
+						<input type="text" v-model="end_time" placeholder="请选择" readonly="readonly" />
+						<img src="../../common/app/images/main_table_arrow.png">
+					</div>
+				</li>
+				<li>
+					<label><i>*</i>总负责人</label>
+					<div class="item-ringht">
+						<input type="text" v-model="principal_name" placeholder="请选择" readonly="readonly" />
+						<img src="../../common/app/images/main_table_arrow.png">
+					</div>
+				</li>
+				<li>
+					<label><i>*</i>检查对象</label>
+					<span>{{school_name}}</span>
+				</li>
+
+				<li>
+					<label class="item-left">备注</label>
+					<div class="item-ringht">
+						<input type="text" v-model="remark" readonly="readonly" placeholder="请填写" />
+						<img src="../../common/app/images/main_table_arrow.png">
+					</div>
+				</li>
+			</ul>
+
+		</div>
+
+
+
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		var app = new Vue({
+			el: '.content',
+			data: {
+				review_mode: '',
+				review_title: "ddd",
+				review_content: "",
+				start_time: "",
+				end_time: "",
+				school_name: "",
+				principal_name: "",
+				remark: ""
+			},
+			methods: {
+				//选择月份
+				selectStartDate: function() {
+					var app = this;
+					var dtPicker = new mui.DtPicker({
+						type: 'date',
+						value: app.start_time
+
+					});
+					dtPicker.show(function(selectItems) {
+						app.start_time = selectItems.text;
+					})
+
+				},
+				selectEnddate: function() {
+
+					var app = this;
+					var dtPicker = new mui.DtPicker({
+						type: 'date',
+						value: app.end_time
+
+					});
+					dtPicker.show(function(selectItems) {
+						app.end_time = selectItems.text;
+					})
+
+				},
+				toTitle: function() {
+					this.xa_setSessionMsg();
+					mui.openWindow({
+						url: 'exam_title_remark.html',
+						id: 'exam_title_remark'
+
+					})
+				},
+				xa_getSessionMsg: function() {
+					this.review_title = this.xa_getSessionItem('title');
+					this.start_time = this.xa_getSessionItem('starttime');
+					this.end_time = this.xa_getSessionItem('endtime');
+
+				},
+				xa_setSessionMsg: function() {
+					localStorage.setItem('title', this.review_title);
+					localStorage.setItem('starttime', this.start_time);
+					localStorage.setItem('endtime', this.end_time);
+
+				},
+				xa_getSessionItem: function(key) {
+					return updateNullString(localStorage.getItem(key), "");
+				}
+
+
+
+			},
+			created() {
+				this.xa_getSessionMsg();
+
+			},
+			destroyed() {
+				localStorage.clear();
+			}
+
+		})
+	</script>
+
+
+</html>

@@ -1,0 +1,394 @@
+<!-- 以下代码可以直接全部copy到新建的html中 基础引用 不可缺少 有自定义的在单个html中实现-->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>用户评价</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件 平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			.mui-popover.mui-popover-action .mui-table-view {
+				color: rgb(17, 17, 17);
+			}
+
+			/* cell样式 */
+			.cell-list li {
+				margin: 10px 0px;
+				border-bottom: 1px solid rgb(239, 239, 244);
+			}
+
+			/* .cell-list li:last-child {
+				border-bottom: 1px solid rgb(222, 222, 222);
+			} */
+
+			/* cell-顶部 名称 状态 更多在同一个div内部*/
+			.cell-top-content {
+				display: flex;
+				/* 交叉轴上项目的第一行文字的基线对齐 */
+				align-items: baseline;
+				/* 两端对齐 */
+				justify-content: space-between;
+				display: -webkit-flex;
+				-webkit-align-items: baseline;
+				-webkit-justify-content: space-between;
+			}
+
+			.cell-top-right {
+				/* margin-top: 20px; */
+				display: flex;
+				display: -webkit-flex;
+				justify-content: flex-start;
+				-webkit-justify-content: flex-start;
+			}
+
+			.cell-name {
+				padding-left: 10px;
+				border-left: 3px solid rgb(59, 162, 255);
+				font-size: 16px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.cell-status {
+				font-size: 15px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.cell-more {
+				display: inline-flex;
+				margin-right: 15px;
+				margin-left: 10px;
+			}
+
+			.cell-duration,
+			.cell-content {
+				display: flex;
+				display: -webkit-flex;
+				font-size: 15px;
+				margin: 10px 15px;
+			}
+
+
+			.cell-content .cell-left {
+				margin-right: 10px;
+				width: 60px;
+			}
+
+			.cell-content .cell-right {
+				width: calc(100% - 60px - 10px);
+			}
+
+			.mui-bar-nav~.mui-content .mui-pull-top-pocket {
+				top: - 40px !important;
+			}
+
+			/* 用户评论 */
+			.comment-cell {
+				padding: 10px 15px;
+				background-color: transparent;
+				min-height: 50px;
+
+			}
+
+			.comment-cell #cell-headimg {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				float: left;
+			}
+
+			.comment-cell #cell-username {
+				width: 30%;
+				background-color: transparent;
+				text-align: left;
+				display: inline-block;
+				margin-left: 20px;
+				margin-top: 7px;
+			}
+
+			.comment-cell #cell-time {
+				display: inline-block;
+				margin-top: 7px;
+				float: right;
+				background-color: transparent;
+				text-align: right;
+				font-size: 13px;
+				color: rgb(102, 102, 102);
+			}
+
+			.comment-cell #cell-stars {
+				background-color: transparent;
+				display: block;
+				height: 20px;
+				margin-top: 10px;
+				margin-left: 60px;
+			}
+
+			.comment-cell #cell-stars img {
+				width: 14px;
+				height: 14px;
+				margin: 2px;
+			}
+
+			.comment-cell #cell-stars img:first-child {
+				margin-left: 0px;
+			}
+
+			.comment-cell #cell-comment {
+				background-color: transparent;
+				font-size: 15px;
+				color: rgb(102, 102, 102);
+				margin-left: 60px;
+				text-align: left;
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>用户评价</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div v-cloak id="app">
+			<div v-if="show" class="cell-list mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul>
+						<li class="comment-cell" v-for="(item,index) in itemList" :key="item.comment_id">
+							<img id="cell-headimg" v-if="item.head_url.length > 0" src="item.head_url" />
+							<img id="cell-headimg" v-else="item.head_url.length > 0" src="../../common/app/images/main_avatar.png" />
+							<div id="cell-username">{{item.username}}</div>
+							<div id="cell-time">{{moment(item.create_time).format('YYYY-MM-DD')}}</div>
+							<div id="cell-stars">
+								<img v-for="(starItem,startIndex) in item.star" src="../../common/app/images/show_ic_star_on.png" />
+							</div>
+							<div id="cell-comment">{{item.comment}}</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<empty v-else v-bind:errorMsg="errorMsg" v-bind:showretry="true" v-bind:isneterror="false" v-on:retryclick="retryMsg"></empty>
+		</div>
+
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<!-- 日期插件 -->
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/extend/vue/vue.min.js"></script>
+	<script src="../../common/app/script/empty_vue.js"></script>
+	<script>
+		window.onload = function() {
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006  
+			});
+			var realHeight = $(window).height();
+			if (isAPPHeaderShow) {
+				$(".cell-list").css({
+					'top': '44px'
+				})
+				$('.cell-list').css('height', realHeight + 'px').css('height', '-=44px');
+			} else {
+				$(".cell-list").css({
+					'top': '0px'
+				})
+				$('.cell-list').css('height', realHeight + 'px').css('height', '-=0px');
+			}
+		};
+		(function($) {
+			//阻尼系数  
+			var deceleration = mui.os.ios ? 0.003 : 0.0009;
+			$('.mui-scroll-wrapper').scroll({
+				bounce: false,
+				indicators: false, //是否显示滚动条  
+				deceleration: deceleration
+			});
+			mui(".mui-scroll-wrapper").on('tap', 'li', function(event) {
+				this.click();
+			});
+			$.ready(function() {
+				mui.init({
+					pullRefresh: {
+						container: '.cell-list',
+						down: {
+							style: 'circle',
+							offset: '0px',
+							auto: true,
+							callback: pulldownRefresh
+						},
+						up: {
+							contentrefresh: '加载中...',
+							callback: pullupRefresh
+						}
+					}
+				});
+			});
+		})(mui);
+
+
+		var vm = new Vue({
+			el: "#app",
+			data: {
+				itemList: [],
+				start: 0,
+				limit:10,
+				total:10,
+				emptymsg: "无",
+				show: true,
+				isneterror: false,
+				errorMsg: ""
+			},
+			mounted: function mounted() {
+
+			},
+			methods: {
+				//重试
+				xa_showRequestErrorEmpty: function(msg, isneterror) {
+					this.show = false;
+					this.errorMsg = msg;
+					this.isneterror = isneterror;
+				},
+
+				retryMsg: function() {
+					pulldownRefresh();
+				},
+			}
+		});
+
+		/**
+		 *  下拉刷新获取最新列表 
+		 */
+		function pulldownRefresh() {
+			console.log("pulldownRefresh")
+			requestDataFromServer(true)
+		}
+		/**
+		 * 上拉加载拉取历史列表 
+		 */
+		function pullupRefresh() {
+			console.log("pullupRefresh")
+			requestDataFromServer(false)
+		}
+		// 下拉刷新
+		function requestDataFromServer(pulltofresh) {
+			mui.showLoading();
+			//无网络加载
+			if (navigator.onLine == false) {
+				mui.hideLoading();
+				if (pulltofresh) {
+					mui('.cell-list').pullRefresh().endPulldownToRefresh(false);
+				} else {
+					mui('.cell-list').pullRefresh().endPullupToRefresh(false);
+				}
+				vm.xa_showRequestErrorEmpty("暂无相关数据");
+				return;
+			}
+			if (pulltofresh) {
+				vm.start = 0;
+			} else {
+				var newstart = vm.start + vm.limit;
+				if (newstart < vm.total) {
+					vm.start = newstart;
+				} else {
+					mui.hideLoading();
+					endPullRefresh(pulltofresh);
+					mui.toast("暂无更多数据");
+					return;
+				}
+			}
+			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+			var productId = updateNullString(getURLParameter('productID'), '');
+			var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"product_id": productId,
+				"start": vm.start,
+				"limit": vm.total
+			};
+
+			var urlString = system.jias + "/v1/comment/list";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+					/*loadmore的需要判断分页的数据是否有值，有值了数据源加上去
+						没有值 判断原数据源是否有值，没有值，空页面显示；
+					 有值了，页面依然显示原数据源，然后toast提示用户，暂无更多数据【表明用户下拉加载的无数据】；*/
+					if (result) {
+						var dataList = object["data"],
+							itemArray = dataList["items"];
+						vm.total = dataList["total"];
+						vm.start = dataList["start"];
+						//pull to refrsh
+						if (vm.start == 0) {
+							if (itemArray.length > 0) {
+								vm.itemList = itemArray
+							} else {
+								vm.xa_showRequestErrorEmpty("暂无相关数据");
+
+							}
+						}
+						//load more
+						else {
+							if (itemArray.length > 0) {
+								vm.itemList = vm.itemList.concat(itemArray)
+							} else {
+								if (vm.itemList.length == 0) {
+									vm.xa_showRequestErrorEmpty("暂无相关数据");
+								} else {
+									mui.toast("暂无更多数据")
+								}
+							}
+						}
+					} else {
+						vm.xa_showRequestErrorEmpty(updateNullString(object["err_msg"], "暂无相关数据"), false);
+					}
+					if (pulltofresh) {
+						mui('.cell-list').pullRefresh().endPulldownToRefresh(false);
+					} else {
+						mui('.cell-list').pullRefresh().endPullupToRefresh(false);
+					}
+				},
+				function(error) {
+					mui.hideLoading();
+					if (pulltofresh) {
+						mui('.cell-list').pullRefresh().endPulldownToRefresh(false);
+					} else {
+						mui('.cell-list').pullRefresh().endPullupToRefresh(false);
+					}
+					vm.xa_showRequestErrorEmpty("数据加载时出了问题");
+				})
+		}
+	</script>
+
+
+</html>

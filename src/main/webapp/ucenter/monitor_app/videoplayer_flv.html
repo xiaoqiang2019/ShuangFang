@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>云眼</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 平台李鹏使用的px和rem转换 46.875 -->
+		<script src="../../common/extend/script/hotcss.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean 自定义js文件 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<!-- <script type="text/javascript" src="../monitor/player/liveplayer-element.min.js"></script> -->
+		<!-- <script src="https://cdn.jsdelivr.net/npm/flv.js/dist/flv.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/hls.js/dist/hls.min.js"></script>
+		<script src="player/DPlayer.min.js"></script> -->
+
+	</head>
+
+	<body>
+		<header>
+			<h1>FLV测试</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+
+
+		<!-- <div id="dplayer"></div> -->
+			<div id="liveplayers" style="width: 100%;height: 480px;">
+			<!-- <live-player id="player01" video-url="http://192.168.1.229:8080/cam_remote/aaabbb.flv" live="true"
+			 stretch="true"></live-player> -->
+		</div>
+
+		<!-- <canvas width="100%" height="200px"></canvas>
+		<img id="aa" width="200px" height="200px" style="position: relative;top:10px;left:20px;" src="../../common/app/images/ic_caution.png" />
+		<button onclick="clickme()" style="position: relative;top:230px;">截图</button> -->
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+
+	<script>
+		
+		// const dp = new DPlayer({
+		//     container: document.getElementById('dplayer'),
+		//     screenshot: true,
+		// 	live:true,
+		// 	autoplay:true,
+		//     video: {
+		//         url: 'rtmp://58.200.131.2:1935/livetv/hunantv',
+		//         pic: 'demo.jpg',
+		//         thumbnails: 'thumbnails.jpg',
+		// 		type:"rtmp"
+		//     },
+		// });
+		
+
+		// var player = document.getElementById('player01');
+
+		// player.addEventListener('snapOutside', evt => {
+		// 	console.log('获取快照 base64 数据', evt.detail[0]);
+		// 	$("#aa").attr("src", evt.detail[0]);
+		// });
+
+
+		// function clickme() {
+		// 	// var video = document.querySelectorAll('video')[0];
+		// 	// var canvas = document.querySelectorAll("canvas")[0];
+		// 	// var ctx = canvas.getContext('2d');
+		// 	// ctx.drawImage(video, 0, 0, 100, 100);
+		// 	// var url = canvas.toDataURL('image/png');
+		// 	// $("#aa").attr("src",url);
+
+		// 	player.getVueInstance().snap();
+		// }
+		// setTimeout(() => {
+		// 	console.log("快照, 回调 snapOutside...");
+		// 	player.getVueInstance().snap();
+		// 	// console.log("静音...");
+		// 	// player.getVueInstance().setMuted(true);
+		// 	// console.log("静音状态: " + player.getVueInstance().getMuted());
+		// 	// console.log("暂停...");
+		// 	// player.getVueInstance().pause();
+		// 	// console.log("暂停状态: " + player.getVueInstance().paused());
+		// }, 3000);
+	</script>
+
+
+</html>

@@ -1,0 +1,312 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>学生信息管理</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 平台李鹏使用的px和rem转换 46.875 -->
+		<script src="../../common/extend/script/hotcss.js"></script>
+
+		<!-- mui引入 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+
+		<!--  xuean 自定义js文件 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<!-- 本页面css -->
+		<link href="css/stu_manager.css" rel="stylesheet">
+		<!-- 班级选择 -->
+		<link href="../../common/app/css/commonClass.css" rel="stylesheet">
+		<script src="../../common/app/script/student.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- 空页面 -->
+		<script src="../../common/app/script/empty.js"></script>
+	</head>
+
+	<body>
+		<header class="nobor">
+			<h1>学生信息管理</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<!-- 班级选择按钮 -->
+		<div class="scselect" onclick="show_dialog()"><span id="classname">选择班级</span> <i class="arrow_down"></i></div>
+		<!-- 搜索框 -->
+		<div class="search01">
+			<input type="search" id="scinput" placeholder="搜索" maxlength="20">
+			<a href="#" id="scancel" onclick="cancelSearchAction()">取消</a>
+		</div>
+
+		<!-- 首页学生列表 -->
+		<div class="sclist"></div>
+
+		<!-- 首页底部按钮 -->
+		<div class="footbtn flex_center">
+			<a href="#" class="flex_center text_blue" onclick="addStudent()">添加学生</a>
+		</div>
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+
+	<script>
+		if (mui.os.ios) {
+			window.onpageshow = function(e) {
+				dLog("执行onpageshow");
+				if (e.persisted || (window.performance && window.performance.navigation.type == 2)) {
+					getSelectClassStudent();
+				}
+			}
+		}
+
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+		if (localOrgId.length == 0) {
+			getUserInfoRequest(system.usercenter, usercode, token, function() {
+				localOrgId = updateNullString(localStorage.getItem("orgid"), "");
+			})
+		}
+		var orgid = updateNullString(getURLParameter('orgid'), localOrgId);
+		var selectGradeCode, selectGradeName, selectClassCode, selectClassName;
+		var currentGradeCode, currentClassCode, currentClassName;
+
+		//传入参数，初始化学生列表 获取默认值
+		$.student.initStudent({
+			"usercode": usercode,
+			"orgid": orgid,
+			"includedelay": "0",
+			"token": token,
+			"selectGradeCode": selectGradeCode,
+			"selectClassCode": selectClassCode,
+			"limit": "1"
+		}, function(e) {
+			selectGradeCode = e["gradecode"];
+			selectGradeName = e["gradename"];
+			selectClassCode = e["classcode"];
+			selectClassName = e["classname"];
+			$("#classname").text(currentClassName);
+			getSelectClassStudent();
+		});
+		//点击按钮弹出学生列表
+		function show_dialog() {
+			$.student.show(function(e) {
+				selectGradeCode = e["gradecode"];
+				selectGradeName = e["gradename"];
+				selectClassCode = e["classcode"];
+				selectClassName = e["classname"];
+				getSelectClassStudent();
+			})
+		}
+		/* 获取选中班级下的学生 */
+		function getSelectClassStudent() {
+			currentGradeCode = selectGradeCode;
+			currentClassCode = selectClassCode;
+			currentClassName = selectClassName;
+			var html = [];
+			if (selectGradeCode.length > 0 && selectClassCode.length > 0) {
+				$("#classname").text(currentClassName);
+				//初始化首页面的数据 获取该用户名下班级学生
+				var paramDic = {
+					usercode: usercode,
+					token: token,
+					orgid: orgid,
+					gradecode: selectGradeCode, //年级ID
+					classcode: selectClassCode
+				};
+				var url = system.usercenter + "/delayedclass/getStudentListOfClass.action";
+				//网络请求
+				// var nt = plus.networkinfo.getCurrentType();
+				// if (nt == plus.networkinfo.CONNECTION_NONE) {
+				if (navigator.onLine == false) {
+					$.Empty.showEmptyView({
+						"imgPath": "../../common/app/images/nopage/img_noNetwork.png",
+						"errorMsg": "网络似乎有点问题",
+						"isShowMsg": true,
+						"isShowRetry": true,
+						"appendDom": ".sclist"
+					}, function() {
+						getSelectClassStudent();
+					});
+					return;
+				}
+
+				//dLog(url + paramDic);
+				mui.showLoading("", "div");
+				jQuery_Request_Post(url, paramDic, "json", true, function(data) {
+					mui.hideLoading();
+					var json = JSON.stringify(data);
+					var result = data["ret"];
+					if (result) {
+						var jsonData = data['data'];
+						requestStudentList = jsonData['studentlist'];
+						if (requestStudentList.length > 0) {
+							$.Empty.hideEmptyView();
+							initMainListData(requestStudentList);
+						} else {
+							$.Empty.showEmptyView({
+								"imgPath": "../../common/app/images/nopage/img_noList.png",
+								"errorMsg": $("#classname").text() + "下无学生",
+								"isShowMsg": true,
+								"isShowRetry": false,
+								"appendDom": ".sclist"
+							});
+						}
+					} else {
+						var msg = updateNullString(data["msg"], "获取学生数据失败!")
+						$.Empty.showEmptyView({
+							"imgPath": "../../common/app/images/nopage/img_noList.png",
+							"errorMsg": msg,
+							"isShowMsg": true,
+							"isShowRetry": true,
+							"appendDom": ".sclist"
+						}, function() {
+							getSelectClassStudent();
+						});
+					}
+				}, function(error) {
+					mui.hideLoading();
+					// var msg = updateNullString(error, "请求获取学生数据失败!")
+					$.Empty.showEmptyView({
+						"imgPath": "../../common/app/images/nopage/img_noList.png",
+						"errorMsg": "数据加载时出了问题",
+						"isShowMsg": true,
+						"isShowRetry": true,
+						"appendDom": ".sclist"
+					}, function() {
+						getSelectClassStudent();
+					});
+				});
+
+			}
+		}
+
+
+		var stu_List = [];
+
+		function initMainListData(stu_List) {
+			var html = [];
+			html.push('<ul>');
+			for (var j = 0; j < stu_List.length; j++) {
+				var obj = stu_List[j];
+				var studentname = updateNullString(obj['studentname'], obj['studentcode']);;
+				var studentcode = updateNullString(obj['studentcode'], '');
+				var userid = updateNullString(obj['userid'], '');
+				var studentimg = updateNullString(obj['faceimg'], "../../common/app/images/main_avatar.png")
+				var failReason = updateNullString(obj['reason'], '');
+				//人脸信息不合格 隐藏i
+				if (failReason == "" || failReason == 'undefined') {
+					html.push('<li userid="' + userid + '" studentcode="' + studentcode + '" studentname="' + studentname +
+						'" ><a><div class="headimg"><img src="' + studentimg +
+						' "/></div><span>' + studentname + '</span></a></li>');
+				} else {
+					html.push('<li userid="' + userid + '" studentcode="' + studentcode + '" studentname="' + studentname +
+						'" ><a><div class="headimg"><img src="' + studentimg +
+						' "/><i></i></div><span>' + studentname + '</span></a></li>');
+
+				}
+			}
+			html.push('</ul>');
+			$('.sclist').html(html.join(''));
+		}
+
+		//首页学生item点击,页面内传参
+		$(".sclist").on("click", "li", function() {
+			var studentname = $(this).attr('studentname');
+			var studentcode = $(this).attr('studentcode');
+			var userid = $(this).attr('userid');
+
+			var img = $(this).find('img');
+			var imgUrl = $(img).attr('src');
+			dLog("点击了学生：" + studentname + "_" + studentcode);
+
+			CodeSTD.form({
+				url: "../stumanager_app/stu_baseinfo.html",
+				params: {
+					"userid": userid,
+					"usercode": usercode,
+					"orgid": orgid,
+					"studentcode": studentcode,
+					"token": token
+				},
+			});
+			cancelSearchAction(); //重置搜索框
+		});
+
+		function addStudent() {
+			CodeSTD.form({
+				url: "../stumanager_app/stu_edit.html",
+				params: {
+					"classname": $("#classname").text(),
+					"classcode": selectClassCode,
+					"usercode": usercode,
+					"orgid": orgid,
+					"token": token,
+				},
+			});
+
+		}
+		/********************** 首页面实时搜索  ********************************/
+
+		//实时搜索取消
+		function cancelSearchAction() {
+			$("#scinput").blur();
+			$("#scinput").val("");
+			$(".sclist ul li").show();
+		}
+
+		$("#scinput").focus(function() {
+			$(this).next("a").fadeIn(200);
+		})
+
+		$("#scinput").blur(function() {
+			$(this).next("a").fadeOut(100);
+		})
+
+		$("#scinput").on("keydown", function(e) {
+			console.log(e.keyCode);
+			var searchContent = $("#scinput").val();
+			if (e.keyCode == 49) {
+				if (searchContent != "") {
+					$(this).focus();
+				}
+			}
+		});
+
+		$("#scinput").bind('input propertychange', function() {
+			var searchContent = $("#scinput").val();
+
+			if (searchContent == "") {
+				$(".sclist ul li").show();
+			} else {
+				$(".sclist ul li").each(function() {
+					var studentname = $(this).attr("studentname");
+					// var studentcode = $(this).attr("studentcode");
+					if (studentname.indexOf(searchContent) != -1) {
+						$(this).show();
+
+					} else {
+
+						$(this).hide();
+					}
+				});
+				$("#scinput").focus();
+			}
+		})
+	</script>
+
+</html>

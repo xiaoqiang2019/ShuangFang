@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>编辑被保人信息</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<script src="../../common/extend/vue/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+
+			.content-cell {
+				position: relative;
+				margin-bottom: 5px;
+				font-size: 16px;
+				height: 33px;
+				margin: 15px 15px 10px 15px;
+			}
+
+			.content-cell label {
+				position: absolute;
+				width: 85px;
+				padding-top: 5px;
+			}
+
+			.content-cell .right-text {
+				position: absolute;
+				left: 85px;
+				height: 100%;
+				width: calc(100% - 85px);
+			}
+			#save-btn {
+				position: absolute;
+				bottom: 0;
+				color: white;
+				width: 100%;
+				border: none;
+				font-size: 16px;
+				height: 50px;
+				background-color: #3ba2ff;
+			}
+			
+			#stu-grade{
+				position: absolute;
+				left: 75px;
+				font-size: 16px;
+				color: #bbbbbb;
+				border: none;
+				background:none; 
+			}
+			.input-no-border{
+				border:none !important;
+				background-color: white !important;
+				color: rgb(17,17,17)!important;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>编辑被保人信息</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<div class="top-wapper">
+				<div class="content-cell">
+					<label>姓名</label>
+					<input type="text" id="stu-name" maxlength="20" class="right-text" placeholder="请输入">
+
+				</div>
+				<div class="content-cell">
+					<label id="idcard">身份证号</label>
+					<input type="text" id="stu-idcard" maxlength="18" class="right-text" placeholder="请输入" onkeyup="value=value.replace(/[\W]/g,'')">
+				</div>
+
+				<div class="content-cell select-class">
+					<label>班级</label>
+					<button type="button" id="stu-grade" class="mui-btn mui-icon mui-icon-arrowright mui-right">
+						请选择
+					</button>
+				</div>
+				<button type="button" id="save-btn">保存</button>
+			</div>
+
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<link href="../../common/app/css/commonClass.css" rel="stylesheet">
+	<script src="../../common/app/script/student.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/app/script/showLoading.js"></script>
+	<link href="../../common/app/css/showLoading.css" />
+	<script src="../../common/extend/julong/aes.js"></script>
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode); //客户端登录的用户code
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var basetoken = updateNullString(getURLParameter('basetoken'), ""); //页面加载完毕后才会与客户端交互获取basetoken，此处需要在上个页面交互获取后参数传递
+		var classname = updateNullString(getURLParameter('classname'), "请选择"); //该生目前所在班级 url参数传递
+		var classcode = updateNullString(getURLParameter('classcode'), ""); //列表页选中的班级
+		var gradecode = updateNullString(getURLParameter('gradecode'), ""); //列表页面选中的年级
+		var type = updateNullString(getURLParameter('type'), ""); //1:编辑紧急联系人 2：只可以更改身份证号，姓名和班级不可更改 其他：都可以更改
+		var isTeacherStr = updateNullString(getURLParameter('isTeacher'), "false");
+		var orgId = updateNullString(localStorage.getItem("orgid"), "");
+		var isTeacher = isTeacherStr == 'true' ? true : false;
+		//传递过来的用户信息
+		var editUserCode = updateNullString(getURLParameter('edit_usercode'), "");
+		var editUserName = updateNullString(getURLParameter('edit_username'), "");
+		var editUserIDC = updateNullString(getURLParameter('edit_useridc'), "");
+		var editUserPhone = updateNullString(getURLParameter('edit_userphone'), "");
+		var orderID = ""; //从保单详情进来的有值，保单ID
+		var selectGradeCode = gradecode,
+			selectGradeName = "",
+			selectClassCode = classcode,
+			selectClassName = classname;
+
+		$('#stu-name').val(editUserName);
+		//传入参数，初始化学生列表 获取默认值
+		if (type == "1") {
+			orderID = updateNullString(getURLParameter('orderId'), "");
+			$("#stu-grade").attr("class", "mui-btn mui-icon mui-icon-arrowright mui-right");
+			$("#stu-name").attr("class", "right-text");
+			$("title").html("编辑紧急联系人");
+			$("header h1").html("编辑紧急联系人");
+			//设置手机号
+			$('#stu-idcard').val(editUserPhone);
+			$('#idcard').text("手机号");
+			$('#stu-idcard').attr("type", 'tel');
+			$('#stu-idcard').attr("max-length", '11');
+			$('.select-class').hide()
+		} else if (type == '2') {
+			$("#stu-grade").attr("class", "mui-btn");
+			$("#stu-grade").removeAttr("onclick");
+			$("#stu-name").attr("class", "right-text input-no-border");
+			$("#stu-name").attr("readonly", "readonly");
+			$("#stu-name").focus(function() {
+				this.blur();
+			});
+			$('#stu-idcard').val(editUserIDC);
+			$("#stu-grade").text(selectClassName);
+			//1.编辑教师信息，没有班级
+			var localRealusertype = localStorage.getItem('usertype')
+			if (localRealusertype == '70' && classcode.length > 0){
+				$(".select-class").show()
+			}else{
+				$(".select-class").hide()
+			}
+			updateDefaultBtnColor($("#stu-grade"));
+		} else {
+
+
+			$.student.initStudent({
+				"usercode": usercode,
+				"orgid": orgId,
+				"includedelay": "0",
+				"token": token,
+				"selectGradeCode": gradecode,
+				"selectClassCode": classcode,
+				"limit": "1",
+			}, function(e) {});
+			//选择班级弹框
+			$("#stu-grade").click(function() {
+				var _self = this
+				$.student.show(function(e) {
+					selectGradeCode = e["gradecode"];
+					selectGradeName = e["gradename"];
+					selectClassCode = e["classcode"];
+					selectClassName = e["classname"];
+					$("#stu-grade").text(selectClassName);
+					stu_classcode = selectClassCode;
+					updateDefaultBtnColor(_self);
+				})
+			});
+
+		}
+		//保存按钮点击
+		$('#save-btn').click(function() {
+			//编辑紧急联系人[此功能暂时未放开，这一版没有紧急联系人的编辑功能]
+			if (type == '1') {
+				var name = $('#stu-name').val().replace(/(^\s*)|(\s*$)/g, "")
+				var phone = $('#stu-idcard').val().replace(/(^\s*)|(\s*$)/g, "")
+				if (name.length <= 0) {
+					mui.toast("请输入姓名")
+					return;
+				}
+				if (phone.length <= 0) {
+					mui.toast("请输入手机号")
+					return;
+				}
+				if (!isPhoneNo(phone)) {
+					mui.toast("请输入正确的手机号")
+					return;
+				}
+				var cacheJsonInfo = {
+					"contact_name": name,
+					"contact_phone": phone,
+					"order_id": orderID,
+				};
+				var cacheKey = orderID + '_' + usercode + '_contactInfo'
+				MyLocalStorage24.Cache.put(cacheKey, JSON.stringify(cacheJsonInfo))
+				history.go(-1)
+			}
+			//编辑被保人信息【被保人姓名是从平台获取的，名称不可更改,班级不可更改】
+			else if (type == '2') {
+				var idcString = $('#stu-idcard').val().replace(/(^\s*)|(\s*$)/g, "")
+				if (idcString != '请输入') {
+					if (idcString.length <= 0) {
+						mui.toast("请输入身份证号")
+						return;
+					}
+					if (!isCardNo(idcString)) {
+						mui.toast("请输入正确的身份证号")
+						return;
+					}
+				}
+				//上传平台更新用户信息【补充身份证信息】
+
+				// var originStr = idcString,
+				// 	timestamp = moment().valueOf(),
+				// 	aesEncryStr = aesEncrypt(idcString, timestamp),
+				// 	aesDecodeStr = aesDecrypt(aesEncryStr, timestamp);
+				// alert("key:" + getSecretKey() + "\n" + "加密前：" + originStr + "\n" + "加密后：" + aesEncryStr + "\n" + "解密后：" +
+				// 	aaesDecodeStr);
+				var timestamp = moment().valueOf(),
+					aesIdcard = aesEncrypt(idcString, timestamp);
+				var url = system.usercenter + "/manage/changeUserIdcard.action",
+					secretString = getSecretKey(),
+					paramDic = {
+						usercode: usercode,
+						token: token,
+						updatecode: editUserCode, //需要更新的用户code
+						idcard: aesIdcard,
+						secret: updateNullString(secretString, ''),
+						timestamp: timestamp
+					};
+				mui.showLoading()
+				jQuery_Request_Post(url, paramDic, "json", false, function(object) {
+					mui.hideLoading()
+					var result = object["ret"];
+					if (result) {
+						mui.toast('更新用户信息成功')
+						if (isTeacher) {
+							var teacherString = localStorage.getItem("selfDepSelectPeople"),
+								teacherList = JSON.parse(teacherString);
+							if (teacherList != null && teacherList.length > 0) {
+								for (var i = 0; i < teacherList.length; i++) {
+									var teaJson = teacherList[i],
+										jid = updateNullString(teaJson['jid'], ""),
+										idcard = updateNullString(teaJson['idcard'], "");
+									//如果是当前用户的话，需要更新存储的个人信息身份证号码
+									if (usercode == editUserCode) {
+										localStorage.setItem('useridc', aesIdcard)
+										localStorage.setItem('idctimestamp', timestamp.toString())
+									}
+									if (editUserCode == jid) {
+										teaJson['idcard'] = aesIdcard;
+										teaJson['timestamp'] = timestamp.toString();
+										break;
+									}
+								}
+
+							}
+							localStorage.setItem('selfDepSelectPeople', JSON.stringify(teacherList))
+						} else {
+							//缓存数据
+							var cachePeopleString = localStorage.getItem(usercode + "insuredPerson"), //获取缓存的人员数据
+								cachePeopleJsonList = JSON.parse(cachePeopleString);
+							if (cachePeopleJsonList != null && cachePeopleJsonList.length > 0) {
+								for (var i = 0; i < cachePeopleJsonList.length; i++) {
+									var classJson = cachePeopleJsonList[i],
+										gradename = updateNullString(classJson['gradename'], ""),
+										gradecode = updateNullString(classJson['gradecode'], ""),
+										studentidc = updateNullString(classJson['idcard'], ""),
+										studentcode = updateNullString(classJson['studentcode'], ""),
+										studentname = updateNullString(classJson['studentname'], ""),
+										studentClassCode = updateNullString(classJson['classcode'], ""),
+										studentClassName = updateNullString(classJson['classname'], "");
+									//如果是当前用户的话，需要更新存储的个人信息身份证号码
+									if (usercode == editUserCode) {
+										localStorage.setItem('useridc', aesIdcard)
+										localStorage.setItem('idctimestamp', timestamp.toString())
+									}
+									if (editUserCode == studentcode) {
+										classJson['idcard'] = aesIdcard;
+										classJson['timestamp'] = timestamp.toString();
+										break;
+									}
+								}
+
+								localStorage.setItem(usercode + 'insuredPerson', JSON.stringify(cachePeopleJsonList))
+							}
+						}
+						history.go(-1)
+					} else {
+						var msg = updateNullString(object["msg"], "更新用户信息失败")
+						mui.toast(msg)
+					}
+				}, function(error) {
+					mui.toast("更新用户信息失败")
+				});
+			} else {
+				history.go(-1)
+			}
+
+
+
+		});
+	</script>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>路径详情</title>
+
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+
+		<!--  xuean 自定义js文件 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<link rel="stylesheet" href="../../common/app/css/iconfont.css">
+
+		<style type="text/css">
+			#container {
+				height: 300px;
+			}
+
+			.route-content {
+				background-color: transparent;
+				height: calc(100% - 300px);
+				overflow-y: auto;
+			}
+
+			.route-name {
+				padding-left: 10px;
+				border-left: 3px solid rgb(59, 162, 255);
+				font-size: 16px;
+				font-weight: 600;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				height: 40px;
+				line-height: 40px;
+			}
+
+			.mui-table-view-cell:after {
+				left: 0
+			}
+
+			.cell-content {
+				display: flex;
+				display: -webkit-flex;
+				font-size: 15px;
+			}
+
+			.cell-content .cell-left {
+				margin-right: 10px;
+				width: 20px;
+				height: 25px;
+				background-color: red;
+				text-align: center;
+				color: white;
+				background: url(../../common/app/images/main_map_gps.png) no-repeat center;
+				background-size: 100% 100%;
+			}
+
+			.cell-content .cell-right {
+				width: calc(100% - 20px - 10px);
+			}
+
+			.location-mark {
+				width: 20px;
+				height: 33px;
+				text-align: center;
+				color: white;
+				background: url(../../common/app/images/main_map_gps_route.png) no-repeat center;
+				background-size: 100% 100%;
+			}
+
+			.name {
+				font-weight: 600;
+			}
+		</style>
+
+	</head>
+	<body>
+		<header>
+			<h1>路径详情</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+
+		<div id="app" class="content">
+			<div id="container">
+			</div>
+			<div class="route-content">
+				<div class="route-name app-black-color"></div>
+				<div class="cell-list">
+				</div>
+			</div>
+		</div>
+
+
+		<script src="../../common/app/script/navConfig.js"></script>
+		<script src="../../common/app/script/empty.js"></script>
+		<!-- <script src="./route_detail.js"></script> -->
+
+		<!-- 高德api -->
+		<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=8a81baf17f724051cf257346ba375ef8&plugin=AMap.ToolBar,AMap.PolyEditor,AMap.Driving,AMap.DragRoute"></script>
+
+		<script>
+
+			var map = new AMap.Map('container');
+			var toolbar = new AMap.ToolBar();
+			map.addControl(toolbar);
+
+			var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+			var url_token = updateNullString(getURLParameter('token'), localToken);
+			var token = updateNullString($.cookie('token'), url_token);
+			var routeid = updateNullString(getURLParameter('routeid'), "");
+			var busid = updateNullString(getURLParameter('busid'), "");
+			var requestData = "";
+			var itemList = [];
+			var coordinateArray = [];
+
+
+			// //临时测试需删除
+			// var responseData = data;
+			// requestData = responseData["data"];
+			// $(".route-name").text(requestData["routename"]);
+			// itemList = requestData["stationlist"];
+			// coordinateArray = getRouteLocationArray();
+			// // carvePointLine();
+			// carveDriving();
+			// initMainListData(itemList);
+
+
+			//获取接口数据
+			requestSchoolBusRouteDetailDataFromServer();
+
+			//获取详情数据
+			function requestSchoolBusRouteDetailDataFromServer() {
+				//无网络加载
+				if (navigator.onLine == false) {
+					showRequestErrorEmpty("网络似乎有点问题", false, true);
+					return;
+				}
+
+				var paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"routeinfo.routeid": routeid,
+					"busid": busid
+				};
+				var url = system.usercenter + "/schoolbus/getInformationOfRoute.action";
+
+				mui.showLoading();
+				jQuery_Request_Post(url, paramDic, "json", true, function(responseData) {
+					mui.hideLoading();
+					var ret = responseData["ret"];
+					if (ret) {
+						requestData = responseData["data"];
+						$(".route-name").text(requestData["routename"]);
+						itemList = requestData["stationlist"];
+						coordinateArray = getRouteLocationArray();
+						// carvePointLine();
+						carveDriving();
+						initMainListData(itemList);
+					} else {
+						var msg = updateNullString(responseData["msg"], "获取数据失败");
+						mui.toast(msg);
+						showRequestErrorEmpty(msg, true, true);
+					}
+				}, function(error) {
+					mui.hideLoading();
+					var msg = updateNullString(error, "请求失败!")
+					mui.toast(msg);
+					showRequestErrorEmpty(msg, true, true);
+				})
+			}
+
+			function initMainListData(stationlist) {
+				var html = [];
+				html.push('<ul class="mui-table-view">');
+				for (var j = 0; j < stationlist.length; j++) {
+					var name = stationlist[j]["name"];
+					var plancometime = stationlist[j]["plancometime"];
+					var index = j + 1;
+					html.push('<li class="cell-content mui-table-view-cell"><div class="cell-left"> ' + index +
+						'</div><div class="cell-right"><div class="name app-black-color">' + name +
+						'</div><div class="plancometime app-dark-gray-color">' + plancometime + "到站" + '</div></div></li>');
+				}
+				html.push('</ul>');
+				$('.cell-list').html(html.join(''));
+			}
+
+			//获取经纬度数组
+			function getRouteLocationArray() {
+				var array = [];
+				if (itemList.length > 0) {
+					for (var j = 0; j < itemList.length; j++) {
+						var coordinate = itemList[j]['coordinate'];
+						var itemArray = coordinate.split(",");
+						array.push(itemArray);
+					}
+				}
+				return array;
+			}
+
+			//画出折线图 暂未使用
+			function carvePointLine() {
+				var polyline = new AMap.Polyline({
+					path: coordinateArray, //设置线覆盖物路径
+					strokeColor: "rgb(59,162,255)", //线颜色
+					strokeOpacity: 1, //线透明度
+					strokeWeight: 6, //线宽
+					strokeStyle: "solid", //线样式
+					strokeDasharray: [10, 5] //补充线样式
+				});
+				polyline.setMap(map);
+				// 缩放地图到合适的视野级别
+				map.setFitView([polyline])
+				var polyEditor = new AMap.PolyEditor(map, polyline);
+
+				for (var j = 0; j < coordinateArray.length; j++) {
+					addMarker(coordinateArray[j], j + 1)
+				}
+			}
+
+			//画出驾驶路线图
+			function carveDriving() {
+				var driving = new AMap.Driving({
+					// 驾车路线规划策略，AMap.DrivingPolicy.LEAST_TIME是最快捷模式
+					policy: AMap.DrivingPolicy.LEAST_TIME
+				});
+
+				// path 是驾车导航的起、途径和终点，最多支持16个途经点
+				var route = new AMap.DragRoute(map, coordinateArray, driving, {
+					polyOptions: {
+						strokeColor: "rgb(59,162,255)", //线颜色
+						strokeOpacity: 1, //线透明度
+						strokeWeight: 6, //线宽
+						strokeStyle: "solid", //线样式
+						strokeDasharray: [10, 5] //补充线样式
+					},
+					startMarkerOptions: {
+						visible: false
+					},
+					midMarkerOptions: {
+						visible: false
+					},
+					endMarkerOptions: {
+						visible: false
+					},
+					showTraffic: false,
+				})
+				// 查询导航路径并开启拖拽导航
+				route.search();
+
+				for (var j = 0; j < coordinateArray.length; j++) {
+					addMarker(coordinateArray[j], j + 1)
+				}
+			}
+
+			// 实例化点标记插入位置大头针
+			function addMarker(position, index) {
+				marker = new AMap.Marker({
+					position: position,
+					offset: new AMap.Pixel(-10, -30),
+					content: '<div class="location-mark">' + index + '</div>'
+				});
+				marker.setMap(map);
+			}
+
+			//请求返回数据为空或失败显示的空页面
+			function showRequestErrorEmpty(errorMsg, isNetwork, isShowRetry) {
+				var imgpath = "../../common/app/images/nopage/img_noList.png";
+				if (isNetwork == false) {
+					imgpath = "../../common/app/images/nopage/img_noNetwork.png"
+				}
+				//空页面[接口请求失败]
+				$.Empty.showEmptyView({
+					"imgPath": imgpath,
+					"errorMsg": errorMsg,
+					"isShowMsg": true,
+					"isShowRetry": isShowRetry,
+					"appendDom": "#app"
+				}, function() {
+					//重新刷新数据
+					requestSchoolBusRouteDetailDataFromServer();
+				});
+			}
+		</script>
+
+	</body>
+</html>

@@ -1,0 +1,98 @@
+.mui-row.mui-fullscreen{
+	bottom: 3.125rem;
+}
+.mui-col-xs-3,
+.mui-col-xs-9 {
+	overflow-y: auto;
+	height: 100%;
+}
+.mui-col-xs-3 {
+	background-color: rgb(240,240,240);
+}
+
+.mui-col-xs-9 {
+	background-color: white;
+	border-left: 1px solid #c8c7cc;
+}
+
+.mui-segmented-control .mui-control-item {
+	line-height: 50px;
+	width: 100%;
+	position: relative;
+}
+.mui-control-content {
+display: block;
+}
+
+#popover{
+	height: 80%;
+}
+
+#li-class {
+	line-height: 50px;
+	padding-top: 0px;
+	height: 50px;
+	color: rgb(51, 51, 51);
+}
+
+#li-select-img{
+	display: none;
+	width: 0.9375rem;
+	height: 0.9375rem;
+}
+
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+	background-color: white;
+}
+
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+	background-color: white;
+}
+
+.mui-popover .mui-table-view {
+	max-height: 100%;
+	height: 100%;
+}
+.mui-table-view-cell {
+	padding-left: 0.625rem;
+	text-align: left;
+}
+
+#left-icon {
+	left: 0px;
+	position: absolute;
+	height: 80%;
+	width: 2px;
+	top: 10%;
+	background-color: rgb(59, 162, 255);
+}
+
+#bottom-div {
+	width: 100%;
+	height: 3.125rem;
+	background-color: white;
+	bottom: 0px;
+	position: absolute;
+}
+
+#cancel-button {
+	width: 50%;
+	height: 100%;
+	border-radius: 0px;
+	color: white;
+	font-size: 16px;
+	color: rgb(59, 162, 255);
+	background-color: transparent;
+	float: left;
+}
+
+#confirm-button {
+	width: 50%;
+	height: 100%;
+	border-radius: 0px;
+	margin-right: 0px;
+	color: white;
+	font-size: 16;
+	background-color: rgb(59, 162, 255);
+	float: right;
+}

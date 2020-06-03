@@ -1,0 +1,103 @@
+/*弹出层*/
+
+.photo_con img {
+	width: 8.4rem;
+	height: 8.4rem;
+	border-radius: 50%;
+	margin: 1.066667rem auto;
+	display: block;
+}
+
+/* 错误信息 */
+.tips_red {
+	text-align: center;
+	font-size: 0.56rem;
+	display: block;
+	color: #fd6454;
+	margin-bottom: 0.853333rem;
+	/* max-width: 90%; */
+	/* 要想....显示这三个缺一不可 */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.dialog_box {
+	width: 90%;
+	margin: 0 auto;
+	display: none;
+	background: #fff;
+	border-radius: 0.32rem;
+	position: fixed;
+	z-index: 999;
+	top: 20%;
+	left: 5%;
+}
+
+.mask {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: rgba(0, 0, 0, .5);
+	top: 0;
+	left: 0;
+	z-index: 900;
+	display: none;
+}
+
+.close_btn {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: url(images/close.png) no-repeat center center;
+	width: 1.5rem;
+	height: 1.5rem;
+	background-size: 0.64rem 0.64rem;
+	opacity: .6;
+	z-index: 1000;
+}
+
+.close_btn_b {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: url(images/close_black.png) no-repeat center center;
+	width: 1.5rem;
+	height: 1.5rem;
+	background-size: 0.64rem 0.64rem;
+	opacity: .9;
+	z-index: 1000;
+}
+
+.dialog_header {
+	height: 1.92rem;
+	line-height: 1.92rem;
+	font-size: 0.72rem;
+	padding: 0 0.426667rem;
+	border-bottom: 1px solid #ddd;
+}
+
+.dialog_footer {
+	height: 2rem;
+	line-height: 2rem;
+	font-size: 0.72rem;
+	border-top: 1px solid #ddd;
+	border-radius: 0 0 0.32rem 0.32rem;
+	overflow: hidden;
+}
+
+.dialog_footer a {
+	width: 50%;
+	display: block;
+	float: left;
+	text-align: center;
+}
+/* 取消 */
+.btn-default {
+	border-right: 1px solid #eee;
+}
+/* 更新照片 */
+.btn-primary {
+	background-color: #3BA2FF;
+	color: white;
+}

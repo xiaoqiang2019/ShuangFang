@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>短信验证</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<!--  xuean 自定义js文件  平台需要文件  -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			.receipt-img {
+				display: block;
+				width: 100%;
+				max-width: 100%;
+				min-height: 40px;
+				height: auto;
+			}
+			
+			.content-cell {
+				background-color: transparent;
+				/* position: relative; */
+				width: 100%;
+				min-height: 40px;
+				margin:10px 0px;
+			}
+			.content-cell label {
+				position: absolute;
+				height: 40px;
+				line-height: 40px;
+				left: 0px;
+				width: 100px;
+				font-size: 15px;
+				padding-left: 10px;
+			}
+			.content-cell .right-content {
+				position: absolute;
+				left: 100px;
+				width: calc(100% - 110px);
+				font-size: 15px;
+			}
+			.content-cell .right-text {
+				position: absolute;
+				left: 0px;
+				width: calc(100% - 93px);
+				height: 40px;
+				font-size: 15px;
+				background-color:rgb(247,247,247) ;
+			}
+			.content-cell a {
+				position: absolute;
+				right: 0px;
+				top: 2.5px;
+				width: 83px;
+				height: 35px;
+			}
+			
+			#pic-refresh {
+				background: url("") no-repeat center;
+				background-size: 100% 100%;
+			}
+			
+			#send-ver {
+				background-color: rgb(59,162,255);
+				color: white;
+				text-align: center;
+				line-height: 35px;
+				border-radius: 3px;
+				font-size: 14px;
+			}
+			#phone{
+				padding-left: 95px;
+				height: 20px;
+				line-height: 20px;
+				font-size: 12px;
+				color: rgb(187,187,187);
+			}
+			
+			.sub_content{
+				margin: 20px 10px 0px;
+			}
+			.submit{
+				width: 100%;
+				height: 50px;
+				border: none;
+				line-height: 50px;
+				text-align: center;
+				background-color: #3ba2ff;
+				font-size: 16px;
+				color: white;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>回执确认</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+
+			<div id="receipt-content" class="content-cell">
+				<label>我的回执</label>
+				<div class="right-content">
+					<img class="receipt-img">
+				</div>
+			</div>
+
+			<div id="sms-content">
+				<div class="content-cell">
+					<label>图形验证码</label>
+					<div class="right-content">
+						<input type="number" id="pic-ver" class="right-text" maxlength="10">
+						<a href="#" id="pic-refresh" onclick="getVerificationImgRequest()"></a>
+					</div>
+				</div>
+
+				<div class="content-cell">
+					<label>手机验证码</label>
+					<div class="right-content">
+						<input type="number" id="phone-ver" class="right-text" maxlength="10">
+						<a href="#" id="send-ver" onclick="sendMessageAction()">发送短信</a>
+					</div>
+				</div>
+
+				<div id="phone">
+					接收手机:
+				</div>
+			</div>
+			<div class="sub_content">
+				<button class="submit" onclick="submit()">提交</button>
+			</div>
+		</div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+	<!-- 上传图片 -->
+	<script src="../../common/extend/julong/uploadHelper.js"></script>
+
+	<script>
+		$("#sms-content").hide(); //默认先隐藏
+		$(".sub_content").hide(); //默认先隐藏
+		var dataurl = updateNullString(localStorage.getItem("dataurl"), "");
+
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode);
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var phone = updateNullString(getURLParameter('phone'), "");
+		var suggestion = updateNullString(getURLParameter('suggestion'), "");
+		var notice_id = updateNullString(getURLParameter('notice_id'), "");
+		var record_id = updateNullString(getURLParameter('record_id'), "");
+		var if_vcode = getURLParameter('if_vcode');
+		
+		var uuid = updateNullString(localStorage.getItem("uuid"), "");
+		if (uuid.length == 0) {
+			uuid = generateUUID();
+			localStorage.setItem("uuid", uuid);
+		}
+		dLog(uuid);
+
+		var count = 0; //图形验证码随机数
+		//定时器
+		var verificationLong = 120;
+		var verificationTimer;
+		var isCanSend = true;
+		
+		//加载回执图片
+		if (dataurl.length > 0) {
+			$(".receipt-img").attr("src", dataurl);
+		} else {
+			$(".receipt-img").attr("src", "../../common/app/images/main_defult_nophoto.png");
+		}
+		// 判断回执图片加载状况，加载完成后回调刷新div高度，显示发短信界面
+		isImgLoad(function() {
+			// 加载完成
+			var height = $(".receipt-img").height();
+			$("#receipt-content").css('height', height + 'px');
+			
+			showSmsContentView();//显示发短信界面
+		});
+		
+		var t_img; // 定时器
+		var isLoad = false; // 控制变量
+		// 判断图片加载的函数
+		function isImgLoad(callback) {
+			// 注意我的图片类名都是cover，因为我只需要处理cover。其它图片可以不管。
+			// 查找所有封面图，迭代处理
+			if ($(".receipt-img").height() === 0) {
+				isLoad = false;
+				return false;
+			}
+			// 为true，没有发现为0的。加载完毕
+			if (isLoad) {
+				clearTimeout(t_img); // 清除定时器
+				// 回调函数
+				callback();
+				// 为false，因为找到了没有加载完成的图，将调用定时器递归
+			} else {
+				isLoad = true;
+				t_img = setTimeout(function() {
+					isImgLoad(callback); // 递归扫描
+				}, 300); // 我这里设置的是500毫秒就扫描一次，可以自己调整
+			}
+		}
+
+		function showSmsContentView() {
+			if (if_vcode == 1) {
+				//获取手机号、获取图形验证码
+				if (phone.length == 0) {
+					var userphone = updateNullString(localStorage.getItem("phone"), "");
+					if (userphone.length > 0) {
+						phone = userphone;
+						$("#phone").text("接收手机:" + phone);
+						//默认请求进入获取图形验证码
+						getVerificationImgRequest();
+					} else {
+						//重新获取手机号信息
+						getUserInfoRequest(system.usercenter, usercode, token, function() {
+							userphone = updateNullString(localStorage.getItem("phone"), "");
+							phone = userphone;
+							$("#phone").text("接收手机:" + phone);
+							//默认请求进入获取图形验证码
+							getVerificationImgRequest();
+						})
+					}
+				} else {
+					$("#phone").text("接收手机:" + phone);
+					//默认请求进入获取图形验证码
+					getVerificationImgRequest();
+				}
+
+				//显示短信div
+				$("#sms-content").show();
+				$(".sub_content").show();
+
+			} else {
+				//隐藏短信div
+				$("#sms-content").hide();
+				$(".sub_content").show();
+			}
+		}
+
+		//获取图形验证码 相同链接不刷新需要增加随机值
+		function getVerificationImgRequest() {
+			count++;
+			var imageurl = system.usercenter + "/common/phonecode.jsp?user.extendid=" + uuid + "&count=" + count;
+			dLog("获取图形验证码 = " + imageurl);
+			$("#pic-refresh").css("background-image", 'url(' + imageurl + ')');
+		}
+
+		//发送短信
+		function sendMessageAction(vcode) {
+			//验证图形验证码 短信验证码不为空
+			var icode = updateNullString($("#pic-ver").val(), "");
+			if (icode.length == 0) {
+				alert("请先输入图形验证码");
+				return;
+			}
+
+			if (phone.length == 0) {
+				var userphone = updateNullString(localStorage.getItem("phone"), "");
+				if (userphone.length > 0) {
+					phone = userphone;
+					$("#phone").text("接收手机:" + phone);
+				}
+				if (phone.length == 0) {
+					alert("手机号码不能为空");
+					return;
+				}
+			}
+
+			//发送短信验证码请求 定时器停止时启动
+			if (verificationLong == 120) {
+				//启动定时器 发送短信变更为时间倒计时
+				startTimer();
+				sendMessageRequest(phone, icode);
+			}
+		};
+
+		//开启定时器
+		function startTimer() {
+			verificationLong = 120;
+			clearInterval(verificationTimer);
+			verificationTimer = setInterval(function() {
+				dLog("定时器执行" + verificationLong);
+
+				verificationLong--;
+				if (verificationLong == 0) {
+					//接口失败 也需要调用此方法
+					reSetTimer();
+				} else {
+					$("#send-ver").text(verificationLong + "秒后重发");
+					$("#send-ver").css("background-color", "rgb(187,187,187)");
+				}
+			}, 1000);
+		}
+		//定时器执行方法
+		function reSetTimer() {
+			//清空图形验证码 重新获取短信验证码
+			getVerificationImgRequest();
+			$("#pic-ver").val("");
+
+			//停止定时器，更新界面
+			clearInterval(verificationTimer);
+			verificationLong = 120;
+			$("#send-ver").text("重新发送");
+			$("#send-ver").css("background-color", "rgb(59,162,255)");
+		}
+
+		//请求发送短信
+		function sendMessageRequest(phone, icode) {
+			//发送短信验证码请求
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"user.phone": phone,
+				"user.extendid": uuid,
+				"vcodetype": "2", //是否获取回执信息 0不获取 1获取
+				"vcode": icode
+			};
+			var url = system.usercenter + "/getVerificationByCode.action";
+			mui.showLoading();
+			jQuery_Request_Post(url, paramDic, "json", true, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					mui.toast("短信验证码已发送");
+				} else {
+					var msg = updateNullString(responseData["msg"], "发送短信失败");
+					mui.toast(msg);
+					reSetTimer();
+				}
+			}, function(error) {
+				mui.hideLoading();
+				var msg = updateNullString(error, "请求失败!")
+				mui.toast(msg);
+				reSetTimer();
+			})
+		}
+
+		//提交按钮点击事件
+		function submit() {
+			if (if_vcode == 1) {
+				//验证图形验证码 短信验证码不为空
+				var vcode = updateNullString($("#phone-ver").val(), "");
+				if (vcode.length == 0) {
+					alert("请先输入手机验证码");
+				}
+				else
+				{
+					if (dataurl.length > 0) {
+						uploadImageFileRequest();
+					} else {
+						uploadRealDataRequest("");
+					}
+				}
+			}
+			else{
+				if (dataurl.length > 0) {
+					uploadImageFileRequest();
+				} else {
+					uploadRealDataRequest("");
+				}
+			}
+		};
+
+		// 上传图片文件
+		// 参考资料：https://blog.csdn.net/feinifi/article/details/86481380
+		function uploadImageFileRequest() {
+			//var base64Data = $("#receipt-content img").attr("src");
+			var base64Data = dataurl;
+			var dtd = $.Deferred();
+
+			if (base64Data.indexOf("http") >= 0) {
+				dLog("本身就是网络图片不需要上传");
+				dtd.resolve();
+			} else {
+				$.uploadHelper.uploadBase64Img({
+					"base64Data": base64Data,
+					"rms_system_url": system.RMS
+				}, function(imgUrl) {
+					dLog("d：->结束上传文件" + imgUrl);
+					dataurl = imgUrl;
+					
+					dtd.resolve();
+					//发送真正的请求
+					uploadRealDataRequest(imgUrl);
+
+				}, function(error) {
+					alert(error);
+
+					dtd.resolve();
+					//发送真正的请求
+					uploadRealDataRequest("");
+				});
+			}
+		}
+		//发送真正提交请求
+		function uploadRealDataRequest(imageurl) {
+			var vcode = updateNullString($("#phone-ver").val(), "");
+			//发送短信验证码请求
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"notice_id": notice_id,
+				"record_id": record_id,
+				"stu_id": usercode,
+				"receipt_pic": updateNullString(imageurl, ""),
+				"phone": updateNullString(phone, ""),
+				"suggestion": suggestion,
+				"vcode": vcode
+			};
+			var url = system.usercenter + "/jias/v1/noticeparents/receipt/save";
+			mui.showLoading();
+			jQuery_Request_Post(url, paramDic, "json", false, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					mui.toast("提交成功");
+					//后退至列表页 刷新列表页
+					history.go(-2);
+				} else {
+					var msg = updateNullString(responseData["msg"], "提交失败");
+					mui.toast(msg);
+					reSetTimer();
+				}
+			}, function(error) {
+				mui.hideLoading();
+				var msg = updateNullString(error, "请求失败!")
+				mui.toast(msg);
+				reSetTimer();
+			})
+		}
+
+		function deleteDataImage() {
+			var dataurl = updateNullString(localStorage.getItem("dataurl"), "");
+			if (dataurl.length > 0) {
+				dLog("删除存在的图片");
+				localStorage.removeItem("dataurl");
+			}
+		}
+
+		window.οnunlοad = function() {
+			deleteDataImage();
+		}
+	</script>
+
+
+</html>

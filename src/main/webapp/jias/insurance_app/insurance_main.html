@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<title>保险服务</title>
+
+		<style>
+
+			header.mui-bar {
+				background-color: orange;
+			}
+
+			.mui-bar-nav {
+				box-shadow: 0px 1px 0px 0px orange;
+			}
+
+			.header-wapper {
+				position: relative;
+				background-color: orange;
+				height: 155px;
+				width: 100%;
+				z-index: 11;
+			}
+			
+			.claim-wapper{
+				
+				height: 30px;
+				width: 100%;
+				background-color: rgb(194,116,6);
+				padding: 0px;
+			}
+			
+			.claim-wapper img{
+				float: left;
+				width: 18px;
+				height: 15px;
+				margin-left: 15px;
+				margin-top: 8px;
+			}
+			.claim-wapper span{
+				display: inline-block;
+				font-size: 13px;
+				color: rgb(242,181,84);
+				margin-top: 5px;
+				margin-left: 9px;
+			}	
+			
+			.claim-wapper span:last-child{
+				display: inline-block;
+				font-size: 13px;
+				margin-left: 5px;
+				color: rgb(253,233,204);
+			}
+			
+			.header-left-wapper {
+				position: absolute;
+				background-color: transparent;
+				height: 50px;
+				width: 70%;
+				top: 30px;
+				margin: 20px 15px 0px 0px;
+				border-right: 1px solid white;
+			}
+			
+			.header-left-wapper img {
+				float: left;
+				width: 50px;
+				height: 50px;
+				margin-left: 15px;
+				margin-right: 10px;
+			}
+			
+			.header-left-wapper #name{
+				display: block;
+				font-size: 18px;
+				margin-top: 2px;
+				margin-bottom: 2px;
+				color: white;
+				background-color: transparent;
+			}
+			
+			.header-left-wapper #describute{
+				display: block;
+				color: white;
+				font-size: 14px;
+			}
+			.header-right-wapper {
+				position: absolute;
+				top: 30px;
+				left: 70%;
+				background-color: transparent;
+				height: 50px;
+				width: 30%;
+				margin: 20px 15px 0px 0px;
+			}
+			
+			.header-right-wapper img {
+				margin-left: calc(50% - 10px);
+				width: 20px;
+				height: 20px;
+			}
+			.header-right-wapper button{
+				border: none;
+				padding: 0px;
+				margin-left: calc(50% - 30px);
+				font-size: 15px !important;
+				font-weight: 500;
+				color: white;
+				vertical-align: bottom;
+				background-color: transparent;
+			}
+/* 轮播图 */
+.banner-wapper{
+	position: relative;
+	background-color: transparent;
+	width: 100%;
+	margin-top: -40px;
+	z-index: 22;
+	height: 110px;
+}
+
+.banner-wapper .mui-slider-item a{
+	width: 100%;
+	height: 110px;
+}
+
+.banner-wapper .lunbo-img{
+	padding: 10px;
+	border-radius: 15px;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+.content-cell li{
+	padding: 10px 15px 10px 15px;
+	height: 90px;
+	font-size: 15px;
+	border-bottom: 1px solid rgb(222, 222, 222);
+}
+.content-cell img{
+	float: left;
+	width: 60px;
+	height: 60px;
+	margin-right: 10px;
+}
+.content-cell .cell-title{
+	display: inline-block;
+	font-size: 18px;
+	color: rgb(17, 17, 17);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-height: 20px;
+	max-width: calc(100% - 120px);
+}
+.content-cell .cell-stars{
+				background-color: transparent;
+				display: inline-block;
+			float: right;
+	
+			}
+			.content-cell .cell-stars img{
+				width: 14px;
+				height: 14px;
+				margin: 2px;
+
+			}
+.content-cell .cell-describe{
+	display: block;
+	font-size: 12px;
+	color: rgb(171,171,171);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-height: 50px;
+}
+.content-cell .cell-money{
+	display: inline-block;
+	color: rgb(255,146,0);
+}
+.content-cell .cell-unit{
+	display: inline-block;
+	color: rgb(255,146,0);
+	font-size: 11px;
+	vertical-align: bottom;
+}
+.content-cell .cell-note{
+	display: inline-block;
+	margin-left: 10px;
+	color: rgb(153,153,153);
+	font-size: 12px;
+}
+.content-cell .cell-company{
+	float: right;
+	border: 1px solid rgb(59, 162, 255);
+	padding: 2px 5px;
+	font-size: 10px;
+	color: rgb(59, 162, 255);
+	border-radius: 3px;
+	font-size: 12px;
+	/* height: 20px; */
+	margin: 0px;
+}
+/* section之间间隔 */
+.section-title:first-child{
+	border-top: none;
+}
+.section-title{
+	border-top: 5px solid rgb(239,239,244);
+}
+/* 空白页重新布局 */
+.empty_wrapper img{
+	margin-top: 0px !important;
+}
+.empty_wrapper p{
+	margin-top: 5px !important;
+}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>我的保单</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<!-- 顶部用户信息 -->
+			<div class="header-wapper">
+				<div class="claim-wapper">
+					<img src="../../common/app/images/home_ic_notice.png" />
+					<span>有保单即将到期，待续保</span>
+					<span>点击查看</span>
+				</div>
+				<div class="header-left-wapper">
+					<img src="../../common/app/images/main_avatar.png" />
+					<span id="name"></span>
+					<span id="describute">已购0个保障，已守护0天</span>
+				</div>
+				<div class="header-right-wapper">
+					<img src="../../common/app/images/home_ic_claim.png" />
+					<button type="button" class="mui-btn mui-icon mui-icon-arrowright mui-right">
+						理赔服务
+					</button>
+				</div>
+			</div>
+			<!-- 推荐轮播 -->
+			<div class="banner-wapper">
+				<div id="slider" class="mui-slider">
+					<div class="mui-slider-group mui-slider-loop"></div>
+					<div class="mui-slider-indicator"></div>
+				</div>
+			</div>
+			<!-- 列表展示 -->
+			<div class="list-wapper"></div>
+	</body>
+
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/app/script/showLoading.js"></script>
+	<link href="../../common/app/css/showLoading.css" />
+	<script src="../../common/app/script/empty.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode); //客户端登录的用户code
+		var url_token = updateNullString(getURLParameter('token'), localToken);
+		var token = updateNullString($.cookie('token'), url_token);
+		var bannerDataSource = []; //产品推荐数据源
+		setSecretKey()
+		mui.init()
+		//保险主页面，获取用户信息，必须执行
+		var cacheUsercode = updateNullString(localStorage.getItem('usercode'), '')
+		if (cacheUsercode.length == 0) {
+			getUserInfoRequest(system.usercenter, usercode, token, function() {
+				usercode = localStorage.getItem('usercode')
+			})
+		} else {
+			usercode = cacheUsercode
+		}
+		requestDataFromServer()
+		requestBannerDataFromServer()
+
+		//延期保单点击进入列表
+		$('.claim-wapper').click(function() {
+			CodeSTD.form({
+				url: "insurance_mylist.html",
+				params: {
+					"usercode": usercode,
+					"token": token
+				},
+			});
+		})
+		//我的保单点击，进入我的保单列表页面
+		$('.header-left-wapper').click(function() {
+			CodeSTD.form({
+				url: "insurance_mylist.html",
+				params: {
+					"usercode": usercode,
+					"token": token
+				},
+			});
+		})
+		//申请理赔点击，进入理赔页面
+		$('.header-right-wapper').click(function() {
+			CodeSTD.form({
+				url: "../claim_app/claim_list.html",
+				params: {
+					"usercode": usercode,
+					"token": token
+				},
+			});
+		})
+		//产品推荐位点击
+		$('#slider').on('click', '.mui-slider-item', function() {
+			var that = $(this),
+				adType = that.attr('ad-type'),
+				adIndex = that.attr('ad-index'),
+				json = bannerDataSource[adIndex],
+				adData = json['adsense_data']
+			adID = that.attr('ad-id');
+
+			//url 类型
+			if (adType == 'url') {
+				window.open(adData, '_blank')
+			}
+			//富文本
+			else if (adType == 'richtext') {
+				CodeSTD.form({
+					url: "rich_detail.html",
+					params: {
+						"usercode": usercode,
+						"token": token,
+						"position_code": "adsense_position_baoxian",
+						"adsense_id": adID,
+					},
+				});
+			}
+			//保险产品
+			else if (adType == 'insure') {
+				var productCode = adData
+				CodeSTD.form({
+					url: "insurance_introduce.html",
+					params: {
+						"usercode": usercode,
+						"productId": updateNullString(productCode, ""),
+						"token": token
+					},
+				});
+			}
+		})
+
+		//点击cell进去详情页面
+		$('.list-wapper').on("click", ".content-cell li", function() {
+			var productCode = $(this).attr("data-product-code")
+			CodeSTD.form({
+				url: "insurance_introduce.html",
+				params: {
+					"usercode": usercode,
+					"productId": updateNullString(productCode, ""),
+					"token": token
+				},
+			});
+		})
+		/**
+		 * 获取保险数据列表
+		 */
+		function requestDataFromServer() {
+			var paramDic = {
+				"usercode": usercode,
+				"token": token
+			};
+			var urlString = system.jias + "/v1/product/list_all";
+			mui.showLoading()
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+
+					if (result) {
+						var dataJson = object["data"],
+							orderJson = dataJson["order"],
+							productList = dataJson["products"];
+						//获取订单总信息【姓名、头像、订单数、天数、是否有延期保单等信息】
+						if (orderJson != null || orderJson != undefined) {
+							var username = updateNullString(orderJson["username"], usercode), //用户名称
+								headerImgUrl = updateNullString(orderJson["head_pic"], "../../common/app/images/main_avatar.png"), //用户头像
+								orderCount = orderJson["order_count"], //订单个数【即保障数】
+								orderDays = orderJson["order_days"], //最大投保天数
+								isExpired = orderJson["if_expired"]; //是否包含延期订单 1：包含 0：不包含
+							if (isExpired) {
+								$('.claim-wapper').show();
+							} else {
+								$('.claim-wapper').hide();
+							}
+
+							$('.header-left-wapper img').attr('src', headerImgUrl)
+							$('.header-left-wapper #name').text(username)
+							$('.header-left-wapper #describute').text('已购' + orderCount + "个保障，已守护" + orderDays + "天")
+						}
+						//获取产品列表
+						if (productList.length > 0) {
+							createMainListData(productList)
+						} else {
+							commonShowRequestErrorEmpty(".list-wapper", "暂无相关数据", true, true, function() {
+								requestDataFromServer()
+							})
+						}
+					} else {
+						commonShowRequestErrorEmpty(".list-wapper", updateNullString(object["msg"], "暂无相关数据"), true, false);
+					}
+				},
+				function(error) {
+					mui.hideLoading();
+					commonShowRequestErrorEmpty(".list-wapper", "数据加载时出了问题", true, true, function() {
+						requestDataFromServer()
+					});
+				})
+		}
+		/**
+		 * 生成保险数据列表【和requestDataFromServer配合使用】
+		 */
+		function createMainListData(array) {
+			var html = [],
+				subEmptyArray = [];
+			for (var i = 0; i < array.length; i++) {
+				var productJson = array[i],
+					classifyName = updateNullString(productJson["product_classify_name"], ""), //保险分类名称
+					classifyCode = updateNullString(productJson["product_classify"], ""), //保险分类code
+					subProductList = productJson["list"]; //保险列表
+
+				if (subProductList.length == 0) {
+					subEmptyArray.push('empty')
+				} else {
+					html.push('<div class="section-title"><i></i><span>' + classifyName + '</span></div>');
+					html.push('<div class="content-cell"><ul>');
+					for (var j = 0; j < subProductList.length; j++) {
+						var subProductJson = subProductList[j],
+							subProCode = updateNullString(subProductJson["product_id"], ""), //产品名称
+							subProName = updateNullString(subProductJson["product_name"], ""), //产品名称
+							subProInfo = updateNullString(subProductJson["intro"], ""), //简介
+							subProPosterUrl = updateNullString(subProductJson["poster_url"], ""), //海报
+							subProSalesCount = subProductJson["sales_volume"], //销量
+							subProStarCount = subProductJson["star"], //星级评分
+							subProMinPrice = updateNullString(subProductJson["min_price"], ""), //最低价格
+							subProPriceUnit = updateNullString(subProductJson["price_unit"], ""), //价格单位
+							subProCompanyCdde = updateNullString(subProductJson["company_id"], ""), //所属保险公司code
+							subProCompanyName = updateNullString(subProductJson["company_name"], ""); //所属保险公司名称
+
+						html.push('<li data-product-code="' + subProCode + '"><a href="#">');
+						html.push('<img src="' + subProPosterUrl + '" />');
+						html.push('<span class="cell-title">' + subProName + '</span>');
+						html.push('<div class="cell-stars">');
+						if (subProStarCount > 0) {
+							for (var m = 0; m < subProStarCount; m++) {
+								html.push('<img src="../../common/app/images/show_ic_star_on.png" />');
+							}
+						}
+						html.push('</div>');
+						html.push('<span class="cell-describe">' + subProInfo + '</span>');
+						html.push('<span class="cell-money">' + subProMinPrice + '</span>');
+						html.push('<span class="cell-money cell-unit">' + '/' + subProPriceUnit + '起' + '</span>');
+						if (subProSalesCount > 0) {
+							if (subProSalesCount < 10000) {
+								html.push('<span class="cell-note">' + subProSalesCount + '人已投保' + '</span>');
+							} else {
+								var realShowSalesCount = changeShowSaleVolumeCount(subProSalesCount); //大于万，显示单位为万【投票数】
+								html.push('<span class="cell-note">' + realShowSalesCount + '万人已投保' + '</span>');
+							}
+						}
+						html.push('<button class="cell-company" type="button" class="mui-btn">' + subProCompanyName + '</button>');
+						html.push('</a></li>')
+					}
+					html.push('</ul></div>');
+				}
+				//子项为空，都不展示，说明全部都为空，直接展示空列表了
+				if (subEmptyArray.length == array.length) {
+					commonShowRequestErrorEmpty(".list-wapper", "暂无相关数据", true, true, function() {
+						requestDataFromServer()
+					})
+				}
+			}
+
+			$('.list-wapper').append(html.join(''));
+		}
+		/** 获取推荐资源
+		 * 和【createBanner配合使用】
+		 */
+		function requestBannerDataFromServer() {
+			var paramDic = {
+				"usercode": usercode,
+				"position_code": "adsense_position_baoxian",
+				"token": token
+			};
+			var urlString = system.jias + "/v1/adsense/list";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					var result = object["ret"];
+					if (result) {
+						var dataList = object["data"];
+						if (dataList.length > 0) {
+							dataList.sort(sortBy("sort_value"))
+							createBanner(dataList)
+							bannerDataSource = dataList;
+						} else {
+							setEmptyBannerUI()
+						}
+
+					} else {
+						setEmptyBannerUI()
+					}
+				},
+				function(error) {
+					setEmptyBannerUI(1)
+				})
+		}
+
+		function setEmptyBannerUI(type) {
+			$('.mui-slider-group').empty();
+			$('.mui-slider-indicator').empty();
+			var imgUrl = "../../common/app/images/home_img_banner_nopic.png"
+			if (type == 1) {
+				imgUrl = "../../common/app/images/home_img_banner_loadfail.png"
+			}
+			$('.mui-slider-group').append('<div class="mui-slider-item"><a href="#"><img class="lunbo-img" src="' +
+				imgUrl + '" /></a></div>');
+			var gallery = mui('.mui-slider');
+			gallery.slider({
+				interval: 5000 //自动轮播周期，若为0则不自动播放，默认为0；
+			});
+		}
+
+		/** 创建推荐广告栏目
+		 * 和【requestBannerDataFromServer配合使用】
+		 */
+		function createBanner(array) {
+			var realArray = [];
+			if ($.isArray(array)) {
+				realArray = array;
+			}
+			$('.mui-slider-group').empty();
+			$('.mui-slider-indicator').empty();
+			if (realArray.length > 0) {
+				if (realArray.length == 1) {
+					var dataJson = realArray[0],
+						adsenseType = dataJson['adsense_type'],
+						adsenseData = dataJson["adsense_data"], //URL时为 可访问的URL地址；保险产品为产品ID；richtext为富文本浏览地址
+						adsensePic = dataJson["adsense_pic"]; //海报图
+					$('.mui-slider-group').append('<div class="mui-slider-item" ad-index = "' + 0 +
+						'" ad-type="' + adsenseType + '" ad-id="' + dataJson["adsense_id"] +
+						'"><a href="#"><img class="lunbo-img" src="' +
+						adsensePic + '" /></a></div>');
+				} else {
+					var dataJsonFirst = realArray[0],
+						adsenseDataFirst = dataJsonFirst["adsense_data"], //URL时为 可访问的URL地址；保险产品为产品ID；richtext为富文本浏览地址
+						adsenseTypeFirst = dataJsonFirst['adsense_type'],
+						adsensePicFirst = dataJsonFirst["adsense_pic"]; //海报图
+					var dataJsonLast = realArray[realArray.length - 1],
+						adsenseDataLast = dataJsonLast["adsense_data"], //URL时为 可访问的URL地址；保险产品为产品ID；richtext为富文本浏览地址
+						adsenseTypeLast = dataJsonLast['adsense_type'],
+						adsensePicLast = dataJsonLast["adsense_pic"]; //海报图
+					$('.mui-slider-group').append(
+						'<div class="mui-slider-item mui-slider-item-duplicate" ad-index = "' + (realArray.length - 1) +
+						'" ad-type ="' + adsenseTypeLast + '" ad-id="' + dataJsonLast['adsense_id'] +
+						'"><a href="#"><img class="lunbo-img" src="' +
+						adsensePicLast + '" /></a></div>');
+					$('.mui-slider-indicator').append('<div class="mui-indicator mui-active"></div>');
+					for (var i = 0; i < realArray.length; i++) {
+						var dataJson = realArray[i],
+							adsenseData = dataJson["adsense_data"], //URL时为 可访问的URL地址；保险产品为产品ID；richtext为富文本浏览地址
+							adsense_type = dataJson['adsense_type'],
+							adsensePic = dataJson["adsense_pic"]; //海报图
+						$('.mui-slider-group').append('<div class="mui-slider-item" ad-index = "' + i +
+							'" ad-type="' + adsense_type + '" ad-id="' + dataJson["adsense_id"] +
+							'"><a href="#"><img class="lunbo-img" src="' +
+							adsensePic + '" /></a></div>');
+					}
+					$('.mui-slider-group').append(
+						'<div class="mui-slider-item mui-slider-item-duplicate" data-Url = "' + adsenseDataFirst +
+						'" ad-type="' + adsenseTypeFirst + '"><a href="#"><img class="lunbo-img" src="' +
+						adsensePicFirst + '" /></a></div>');
+					for (var i = 0; i < realArray.length - 1; i++) {
+						$('.mui-slider-indicator').append('<div class="mui-indicator"></div>');
+					}
+
+
+				}
+				var gallery = mui('.mui-slider');
+				gallery.slider({
+					interval: 5000 //自动轮播周期，若为0则不自动播放，默认为0；
+				});
+			}
+
+
+			// if(os.isPc){
+			// 	$('.banner-wapper .mui-slider-item a').css('max-height','300px')
+			// 	$('.banner-wapper').css('max-height','300px')
+			// }
+			// else if(os.isPhone){
+			// 	$('.banner-wapper .mui-slider-item a').css('max-height','110px')
+			// 	$('.banner-wapper').css('max-height','110px')
+			// }
+		}
+		// 整数转换，以万 为单位显示
+		function changeShowSaleVolumeCount(val) {
+			if (typeof val == "number") {
+				val += ""
+			}
+			var str = val;
+			if (str.length > 4) {
+				//获取万位长度字符串
+				var str1 = str.substring(0, str.length - 4);
+				var str2 = str.substring(str1.length, 1);
+				if (str2.length == 0) {
+					var str3 = str1 + "." + 0;
+				} else {
+					var str3 = str1 + "." + str2;
+				}
+				return str3;
+			} else {
+				// var str1 = str.substring(0, 1);
+				// var str2 = "0." + str1;
+				// return str2;
+				return str;
+			}
+		}
+	</script>
+</html>

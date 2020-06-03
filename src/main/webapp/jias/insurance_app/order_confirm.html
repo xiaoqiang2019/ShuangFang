@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>填写投保信息</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<style>
+			.content-cell {
+				background-color: transparent;
+				position: relative;
+				margin-bottom: 5px;
+				font-size: 16px;
+				height: 30px;
+			}
+
+			.pay-info-content,
+			.pay-way-content {
+				padding: 11px 15px;
+			}
+
+			.content-cell label {
+				position: absolute;
+				background-color: transparent;
+				width: 85px;
+				height: 30px;
+				line-height: 30px;
+				/* padding-top: 5px; */
+				font-size: 16px;
+				color: rgb(153, 153, 153);
+			}
+
+			.content-cell .right-text {
+				position: absolute;
+				left: 85px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				width: calc(100% - 85px);
+				background-color: transparent;
+			}
+
+
+			.pay-icon {
+				position: absolute;
+				top: 5px;
+				width: 40px;
+				height: 40px;
+			}
+
+			.pay-name {
+				margin-left: 50px;
+				height: 50px;
+				line-height: 50px;
+			}
+
+			.pay-table-view {
+				padding: 0px 15px;
+			}
+
+			.pay-table-view-cell {
+				position: relative;
+				height: 50px;
+
+				border-bottom: 0.5px solid rgb(239, 239, 244);
+			}
+
+			.pay-table-view-cell.active {
+				background: url(../../common/app/images/main_ic_selected.png) no-repeat right;
+				background-size: 15px auto;
+			}
+
+			.mui-popup-button:first-child {
+				color: rgb(17, 17, 17) !important;
+			}
+
+			.mui-popup-button:last-child {
+				color: rgb(59, 162, 255) !important;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>填写投保信息</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<!-- 支付信息 -->
+			<div class="section-title"><i></i><span>支付信息</span></div>
+			<div class="pay-info-content">
+				<div class="content-cell">
+					<label>商品名称</label>
+					<div class="right-text">
+						<span id="product-name">研学旅行险</span>
+					</div>
+				</div>
+				<div class="content-cell">
+					<label>客户名称</label>
+					<div class="right-text">
+						<span id="holder-name">wxs</span>
+					</div>
+				</div>
+				<div class="content-cell">
+					<label>订单号</label>
+					<div class="right-text">
+						<span id="order-number">no.13243253465476547</span>
+					</div>
+				</div>
+				<div class="content-cell">
+					<label>应付金额</label>
+					<div class="right-text">
+						<span id="pay-amount" class="app-orange-color">￥100</span>
+					</div>
+				</div>
+			</div>
+			<!-- 支付方式 -->
+			<div class="section-title single-unit"><i></i><span>支付方式</span></div>
+			<div class="pay-way-content">
+				<ul class="pay-table-view">
+					<li class="pay-table-view-cell">
+						<img class="pay-icon" src="../../common/app/images/main_avatar.png" />
+						<div class="pay-name">支付宝支付</div>
+					</li>
+				</ul>
+
+			</div>
+		</div>
+		<div class="footer-wapper footbtn">
+			<a href="javascript:;" class="app-background-blue-color app-white-color">下一步</a>
+		</div>
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/app/script/showLoading.js"></script>
+	<link href="../../common/app/css/showLoading.css" />
+
+	<script>
+		mui.init()
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode), //客户端登录的用户code
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			prodectID = updateNullString(getURLParameter('productID'), ""), //产品ID
+			productName = updateNullString(getURLParameter('productName'), ""), //产品name
+			holderUsername = updateNullString(getURLParameter('holderUsername'), ""), //投保人名称
+			orderNumber = updateNullString(getURLParameter('orderNumber'), ""), //订单编号
+			orderID = updateNullString(getURLParameter('orderID'), ""), //订单编号
+			payAmount = updateNullString(getURLParameter('payAmount'), ""), //支付金额
+			payWay = JSON.parse(getURLParameter('payWay')); //支付方式
+
+		
+		if (productName.length > 0) {
+			$('#product-name').text(productName)
+		}
+		if (holderUsername.length > 0) {
+			$('#holder-name').text(holderUsername)
+		}
+		if (orderNumber.length > 0) {
+			$('#order-number').text(orderNumber)
+		}
+		if (payAmount.length > 0) {
+			$('#pay-amount').text('￥'+payAmount)
+		}
+		var html = [];
+		if (payWay != null && $.isArray(payWay)) {
+			for (var i = 0; i < payWay.length; i++) {
+				var reg = /^[\']|[\']$/g,
+					name = payWay[i].replace(reg, "");
+				if (i == 0) {
+					html.push('<li class="pay-table-view-cell active">')
+				} else {
+					html.push('<li class="pay-table-view-cell">')
+				}
+
+				var realShowName = '';
+				if (name == 'wxpay') {
+					realShowName = "微信支付"
+					html.push('<img class="pay-icon" src="' + "../../common/app/images/pay_ic_wechatpay.png" + '"/>')
+				} else if (name == 'alipay') {
+					realShowName = "支付宝支付"
+					html.push('<img class="pay-icon" src="' + "../../common/app/images/pay_ic_alipay.png" + '"/>')
+				}
+				html.push('<div class="pay-name" pay-way="' + name + '">' + realShowName + '</div>')
+				html.push('</li>')
+			}
+		} else {
+			html.push('<div class="xa-cell-empty-info app-gray-color">当前暂无支付方式</div>')
+		}
+
+		$('.pay-way-content ul').html(html.join(''))
+		//支付方式选择点击
+		$('.pay-way-content').on('click', '.pay-table-view-cell', function() {
+			$(this).addClass('active').siblings().removeClass('active');
+		})
+
+		$('.footer-wapper a').click(function() {
+			var liObj = $('.pay-table-view-cell.active'),
+				payWay = liObj.find('.pay-name').attr('pay-way');
+			var realShowName = '',
+				realShowContent = '';
+			if (payWay == 'wxpay') {
+				realShowName = "微信支付"
+				realShowContent = "请勿刷新页面，点击返回按钮或关闭浏览器窗口，结束时您将返回"
+			} else if (name == 'alipay') {
+				realShowName = "支付宝支付"
+				realShowContent = "如未跳至支付宝支付，您可点击\"继续支付\"，完成支付宝支付"
+			}
+
+
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"order_id": orderID,
+				"pay_way": name
+			};
+			mui.showLoading()
+			var urlString = system.jias + "/v1/order/pay";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading();
+					var result = object["ret"];
+					/*loadmore的需要判断分页的数据是否有值，有值了数据源加上去
+						没有值 判断原数据源是否有值，没有值，空页面显示；
+					 有值了，页面依然显示原数据源，然后toast提示用户，暂无更多数据【表明用户下拉加载的无数据】；*/
+					if (result) {
+						var dataJson = object["data"],
+							orderId = dataJson['order_id'],
+							orderNo = dataJson['order_no'],
+							payWay = dataJson['pay_way'], //支付方式
+							payGateWay = dataJson['pay_gateway'], //支付网关地址
+							payInfo = dataJson['pay_info']; //支付签名信息
+						if (payWay == 'alipay') {
+							CodeSTD.form({
+								url: "alipays://" + payGateWay + "?" + payInfo,
+								method: "post"
+							});
+							orderId = dataJson['order_id'],
+							orderNo = dataJson['order_no'],
+							payAmount = dataJson['order_amount'],
+							payWay = dataJson['pay_way'], //支付方式
+							payGateWay = dataJson['pay_gateway'], //支付网关地址
+							payInfo = dataJson['pay_info']; //支付签名信息
+						var realUrl = payGateWay + "?" + payInfo
+						CodeSTD.form({
+							url: realUrl,
+							method: "post"
+						});
+						// if (payWay == 'alipay') {
+						// 	CodeSTD.form({
+						// 		url: "alipay://" + payGateWay + "?" + payInfo,
+						// 		method: "post"
+						// 	});
+
+
+						} else if (payWay == 'wxpay') {
+							CodeSTD.form({
+								url: "wxpay://" + payGateWay + "?" + payInfo,
+								method: "post"
+							});
+						}
+						// } else if (payWay == 'wxpay') {
+						// 	CodeSTD.form({
+						// 		url: "wxpay://" + payGateWay + "?" + payInfo,
+						// 		method: "post"
+						// 	});
+						// }
+					} else {
+						showRequestErrorEmpty(updateNullString(responseData["msg"], "暂无相关数据"), true, false);
+					}
+
+				},
+				function(error) {
+
+				})
+			// var btnArray = ['取消支付','支付完成']
+			// mui.confirm(realShowContent, '正在跳转到'+realShowName+'支付', btnArray, function(e) {
+			// 	if (e.index == 1) {
+
+			// 	}
+			// })
+		})
+	</script>
+
+
+</html>

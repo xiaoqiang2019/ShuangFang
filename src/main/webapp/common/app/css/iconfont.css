@@ -1,0 +1,184 @@
+@font-face {font-family: "iconfont";
+  src: url('../fonts/iconfont.ttf') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-edit:before {
+  content: "\e62b";
+}
+
+.icon-star:before {
+  content: "\ecfd";
+}
+
+.icon-add-png:before {
+  content: "\e649";
+}
+
+.icon-defult-img:before {
+  content: "\e609";
+}
+
+.icon-caution:before {
+  content: "\e766";
+}
+
+.icon-loading:before {
+  content: "\e6ae";
+}
+
+.icon-setting:before {
+  content: "\e625";
+}
+
+.icon-refresh:before {
+  content: "\e71f";
+}
+
+.icon-checked:before {
+  content: "\e632";
+}
+
+.icon-editor:before {
+  content: "\e6f6";
+}
+
+.icon-favorites-fill:before {
+  content: "\e721";
+}
+
+.icon-arrow-right:before {
+  content: "\e743";
+}
+
+.icon-arrow-lift:before {
+  content: "\e744";
+}
+
+.icon-arrow-up:before {
+  content: "\e745";
+}
+
+.icon-category:before {
+  content: "\e747";
+}
+
+.icon-close:before {
+  content: "\e748";
+}
+
+.icon-filter:before {
+  content: "\e751";
+}
+
+.icon-help:before {
+  content: "\e752";
+}
+
+.icon-map:before {
+  content: "\e758";
+}
+
+.icon-reeor:before {
+  content: "\e75e";
+}
+
+.icon-scanning:before {
+  content: "\e762";
+}
+
+.icon-seleted:before {
+  content: "\e763";
+}
+
+.icon-share:before {
+  content: "\e764";
+}
+
+.icon-Rightbutton:before {
+  content: "\e765";
+}
+
+.icon-exchangerate:before {
+  content: "\e772";
+}
+
+.icon-phone:before {
+  content: "\e787";
+}
+
+.icon-reduce-fill:before {
+  content: "\e788";
+}
+
+.icon-reeor-fill:before {
+  content: "\e789";
+}
+
+.icon-add-select:before {
+  content: "\e7b0";
+}
+
+.icon-sami-select:before {
+  content: "\e7b1";
+}
+
+.icon-arrow-down:before {
+  content: "\e7b2";
+}
+
+.icon-favorites:before {
+  content: "\e7b3";
+}
+
+.icon-search:before {
+  content: "\e7b4";
+}
+
+.icon-microphone:before {
+  content: "\e7bf";
+}
+
+.icon-delete:before {
+  content: "\e68a";
+}
+
+.icon-more-fill:before {
+  content: "\e60a";
+}
+
+.icon-add-fill:before {
+  content: "\e604";
+}
+
+.icon-unchecked:before {
+  content: "\e642";
+}
+
+.icon-drop-down-corner:before {
+  content: "\e608";
+}
+
+.icon-delete-trash:before {
+  content: "\e614";
+}
+
+.icon-more:before {
+  content: "\e607";
+}
+
+.icon-radio-unselect:before {
+  content: "\e6ed";
+}
+
+.icon-radio-select:before {
+  content: "\e6ee";
+}
+

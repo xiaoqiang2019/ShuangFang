@@ -1,0 +1,151 @@
+<!-- 以下代码可以直接全部copy到新建的html中 基础引用 不可缺少 有自定义的在单个html中实现-->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>结案</title>
+		<!-- jquery引入 -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+
+		<!-- mui相关组件 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<!-- 加载框引入 -->
+		<link href="../../common/app/css/showLoading.css" rel="stylesheet">
+		<script src="../../common/app/script/showLoading.js"></script>
+
+		<!-- xuean css基类 -->
+		<link href="../../common/app/css/base_css.css" rel="stylesheet">
+		<style>
+			.content-cell {
+				margin: 20px 15px;
+				position: relative;
+				height: 20px;
+				background-color: transparent;
+				font-size: 16px;
+			}
+
+			.content-cell label {
+				position: absolute;
+				font-size: 16px;
+				color: rgb(17, 17, 17);
+				width: 85px;
+			}
+
+			.content-cell .right-text {
+				position: absolute;
+				left: 85px;
+				font-size: 14px;
+				height: 20px;
+				color: rgb(102, 102, 102);
+				width: calc(100% - 85px);
+				background-color: transparent;
+			}
+			.content-cell .claim-closed {
+				padding: 5px 5px 5px 15px;
+				font-size: 16px;
+				height: 120px;
+			}
+			
+			.content-cell .claim-money{
+				height: 30px;
+				width: 130px;
+			}
+			.content-cell span{
+				margin-left: 5px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>结案</h1>
+			<a href="#" onclick="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content-cell">
+			<label>赔偿金额</label>
+			<div class="right-text">
+				<input class="claim-money" type="text" placeholder="请输入" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')" />
+				<span>元</span>
+			</div>
+		</div>
+		<div class="content-cell">
+			<label>结案说明</label>
+			<textarea class="right-text claim-closed" placeholder="请输入" maxlength="200"></textarea>
+		</div>
+		<div class="fxbtn">
+			<a href="javascript:;" class="flex_center">提交</a>
+		</div>
+	</body>
+	<!-- 页面加载完毕后统一的页面配置 -->
+	<script src="../../common/app/script/navConfig.js"></script>
+
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode),
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			claimId = updateNullString(getURLParameter('claimId'), ""), //理赔单ID
+			orderId = updateNullString(getURLParameter('orderId'), ""); //订单号
+
+
+		$('.fxbtn .flex_center').click(function() {
+			var money = $('.claim-money').val().replace(/\s+/g, "");
+			var describe = $('.claim-closed').val().replace(/\s+/g, "");
+			if (!isMoney(money)) {
+				mui.alert('请输入正确金额！')
+				return;
+			}
+			if (describe.length <= 0) {
+				mui.alert('请输入结案说明！')
+				return;
+			}
+			
+			if (describe.length > 200) {
+				mui.alert('结案说明最输入200字！')
+				return;
+			}
+			requestSettleLawsuit(money, describe);
+		})
+
+
+		function requestSettleLawsuit(money, describe) {
+			var paramDic = {
+				"usercode": usercode,
+				"token": token,
+				"claim_id": claimId,
+				"closed_note": describe,
+				"cost": money
+			};
+			var urlString = system.jias + "/v1/claim/closed";
+			mui.showLoading()
+			jQuery_Request_Post(urlString, paramDic, "json", false, function(responseData) {
+				mui.hideLoading();
+				var ret = responseData["ret"];
+				if (ret) {
+					mui.toast("提交成功");
+					history.go(-2)
+				} else {
+					mui.alert(updateNullString(responseData["err_msg"], "提交失败"), true, false);
+				}
+			}, function(error) {
+				mui.hideLoading();
+				mui.alert("提交失败");
+			});
+
+
+		}
+	</script>
+</html>

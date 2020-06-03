@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>应用首页</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<script src="../../common/extend/jquery/jquery.min.js"></script>
+	<script src="../../common/extend/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../../common/extend/bootstrap/css/bootstrap.min.css">
+	<script src="js/showtime.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<header>
+		<a href="#" class="logo"><img src="images/logo.png"></a>
+		<h1>校园安全智慧屏</h1>
+		<ul>
+			<li><a href="#" data-toggle="modal" data-target="#myModal"><i></i><span>双防大数据</span></a></li>
+			<li><a href="fourcolorimg.html"><i></i><span>风险四色图</span></a></li>
+			<li><a href="risk_level.html"><i></i><span>风险分级管控</span></a></li>
+			<li><a href="danger_gover.html"><i></i><span>隐患排查治理</span></a></li>
+			<li><a href="knowledge.html"><i></i><span>双防知识库</span></a></li>
+			<li><a href="website.html"><i></i><span>微官网</span></a></li>
+			<li><a href="exit.html"><i></i><span>系统桌面</span></a></li>
+		</ul>
+	  </div>
+	  
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog fordatamodal" role="document">
+	 <div class="back"  data-dismiss="modal" aria-label="Close"><span>返回</span></div>
+    <iframe src="data/index.html" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
+  </div>
+</div> 
+<script>
+$('#myModal').on('show.bs.modal', function (e) {
+	$("#iframe1").attr("src","")
+})
+$('#myModal').on('shown.bs.modal', function (e) {
+	$("#iframe1").attr("src","../bigscreen/double_bigscreen/index.html")
+})
+</script>
+</body>
+</html>

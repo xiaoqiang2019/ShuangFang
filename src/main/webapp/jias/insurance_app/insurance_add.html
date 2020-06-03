@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>填写投保信息</title>
+		<!-- mui基类 -->
+		<link href="../../common/extend/mui/css/mui.css" rel="stylesheet" />
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+
+		<style>
+			.top-wapper .center-wapper .placeholder-wapper{
+				position: absolute;
+			}
+
+		.policyholder-content,.insured-content,.mutiple-content,.emergency-content{
+			padding: 11px 15px;
+		}
+					#protect-days,#begin-time{
+						border: none;
+						padding-left: 0px;
+						font-size: 16px;
+						color: rgb(187,187,187);
+						font-weight: 400;
+						margin: 0px;
+					}
+
+	
+		.content-cell {
+				background-color: transparent;
+				position: relative;
+				margin-bottom: 5px;
+				font-size: 16px;
+				height: 30px;
+			}
+
+			.content-cell label {
+				position: absolute;
+				background-color: transparent;
+				width: 85px;
+				height: 30px;
+				line-height: 30px;
+				/* padding-top: 5px; */
+				font-size: 16px;
+			}
+
+			.content-cell .right-text {
+				position: absolute;
+				left: 85px;
+				height: 30px;
+				line-height: 30px;
+				font-size: 16px;
+				width: calc(100% - 85px);
+				background-color: transparent;
+			}
+			
+			.top-wapper {
+				padding: 11px 15px 11px 15px;
+				padding-top: 11px;
+				background-color: transparent;
+				padding-bottom: 10px;
+			}
+			#insurance-name {
+				display: inline-block;
+				color: rgb(102,102,102);
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				height: 30px;
+				line-height: 30px;
+				max-width: 200px;
+			}
+			
+			#insurance-img{
+				position: absolute;
+				width: 20px;
+				height: 15px;
+				margin: 7px;
+			}
+			.single-unit,.mutiple-unit,.insured-content,.mutiple-content{
+				display: none;
+			}
+			/* 受益人 */
+			.single-benefit-cell{
+				margin-top: 5px;
+				height: 15px;
+				margin-bottom: 10px !important;
+			}
+			#beneficiary{
+				display: inline-block;
+				width: 18px;
+				height: 18px;
+				background: url(../../common/app/images/write_ic_question.png) no-repeat center;
+				background-size: 100% 100%;
+			}
+
+			.footer-service{
+				position: fixed;
+				display: flex;
+				display: -webkit-flex;
+				bottom: 50px;
+				height: auto;
+				width: 100%;
+				font-size: 12px;
+				background-color: white;
+				border-top: 1px solid rgb(222,222,222);
+			}
+			
+			.footer-wapper {
+				position: fixed;
+				display: flex;
+				display: -webkit-flex;
+				background-color: white;
+				font-size: 16px;
+				height: 50px;
+				bottom: 0px;
+				width: 100%;
+				border-top: 1px solid rgb(222,222,222);
+			}
+			.footer-wapper a:first-child{
+				position: absolute;
+				height: 50px;
+				bottom: 0px;
+				left: 0px;
+				right: 125px;
+			}
+			.footer-wapper a:first-child #mutiple-time{
+				position: absolute;
+				top: 2px;
+				left: 15px;
+				height: 20px;
+				text-align: left;
+				font-size: 15px;
+				color: rgb(17,17,17);
+			}
+			.footer-wapper a:first-child #order-money{
+				position: absolute;
+				font-size: 20px;
+				height: 20px;
+				bottom: 5px;
+				left: 15px;
+				text-align: left;
+				color: rgb(243,140,2);
+			}
+
+			.footer-wapper a:last-child {
+				position: absolute;
+				text-align: center;
+				background-color: rgb(59, 162, 255);
+				color: white; 
+				top: 0px;
+				bottom: 0px;
+				height: 50px;
+				line-height: 50px;
+				width: 125px;
+				right: 0px;
+			}
+			
+			/* checkbox复选框 */
+			.mui-checkbox{
+				position: absolute;
+				left: 0px;
+				padding-left: 15px;
+			}
+			            .mui-checkbox input[type=checkbox]:before {  
+			                content: '\e413'; 
+							 color: rgb(59, 162, 255);
+			            }             
+			            .mui-checkbox input[type=checkbox]:checked:before {  
+			                content: '\e443';  
+							 color: rgb(59, 162, 255);
+			            }     
+			            .mui-checkbox.mui-left input[type=checkbox]{  
+			                left: 15px;  
+							
+			            }  
+						.mui-radio input[type="radio"]::before, .mui-checkbox input[type="checkbox"]::before{
+							font-size: 20px;
+						}
+			            .mui-checkbox.mui-left label, .mui-radio.mui-left label {  
+							font-size: 12px;
+			                margin-top: 4px;  
+			                padding-right: 15px;  
+			                padding-left: 25px;  
+			            }  
+						.operation-btn{
+							display: inline-block;
+							border: none;
+							color: rgb(59, 162, 255);
+							font-size: 12px;
+						}
+						
+						.mutiple-title{
+							font-size: 14px;
+							color: rgb(153,153,153);
+							text-align: center;
+							margin-bottom: 10px;
+						}
+						.single-title{
+							margin: 20px;
+							/* display: none; */
+							text-align: center;
+							font-size: 16px;
+						}
+						/* 多个被保人cell样式 */
+						.mutiple-cell{
+							background-color: transparent;
+							padding: 10px 0px;
+							font-size: 14px;
+							position: relative;
+							border-bottom: 1px solid rgb(222,222,222);
+							}
+							
+							.mutiple-cell .cell-name,.cell-class,.cell-class-empty{
+								display: inline-block;
+								background-color: transparent;
+							}
+							.mutiple-cell .cell-name{
+								font-size: 16px;
+								margin-right: 5px;
+								background-color: transparent;
+								vertical-align: bottom;
+							}
+							.mutiple-cell .cell-class,.cell-class-empty{
+								font-size: 10px;
+								color: rgb(153,153,153);
+								background-color: rgb(239,239,244);
+							}
+							.mutiple-cell .cell-idc,.cell-idc-empty{
+								display: block;
+								font-size: 14px;
+								margin-top: 5px;
+								color: rgb(153,153,153);
+								background-color: transparent;
+							}
+							
+							.mutiple-cell .cell-delete,.cell-edit{
+								position: absolute;
+								width: 25px;
+								height: 25px;
+								top: calc(50% - 14px);
+							}
+							.mutiple-cell .cell-delete{
+								right: 0px;
+								background: url(../../common/app/images/write_ic_del.png) no-repeat;
+								background-size: 100%;
+							}
+							.mutiple-cell .cell-edit{
+								right: 43px;
+								background: url(../../common/app/images/write_ic_edit.png) no-repeat;
+								background-size: 100%;
+							}
+							
+		.section-title{
+			border-top: 5px solid rgb(239,239,244);
+		}
+		
+		.service-dialog{
+			margin: 0 auto;
+			display: none;
+			background: #fff;
+			position: fixed;
+			z-index: 999;
+			top: 20px;
+			bottom: 50px;
+			height: calc(100% - 70px);
+			left: 14px;
+			right: 14px;
+			width: calc(100% - 48px);
+			padding: 10px 0px;
+		}
+		.service-content{
+			position: fixed;
+			padding: 20px 20px;
+			width: calc(100% - 48px);
+			height: calc(100% - 120px);
+			overflow-y: scroll;
+		}
+		.service-mask {
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			background: rgba(0, 0, 0, .5);
+			top: 0;
+			left: 0;
+			z-index: 900;
+			display: none;
+		}
+		.service-title{
+			text-align: center;
+			font-size: 16px;
+			margin-bottom: 10px;
+		}
+		
+		.service-close{
+			position: fixed;
+			left: 14px;
+			right: 14px;
+			width: calc(100% - 28px);;
+			height: 30px;
+			bottom: 10px;
+			background: url(../../common/app/images/write_ic_del.png) no-repeat center;
+			background-size: 30px 30px;
+			background-position: center;
+		}
+		.mui-table-view-cell{
+			color:#333333
+		}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>填写投保信息</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<div class="content">
+			<div class="top-wapper">
+				<div class="content-cell">
+					<label>险种名称</label>
+					<div class="right-text">
+						<span id="insurance-name"></span>
+						<img id="insurance-img" src="" />
+					</div>
+				</div>
+				<div class="content-cell">
+					<label class="insured-left-icon">保障天数</label>
+					<div class="right-text">
+						<button id="protect-days" type="button">
+							请选择
+						</button>
+					</div>
+				</div>
+				<div class="content-cell">
+					<label>起保日期</label>
+					<div class="right-text">
+						<button id="begin-time" type="button" class="mui-btn mui-icon mui-icon-arrowright mui-right">
+							请选择
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- 投保人信息 -->
+			<div class="section-title"><i></i><span>投保人信息<span class="append-info">（谁交保费）</span></span></div>
+			<div class="policyholder-content">
+				<div class="content-cell">
+					<label>姓名</label>
+					<input type="text" class="right-text" id="policyholder-name" placeholder="请输入">
+				</div>
+				<div class="content-cell">
+					<label>身份证号</label>
+					<input type="text" id="policyholder-idc" class="right-text" placeholder="请输入">
+				</div>
+				<div class="content-cell">
+					<label>手机号码</label>
+					<input type="tel" id="policyholder-phone" class="right-text" placeholder="请输入">
+				</div>
+			</div>
+			<!-- 被保人信息【单人】 -->
+			<div class="section-title single-unit">
+				<i></i>
+				<span>被保人信息<span class="append-info">（为谁投保）</span></span>
+				<button id="ensured-edit" class="section-right-btn mui-btn mui-icon mui-icon-arrowright mui-right">
+					添加
+				</button>
+			</div>
+
+			<div class="insured-content">
+
+				<div class="single-title app-light-gray-color">请添加被保人</div>
+				<ul></ul>
+				<!-- 	<div class="content-cell">
+					<label>姓名</label>
+					<input type="text" class="right-text" id="ensured-name" placeholder="请输入">
+				</div>
+
+				<div class="content-cell">
+					<label>身份证号</label>
+					<input type="text" id="ensured-idc" class="right-text" placeholder="请输入">
+				</div>
+				<div class="content-cell">
+					<label>班级</label>
+					<div class="right-text">
+						<button id="select-class" type="button" class="mui-btn mui-icon mui-icon-arrowright mui-right">
+							请选择
+						</button>
+					</div>
+				</div> -->
+				<div class="content-cell single-benefit-cell">
+					<label>受益人</label>
+					<div class="right-text">
+						<span>法定受益人</span>
+						<i id="beneficiary"></i>
+					</div>
+				</div>
+			</div>
+			<!-- 被保人信息【多人】 -->
+			<div class="section-title mutiple-unit">
+				<i></i>
+				<span>被保人信息<span class="append-info">（为谁投保）</span></span>
+				<button id="ensured-edit" class="section-right-btn mui-btn mui-icon mui-icon-arrowright mui-right">
+					添加
+				</button>
+			</div>
+
+			<div class="mutiple-content">
+				<div class="mutiple-title">当前暂无被保人，请添加</div>
+				<ul></ul>
+			</div>
+			<!-- 紧急联系人信息 -->
+			<div class="section-title"><i></i><span>紧急联系人<span class="append-info">（选填）</span></span></div>
+			<div class="emergency-content">
+				<div class="content-cell">
+					<label>姓名</label>
+					<input type="text" class="right-text" id="emergency-name" placeholder="请输入">
+				</div>
+				<div class="content-cell">
+					<label>手机号码</label>
+					<input type="tel" id="emergency-phone" class="right-text" placeholder="请输入">
+				</div>
+			</div>
+		</div>
+		<div class="footer-service">
+			<div id="agree-service" class="mui-checkbox mui-left mui-pull-left">
+				<label>我已查看并同意</label>
+				<input name="checkbox1" type="checkbox" />
+			</div>
+		</div>
+		<div class="footer-wapper">
+			<a href="javascript:;">
+				<div id="mutiple-time">共0天</div>
+				<div id="order-money">￥00.00</div>
+			</a>
+			<a href="javascript:;">立刻投保</a>
+		</div>
+		<!-- 服务条款弹出框 -->
+		<div class="service-mask"></div>
+		<div class="service-dialog">
+			<p class="service-title"></p>
+			<div class="service-content"></div>
+			<div class="service-close"></div>
+		</div>
+		<div id="addperson" class="mui-popover mui-popover-action mui-popover-bottom">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">学生</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">老师</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<a href="#">取消</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/extend/mui/js/mui.picker.min.js"></script>
+	<link rel="stylesheet" href="../../common/extend/mui/css/mui.picker.min.css" />
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/extend/mui/js/mui.poppicker.js"></script>
+	<link rel="stylesheet" href="../../common/extend/mui/css/mui.poppicker.css" />
+	<script src="../../common/app/script/showLoading.js"></script>
+	<link href="../../common/app/css/showLoading.css" />
+	<script src="../../common/extend/julong/aes.js"></script>
+	<script>
+		mui.init()
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode), //客户端登录的用户code
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			peoplePultiple = getURLParameter('peoplePultiple'), //0:单人投保 1：多人投保
+			productServicesString = getURLParameter('productService'),
+			productServices = JSON.parse(productServicesString), //服务协议条款
+			prodectID = updateNullString(getURLParameter('productID'), ""), //产品ID
+			productName = updateNullString(getURLParameter('productName'), ""), //产品name
+			productSkuID = updateNullString(getURLParameter('productSkuID'), ""), //从上个页面选中的计划ID
+			insuredDays = updateNullString(getURLParameter('insuredDays'), ""), //保障期限
+			companyName = updateNullString(getURLParameter('companyName'), ""), //公司名称
+			companyLogo = updateNullString(getURLParameter('companyLogo'), ""), //公司logo
+			buyMutiple = updateNullString(getURLParameter('buyMutiple'), "1"), //购买多份【数量 默认1份】
+			buyPriceUnit = updateNullString(getURLParameter('buyPriceUnit'), ""), //保障期限单位
+			skuPrice = updateNullString(getURLParameter('skuPrice'), ''); //选中产品单价
+		var cachePeopleString = localStorage.getItem(usercode + "insuredPerson"), //获取缓存的人员数据
+			cachePeopleJsonList = JSON.parse(cachePeopleString);
+		var teacherString = localStorage.getItem("selfDepSelectPeople"),
+			teacherList = JSON.parse(teacherString);
+		$('#insurance-img').attr('src', companyLogo)
+		$('#insurance-name').text(productName)
+		if (!$.isArray(teacherList)) {
+			teacherList = [];
+		}
+		if (!$.isArray(cachePeopleJsonList)) {
+			cachePeopleJsonList = [];
+		}
+		//服务协议
+		createAgreeServiceList(productServices)
+		//根据险种展示不同的页面UI【单人投保 or 多人投保】
+		var isSingle = (peoplePultiple == 0) ? true : false;
+		//单人投保页面
+		if (isSingle) {
+			$('.single-unit').show()
+			$('.insured-content').show()
+			$('.mutiple-unit').hide()
+			$('.mutiple-content').hide()
+		}
+		//多人投保页面
+		else {
+			$('.mutiple-unit').show()
+			$('.mutiple-content').show()
+			$('.single-unit').hide()
+			$('.insured-content').hide()
+		}
+
+		var localRealusertype = localStorage.getItem('usertype')
+		//家长用户，获取家长名下学生信息，若有多个，获取首个，显示在页面上，数据缓存起来，拿缓存数据展示 70是学生，80是家长
+		//学校用户可以选择【学生 or 教师】，其他用户都是当前用户
+		var isFilter = filterInsuredPeopleCurrentUser()
+		if (isFilter) {
+			//20200513 因为家长用户逻辑不是闭环，经协商后，ymy wwr确认家长用户登录学生账号操作给学生投保，不存在家长用户了，实际是学生用户，直接该学生就是被保人
+			// requestAllChildFromServer()
+			var realStudentList = [{
+				"studentname": localStorage.getItem('username'),
+				"studentcode": usercode,
+				"idcard": localStorage.getItem('useridc'), //加密形式下发的
+				"classcode": localStorage.getItem('classcode'),
+				"classname": localStorage.getItem('classname'),
+				"timestamp": localStorage.getItem('idctimestamp')
+			}];
+			//页面首次进来，学生用户默认为被保人
+			//家长用户第一次进来，没有缓存数据，需要缓存一下首个孩子；进入添加选择后，有缓存数据了，不需要在这个地方缓存，直接取用就可以了
+			if (cachePeopleJsonList == null || cachePeopleJsonList == undefined || cachePeopleJsonList.length <= 0) {
+				localStorage.setItem(usercode + "insuredPerson", JSON.stringify(realStudentList))
+				cachePeopleString = localStorage.getItem(usercode + "insuredPerson") //获取缓存的人员数据
+				cachePeopleJsonList = JSON.parse(cachePeopleString)
+			}
+			if (isSingle) {
+				$('.single-unit #ensured-edit').hide()
+			} else {
+				$('.mutiple-unit #ensured-edit').hide()
+			}
+
+		} else {
+			if (isSingle) {
+				$('.single-unit #ensured-edit').show()
+			} else {
+				$('.mutiple-unit #ensured-edit').show()
+			}
+		}
+		if (($.isArray(cachePeopleJsonList) && cachePeopleJsonList.length > 0) || ($.isArray(teacherList) && teacherList.length) >
+			0) {
+			if (!isSingle) {
+				createMutipleCell(cachePeopleJsonList, teacherList)
+			} else {
+				createSingleCell(cachePeopleJsonList, teacherList)
+			}
+		}
+
+
+		//经过添加 回来的页面，刷新被保人【以下代码是为解决iOS返回上级页面不刷新问题的解决方案】
+		var isPageHide = false;
+		window.addEventListener('pageshow', function() {
+			if (isPageHide) {
+				cachePeopleString = localStorage.getItem(usercode + "insuredPerson"); //获取缓存的人员数据
+				cachePeopleJsonList = JSON.parse(cachePeopleString);
+				teacherString = localStorage.getItem("selfDepSelectPeople"),
+					teacherList = JSON.parse(teacherString);
+				if (!$.isArray(teacherList)) {
+					teacherList = [];
+				}
+				if (!$.isArray(cachePeopleJsonList)) {
+					cachePeopleJsonList = [];
+				}
+				//多人投保的缓存用户，获取选择的人员
+				if (($.isArray(cachePeopleJsonList) && cachePeopleJsonList.length > 0) || ($.isArray(teacherList) && teacherList.length >
+						0)) {
+					if (!isSingle) {
+						createMutipleCell(cachePeopleJsonList, teacherList)
+					} else {
+						createSingleCell(cachePeopleJsonList, teacherList)
+					}
+				}
+			}
+		});
+
+		window.addEventListener('pagehide', function() {
+			isPageHide = true;
+		});
+
+		//保障天数点击 【根据平台下发，是否支持选择保障天数】
+		var timePicker;
+		$('#protect-days').attr("class", "mui-btn"); //默认不可选
+		
+		//buyMutiple >1 支持保障期限可选，组装数据源
+		var maxDuration = parseInt(buyMutiple); //最大可购买份数
+		timePicker = new mui.PopPicker();
+		if (maxDuration > 1) {
+			$('#protect-days').attr("class", "mui-btn mui-icon mui-icon-arrowright mui-right");
+			var timeJsonArray = [];
+			for (var i = 0; i < maxDuration; i++) {
+				var timeJson = {}
+				timeJson["value"] = (i + 1);
+				timeJson["text"] = (i + 1) + buyPriceUnit;
+				timeJsonArray.push(timeJson)
+			}
+			timePicker.setData(timeJsonArray)
+		}
+
+		//从url中获取缓存数据
+		var selectInsuresdDays = updateNullString(getURLParameterArgument('selectDays'), ""), //用户选择过的保障期限
+			selectBeginDate = updateNullString(getURLParameterArgument('selectDate'), ""); //用户选择过的起保日期
+		if (selectInsuresdDays.length > 0) {
+			$('#protect-days').text(selectInsuresdDays + buyPriceUnit);
+			updateDefaultBtnColor($('#protect-days'))
+			var currentShowNum = selectInsuresdDays.replace(/[^0-9]/ig, ""); //截取保障期限数字
+			$('#protect-days').attr('select-code', currentShowNum);
+			timePicker.pickers[0].setSelectedValue(selectInsuresdDays)
+			caculatePayAmount()
+		} else {
+			//默认为1份
+			$('#protect-days').text("1" + buyPriceUnit);
+			updateDefaultBtnColor($('#protect-days'))
+			$('#protect-days').attr('select-code', '1');
+			timePicker.pickers[0].setSelectedValue("1" + buyPriceUnit)
+			caculatePayAmount()
+		}
+
+		if (selectBeginDate.length > 0) {
+			var dateJson = JSON.parse(selectBeginDate)
+			$('#begin-time').text(dateJson.value)
+			$('#begin-time').attr('data-options', selectBeginDate)
+			updateDefaultBtnColor($('#begin-time'))
+		}
+
+
+		var _getParam = function(obj, param) {
+			return obj[param] || '';
+		};
+
+		/** 计算支付的总金额
+		 * */
+		function caculatePayAmount() {
+			var selectInsuredCountStr = $('#protect-days').attr("select-code"), //选择的保障期限份数，默认一份
+				selectInsuredCount = 1;
+			if (selectInsuredCountStr != null && selectInsuredCountStr != undefined) {
+				selectInsuredCount = parseInt(selectInsuredCountStr);
+			}
+			//支持多人投保，显示 份数 和人数
+			var realMoney = skuPrice
+			var isBuyMitiple = parseInt(buyMutiple) //购买份数 默认为1 平台下发
+			//单人投保 【共N份 + money】
+			if (isSingle) {
+				$('#mutiple-time').text("共" + selectInsuredCount + buyPriceUnit) //份数/单位
+				realMoney = 1 * skuPrice * selectInsuredCount
+			}
+			//多人投保 【共N年 N人 + money】
+			else {
+				var personCount = $('.mutiple-content ul li').length,
+					realPersonCount = personCount;
+
+				//没有被保人的时候，默认 份数*金额*1 不能直接*0，展示0元
+				if (personCount == 0) {
+					personCount = 1
+				}
+				realMoney = personCount * skuPrice * selectInsuredCount
+				if (realPersonCount == 0) {
+					$('#mutiple-time').text("共" + "1" + buyPriceUnit) //份数/单位
+				} else {
+					$('#mutiple-time').text("共" + selectInsuredCount + buyPriceUnit + " " + personCount + "人") //份数/单位 + 人数
+				}
+			}
+
+			$('#order-money').text('￥' + realMoney)
+		}
+
+		/** 保障期限被点击
+		 * */
+		$('#protect-days').click(function() {
+			var maxDuration = parseInt(buyMutiple); //最大可购买份数
+			if(maxDuration > 1){
+				var _self = this;
+				timePicker.show(function(items) {
+					$(_self).text(_getParam(items[0], 'text'))
+					$(_self).attr('select-code', _getParam(items[0], 'value'))
+					caculatePayAmount()
+					updateDefaultBtnColor(_self)
+				});
+			}
+		})
+		/**起保日期点击
+		 * */
+		$('#begin-time').click(function() {
+			var _self = this;
+			if (_self.picker) {
+				_self.picker.show(function(rs) {
+					dLog('选择结果: ' + rs.text)
+					_self.picker.dispose();
+					_self.picker = null;
+				});
+			} else {
+				var currentYear = moment().year();
+				var currentMonth = moment().format('MM');
+				var currentDay = moment().format('DD');
+				var currentValue = moment().format('YYYY-MM-DD');;
+				var options = {
+					'type': 'date',
+					'value': currentValue,
+					'beginYear': currentYear,
+					'beginMonth': parseInt(currentMonth),
+					'beginDay': parseInt(currentDay)
+				}
+				var optionsJson = JSON.stringify(options)
+				$(this).attr('data-options', optionsJson)
+
+				/*
+				 * 首次显示时实例化组件
+				 * 示例为了简洁，将 options 放在了按钮的 dom 上
+				 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+				 */
+				_self.picker = new mui.DtPicker(options);
+				_self.picker.show(function(rs) {
+					/*
+					 * rs.value 拼合后的 value
+					 * rs.text 拼合后的 text
+					 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+					 * rs.m 月，用法同年
+					 * rs.d 日，用法同年
+					 * rs.h 时，用法同年
+					 * rs.i 分（minutes 的第二个字母），用法同年
+					 */
+					dLog('选择结果: ' + rs.text)
+					var options = {
+						'type': rs.type,
+						'value': rs.value,
+					}
+					var optionsJson = JSON.stringify(options)
+					$(_self).attr('data-options', optionsJson)
+					$(_self).text(rs.text)
+					updateDefaultBtnColor(_self)
+					/* 
+					 * 返回 false 可以阻止选择框的关闭
+					 * return false;
+					 */
+					/*
+					 * 释放组件资源，释放后将将不能再操作组件
+					 * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+					 * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+					 * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+					 */
+					_self.picker.dispose();
+					_self.picker = null;
+				});
+			}
+		})
+
+		/**法定受益人点击
+		 * */
+		$('#beneficiary').click(function() {
+			mui.alert('法定受益人是指受益人约定为“法定”或者“法定继承人”的，以继承法规定的法定继承人为受益人；')
+		})
+
+		$(".section-title").on("click", "#ensured-edit", function() {
+			mui("#addperson").popover('show');
+		})
+
+		/** 添加按钮点击【单人投保点击 or 多人投保被点击】
+		 */
+		mui('body').on('tap', '.mui-popover-action li>a', function() {
+			var a = this,
+				parent;
+			//根据点击按钮，反推当前是哪个actionsheet
+			for (parent = a.parentNode; parent != document.body; parent = parent.parentNode) {
+				if (parent.classList.contains('mui-popover-action')) {
+					break;
+				}
+			}
+			addperson(a.innerHTML)
+			//关闭actionsheet
+			mui('#' + parent.id).popover('toggle');
+
+		})
+
+		function addperson(typename) {
+			var insuredDays = $('#protect-days').attr('select-code');
+			var beginDate = $('#begin-time').attr('data-options');
+			var selectDays = "",
+				selectDate = "";
+			if (insuredDays != null && insuredDays != undefined && insuredDays.length > 0) {
+				selectDays = insuredDays
+				var newurl = changeURLPar(window.location.href, 'selectDays', selectDays); //将uid和现有的页面地址拼接
+				window.history.replaceState(null, null, newurl); //向当前url添加参数
+			}
+			if (beginDate != null && beginDate != undefined && beginDate.length > 0) {
+				selectDate = beginDate
+				var newurl = changeURLPar(window.location.href, 'selectDate', selectDate); //将uid和现有的页面地址拼接
+				window.history.replaceState(null, null, newurl); //向当前url添加参数
+			}
+			if ("学生" == typename) {
+				if (isSingle) {
+					var count = $('.insured-content ul li').length
+					if (count == 1) {
+						mui.confirm('该保单只能选择一个被保人，再次选择将会替换已选中的被保人', '', ['取消', '确定'], function(e) {
+							if (e.index == 1) {
+								$('.mui-popup-backdrop').remove(); // 去除遮罩
+								$('.mui-popup').remove(); // 去除弹出窗口
+								pushPersonSelectIsTeacher(false)
+							}
+						});
+					} else {
+						pushPersonSelectIsTeacher(false)
+					}
+				} else {
+					pushPersonSelectIsTeacher(false)
+				}
+
+			} else if ("老师" == typename) {
+				if (isSingle) {
+					var count = $('.insured-content ul li').length
+					if (count == 1) {
+						mui.confirm('该保单只能选择一个被保人，再次选择将会替换已选中的被保人', '', ['取消', '确定'], function(e) {
+							if (e.index == 1) {
+								$('.mui-popup-backdrop').remove(); // 去除遮罩
+								$('.mui-popup').remove(); // 去除弹出窗口
+								pushPersonSelectIsTeacher(true)
+							}
+						});
+					} else {
+						pushPersonSelectIsTeacher(true)
+					}
+				} else {
+					pushPersonSelectIsTeacher(true)
+				}
+
+			}
+
+		}
+
+		function pushPersonSelectIsTeacher(isTeacher) {
+			if (isTeacher) {
+				CodeSTD.form({
+					url: "../../check/exam_app/add_person.html",
+					params: {
+						"usercode": usercode,
+						"token": token,
+						"isSingle": isSingle
+					},
+				});
+			} else {
+				CodeSTD.form({
+					url: "person_add.html",
+					params: {
+						"usercode": usercode,
+						"token": token,
+						"isSingle": isSingle
+					},
+				});
+			}
+		}
+
+		/** 删除被保人【单人 or 多人】
+		 */
+		function deleteInsuredPersonClick(e) {
+			var liObj = $(e).parent();
+			var cellNameObj = liObj.find('.cell-name');
+			var stuCode = cellNameObj.attr('stu-code')
+			$(liObj).remove()
+			var realCacheList = cachePeopleJsonList;
+			if (cachePeopleJsonList != null && cachePeopleJsonList.length > 0) {
+				for (var i = 0; i < cachePeopleJsonList.length; i++) {
+					var json = cachePeopleJsonList[i]
+					stusentcode = updateNullString(json["studentcode"], '');
+					if (stuCode == stusentcode) {
+						realCacheList.splice(i, 1);
+					}
+				}
+				localStorage.setItem(usercode + "insuredPerson", JSON.stringify(realCacheList))
+
+				if (isSingle) {
+					var count = $('.insured-content ul li').length
+					if (count <= 0) {
+						$('.single-title').text('请添加被保人')
+					} else {}
+				} else {
+					var count = $('.mutiple-content ul li').length
+					if (count <= 0) {
+						$('.mutiple-title').text('当前暂无被保人，请添加')
+					} else {
+						$('.mutiple-title').text('--- 当前共有' + count + '个被保人 ---')
+					}
+				}
+			}
+			caculatePayAmount()
+		}
+		/**删除老师
+		 * @param {Object} e
+		 */
+		function deleteInsuredTeacherClick(e) {
+			var liObj = $(e).parent();
+			var cellNameObj = liObj.find('.cell-name');
+			var teaCode = cellNameObj.attr('tea-code')
+			$(liObj).remove()
+			if (teacherList != null && teacherList.length > 0) {
+				for (var i = 0; i < teacherList.length; i++) {
+					var json = teacherList[i],
+						jid = updateNullString(json["jid"], '');
+					if (teaCode == jid) {
+						teacherList.splice(i, 1);
+					}
+				}
+				localStorage.setItem("selfDepSelectPeople", JSON.stringify(teacherList))
+				if (isSingle) {
+					var count = $('.insured-content ul li').length
+					if (count <= 0) {
+						$('.single-title').text('请添加被保人')
+					} else {}
+				} else {
+					var count = $('.mutiple-content ul li').length
+					if (count <= 0) {
+						$('.mutiple-title').text('当前暂无被保人，请添加')
+					} else {
+						$('.mutiple-title').text('--- 当前共有' + count + '个被保人 ---')
+					}
+				}
+			}
+			caculatePayAmount()
+		}
+
+
+		/** 编辑被保人【单人 or 多人】
+		 */
+		function editInsuredPersonClick(e) {
+			var siblingsObj = $(e).siblings();
+			var cellNameObj = $(e).siblings('.cell-name');
+			var cellClassObj = $(e).siblings('.cell-class');
+			var cellIdcObj = $(e).siblings('.cell-idc');
+			var stuCode = $(cellNameObj).attr('stu-code')
+			var stuName = $(cellNameObj).text()
+			var stuClassName = $(cellClassObj).text()
+			var stuClassCode = $(cellClassObj).attr('stu-classcode')
+			var stuGradeCode = $(cellClassObj).attr('stu-gradecode')
+			var stuIDC = $(cellIdcObj).text()
+			CodeSTD.form({
+				url: "insured_edit.html",
+				params: {
+					"usercode": usercode, //当前登录用户的用户帐号
+					"edit_usercode": stuCode,
+					"edit_username": stuName,
+					"edit_useridc": stuIDC,
+					"gradecode": stuGradeCode,
+					"classcode": stuClassCode,
+					"classname": stuClassName,
+					"type": "2",
+					"token": token,
+				},
+			});
+		}
+
+		/** 编辑老师被保人【单人 or 多人】
+		 */
+		function editInsuredTeacherClick(e) {
+			var siblingsObj = $(e).siblings();
+			var cellNameObj = $(e).siblings('.cell-name');
+			var cellClassObj = $(e).siblings('.cell-class');
+			var cellIdcObj = $(e).siblings('.cell-idc');
+			var teaCode = $(cellNameObj).attr('tea-code')
+			var teaName = $(cellNameObj).text()
+			var idcard = $(cellIdcObj).text()
+			CodeSTD.form({
+				url: "insured_edit.html",
+				params: {
+					"usercode": usercode, //当前登录用户的用户帐号
+					"edit_usercode": teaCode,
+					"edit_username": teaName,
+					"edit_useridc": idcard,
+					"type": "2",
+					"token": token,
+					"isTeacher": "true"
+				},
+			});
+		}
+
+		/** 具体某个条款协议点击
+		 */
+		$("#agree-service").on("tap", "div", function() {
+			var serviceCode = $(this).attr('data-key'),
+				serviceName = $(this).text();
+			$('.service-title').text(serviceName)
+			var paramDic = {
+				"usercode": usercode,
+				"product_id": prodectID,
+				"code": updateNullString(serviceCode, ""),
+				"token": token
+			};
+
+			var urlString = system.jias + "/v1/product/richtext/get";
+			mui.showLoading()
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading()
+					var result = object["ret"],
+						html = [];
+					if (result) {
+						var dataJson = object["data"],
+							content = dataJson["content"];
+						if (content != undefined && content.length > 0) {
+							$('.service-content').html(content)
+							$(".service-dialog").fadeIn(200);
+							$(".service-mask").show();
+						}
+					} else {
+						mui.toast(updateNullString(object['msg'], "获取" + serviceName + "协议内容失败"))
+						$(".service-dialog").fadeOut(1);
+						$(".service-mask").hide()
+					}
+				},
+				function(error) {
+					mui.hideLoading()
+					mui.toast("获取" + serviceName + "协议内容失败")
+					$(".service-dialog").fadeOut(1);
+					$(".service-mask").hide()
+				})
+		})
+		$(".service-mask").click(function() {
+			$(".service-dialog").fadeOut(1);
+			$(".service-mask").hide()
+		})
+		$(".service-close").click(function() {
+			$(".service-dialog").fadeOut(1);
+			$(".service-mask").hide()
+		})
+		/** 立刻投保点击
+		 */
+		$('.footer-wapper a:last-child').click(function() {
+			var policyholderName = $('#policyholder-name').val().replace(/(^\s*)|(\s*$)/g, ""), //投保人姓名
+				policyholderIDC = $('#policyholder-idc').val().replace(/(^\s*)|(\s*$)/g, ""), //投保人身份证号码
+				policyholderPhone = $('#policyholder-phone').val().replace(/(^\s*)|(\s*$)/g, ""), //投保人电话
+				beginTime = $('#begin-time').text().replace(/(^\s*)|(\s*$)/g, ""), //起保日期时间
+				contactName = $('#emergency-name').val().replace(/(^\s*)|(\s*$)/g, ""), //紧急联系人姓名
+				contactPhone = $('#emergency-phone').val().replace(/(^\s*)|(\s*$)/g, ""), //紧急联系人手机
+				selectInsuredCount = "1", //选择的保障期限份数，默认一份
+				selectInsuredArray = [];
+			if (beginTime == "请选择") {
+				beginTime = ""
+				mui.toast("请选择起保日期")
+				return
+			}
+
+			if (policyholderName.length <= 0) {
+				mui.toast("请填写投保人")
+				return
+			}
+			if (policyholderIDC.length <= 0) {
+				mui.toast("请填写投保人身份证号")
+				return
+			}
+			if (!isCardNo(policyholderIDC)) {
+				mui.toast("投保人身份证号不正确")
+				return
+			}
+			if (policyholderPhone.length <= 0) {
+				mui.toast("请填写投保人手机号码")
+				return
+			}
+			if (!isPhoneNo(policyholderPhone)) {
+				mui.toast("投保人手机号码不正确")
+				return
+			}
+			var currentTimestamp = moment().valueOf() //创建订单，投保人和被保人身份证号加密用的时间戳
+			//组装最终上传的被保人信息，身份证信息重新加密
+			for (var i = 0; i < cachePeopleJsonList.length; i++) {
+				var json = cachePeopleJsonList[i],
+					studentidc = updateNullString(json["idcard"], ''),
+					studentname = updateNullString(json["studentname"], '');
+				if (studentidc.length <= 0) {
+					mui.alert('请完善被保人' + studentname + '的身份证号码')
+					return
+				}
+				var timestamp = updateNullString(json['timestamp'], ''),
+					realShowIDC = aesDecrypt(studentidc, timestamp), //先解密
+					secretStuIDC = aesEncrypt(realShowIDC, currentTimestamp), //在加密
+					selectPeopleJson = {
+						"insured_username": updateNullString(json["studentname"], ''),
+						"insured_idcard": secretStuIDC,
+						"insured_phone": updateNullString(json["studentphone"], ''),
+						"class_id": updateNullString(json["classcode"], ''),
+						"user_id": updateNullString(json["studentcode"], '')
+					};
+				selectInsuredArray.push(selectPeopleJson)
+			}
+			for (var i = 0; i < teacherList.length; i++) {
+				var teaJson = teacherList[i],
+					nickname = updateNullString(teaJson['nickname'], ""),
+					idcard = updateNullString(teaJson['idcard'], "");
+				if (idcard.length <= 0) {
+					mui.alert('请完善被保人' + nickname + '的身份证号码')
+					return
+				}
+				var jid = updateNullString(teaJson['jid'], ""),
+					timestamp = updateNullString(teaJson['timestamp'], ''),
+					realShowIDC = aesDecrypt(idcard, timestamp), //先解密
+					secretStuIDC = aesEncrypt(realShowIDC, currentTimestamp), //在加密
+					secretIDC = aesEncrypt(realShowIDC, currentTimestamp), //在加密
+					selectPeopleJson = {
+						"insured_username": updateNullString(nickname, ''),
+						"insured_idcard": secretStuIDC,
+						"insured_phone": updateNullString(teaJson['phone'], ''),
+						"class_id": '',
+						"user_id": jid
+					};
+				selectInsuredArray.push(selectPeopleJson)
+			}
+
+			if (selectInsuredArray == null || selectInsuredArray == undefined || selectInsuredArray.length <= 0) {
+				mui.toast("请添加被保人")
+				return
+			}
+			if ($('#agree-service input').prop('checked') == false) {
+				mui.toast('请勾选相关协议')
+				return
+			}
+			selectInsuredCount = $('#protect-days').attr("select-code") //选择的保障期限份数，默认一份
+			if (selectInsuredCount == null || selectInsuredCount == undefined || selectInsuredCount == 0 || selectInsuredCount
+				.length <= 0) {
+				selectInsuredCount = '1';
+			}
+			var url = system.jias + "/v1/order/create",
+				paramDic = {
+					"usercode": usercode,
+					"token": token,
+					"product_id": prodectID,
+					"sku_id": productSkuID,
+					"holder_username": policyholderName,
+					"holder_phone": policyholderPhone,
+					"holder_idcard": aesEncrypt(policyholderIDC, currentTimestamp),
+					"period_start": beginTime,
+					"count": selectInsuredCount,
+					"insured": JSON.stringify(selectInsuredArray),
+					"contact_name": contactName,
+					"contact_phone": contactPhone,
+					"secret": updateNullString(getSecretKey(), ''),
+					"timestamp": currentTimestamp
+				};
+			mui.showLoading()
+			jQuery_Request_Post(url, paramDic, "json", false, function(object) {
+				mui.hideLoading()
+				var result = object["ret"];
+				if (result) {
+					var dataJson = object['data'],
+						orderID = updateNullString(dataJson['order_id'], ''),
+						orderNum = updateNullString(dataJson['order_no'], ''), //保单编号
+						orderAmount = updateNullString(dataJson['order_amount'], ''), //总金额
+						payAmount = updateNullString(dataJson['pay_amount'], ''), //支付金额
+						payWay = dataJson['pay_way']; //支持的支付方式	(wxpay)微信、(alipay)支付宝
+					var url = 'order_confirm.html?usercode='+usercode+
+					'&prodectID='+prodectID+
+					'&productName='+productName+
+					'&holderUsername='+policyholderName+
+					'&orderNumber='+orderNum+
+					'&orderID='+orderID+
+					'&payAmount='+payAmount+
+					'&payWay='+JSON.stringify(payWay)+
+					'&token='+token
+					window.location.replace(url)
+					// CodeSTD.form({
+					// 	url: "order_confirm.html",
+					// 	params: {
+					// 		"usercode": usercode, //当前登录用户的用户帐号
+					// 		"prodectID": prodectID,
+					// 		"productName": productName,
+					// 		"holderUsername": policyholderName,
+					// 		"orderNumber": orderNum,
+					// 		"orderID": orderID,
+					// 		"payAmount": payAmount,
+					// 		"payWay": payWay,
+					// 		"token": token,
+					// 	},
+					// });
+				} else {
+					var msg = updateNullString(object["msg"], "生成订单出错")
+					mui.alert(msg)
+				}
+			}, function(error) {
+				mui.hideLoading()
+				mui.alert("生成订单出错")
+			});
+		})
+
+		//我已查看并同意点击
+		// mui('#agree-service').on('change', 'input', function() {
+		// 	var value = this.checked ? "true" : "false";
+		// 	alert(this.checked ? '勾选' : "取消勾选")
+		// });
+
+		//单人投保ul
+		function createSingleCell(array, teacherList) {
+			if ($.isArray(array) || $.isArray(teacherList)) {
+				if (array.length <= 0 && teacherList.length <= 0) {
+					$('.single-title').show()
+				} else {
+					$('.single-title').hide()
+					var html = [];
+					if (array.length > 0) {
+						var classJson = array[0],
+							studentidc = updateNullString(classJson['idcard'], ""),
+							studentcode = updateNullString(classJson['studentcode'], ""),
+							studentname = updateNullString(classJson['studentname'], ""),
+							studentClassCode = updateNullString(classJson['classcode'], ""),
+							studentClassName = updateNullString(classJson['classname'], ""),
+							timestamp = updateNullString(classJson['timestamp'], '');
+
+						html.push('<li class="mutiple-cell">');
+						html.push('<div class="cell-name" stu-code="' + studentcode + '">' + studentname + '</div>');
+						//学校用户可以选择【学生 or 教师】，其他用户都是当前用户
+						var isFilter = filterInsuredPeopleCurrentUser()
+						//判断是否是学生用户，学生用户需要展示班级信息 
+						var localRealusertype = localStorage.getItem('usertype')
+						if (localRealusertype == '70') {
+							if (studentClassName.length <= 0) {
+								html.push('<div class="cell-class-empty">无班级</div>');
+							} else {
+								html.push('<div class="cell-class" stu-classcode="' + studentClassCode + '">' +
+									studentClassName +
+									'</div>');
+							}
+						}
+
+						if (studentidc.length <= 0) {
+							html.push('<div class="cell-idc-empty app-red-color">身份证号码为空</div>');
+						} else {
+							var realShowIDC = aesDecrypt(studentidc, timestamp)
+							html.push('<div class="cell-idc">' + realShowIDC + '</div>');
+						}
+
+						html.push('<i class="cell-edit" onclick="editInsuredPersonClick(this)"></i>');
+						//只有当前一个用户的时候，需要隐藏删除按钮
+						var isFilter = filterInsuredPeopleCurrentUser()
+						if (!isFilter) {
+							html.push('<i class="cell-delete" onclick="deleteInsuredPersonClick(this)"></i>');
+						}
+						$('.insured-content ul').html(html.join(''));
+
+					} else if (teacherList.length > 0) {
+						var personJson = teacherList[0],
+							idcard = updateNullString(personJson['idcard'], ""),
+							jid = updateNullString(personJson['jid'], ""),
+							nickname = updateNullString(personJson['nickname'], ""),
+							orgname = updateNullString(personJson['orgname'], ""),
+							orgid = updateNullString(personJson['orgid'], ""),
+							timestamp = updateNullString(personJson['timestamp'], '');
+
+						html.push('<li class="mutiple-cell">');
+						html.push('<div class="cell-name" tea-code="' + jid + '">' + nickname + '</div>');
+						//学校用户可以选择【学生 or 教师】，其他用户都是当前用户 false：学校用户
+						var isFilter = filterInsuredPeopleCurrentUser() 
+						if (!isFilter) {
+							if (orgname.length <= 0 || orgname == null || orgname == undefined) {
+								html.push('<div class="cell-class-empty">无部门</div>');
+							} else {
+								html.push('<div class="cell-class" tea-orgcode="' + orgid + '">' +
+									orgname +
+									'</div>');
+							}
+						}
+
+						if (idcard.length <= 0) {
+							html.push('<div class="cell-idc-empty app-red-color">身份证号码为空</div>');
+						} else {
+							var realShowIDC = aesDecrypt(idcard, timestamp)
+							html.push('<div class="cell-idc">' + realShowIDC + '</div>');
+						}
+
+						html.push('<i class="cell-edit" onclick="editInsuredTeacherClick(this)"></i>');
+						html.push('<i class="cell-delete" onclick="deleteInsuredTeacherClick(this)"></i>');
+						$('.insured-content ul').html(html.join(''));
+					}
+
+
+				}
+
+			} else {
+				$('.single-title').show()
+			}
+
+			caculatePayAmount()
+		}
+		//多人投保ul
+		function createMutipleCell(array, array2) {
+			if (array.length == 0 && array2.length == 0) {
+				$('.mutiple-title').text('--- 当前暂无被保人，请添加 ---')
+			} else {
+				var html = [];
+				var classCodeArray = []; //班级数据，判断房钱有几个班级
+				for (var i = 0; i < array.length; i++) {
+					var classJson = array[i],
+						gradename = updateNullString(classJson['gradename'], ""),
+						gradecode = updateNullString(classJson['gradecode'], ""),
+						studentidc = updateNullString(classJson['idcard'], ""),
+						studentcode = updateNullString(classJson['studentcode'], ""),
+						studentname = updateNullString(classJson['studentname'], ""),
+						studentClassCode = updateNullString(classJson['classcode'], ""),
+						studentClassName = updateNullString(classJson['classname'], ""),
+						timestamp = updateNullString(classJson['timestamp'], '');
+					if ($.inArray(studentClassCode, classCodeArray) < 0) {
+						classCodeArray.push(studentClassCode)
+					}
+					html.push('<li class="mutiple-cell">');
+					html.push('<div class="cell-name" stu-code="' + studentcode + '">' + studentname + '</div>');
+					//学校用户可以选择【学生 or 教师】，其他用户都是当前用户
+					//非学校用户，判断是否是学生用户，学生用户需要展示班级信息
+					var localRealusertype = localStorage.getItem('usertype')
+					if (!isFilter || localRealusertype == '70') {
+						if (studentClassName.length <= 0 || studentClassName == null || studentClassName == undefined) {
+							html.push('<div class="cell-class-empty">无班级</div>');
+						} else {
+							html.push('<div class="cell-class" stu-gradecode="' + gradecode + '"stu-classcode="' + studentClassCode + '">' +
+								studentClassName +
+								'</div>');
+						}
+					}
+					if (studentidc.length <= 0) {
+						html.push('<div class="cell-idc-empty app-orange-color">身份证为空</div>');
+					} else {
+						var realShowIDC = aesDecrypt(studentidc, timestamp)
+						html.push('<div class="cell-idc">' + realShowIDC + '</div>');
+					}
+					html.push('<i class="cell-edit" onclick="editInsuredPersonClick(this)"></i>');
+					//只有当前一个用户的时候，需要隐藏删除按钮
+					var isFilter = filterInsuredPeopleCurrentUser()
+					if (!isFilter) {
+						html.push('<i class="cell-delete" onclick="deleteInsuredPersonClick(this)"></i>');
+					}
+				}
+				//老师
+				if (array2.length > 0) {
+					for (var i = 0; i < array2.length; i++) {
+						var classJson = array2[i],
+							idcard = updateNullString(classJson['idcard'], ""),
+							jid = updateNullString(classJson['jid'], ""),
+							nickname = updateNullString(classJson['nickname'], ""),
+							orgname = updateNullString(classJson['orgname'], ""),
+							orgid = updateNullString(classJson['orgid'], ""),
+							timestamp = updateNullString(classJson['timestamp'], '');
+						html.push('<li class="mutiple-cell">');
+						html.push('<div class="cell-name" tea-code="' + jid + '">' + nickname + '</div>');
+						//学校用户可以选择【学生 or 教师】，其他用户都是当前用户
+						var isFilter = filterInsuredPeopleCurrentUser()
+						if (!isFilter) {
+							if (orgname.length <= 0) {
+								html.push('<div class="cell-class-empty">无部门</div>');
+							} else {
+								html.push('<div class="cell-class" tea-orgcode="' + orgid + '">' +
+									orgname +
+									'</div>');
+							}
+						}
+						if (idcard.length <= 0) {
+							html.push('<div class="cell-idc-empty app-orange-color">身份证为空</div>');
+						} else {
+							var realShowIDC = aesDecrypt(idcard, timestamp)
+							html.push('<div class="cell-idc">' + realShowIDC + '</div>');
+						}
+						html.push('<i class="cell-edit" onclick="editInsuredTeacherClick(this)"></i>');
+						html.push('<i class="cell-delete" onclick="deleteInsuredTeacherClick(this)"></i>');
+					}
+				}
+				$('.mutiple-title').text('--- 当前共有' + (array.length + array2.length) + '个被保人 ---')
+				// $('.mutiple-title').text('--- 当前共有' + classCodeArray.length + '个班级，' + (array.length + array2.length) + '个被保人 ---')
+				$('.mutiple-content ul').html(html.join(''));
+			}
+			caculatePayAmount()
+		}
+		/** 服务条款协议
+		 * */
+		function createAgreeServiceList(val) {
+			var html = [];
+			for (var key in val) {
+				var value = val[key];
+				html.push('<div class="operation-btn" data-key="' + key + '">' + '《' + value +
+					'》' + '</div>')
+			}
+			$('#agree-service label').append(html.join(''));
+			//服务协议高度可变，可滑动区域计算
+			var serviceHeight = $('#agree-service').height();
+			$('.footer-service').css({
+				height: serviceHeight + 5
+			})
+			var contentHeight = $('.content').height();
+			var footerHeight = $('.footer-wapper').height();
+			var realHeight = contentHeight - serviceHeight - footerHeight;
+			$('.content').css({
+				height: realHeight + 'px'
+			});
+		}
+
+		/** 家长用户获取名下所有学生
+		 * */
+		function requestAllChildFromServer() {
+			var url = system.usercenter + "/getrelateduser.action",
+				timestamp = moment.valueOf(),
+				paramDic = {
+					"user.usercode": usercode,
+					"token": token,
+					"secret": updateNullString(getSecretKey(), ''),
+					"timestamp": timestamp
+				};
+			mui.showLoading()
+			jQuery_Request_Post(url, paramDic, "json", true, function(object) {
+				mui.hideLoading()
+				var result = object["ret"];
+				if (result) {
+					var dataList = object['userlist'];
+					if ($.isArray(dataList) && dataList.length > 0) {
+						var realStudentList = [];
+						for (var i = 0; i < dataList.length; i++) {
+							var studentJson = dataList[i],
+								realStudentJson = {
+									"studentname": studentJson['nickname'],
+									"studentcode": studentJson['jid'],
+									"idcard": updateNullString(studentJson['studentidc'], ""), //加密形式下发的
+									"classcode": studentJson['orgid'],
+									"classname": studentJson['orgname'],
+									"timestamp": timestamp
+								};
+							if (i == 0) {
+								realStudentList.push(realStudentJson)
+							}
+						}
+						//家长用户第一次进来，没有缓存数据，需要缓存一下首个孩子；进入添加选择后，有缓存数据了，不需要在这个地方缓存，直接取用就可以了
+						if (cachePeopleJsonList == null) {
+							createSingleCell(realStudentList)
+							localStorage.setItem(usercode + "insuredPerson", JSON.stringify(realStudentList))
+
+						} else {
+							if ($.isArray(cachePeopleJsonList) && cachePeopleJsonList.length > 0) {
+								if (isSingle) {
+									createSingleCell(cachePeopleJsonList)
+								}
+							}
+						}
+
+					} else {
+						mui.toast('暂无相关联的孩子信息')
+					}
+
+				} else {
+					var message = updateNullString(object["msg"], "暂无相关联的孩子信息");
+					mui.toast(message)
+				}
+			}, function(error) {
+				mui.hideLoading()
+				mui.toast('获取孩子信息出了问题')
+			});
+		}
+		//计算页面可滑动区域【确定视图高度】
+		function resizeContentHeight() {
+			var contentHeight = $('.content').height();
+			var footerHeight = $('.footer-wapper').height();
+			var mutipleHeight = $('.mutiple-wapper').height();
+			var realHeight = contentHeight - footerHeight - mutipleHeight;
+			$('.content').css({
+				height: realHeight + 'px'
+			});
+		}
+	</script>
+
+
+</html>

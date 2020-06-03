@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>应用首页</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<script src="../../common/extend/jquery/jquery.min.js"></script>
+	<script src="../../common/extend/bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="../../common/extend/bootstrap/css/bootstrap.min.css">
+	<script src="js/showtime.js"></script>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="../../common/extend/vue/vue.min.js"></script>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<!-- 引入组件库 -->
+	<script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+<body>
+	<header>
+		<a href="#" class="logo"><img src="images/logo.png"></a>
+		<h1>校园安全智慧屏</h1>
+		<div class="time" id="showTime">2020.05.09.16:45:28</div>
+	</header>
+	<div class="navbox" id="navboxApp" v-cloak>
+		<div class="topbar box">
+			<p><img src="images/bud.png">郑州铁路职业技术学院-机电工程学院</p>
+			<p><img src="images/user.png"> 责任人：魏保立、戴明宏</p>
+			<p><img src="images/notice.png"><a href="#">关于“五一”期间加强疫情防控和落实中央八项规定精神的通知</a><span>16:24</span></p>
+		</div>
+		<div class="nav01 box">
+			<div class="boxtit">风险管控清单</div>
+			<div style="padding: 0 20px 20px 20px;">
+				<form class="form-inline">
+					<div class="form-group">
+						<label for="exampleInputName2">风险点名称：</label>
+						<input type="text" class="form-control" placeholder="请输入">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputEmail2">责任人：</label>
+						<input type="text" class="form-control" placeholder="请输入">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputEmail2">风险等级：</label>
+						<div class="selbox">
+							<input type="text" class="form-control" placeholder="请选择" readonly="">
+							<ul style="display: none;z-index: 2;">
+								<li class="active"><a href="#">全部</a></li>
+								<li><a href="#">I级</a></li>
+								<li><a href="#">II级</a></li>
+								<li><a href="#">III级</a></li>
+								<li><a href="#">IV级</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail2">管控层级：</label>
+						<div class="selbox">
+							<input type="text" class="form-control" placeholder="请选择" readonly="">
+							<ul style="left: inherit; right: 0;z-index: 2;">
+								<li class="active"><a href="#">全部</a></li>
+								<li><a href="#">院级</a></li>
+								<li><a href="#">主任级</a></li>
+								<li><a href="#">岗位级</a></li>
+								<li><a href="#">副院长级</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="exampleInputEmail2">责任部门：</label>
+						<div class="selbox">
+							<input type="text" class="form-control" placeholder="请选择" readonly="">
+							<ul style="left: inherit; right: 0;z-index: 2;">
+								<li class="active"><a href="#">全部</a></li>
+								<li><a href="#">学工办主任</a></li>
+								<li><a href="#">办公室主任</a></li>
+								<li><a href="#">教研室主任</a></li>
+								<li><a href="#">院长</a></li>
+								<li><a href="#">机电工程学院</a></li>
+								<li><a href="#">副院长</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-primary"> <img src="images/search.png"> 查询 </button>
+				</form>
+			</div>
+			<div class="boxnav" style="height: calc(100% - 171px);">
+				<!-- <el-table border :data="list" style="z-index: 1;" header-row-class-name="eltable_header" cell-class-name="eltable_cell">
+					<el-table-column type="index" width="79" label="序号" align="center"></el-table-column>
+					<el-table-column prop="checkName" label="名称" align="center" width="238"></el-table-column>
+					<el-table-column prop="checkName" label="风险点名称" align="center" width="254"></el-table-column>
+					<el-table-column prop="hiddenDenger" label="风险等级" width="129" align="center">
+						<template slot-scope="scope">
+							<span class="label label-danger">I级</span>
+						</template>
+					</el-table-column>
+					<el-table-column prop="type" label="管控层级" align="center" width="129"></el-table-column>
+					<el-table-column prop="type" label="责任部门" align="center" width="180"></el-table-column>
+					<el-table-column prop="type" label="责任人" align="center"></el-table-column>
+				</el-table> -->
+				<table class="table table-bordered" border="0" cellspacing="0" cellpadding="0">
+					<tbody>
+						<tr>
+							<th>序号</th>
+							<th>名称</th>
+							<th>风险点名称</th>
+							<th>风险等级</th>
+							<th>管控层级</th>
+							<th>责任部门</th>
+							<th>责任人</th>
+						</tr>
+						<tr>
+							<td rowspan="6">1</td>
+							<td rowspan="6">组织管理</td>
+							<td>安全工作领导责任制</td>
+							<td><span class="label label-danger">I级</span></td>
+							<td>院级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>岗位级安全职责体系</td>
+							<td><span class="label label-danger">I级</span></td>
+							<td>院级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>学院安全管理制度</td>
+							<td><span class="label label-danger">I级</span></td>
+							<td>院级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>经费投入</td>
+							<td><span class="label label-danger">I级</span></td>
+							<td class="songhe">院级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>安全管理机构</td>
+							<td><span class="label label-danger">I级</span></td>
+							<td>院级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>安全档案</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>学工办主任</td>
+							<td>楚钊</td>
+						</tr>
+						<tr>
+							<td rowspan="2">2</td>
+							<td rowspan="2">教师管理</td>
+							<td>准入管理</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>办公室主任</td>
+							<td>吕蒙</td>
+						</tr>
+						<tr>
+							<td>日常行为管理</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>教研室主任</td>
+							<td>吴新佳</td>
+						</tr>
+						<tr>
+							<td rowspan="3">3</td>
+							<td rowspan="3">安全教育与培训</td>
+							<td>公共安全教育</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td>心理健康教育</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>教职工安全培训</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>办公室主任</td>
+							<td>吕蒙</td>
+						</tr>
+						<tr>
+							<td rowspan="3">4</td>
+							<td rowspan="3">学院电气安全管理</td>
+							<td>用电安全管理制度</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td>用电设备管理</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td>人员用电管理</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td rowspan="2">5</td>
+							<td rowspan="2">实验室管理及建设</td>
+							<td>实验室建设</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>实验室管理</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>特种设备管理</td>
+							<td>特种设备安全管理</td>
+							<td><span class="label label-danger">I级</span></td>
+							<td>院级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td rowspan="5">7</td>
+							<td rowspan="5">教育教学活动</td>
+							<td>课堂教学</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>机电工程学院</td>
+							<td>任课教师</td>
+						</tr>
+						<tr>
+							<td>运动会</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>学工办主任</td>
+							<td>楚钊</td>
+						</tr>
+						<tr>
+							<td>课间课外活动</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>机电工程学院</td>
+							<td>任课老师</td>
+						</tr>
+						<tr>
+							<td>实训操作课</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td>机电实训课</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td rowspan="2">8</td>
+							<td rowspan="2">岗位级作业活动</td>
+							<td>电工作业</td>
+							<td><span class="label label-danger">I级</span></td>
+							<td>院级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td>高处作业</td>
+							<td><span class="label label-danger">I级</span></td>
+							<td>院级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td rowspan="3">9</td>
+							<td rowspan="3">消防设施</td>
+							<td>室内消火栓</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>保卫处</td>
+							<td>黄京京</td>
+						</tr>
+						<tr>
+							<td>灭火器</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>保卫处</td>
+							<td>黄京京</td>
+						</tr>
+						<tr>
+							<td>灭火器箱</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>保卫处</td>
+							<td>宗翔、邢二伟、陈定均</td>
+						</tr>
+						<tr>
+							<td rowspan="7">10</td>
+							<td rowspan="7">校舍安全</td>
+							<td>楼梯走廊</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>办公室主任</td>
+							<td>吕&nbsp; 蒙</td>
+						</tr>
+						<tr>
+							<td>储物室</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>教研室主任</td>
+							<td>齐晓华、吴新佳、史艳红</td>
+						</tr>
+						<tr>
+							<td>办公室</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>教研室主任</td>
+							<td>齐晓华、吴新佳、史艳红</td>
+						</tr>
+						<tr>
+							<td>强电间</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>办公室主任</td>
+							<td>吕蒙</td>
+						</tr>
+						<tr>
+							<td>活动室</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>办公室主任</td>
+							<td>吕蒙</td>
+						</tr>
+						<tr>
+							<td>会议室</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>办公室主任</td>
+							<td>吕蒙</td>
+						</tr>
+						<tr>
+							<td>卫生间</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>办公室主任</td>
+							<td>吕蒙</td>
+						</tr>
+						<tr>
+							<td rowspan="2">11</td>
+							<td rowspan="2">设备设施/特种设备</td>
+							<td>配电箱（柜）</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>办公室主任</td>
+							<td>吕蒙</td>
+						</tr>
+						<tr>
+							<td>电梯</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>院长</td>
+							<td>戴明宏</td>
+						</tr>
+						<tr>
+							<td rowspan="5">12</td>
+							<td rowspan="5">教学场所</td>
+							<td>教室</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>机电工程学院</td>
+							<td>实训室管理员</td>
+						</tr>
+						<tr>
+							<td>机电实训室</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td>机械实训室</td>
+							<td><span class="label label-red">II级</span></td>
+							<td>副院长级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td>计算机教室</td>
+							<td><span class="label label-warning">III级</span></td>
+							<td>主任级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+						<tr>
+							<td>专用教室</td>
+							<td><span class="label label-primary">IV级</span></td>
+							<td>岗位级</td>
+							<td>副院长</td>
+							<td>陈光伟</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="foot">
+		<ul>
+			<li><a href="#" data-toggle="modal" data-target="#myModal"><i></i><span>双防大数据</span></a></li>
+			<li><a href="fourcolorimg.html"><i></i><span>风险四色图</span></a></li>
+			<li class="active"><a href="risk_level.html"><i></i><span>风险分级管控</span></a></li>
+			<li><a href="danger_gover.html"><i></i><span>隐患排查治理</span></a></li>
+			<li><a href="knowledge.html"><i></i><span>双防知识库</span></a></li>
+			<li><a href="website.html"><i></i><span>微官网</span></a></li>
+			<li><a href="exit.html"><i></i><span>系统桌面</span></a></li>
+
+		</ul>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" v-cloak tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog fordatamodal" role="document">
+			<div class="back" data-dismiss="modal" aria-label="Close"><span>返回</span></div>
+			<iframe src="index.html" width="100%" height="100%" frameborder="0" id="iframe1"></iframe>
+		</div>
+	</div>
+	<script>
+		new Vue({
+			el: "#navboxApp",
+			data: {
+				list: [
+					{
+						proName: "机械实训课",
+						checkName: "机电实训课",
+						hiddenDenger: "实验完成后设备配件未及时归位",
+						type: "其他伤害"
+					}
+				],
+			},
+			mounted() {
+				
+			},
+			methods: {
+
+			}
+		})
+	</script>
+	<script>
+
+		$(".selbox input").focus(function () {
+			$(this).next("ul").fadeIn()
+		})
+		$(".selbox input").focusout(function () {
+			$(this).next("ul").fadeOut()
+		})
+
+		$(".selbox ul li").click(function () {
+			var txt = $(this).children("a").text()
+			$(this).parent("ul").prev("input").val(txt)
+			$(this).addClass("active").siblings().removeClass("active")
+		})
+
+		$('#myModal').on('show.bs.modal', function (e) {
+			$("#iframe1").attr("src", "")
+		})
+		$('#myModal').on('shown.bs.modal', function (e) {
+			$("#iframe1").attr("src", "../double_bigscreen/index.html")
+		})
+	</script>
+
+</body>
+
+</html>

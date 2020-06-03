@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE, chrome=1">
+		<meta http-equiv="Access-Control-Allow-Origin" content="*">
+		<meta http-equiv="content-security-policy">
+		<title>保险介绍</title>
+		<!-- mui基类 -->
+		<script src="../../common/extend/mui/js/mui.js"></script>
+		<link rel="stylesheet" href="../../common/extend/mui/css/mui.css">
+		<!-- jquery -->
+		<script src="../../common/extend/jquery/jquery.min.js"></script>
+		<script src="../../common/extend/jquery/jquery.cookie.js"></script>
+		<!-- 学安基类 -->
+		<script src="../../common/extend/julong/base_common.js"></script>
+		<link rel="stylesheet" href="../../common/app/css/base_css.css">
+		<script src="../../common/system/system.js"></script>
+		<script src="../../common/extend/julong/julong.js"></script>
+		<style>
+			.content{
+				overflow-y: scroll;
+			}
+
+
+			 #introduce-img {
+				width: 100%;
+				height: 150px;
+			}
+			.top-introduce{
+				padding: 10px 15px;
+			}
+			.top-introduce #describe{
+				display: block;
+				font-size: 15px;
+				color: rgb(17,17,17);
+			}
+			.top-introduce #company{
+				font-size: 12px;
+				color: rgb(102,102,102);
+				vertical-align: bottom;
+			}
+			.top-introduce #company-img{
+				display: inline-block;
+				width: 27px !important;
+				height: 11px !important;
+				min-width: 27px;
+				min-height: 11px;
+				max-width: 27px;
+				max-height: 11px;
+			}
+			
+			/* 选项卡最高高度 */
+			.mui-control-content {
+				min-height: 43px;
+				max-height: 215px;
+			}
+			/* 切换标签时候加载框位置 */
+			.mui-control-content .mui-loading {
+				margin-top: 50px;
+			}
+			/* 更改滑签颜色 */
+			#sliderProgressBar{
+				background-color: rgb(59, 162, 255);
+				display: none;
+			}
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active{
+				color: rgb(59,162,255);
+			}
+			
+			
+			/* 隐藏底部横线 */
+			.mui-slider .mui-segmented-control.mui-segmented-control-inverted ~ .mui-slider-group .mui-slider-item{
+				border-bottom: none;
+			}
+			.mui-slider-group .mui-scroll-wrapper .mui-scroll{
+				transform: none !important;
+				min-height: 43px;
+				top: 10px;
+				bottom: 10px;
+				max-height: 215px;
+				overflow-y: scroll;
+			}
+			.mui-table-view-cell{
+				background-color: rgb(247,247,247);
+				margin: 0px 15px;
+				font-size: 14px;
+				color: rgb(102,102,102);
+			}
+			.mui-table-view-cell:after{
+				height:0
+			}
+			.mui-table-view-cell span{
+				float: right;
+			}
+			
+			.slider-money{
+				position: absolute;
+				bottom: 0px;
+				padding: 10px 15px;
+				font-size: 17px;
+				color: rgb(243,140,2);
+			}
+			
+			/* 产品特点 图片样式 */
+			.product-feaures{
+				position: relative;
+				width: 100%;
+				height: auto;
+				margin-top: 20px;
+				padding: 10px 30px;
+			}
+			
+			.agree-service{
+				display: inline-block;
+				font-size: 15px;
+				padding:10px 15px;
+				color:rgb(17,17,17);
+			}
+			.agree-service .operation-btn{
+					display: inline;
+					border: none;
+					font-size: 15px;
+					color: rgb(59,162,255);
+			}
+			/* 理赔流程 */
+			.claim-process{
+				padding: 10px 15px;
+			}
+			.claim-process h1{
+				font-size: 18px;
+				font-weight: 400;
+				margin: 5px 0px;
+			}
+			.claim-process h3{
+				font-size: 14px;
+				margin: 10px 0px;
+				height: auto;
+			}
+			
+			/* 常见问题 */
+			.custom-question{
+				padding: 10px 15px;
+			}
+			.custom-question .question{
+				display: block;
+				font-size: 18px;
+				color: rgb(17,17,17);
+			}
+			.custom-question .answer{
+				display: block;
+				margin: 5px 0px;
+				font-size: 16px;
+				color:rgb(153, 153, 153)
+			}
+			/* 用户评论 */
+			.comment-cell{
+				padding: 10px 15px;
+				background-color: transparent;
+				min-height: 50px;
+				
+			}
+			.comment-cell #cell-headimg{
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				float: left;
+			}
+			.comment-cell #cell-username{
+				width: 30%;
+				background-color: transparent;
+				text-align: left;
+				display: inline-block;
+				margin-left: 20px;
+				margin-top: 7px;
+			}
+			.comment-cell #cell-time{
+				display: inline-block;
+				margin-top: 7px;
+				float: right;
+				background-color: transparent;
+				text-align: right;
+				font-size: 13px;
+				color: rgb(102,102,102);
+			}
+			.comment-cell #cell-stars{
+				background-color: transparent;
+				display: block;
+				height: 20px;
+				margin-top: 10px;
+				margin-left: 60px;
+			}
+			.comment-cell #cell-stars img{
+				width: 14px;
+				height: 14px;
+				margin: 2px;
+			}
+			.comment-cell #cell-stars img:first-child{
+				margin-left: 0px;
+			}
+			.comment-cell #cell-comment{
+				background-color: transparent;
+				font-size: 15px;
+				color: rgb(102, 102, 102);
+				margin-left: 60px;
+				text-align: left;
+				margin-top: 10px;
+			}
+		.text_orange span{
+			display: flex;
+			display: -webkit-flex;
+			font-size: 20px;
+			text-align: left;
+			padding-left: 15px;
+		}
+		
+		.footer-wapper a:last-child{
+			background-color: rgb(59,162,255);
+			color: white;
+		}
+		
+		.claim-phone:active,
+		.claim-phone:hover,
+		.claim-phone:link,
+		.claim-phone:visited {
+			color: rgb(59, 162, 255);
+		}
+		
+		.section-title{
+			border-top: 5px solid rgb(239,239,244);
+		}
+		
+		.service-dialog{
+			margin: 0 auto;
+			display: none;
+			background: #fff;
+			position: fixed;
+			z-index: 999;
+			top: 20px;
+			bottom: 50px;
+			height: calc(100% - 70px);
+			left: 14px;
+			right: 14px;
+			width: calc(100% - 48px);
+			padding: 10px 0px;
+		}
+		.service-content{
+			position: fixed;
+			padding: 20px 20px;
+			width: calc(100% - 48px);
+			height: calc(100% - 120px);
+			overflow-y: scroll;
+		}
+		.service-mask {
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			background: rgba(0, 0, 0, .5);
+			top: 0;
+			left: 0;
+			z-index: 900;
+			display: none;
+		}
+		.service-title{
+			text-align: center;
+			font-size: 16px;
+			margin-bottom: 10px;
+		}
+		
+		.service-close{
+			position: fixed;
+			left: 14px;
+			right: 14px;
+			width: calc(100% - 28px);;
+			height: 30px;
+			bottom: 10px;
+			background: url(../../common/app/images/write_ic_del.png) no-repeat center;
+			background-size: 30px 30px;
+			background-position: center;
+		}
+		.content .product-feaures iframe,
+		.content .product-feaures video,
+		.content .product-feaures img{
+			max-width: 100% !important;
+			width:100% !important;
+		}
+		.content .product-feaures video{
+			height: auto;
+		}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1>保险介绍</h1>
+			<a href="javascript:history.back(-1)" class="left flex_center">
+				<div class="arrow_left"></div>
+			</a>
+		</header>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">保险介绍</h1>
+		</header>
+		<div class="content">
+			<img id="introduce-img" src="" />
+			<div class="top-introduce">
+				<span id="describe">保障年龄：2~18周岁 保障期限：1年</span>
+				<span id="company">中国平安郑州分公司保险承保</span>
+				<img id="company-img" src="" />
+			</div>
+			<div class="section-title">
+				<i></i>
+				<span>保障计划</span>
+				<button type="button" id="more-plan" class="section-right-btn mui-btn mui-icon mui-icon-arrowright mui-right">
+					查看详细
+				</button>
+			</div>
+			<!-- 保障计划 -->
+			<div id="slider" class="mui-slider">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted"></div>
+				<!-- <div id="sliderProgressBar" class="mui-slider-progress-bar"></div> -->
+				<div class="mui-slider-group"></div>
+			</div>
+			<div class="section-title"><i></i><span>产品特点</span></div>
+			<!-- 产品特点 -->
+			<div class="product-feaures"></div>
+			<div class="agree-service">投保前请仔细阅读：</div>
+			<div class="section-title">
+				<i></i>
+				<span>理赔流程</span>
+				<button type="button" id="more-claim" class="section-right-btn mui-btn mui-icon mui-icon-arrowright mui-right">
+					查看详细
+				</button>
+			</div>
+			<!-- 理赔流程 -->
+			<div class="claim-process">
+				<h1>一、在线报案</h1>
+				<h3>1.在线填报理赔信息，提交理赔材料；</h3>
+				<h3>2.致电<a class="claim-phone app-blue-color" href="#">400-133-0600</a>申请理赔；</h3>
+				<h1>二、审核材料</h1>
+				<h3>保险公司审核理赔才俩是否完整；</h3>
+				<h1>三、赔付完成</h1>
+				<h3>保险公司审核通过后完成赔付；</h3>
+			</div>
+			<div class="section-title">
+				<i></i>
+				<span>常见问题</span>
+				<button type="button" id="more-question" class="section-right-btn mui-btn mui-icon mui-icon-arrowright mui-right">
+					查看更多
+				</button>
+			</div>
+			<!-- 常见问题 -->
+			<div class="custom-question">
+				<ul></ul>
+			</div>
+			<div class="section-title">
+				<i></i>
+				<span>用户评价</span>
+				<button type="button" id="more-comment" class="section-right-btn mui-btn mui-icon mui-icon-arrowright mui-right">
+					查看更多
+				</button>
+			</div>
+			<!-- 用户评价 -->
+			<div class="user-comment">
+				<ul></ul>
+			</div>
+		</div>
+		<!-- 底部按钮 fix布局 -->
+		<div class="footer-wapper footbtn flex_center">
+			<a href="javascript:;" class="text_orange"><span class="price-amount">￥00.00</span></a>
+			<a href="javascript:;" class="text_blue" onclick="">电话咨询</a>
+			<a href="javascript:;" onclick="">立刻投保</a>
+		</div>
+		<div class="service-mask"></div>
+		<!-- 服务条款弹出框 -->
+		<div class="service-dialog">
+			<p class="service-title"></p>
+			<div class="service-content"></div>
+			<div class="service-close"></div>
+		</div>
+	</body>
+	<script src="../../common/app/script/navConfig.js"></script>
+	<script src="../../common/app/script/empty.js"></script>
+	<script src="../../common/extend/moment/moment.js"></script>
+	<script src="../../common/extend/moment/zh-cn.js"></script>
+	<script src="../../common/app/script/showLoading.js"></script>
+	<link href="../../common/app/css/showLoading.css" />
+	<script>
+		var usercode = updateNullString(getURLParameter('usercode'), localUserCode), //客户端登录的用户code
+			url_token = updateNullString(getURLParameter('token'), localToken),
+			token = updateNullString($.cookie('token'), url_token),
+			xa_param_productID = updateNullString(getURLParameter('productId'), localToken), //产品ID
+			xa_param_productName = "", //传递到下个页面的
+			xa_param_SkuID = "", //传递到下个页面的
+			insurePhone = "", //保单咨询电话【全局变量】
+			xa_param_peoplePultiple = 0, //传递到下个页面的 保单是否支持多人投保
+			xa_param_CompanyName = "", //传递到下个页面的承保公司名称
+			xa_param_CompanyLogo = "", //传递到下个页面的承保公司logo
+			xa_param_InsuredDay = "", //传递到下个页面的保障期限
+			xa_param_BuyMutiple = "", //传递到下个页面 是否支持保障期限 可选0 不允许 1允许
+			xa_param_PriceUnit = "", //传递到下个页面 支持保障期限可选【单位】
+			xa_param_productServices = [], //协议条款，传递到下个页面的
+			securityList = []; //接口返回的所有保障计划
+
+		mui.init({
+			swipeBack: false
+		});
+		(function($) {
+			$('.mui-scroll-wrapper').scroll({
+				indicators: false //是否显示滚动条
+			});
+			resizeContentHeight();
+		})(mui);
+
+		requestProductDetailFromServer()
+		requestCustomQuestionFromserver()
+		requestUserCommentFromserver()
+
+		//section-title右侧按钮点击
+		$('.section-title').on("click", ".section-right-btn", function() {
+			var span = $(this).siblings('span');
+			var spanText = $(span).text();
+
+			if (spanText == '保障计划') {
+				var selectItem = $('#sliderSegmentedControl .mui-control-item.mui-active'),
+					selectSkuID = selectItem.attr('data-sku-id'),
+					items = [];
+
+				if (securityList.length > 0) {
+					for (var i = 0; i < securityList.length; i++) {
+						var json = securityList[i],
+							skuID = json['sku_id'];
+						if (skuID == selectSkuID) {
+							items = json["items"];
+							break;
+						}
+					}
+				}
+				if (items == null || items == undefined) {
+					mui.alert('当前无保障计划详情')
+					return
+				}
+				CodeSTD.form({
+					url: "insurance_securitylist.html",
+					params: {
+						"items": JSON.stringify(items),
+						"usercode": usercode,
+						"token": token
+					},
+				});
+			} else if (spanText == '常见问题') {
+				CodeSTD.form({
+					url: "question_list.html",
+					params: {
+						"productID": xa_param_productID, //产品id 
+						"usercode": usercode,
+						"token": token
+					},
+				});
+			} else if (spanText == '理赔流程') {
+				var claimPhone = $(".claim-phone").text()
+				CodeSTD.form({
+					url: "rich_detail.html",
+					params: {
+						"productID": xa_param_productID, //产品id 
+						"usercode": usercode,
+						"claimPhone": claimPhone,
+						"title": '理赔流程',
+						"token": token
+					},
+				});
+			} else if (spanText == '用户评价') {
+				CodeSTD.form({
+					url: "comment_list.html",
+					params: {
+						"productID": xa_param_productID, //产品id 
+						"usercode": usercode,
+						"token": token
+					},
+				});
+			}
+
+		})
+		/* 理赔电话拨打
+		 */
+		$(".claim-phone").click(function() {
+			var phone = $(this).text()
+			$(this).attr('href', 'tel:' + phone)
+		})
+		/* 底部按钮点击
+		 */
+		$('.footer-wapper').on("click", "a", function() {
+			var index = $(this).index();
+			if (index == 1) {
+				var phone = insurePhone;
+				$(this).attr('href', 'tel:' + phone)
+			} else if (index == 2) {
+				var selectSegmentItem = $("#sliderSegmentedControl").find('.mui-active')
+				var selectItem = $(".mui-slider-group").find('.mui-active')
+				xa_param_SkuID = selectSegmentItem.attr('data-sku-id') //sku id 
+				xa_param_BuyMutiple = selectItem.attr('data-buy-mutiple') //0 or 1
+				xa_param_PriceUnit = selectItem.attr('data-price-unit') //年 or 月 or 日
+				var skuPrice = selectSegmentItem.attr('data-price') //单价
+				localStorage.removeItem(usercode + "insuredPerson") //移除缓存的用户数据
+				localStorage.removeItem("selfDepSelectPeople")
+				CodeSTD.form({
+					url: "insurance_add.html",
+					params: {
+						"productID": xa_param_productID, //产品id 
+						"productName": xa_param_productName, //产品名称
+						"insuredDays": xa_param_InsuredDay, //保障期限
+						"companyName": xa_param_CompanyName, //保险公司名称
+						"companyLogo": xa_param_CompanyLogo, //保险公司logo
+						"buyMutiple": xa_param_BuyMutiple, //是否允许买多份 0 不允许 1允许【允许了可以编辑保障期限】
+						"buyPriceUnit": xa_param_PriceUnit, //【允许购买多份】
+						"peoplePultiple": xa_param_peoplePultiple, //是否支持多人投保
+						"productService": JSON.stringify(xa_param_productServices),
+						"productSkuID": xa_param_SkuID, //计划ID
+						"skuPrice": skuPrice,
+						"usercode": usercode,
+						"token": token
+					},
+				});
+			}
+
+		})
+
+		/* 保障计划选项卡切换点击
+		 */
+		$('#sliderSegmentedControl').on('tap', 'a', function() {
+			var index = $(this).attr('data-index')
+			var json = securityList[index],
+				schemeName = updateNullString(json['sku_name'], ""),
+				schemeID = json['sku_id'],
+				schemePrice = updateNullString(json['price'], ""),
+				schemePriceCycle = updateNullString(json['price_cycle'], "");
+			var realPrice = '￥' + schemePrice + '/' + getRealShowPriveCycleString(schemePriceCycle)
+			$('.price-amount').text(realPrice)
+		})
+
+		//具体某个条款协议点击
+		$(".agree-service").on("click", "div", function() {
+			var serviceCode = $(this).attr('data-key'),
+				serviceName = $(this).text();
+			$('.service-title').text(serviceName)
+			var paramDic = {
+				"product_id": xa_param_productID,
+				"code": updateNullString(serviceCode, ""),
+				"usercode": usercode,
+				"token": token
+			};
+			var urlString = system.jias + "/v1/product/richtext/get";
+			mui.showLoading()
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading()
+					var result = object["ret"],
+						html = [];
+					if (result) {
+						var dataJson = object["data"],
+							content = dataJson["content"];
+						if (content != undefined && content.length > 0) {
+							$('.service-content').html(content)
+							$(".service-dialog").fadeIn(200);
+							$(".service-mask").show();
+						}
+					}
+				},
+				function(error) {
+					mui.hideLoading()
+					mui.toast("获取" + serviceName + "协议内容失败")
+					$(".service-dialog").fadeOut(1);
+					$(".service-mask").hide()
+				})
+		})
+		$(".service-mask").click(function() {
+			$(".service-dialog").fadeOut(1);
+			$(".service-mask").hide()
+		})
+		$(".service-close").click(function() {
+			$(".service-dialog").fadeOut(1);
+			$(".service-mask").hide()
+		})
+		/* 保障计划UI
+		 */
+		function createProtectionScheme(array) {
+			if ($.isArray(array) && array.length > 0) {
+				// if (array.length == 1) {
+				// 	$('#sliderProgressBar').hide()
+				// } else {
+				// 	$('#sliderProgressBar').show()
+				// 	$('#sliderProgressBar').css('width', 'calc(100%/' + array.length + ')')
+				// }
+				array = array.reverse()
+				for (var i = 0; i < array.length; i++) {
+					var json = array[i],
+						schemeName = updateNullString(json['sku_name'], ""),
+						schemeID = json['sku_id'],
+						schemePrice = updateNullString(json['price'], ""),
+						schemePriceCycle = updateNullString(json['price_cycle'], ""),
+						schemebuyMultiple = json['buy_multiple'],
+						schemeItems = json['items'];
+					if (i == 0) {
+						$('#sliderSegmentedControl').append('<a class="mui-control-item mui-active" href="#item' + i +
+							'mobile" data-index="' + i +
+							'" data-sku-id="' +
+							schemeID + '" data-price="' + schemePrice + '">' + schemeName +
+							'</a>')
+						var realPrice = '￥' + schemePrice + '/' + getRealShowPriveCycleString(schemePriceCycle)
+						$('.price-amount').text(realPrice)
+					} else {
+						$('#sliderSegmentedControl').append('<a class="mui-control-item" href="#item' + i +
+							'mobile" data-index="' + i + '" data-sku-id="' +
+							schemeID + '" data-price="' + schemePrice + '">' + schemeName +
+							'</a>')
+					}
+
+					var itemHtml = [];
+					if (i == 0) {
+						itemHtml.push('<div id="item' + i +
+							'mobile" class="mui-slider-item mui-control-content mui-active" data-buy-mutiple="' + schemebuyMultiple +
+							'" data-price-unit="' + getRealShowPriveCycleString(schemePriceCycle) + '">')
+					} else {
+						itemHtml.push('<div id="item' + i + 'mobile" class="mui-slider-item mui-control-content" data-buy-mutiple="' +
+							schemebuyMultiple + '" data-price-unit="' + getRealShowPriveCycleString(schemePriceCycle) + '">')
+
+					}
+					itemHtml.push('<div id="scroll' + i + '" class="mui-scroll-wrapper">')
+					itemHtml.push('<div class="mui-scroll"></div>')
+					itemHtml.push('</div>')
+					itemHtml.push('<div class="slider-money">￥' + schemePrice + '/' + getRealShowPriveCycleString(schemePriceCycle) +
+						'</div>')
+
+					itemHtml.push('</div>')
+					$('.mui-slider-group').append(itemHtml.join(''))
+
+					if (schemeItems.length > 0) {
+						var subHtml = [];
+						subHtml.push('<ul class="mui-table-view">')
+						for (var j = 0; j < schemeItems.length; j++) {
+							var subItem = schemeItems[j],
+								subItemName = updateNullString(subItem['item_name'], ''),
+								subItemPrice = updateNullString(subItem['itemquota'], '');
+							subHtml.push('<li class="mui-table-view-cell">' + subItemName);
+							subHtml.push('<span>' + subItemPrice + '</span>');
+							subHtml.push('</li>');
+						}
+						subHtml.push('</ul>');
+						$('#item' + i + 'mobile .mui-scroll').append(subHtml.join(''))
+
+					} else {
+						var subHtml = [];
+						subHtml.push('<ul class="mui-table-view">')
+						subHtml.push('<li class="mui-table-view-cell"><span>暂无计划</span></li>');
+						subHtml.push('</ul>');
+						$('#item' + i + 'mobile .mui-scroll').append(subHtml.join(''))
+					}
+
+					var realHeight = 43 * schemeItems.length + 40 + 20
+					if (realHeight > 215) {
+						realHeight = 215;
+					}
+					$('#item' + i + 'mobile').css('height', realHeight)
+					$('#item' + i + 'mobile .mui-scroll-wrapper').css('height', realHeight - 40)
+					$('#item' + i + 'mobile .mui-scroll-wrapper .mui-scroll').css('height', realHeight - 50)
+				}
+			}
+			var gallery = mui('.mui-slider');
+			gallery.slider();
+		}
+		/** 服务条款协议
+		 * */
+		function createProductServices(val) {
+			var html = [];
+			for (var key in val) {
+				var value = val[key];
+				html.push('<div class="operation-btn" data-key="' + key + '">' + '《' + value +
+					'》' + '</div>')
+			}
+			$('.agree-service').append(html.join(''));
+		}
+
+		/* 获取产品详情
+		 */
+		function requestProductDetailFromServer() {
+			var paramDic = {
+				"usercode": usercode,
+				"product_id": xa_param_productID,
+				"token": token
+			};
+			var urlString = system.jias + "v1/product/get";
+			mui.showLoading()
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					mui.hideLoading()
+					var result = object["ret"];
+					if (result) {
+						var dataJson = object["data"];
+						if (dataJson != null && dataJson != undefined) {
+							var productName = updateNullString(dataJson["product_name"], ""), //保险名称
+								posterUrl = updateNullString(dataJson["poster_url"], ""), //海报地址
+								ageLimit = updateNullString(dataJson["age_limit"], ""), //年龄限制 min-max
+								insuredDays = dataJson["insured_days"], //保障期限 int
+								companyName = updateNullString(dataJson["company_name"], ""), //所属保险公司名称
+								companyLogo = updateNullString(dataJson["company_logo"], ""), //所属保险公司logo
+								detailInfo = dataJson["detail_intro"], //产品特点 是富文本
+								protectionScheme = dataJson["sku"], //保障计划
+								claimsPhone = updateNullString(dataJson["claims_hotline"], ""); //投保热线
+							xa_param_productName = productName; //保险名称
+							xa_param_CompanyName = companyName; //承保公司名称
+							xa_param_CompanyLogo = companyLogo; //承保公司logo
+							xa_param_InsuredDay = insuredDays; //保障期限
+							xa_param_peoplePultiple = dataJson["people_multiple"]; //是否允许一人购买多人	0 不允许 1允许
+							xa_param_productServices = dataJson["product_files"]; //服务条款协议
+							insurePhone = updateNullString(dataJson["hotline"], "");
+							securityList = protectionScheme;
+							$("title").html(productName);
+							$("header h1").html(productName);
+							$('#introduce-img').attr('src', posterUrl);
+							$(".top-introduce #describe").text('保障年龄：' + ageLimit + '周岁 保障期限：' + insuredDays)
+							$(".top-introduce #company").text(companyName);
+							$(".top-introduce #company-img").attr('src', companyLogo);
+							$('.product-feaures').html(detailInfo)
+							$('.claim-phone').text(claimsPhone)
+							var screenWidth = document.body.clientWidth - 60
+							var realHeight = screenWidth * 9 / 16
+							$('.content .product-feaures iframe').css('max-height',realHeight + 'px')
+							$('.content .product-feaures img').css('max-height',realHeight + 'px')
+							$('.content .product-feaures video').css('max-height',realHeight + 'px')
+							createProtectionScheme(protectionScheme); //构建保障计划UI
+							createProductServices(xa_param_productServices); //构建服务条款协议UI
+
+						} else {
+							commonShowRequestErrorEmpty("body", "暂无相关数据", true, function(){
+								requestProductDetailFromServer()
+							})
+						}
+					} else {
+						commonShowRequestErrorEmpty("body", updateNullString(object["msg"], "暂无相关数据"), true, function(){
+								requestProductDetailFromServer()
+							});
+					}
+				},
+				function(error) {
+					mui.hideLoading()
+					commonShowRequestErrorEmpty("body", "数据加载时出了问题", true, false);
+				})
+		}
+
+		/** 获取常见问题
+		 * */
+		function requestCustomQuestionFromserver() {
+			var paramDic = {
+				"product_id": xa_param_productID,
+				"usercode": usercode,
+				"start": "0",
+				"limit": "10",
+				"token": token
+			};
+			var urlString = system.jias + "/v1/question/list";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					var result = object["ret"],
+						html = [];
+					if (result) {
+						var dataJson = object["data"],
+							total = dataJson['total'],
+							items = dataJson['items'];
+						if (items != null && items != undefined && items.length > 0) {
+							for (var i = 0; i < items.length; i++) {
+								var questionJson = items[i],
+									questionID = updateNullString(questionJson['question_id'], ""),
+									question = updateNullString(questionJson['question'], ""),
+									answer = updateNullString(questionJson['answer'], "");
+								html.push('<li>')
+								html.push('<span class="question">' + (i + 1) + '. ' + question + '</span>')
+								html.push('<span class="answer">' + answer + '</span>')
+								html.push('</li>')
+							}
+							$('.custom-question ul').append(html.join(''))
+						} else {
+							// html.push('<li class="xa-hide-bottom-line">暂无数据</li>')
+							hideDomWhenEmpty('常见问题')
+						}
+					} else {
+						// var message = updateNullString(object["msg"], "暂无相关数据");
+						// html.push('<li class="xa-hide-bottom-line">' + message + '</li>')
+						hideDomWhenEmpty('常见问题')
+					}
+
+				},
+				function(error) {
+					// $('.custom-question ul').append('<li class="xa-hide-bottom-line">数据加载时出了问题</li>')
+					hideDomWhenEmpty('常见问题')
+				})
+		}
+
+		function hideDomWhenEmpty(val) {
+			if (val == '常见问题') {
+				$('#more-question').parents('.section-title').hide()
+				$('.custom-question').hide()
+			} else if (val == '用户评价') {
+				$('#more-comment').parents('.section-title').hide()
+				$('.user-comment').hide()
+			}
+
+
+		}
+
+		/** 获取用户评价
+		 * */
+		function requestUserCommentFromserver() {
+			var paramDic = {
+				"product_id": xa_param_productID,
+				"usercode": usercode,
+				"start": "0",
+				"limit": "10",
+				"token": token
+			};
+			var urlString = system.jias + "/v1/comment/list";
+			jQuery_Request_Post(urlString, paramDic, 'json', false, function(object) {
+					var result = object["ret"],
+						html = [];
+					if (result) {
+						var dataJson = object["data"],
+							total = dataJson['total'],
+							items = dataJson['items'];
+						if (items != null && items != undefined && items.length > 0) {
+							for (var i = 0; i < items.length; i++) {
+								var commentJson = items[i],
+									commentID = updateNullString(commentJson['question_id'], ""),
+									headUrl = updateNullString(commentJson['head_url'], "../../common/app/images/main_avatar.png"),
+									commentUserName = updateNullString(commentJson['username'], ""),
+									commentUserCode = updateNullString(commentJson['comment_user'], ""),
+									comment = updateNullString(commentJson['comment'], ""),
+									star = commentJson['star'],
+									createTime = commentJson['create_time'];
+								var ee = moment(createTime).format('YYYY-MM-DD HH:MM')
+								html.push('<li class="comment-cell">');
+								html.push('<img id="cell-headimg" src="' + headUrl + '" />');
+								html.push('<div id="cell-username">' + commentUserName + '</div>');
+								html.push('<div id="cell-time">' + ee + '</div>');
+								html.push('<div id="cell-stars">');
+								for (var j = 0; j < star; j++) {
+									html.push('<img src="../../common/app/images/show_ic_star_on.png" />')
+								}
+								html.push('</div>')
+								html.push('<div id="cell-comment">' + comment + '</div>');
+								html.push('</li>')
+							}
+							$('.user-comment ul').append(html.join(''))
+						} else {
+							// html.push('<li class="xa-hide-bottom-line">暂无数据</li>')
+							hideDomWhenEmpty('用户评价')
+						}
+					} else {
+						// var message = updateNullString(object["msg"], "暂无相关数据");
+						// html.push('<li class="xa-hide-bottom-line">' + message + '</li>')
+						hideDomWhenEmpty('用户评价')
+					}
+
+				},
+				function(error) {
+					// $('.user-comment ul').append('<li class="xa-hide-bottom-line">数据加载时出了问题</li>')
+					hideDomWhenEmpty('用户评价')
+				})
+		}
+
+		//计算页面可滑动区域【确定视图高度】
+		function resizeContentHeight() {
+			var contentHeight = $('.content').height();
+			var footerHeight = $('.footer-wapper').height();
+			var realHeight = contentHeight - footerHeight;
+			$('.content').css({
+				height: realHeight + 'px'
+			});
+		}
+	</script>
+</html>
